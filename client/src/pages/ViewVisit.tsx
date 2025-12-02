@@ -3,10 +3,10 @@ import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useMockVisits } from '@/hooks/useMockVisits';
+import { useMockVisits, VisitIndicator } from '@/hooks/useMockVisits';
 import { useLocation } from 'wouter';
 import { ArrowLeft, MapPin, Calendar, User, CheckCircle, Mic, Camera } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ViewVisit() {
   const { id } = useParams();
@@ -15,16 +15,40 @@ export default function ViewVisit() {
   const { getVisit, updateVisitIndicators, completeVisit } = useMockVisits();
   const [editing, setEditing] = useState(false);
   const [comments, setComments] = useState('');
+  const [editedIndicators, setEditedIndicators] = useState<VisitIndicator[]>([]);
 
   const visit = getVisit(id || '');
+
+  useEffect(() => {
+    if (visit && editedIndicators.length === 0) {
+      setEditedIndicators(visit.indicators.map(ind => ({ ...ind })));
+      setComments(visit.comments);
+    }
+  }, [visit]);
 
   if (!visit || !user) {
     return null;
   }
 
-  const canEdit = visit.conductedBy === user.id && visit.status === 'in_progress';
+  const canEdit = user.role === 'AEO' && visit.conductedBy === user.id;
+
+  const displayIndicators = editing ? editedIndicators : visit.indicators;
+
+  const handleIndicatorChange = (indicatorId: string, value: any) => {
+    setEditedIndicators((prev) =>
+      prev.map((ind) =>
+        ind.id === indicatorId ? { ...ind, value } : ind
+      )
+    );
+  };
+
+  const handleSaveChanges = () => {
+    updateVisitIndicators(visit.id, editedIndicators);
+    setEditing(false);
+  };
 
   const handleCompleteVisit = () => {
+    updateVisitIndicators(visit.id, editedIndicators);
     completeVisit(visit.id, comments);
     setEditing(false);
   };
@@ -100,7 +124,7 @@ export default function ViewVisit() {
         <Card className="p-6">
           <h2 className="text-lg font-semibold text-foreground mb-4">Visit Indicators</h2>
           <div className="space-y-4">
-            {visit.indicators.map((indicator) => (
+            {displayIndicators.map((indicator) => (
               <div key={indicator.id} className="p-3 border border-border rounded-lg">
                 <p className="font-medium text-foreground mb-2">{indicator.name}</p>
 
@@ -110,6 +134,7 @@ export default function ViewVisit() {
                       variant={indicator.value === true ? 'default' : 'outline'}
                       size="sm"
                       disabled={!editing}
+                      onClick={() => handleIndicatorChange(indicator.id, true)}
                       data-testid={`button-yes-${indicator.id}`}
                     >
                       Yes
@@ -118,6 +143,7 @@ export default function ViewVisit() {
                       variant={indicator.value === false ? 'default' : 'outline'}
                       size="sm"
                       disabled={!editing}
+                      onClick={() => handleIndicatorChange(indicator.id, false)}
                       data-testid={`button-no-${indicator.id}`}
                     >
                       No
@@ -129,7 +155,8 @@ export default function ViewVisit() {
                   <Input
                     type="number"
                     placeholder="Enter count"
-                    value={indicator.value || ''}
+                    value={(indicator.value as number) || ''}
+                    onChange={(e) => handleIndicatorChange(indicator.id, e.target.value ? parseInt(e.target.value) : '')}
                     disabled={!editing}
                     className="max-w-24"
                     data-testid={`input-count-${indicator.id}`}
@@ -144,6 +171,7 @@ export default function ViewVisit() {
                         variant={indicator.value === level ? 'default' : 'outline'}
                         size="sm"
                         disabled={!editing}
+                        onClick={() => handleIndicatorChange(indicator.id, level)}
                         data-testid={`button-scale-${level}-${indicator.id}`}
                       >
                         {level}
@@ -157,6 +185,7 @@ export default function ViewVisit() {
                     type="text"
                     placeholder="Enter observation"
                     value={(indicator.value as string) || ''}
+                    onChange={(e) => handleIndicatorChange(indicator.id, e.target.value)}
                     disabled={!editing}
                     data-testid={`input-text-${indicator.id}`}
                   />
@@ -171,7 +200,7 @@ export default function ViewVisit() {
           <h2 className="text-lg font-semibold text-foreground mb-4">Comments & Observations</h2>
           <textarea
             placeholder="Add detailed observations, findings, and recommendations..."
-            value={editing ? comments : visit.comments}
+            value={comments}
             onChange={(e) => setComments(e.target.value)}
             disabled={!editing}
             className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-24 disabled:opacity-50"
@@ -203,13 +232,22 @@ export default function ViewVisit() {
         {/* Actions */}
         {editing && (
           <div className="flex gap-2">
-            <Button onClick={handleCompleteVisit} data-testid="button-complete">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Complete Visit
+            <Button onClick={handleSaveChanges} data-testid="button-save">
+              Save Changes
             </Button>
+            {visit.status === 'in_progress' && (
+              <Button variant="default" onClick={handleCompleteVisit} data-testid="button-complete">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Complete Visit
+              </Button>
+            )}
             <Button
               variant="outline"
-              onClick={() => setEditing(false)}
+              onClick={() => {
+                setEditing(false);
+                setEditedIndicators(visit.indicators.map(ind => ({ ...ind })));
+                setComments(visit.comments);
+              }}
               data-testid="button-cancel"
             >
               Cancel
