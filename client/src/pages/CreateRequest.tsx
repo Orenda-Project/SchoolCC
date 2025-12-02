@@ -110,13 +110,14 @@ export default function CreateRequest() {
       // Automatically create collaborative form for the same data
       const userSchool = getSchoolById('school-1');
       if (userSchool) {
-        // Convert data request fields to collaborative form fields (only text and number types)
+        // Convert data request fields to collaborative form fields (text, number, and voice_note types)
+        // Voice notes are allowed for non-teacher roles
         const collaborativeFields: FormField[] = fields
-          .filter((f) => f.type === 'text' || f.type === 'number')
+          .filter((f) => f.type === 'text' || f.type === 'number' || f.type === 'voice_note')
           .map((f) => ({
             id: f.id,
             name: f.name,
-            type: f.type === 'number' ? 'number' : 'text',
+            type: f.type === 'number' ? 'number' : f.type === 'voice_note' ? 'voice_note' : 'text',
             required: f.required,
           }));
 

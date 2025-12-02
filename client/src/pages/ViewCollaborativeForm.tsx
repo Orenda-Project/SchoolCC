@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useMockCollaborativeForms } from '@/hooks/useMockCollaborativeForms';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Save, Send } from 'lucide-react';
+import { ArrowLeft, Save, Send, Mic, Square } from 'lucide-react';
 
 export default function ViewCollaborativeForm() {
   const { formId } = useParams();
@@ -16,6 +16,8 @@ export default function ViewCollaborativeForm() {
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(false);
+  const [recordingField, setRecordingField] = useState<string | null>(null);
+  const [recordedVoiceNotes, setRecordedVoiceNotes] = useState<Record<string, string>>({});
 
   const form = getForm(formId || '');
 
@@ -26,6 +28,19 @@ export default function ViewCollaborativeForm() {
 
   const handleInputChange = (fieldId: string, value: any) => {
     setFormData((prev) => ({ ...prev, [fieldId]: value }));
+  };
+
+  const toggleVoiceRecording = (fieldId: string) => {
+    if (recordingField === fieldId) {
+      setRecordingField(null);
+      setRecordedVoiceNotes((prev) => ({
+        ...prev,
+        [fieldId]: `voice_${Date.now()}`,
+      }));
+      setFormData((prev) => ({ ...prev, [fieldId]: `voice_${Date.now()}` }));
+    } else {
+      setRecordingField(fieldId);
+    }
   };
 
   const handleSaveDraft = () => {
@@ -133,22 +148,66 @@ export default function ViewCollaborativeForm() {
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-foreground mb-6">Your Information</h2>
               <div className="space-y-4">
-                {form.fields.map((field) => (
-                  <div key={field.id}>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      {field.name}
-                      {field.required && <span className="text-destructive ml-1">*</span>}
-                    </label>
-                    <Input
-                      type={field.type}
-                      placeholder={`Enter ${field.name.toLowerCase()}`}
-                      value={formData[field.id] || userResponse?.data[field.id] || ''}
-                      onChange={(e) => handleInputChange(field.id, e.target.value)}
-                      disabled={!editing}
-                      data-testid={`input-field-${field.id}`}
-                    />
-                  </div>
-                ))}
+                {form.fields.map((field) => {
+                  // Teachers cannot see or fill voice note fields
+                  if (field.type === 'voice_note' && user.role === 'TEACHER') {
+                    return null;
+                  }
+
+                  return (
+                    <div key={field.id}>
+                      <label className="block text-sm font-medium text-foreground mb-2">
+                        {field.name}
+                        {field.required && <span className="text-destructive ml-1">*</span>}
+                      </label>
+                      {field.type === 'voice_note' ? (
+                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
+                          {!editing ? (
+                            <div className="text-sm text-muted-foreground">
+                              {recordedVoiceNotes[field.id] ? (
+                                <span className="text-green-600">✓ Voice note recorded</span>
+                              ) : (
+                                <span>No voice note recorded</span>
+                              )}
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => toggleVoiceRecording(field.id)}
+                              className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-colors ${
+                                recordingField === field.id
+                                  ? 'bg-red-600 text-white'
+                                  : 'bg-primary text-white hover:bg-primary/90'
+                              }`}
+                              data-testid={`button-record-${field.id}`}
+                            >
+                              {recordingField === field.id ? (
+                                <>
+                                  <Square className="w-4 h-4" />
+                                  Stop Recording
+                                </>
+                              ) : (
+                                <>
+                                  <Mic className="w-4 h-4" />
+                                  Record Voice Note
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <Input
+                          type={field.type}
+                          placeholder={`Enter ${field.name.toLowerCase()}`}
+                          value={formData[field.id] || userResponse?.data[field.id] || ''}
+                          onChange={(e) => handleInputChange(field.id, e.target.value)}
+                          disabled={!editing}
+                          data-testid={`input-field-${field.id}`}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </Card>
 

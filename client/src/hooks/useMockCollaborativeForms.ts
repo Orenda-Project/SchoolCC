@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 export interface FormField {
   id: string;
   name: string;
-  type: 'text' | 'number' | 'email' | 'date';
+  type: 'text' | 'number' | 'email' | 'date' | 'voice_note';
   required: boolean;
 }
 
