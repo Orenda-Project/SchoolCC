@@ -202,9 +202,18 @@ export default function SchoolData() {
                     </div>
                   </div>
 
-                  <div className="flex items-end">
-                    <Button variant="outline" size="sm" className="w-full" data-testid={`button-view-school-${school.id}`}>
+                  <div className="flex items-end gap-2">
+                    <Button variant="outline" size="sm" className="flex-1" data-testid={`button-view-school-${school.id}`}>
                       View Details
+                    </Button>
+                    <Button 
+                      onClick={() => navigate(`/album/${school.id}`)}
+                      size="sm" 
+                      className="flex-1"
+                      data-testid={`button-album-${school.id}`}
+                    >
+                      <ImageIcon className="w-4 h-4 mr-2" />
+                      Album
                     </Button>
                   </div>
                 </div>
