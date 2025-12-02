@@ -16,8 +16,8 @@ export default function SchoolData() {
   const userSchool = user.schoolId ? getSchoolById(user.schoolId) : null;
   
   // Teachers and head teachers only see their own school
-  const visibleSchools = (user.role === 'TEACHER' || user.role === 'HEAD_TEACHER') 
-    ? (userSchool ? [userSchool] : []) 
+  const visibleSchools = (user.role === 'TEACHER' || user.role === 'HEAD_TEACHER') && userSchool
+    ? [userSchool] 
     : allSchools;
 
   return (

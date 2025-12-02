@@ -5,7 +5,6 @@ export interface VisitIndicator {
   name: string;
   type: 'boolean' | 'count' | 'scale' | 'text';
   value?: boolean | number | string;
-  observation?: string;
 }
 
 export interface SchoolVisit {
@@ -13,27 +12,56 @@ export interface SchoolVisit {
   schoolId: string;
   schoolName: string;
   visitDate: Date;
-  visitType: 'administrative' | 'academic' | 'monitoring';
+  plannedDate?: Date;
+  visitType: 'monitoring' | 'mentoring';
   conductedBy: string;
   conductedByName: string;
   conductedByRole: string;
   status: 'planned' | 'in_progress' | 'completed';
   gpsLocation?: { lat: number; lng: number };
+  gpsStartLocation?: { lat: number; lng: number };
+  gpsEndLocation?: { lat: number; lng: number };
   indicators: VisitIndicator[];
   comments: string;
+  objectives?: string;
+  classesToObserve?: string[];
   photoCount: number;
   voiceNotesCount: number;
   voiceNotes?: { id: string; name: string; url: string; duration: number }[];
   photos?: { id: string; name: string; url: string }[];
   duration?: number;
+  startTime?: Date;
+  endTime?: Date;
 }
 
-const mockIndicators: VisitIndicator[] = [
-  { id: 'ind-1', name: 'Head Teacher Present', type: 'boolean' },
-  { id: 'ind-2', name: 'Lesson Plan Posted', type: 'boolean' },
-  { id: 'ind-3', name: 'Working Toilets', type: 'count' },
-  { id: 'ind-4', name: 'Water Availability', type: 'scale' },
-  { id: 'ind-5', name: 'Infrastructure Issues', type: 'text' },
+// Monitoring Visit Indicators
+const monitoringIndicators: VisitIndicator[] = [
+  { id: 'm-1', name: 'Head Teacher Present', type: 'boolean' },
+  { id: 'm-2', name: 'Teacher Attendance', type: 'count' },
+  { id: 'm-3', name: 'Student Attendance', type: 'count' },
+  { id: 'm-4', name: 'Furniture Availability', type: 'scale' },
+  { id: 'm-5', name: 'Working Toilets', type: 'count' },
+  { id: 'm-6', name: 'Water Availability', type: 'boolean' },
+  { id: 'm-7', name: 'Electricity Available', type: 'boolean' },
+  { id: 'm-8', name: 'Infrastructure Issues', type: 'text' },
+];
+
+// Mentoring Visit Indicators (HOTS Competencies)
+const mentoringIndicators: VisitIndicator[] = [
+  { id: 'h-1', name: 'Classroom Management', type: 'scale' },
+  { id: 'h-2', name: 'Subject Knowledge', type: 'scale' },
+  { id: 'h-3', name: 'Pedagogical Skills', type: 'scale' },
+  { id: 'h-4', name: 'Student Engagement', type: 'scale' },
+  { id: 'h-5', name: 'Assessment Practices', type: 'scale' },
+  { id: 'h-6', name: 'Use of Teaching Aids', type: 'scale' },
+  { id: 'h-7', name: 'Lesson Plan Compliance', type: 'scale' },
+  { id: 'h-8', name: 'Critical Thinking Promotion', type: 'scale' },
+  { id: 'h-9', name: 'Inclusive Teaching', type: 'scale' },
+  { id: 'h-10', name: 'Feedback & Remediation', type: 'scale' },
+  { id: 'h-11', name: 'Digital Resources Usage', type: 'scale' },
+  { id: 'h-12', name: 'Student-Teacher Interaction', type: 'scale' },
+  { id: 'h-13', name: 'Class Hygiene & Safety', type: 'scale' },
+  { id: 'h-14', name: 'Overall Performance', type: 'scale' },
 ];
 
 const mockVisits: SchoolVisit[] = [
@@ -42,17 +70,21 @@ const mockVisits: SchoolVisit[] = [
     schoolId: 'school-1',
     schoolName: 'Government Primary School, Zone A',
     visitDate: new Date('2024-11-28'),
+    plannedDate: new Date('2024-11-28'),
     visitType: 'monitoring',
     conductedBy: 'aeo-1',
     conductedByName: 'Mr. Amit Patel',
     conductedByRole: 'AEO',
     status: 'completed',
+    gpsStartLocation: { lat: 28.6139, lng: 77.209 },
+    gpsEndLocation: { lat: 28.6139, lng: 77.209 },
     gpsLocation: { lat: 28.6139, lng: 77.209 },
+    objectives: 'Check school infrastructure and teacher attendance',
     indicators: [
-      { id: 'ind-1', name: 'Head Teacher Present', type: 'boolean', value: true },
-      { id: 'ind-2', name: 'Lesson Plan Posted', type: 'boolean', value: true },
-      { id: 'ind-3', name: 'Working Toilets', type: 'count', value: 3 },
-      { id: 'ind-4', name: 'Water Availability', type: 'scale', value: 3 },
+      { id: 'm-1', name: 'Head Teacher Present', type: 'boolean', value: true },
+      { id: 'm-2', name: 'Teacher Attendance', type: 'count', value: 8 },
+      { id: 'm-3', name: 'Student Attendance', type: 'count', value: 180 },
+      { id: 'm-4', name: 'Furniture Availability', type: 'scale', value: 3 },
     ],
     comments: 'School in good condition. Minor repairs needed in block B.',
     photoCount: 5,
@@ -66,27 +98,36 @@ const mockVisits: SchoolVisit[] = [
       { id: 'p1-2', name: 'Playground.jpg', url: 'photo2.jpg' },
     ],
     duration: 120,
+    startTime: new Date('2024-11-28T09:00:00'),
+    endTime: new Date('2024-11-28T11:00:00'),
   },
   {
     id: 'v2',
     schoolId: 'school-2',
     schoolName: 'Government Upper Primary School',
     visitDate: new Date('2024-12-01'),
-    visitType: 'academic',
+    plannedDate: new Date('2024-12-01'),
+    visitType: 'mentoring',
     conductedBy: 'aeo-1',
     conductedByName: 'Mr. Amit Patel',
     conductedByRole: 'AEO',
     status: 'completed',
+    gpsStartLocation: { lat: 28.5244, lng: 77.1855 },
+    gpsEndLocation: { lat: 28.5244, lng: 77.1855 },
     gpsLocation: { lat: 28.5244, lng: 77.1855 },
+    objectives: 'Mentoring session for Grade 5 Science teacher - Focus on HOTS',
+    classesToObserve: ['Class 5-A', 'Class 5-B'],
     indicators: [
-      { id: 'ind-1', name: 'Head Teacher Present', type: 'boolean', value: true },
-      { id: 'ind-2', name: 'Lesson Plan Posted', type: 'boolean', value: false },
-      { id: 'ind-3', name: 'Working Toilets', type: 'count', value: 4 },
+      { id: 'h-1', name: 'Classroom Management', type: 'scale', value: 3 },
+      { id: 'h-2', name: 'Subject Knowledge', type: 'scale', value: 3 },
+      { id: 'h-3', name: 'Pedagogical Skills', type: 'scale', value: 2 },
     ],
-    comments: 'Discussed curriculum implementation. Need to focus on lesson planning.',
+    comments: 'Good foundation. Need to work on student engagement and critical thinking promotion.',
     photoCount: 3,
     voiceNotesCount: 1,
     duration: 90,
+    startTime: new Date('2024-12-01T10:00:00'),
+    endTime: new Date('2024-12-01T11:30:00'),
   },
 ];
 
@@ -120,7 +161,9 @@ export function useMockVisits() {
     (
       schoolId: string,
       schoolName: string,
-      visitType: 'administrative' | 'academic' | 'monitoring',
+      visitType: 'monitoring' | 'mentoring',
+      objectives: string,
+      classesToObserve: string[] | undefined,
       conductedBy: string,
       conductedByName: string,
       conductedByRole: string
@@ -130,13 +173,18 @@ export function useMockVisits() {
         schoolId,
         schoolName,
         visitDate: new Date(),
+        plannedDate: new Date(),
         visitType,
         conductedBy,
         conductedByName,
         conductedByRole,
-        status: 'in_progress',
-        gpsLocation: { lat: 28.6139 + Math.random() * 0.1, lng: 77.209 + Math.random() * 0.1 },
-        indicators: mockIndicators.map((ind) => ({ ...ind })),
+        status: 'planned',
+        objectives,
+        classesToObserve,
+        gpsStartLocation: { lat: 28.6139 + Math.random() * 0.1, lng: 77.209 + Math.random() * 0.1 },
+        indicators: visitType === 'monitoring' 
+          ? monitoringIndicators.map((ind) => ({ ...ind }))
+          : mentoringIndicators.map((ind) => ({ ...ind })),
         comments: '',
         photoCount: 0,
         voiceNotesCount: 0,
@@ -168,12 +216,34 @@ export function useMockVisits() {
     []
   );
 
-  const addIndicator = useCallback(
-    (visitId: string, indicator: VisitIndicator) => {
+  const startVisit = useCallback((visitId: string) => {
+    setVisits((prev) =>
+      prev.map((v) =>
+        v.id === visitId
+          ? {
+              ...v,
+              status: 'in_progress',
+              startTime: new Date(),
+              gpsStartLocation: { lat: 28.6139 + Math.random() * 0.1, lng: 77.209 + Math.random() * 0.1 },
+            }
+          : v
+      )
+    );
+  }, []);
+
+  const completeVisit = useCallback(
+    (visitId: string, comments: string) => {
       setVisits((prev) =>
         prev.map((v) =>
           v.id === visitId
-            ? { ...v, indicators: [...v.indicators, indicator] }
+            ? {
+                ...v,
+                status: 'completed',
+                comments,
+                endTime: new Date(),
+                gpsEndLocation: { lat: 28.6139 + Math.random() * 0.1, lng: 77.209 + Math.random() * 0.1 },
+                duration: Math.floor(Math.random() * 120) + 30,
+              }
             : v
         )
       );
@@ -222,28 +292,6 @@ export function useMockVisits() {
     []
   );
 
-  const completeVisit = useCallback(
-    (visitId: string, comments: string) => {
-      setVisits((prev) =>
-        prev.map((v) =>
-          v.id === visitId
-            ? {
-                ...v,
-                status: 'completed',
-                comments,
-                duration: Math.floor(Math.random() * 120) + 30,
-              }
-            : v
-        )
-      );
-    },
-    []
-  );
-
-  const getIndicators = useCallback(() => {
-    return mockIndicators;
-  }, []);
-
   return {
     visits,
     getVisitsForUser,
@@ -251,10 +299,11 @@ export function useMockVisits() {
     createVisit,
     updateVisit,
     updateVisitIndicators,
-    addIndicator,
+    startVisit,
+    completeVisit,
     addVoiceNote,
     addPhoto,
-    completeVisit,
-    getIndicators,
+    getMonitoringIndicators: () => monitoringIndicators,
+    getMentoringIndicators: () => mentoringIndicators,
   };
 }

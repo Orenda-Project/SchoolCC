@@ -31,10 +31,8 @@ export default function SchoolVisits() {
     switch (type) {
       case 'monitoring':
         return 'bg-purple-100 text-purple-700';
-      case 'academic':
+      case 'mentoring':
         return 'bg-blue-100 text-blue-700';
-      case 'administrative':
-        return 'bg-green-100 text-green-700';
       default:
         return 'bg-gray-100 text-gray-700';
     }
