@@ -9,6 +9,8 @@ import Dashboard from "@/pages/Dashboard";
 import DataRequests from "@/pages/DataRequests";
 import CreateRequest from "@/pages/CreateRequest";
 import ViewRequest from "@/pages/ViewRequest";
+import Calendar from "@/pages/Calendar";
+import SchoolData from "@/pages/SchoolData";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,6 +23,8 @@ function Router() {
       <Route path="/data-requests" component={DataRequests} />
       <Route path="/create-request" component={CreateRequest} />
       <Route path="/request/:id" component={ViewRequest} />
+      <Route path="/calendar" component={Calendar} />
+      <Route path="/school-data" component={SchoolData} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

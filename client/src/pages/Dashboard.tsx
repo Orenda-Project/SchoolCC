@@ -2,13 +2,15 @@ import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useMockDataRequests } from '@/hooks/useMockDataRequests';
+import { useMockTeacherData } from '@/hooks/useMockTeacherData';
 import { useLocation } from 'wouter';
-import { LogOut, Plus, FileText, TrendingUp, Users } from 'lucide-react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2 } from 'lucide-react';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
   const { getRequestsForUser } = useMockDataRequests();
+  const { getTeacherStats } = useMockTeacherData();
 
   if (!user) {
     navigate('/');
@@ -22,32 +24,33 @@ export default function Dashboard() {
   const completedCount = userRequests.filter((r) =>
     r.assignees.some((a) => a.userId === user.id && a.status === 'completed')
   ).length;
+  const { totalTeachers, presentToday, onLeaveToday, absentToday } = getTeacherStats();
 
   const dashboardStats = {
     DEO: [
-      { label: 'Total Requests', value: userRequests.length, icon: FileText },
-      { label: 'Assigned Schools', value: '245', icon: Users },
-      { label: 'Completion Rate', value: '87%', icon: TrendingUp },
+      { label: 'Total Teachers', value: totalTeachers, icon: Users },
+      { label: 'Present Today', value: presentToday, icon: TrendingUp },
+      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar },
     ],
     DDEO: [
-      { label: 'Regional Requests', value: userRequests.length, icon: FileText },
-      { label: 'Monitored Clusters', value: '12', icon: Users },
-      { label: 'Compliance', value: '92%', icon: TrendingUp },
+      { label: 'Total Teachers', value: totalTeachers, icon: Users },
+      { label: 'Present Today', value: presentToday, icon: TrendingUp },
+      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar },
     ],
     AEO: [
-      { label: 'Active Requests', value: userRequests.length, icon: FileText },
-      { label: 'Schools in Cluster', value: '18', icon: Users },
-      { label: 'Response Rate', value: '95%', icon: TrendingUp },
+      { label: 'Total Teachers', value: totalTeachers, icon: Users },
+      { label: 'Present Today', value: presentToday, icon: TrendingUp },
+      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar },
     ],
     HEAD_TEACHER: [
       { label: 'Pending Tasks', value: pendingCount, icon: FileText },
       { label: 'Completed', value: completedCount, icon: TrendingUp },
-      { label: 'School Name', value: user.schoolName?.split(',')[0] || 'School', icon: Users },
+      { label: 'Staff Present Today', value: presentToday, icon: Users },
     ],
     TEACHER: [
       { label: 'My Tasks', value: pendingCount, icon: FileText },
       { label: 'Completed', value: completedCount, icon: TrendingUp },
-      { label: 'School', value: user.schoolName?.split(',')[0] || 'School', icon: Users },
+      { label: 'Colleagues Present', value: presentToday, icon: Users },
     ],
   };
 
@@ -100,7 +103,7 @@ export default function Dashboard() {
         {/* Quick Actions */}
         <div className="mb-8">
           <h2 className="text-xl font-bold text-foreground mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {(user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DEO' || user.role === 'DDEO') && (
               <Button
                 onClick={() => navigate('/create-request')}
@@ -121,6 +124,26 @@ export default function Dashboard() {
             >
               <FileText className="w-5 h-5 mr-2" />
               View All Requests
+            </Button>
+            <Button
+              onClick={() => navigate('/calendar')}
+              variant="secondary"
+              size="lg"
+              className="h-auto py-4"
+              data-testid="button-view-calendar"
+            >
+              <Calendar className="w-5 h-5 mr-2" />
+              Staff Leave Calendar
+            </Button>
+            <Button
+              onClick={() => navigate('/school-data')}
+              variant="secondary"
+              size="lg"
+              className="h-auto py-4"
+              data-testid="button-view-schools"
+            >
+              <Building2 className="w-5 h-5 mr-2" />
+              School Inventory
             </Button>
           </div>
         </div>
