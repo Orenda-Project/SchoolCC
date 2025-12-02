@@ -110,13 +110,13 @@ export default function CreateRequest() {
       // Automatically create collaborative form for the same data
       const userSchool = getSchoolById('school-1');
       if (userSchool) {
-        // Convert data request fields to collaborative form fields (only text, number, email, date types)
+        // Convert data request fields to collaborative form fields (only text and number types)
         const collaborativeFields: FormField[] = fields
-          .filter((f) => ['text', 'number', 'email', 'date'].includes(f.type))
+          .filter((f) => f.type === 'text' || f.type === 'number')
           .map((f) => ({
             id: f.id,
             name: f.name,
-            type: (f.type === 'number' ? 'number' : f.type === 'email' ? 'email' : f.type === 'date' ? 'date' : 'text') as FormField['type'],
+            type: f.type === 'number' ? 'number' : 'text',
             required: f.required,
           }));
 
@@ -283,7 +283,7 @@ export default function CreateRequest() {
           {/* Info Banner */}
           <Card className="p-4 bg-purple-50 border border-purple-200">
             <p className="text-sm text-purple-700">
-              ℹ️ <strong>Automatic Spreadsheet Form:</strong> When you create this request, a collaborative spreadsheet form will be automatically created for teachers to fill their data.
+              ℹ️ <strong>Automatic Spreadsheet Form:</strong> When you create this request, a collaborative spreadsheet form will be automatically created for all assignees (teachers, head teachers, etc.) to fill their data.
             </p>
           </Card>
 
