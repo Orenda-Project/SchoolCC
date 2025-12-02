@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useMockDataRequests, DataField } from '@/hooks/useMockDataRequests';
+import { useMockCollaborativeForms, FormField } from '@/hooks/useMockCollaborativeForms';
+import { useMockTeacherData } from '@/hooks/useMockTeacherData';
 import { useLocation } from 'wouter';
 import { Plus, X, ArrowLeft, Mic, Square, Play } from 'lucide-react';
 
@@ -18,6 +20,8 @@ export default function CreateRequest() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
   const { createRequest } = useMockDataRequests();
+  const { createForm } = useMockCollaborativeForms();
+  const { getSchoolById } = useMockTeacherData();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -83,6 +87,7 @@ export default function CreateRequest() {
 
     setLoading(true);
     setTimeout(() => {
+      // Create the data request
       createRequest(
         title,
         description,
@@ -101,6 +106,34 @@ export default function CreateRequest() {
         user.name,
         user.role
       );
+
+      // Automatically create collaborative form for the same data
+      const userSchool = getSchoolById('school-1');
+      if (userSchool) {
+        // Convert data request fields to collaborative form fields (only text, number, email, date types)
+        const collaborativeFields: FormField[] = fields
+          .filter((f) => ['text', 'number', 'email', 'date'].includes(f.type))
+          .map((f) => ({
+            id: f.id,
+            name: f.name,
+            type: (f.type === 'number' ? 'number' : f.type === 'email' ? 'email' : f.type === 'date' ? 'date' : 'text') as FormField['type'],
+            required: f.required,
+          }));
+
+        // Only create form if there are compatible fields
+        if (collaborativeFields.length > 0) {
+          createForm(
+            userSchool.id,
+            userSchool.name,
+            title,
+            description || 'Data collection form - teachers fill their information',
+            collaborativeFields,
+            user.id,
+            user.name
+          );
+        }
+      }
+
       navigate('/data-requests');
     }, 500);
   };
@@ -245,6 +278,13 @@ export default function CreateRequest() {
                 ))}
               </div>
             )}
+          </Card>
+
+          {/* Info Banner */}
+          <Card className="p-4 bg-purple-50 border border-purple-200">
+            <p className="text-sm text-purple-700">
+              ℹ️ <strong>Automatic Spreadsheet Form:</strong> When you create this request, a collaborative spreadsheet form will be automatically created for teachers to fill their data.
+            </p>
           </Card>
 
           {/* Assignees */}
