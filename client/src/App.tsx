@@ -14,6 +14,8 @@ import SchoolData from "@/pages/SchoolData";
 import SchoolVisits from "@/pages/SchoolVisits";
 import CreateVisit from "@/pages/CreateVisit";
 import ViewVisit from "@/pages/ViewVisit";
+import SchoolAlbum from "@/pages/SchoolAlbum";
+import CreateActivity from "@/pages/CreateActivity";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -31,6 +33,8 @@ function Router() {
       <Route path="/school-visits" component={SchoolVisits} />
       <Route path="/create-visit" component={CreateVisit} />
       <Route path="/visit/:id" component={ViewVisit} />
+      <Route path="/album/:schoolId" component={SchoolAlbum} />
+      <Route path="/create-activity/:schoolId" component={CreateActivity} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
