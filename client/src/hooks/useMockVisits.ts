@@ -116,6 +116,40 @@ export function useMockVisits() {
     [visits]
   );
 
+  const createVisit = useCallback(
+    (
+      schoolId: string,
+      schoolName: string,
+      visitType: 'administrative' | 'academic' | 'monitoring',
+      conductedBy: string,
+      conductedByName: string,
+      conductedByRole: string
+    ): SchoolVisit => {
+      const newVisit: SchoolVisit = {
+        id: `v-${Date.now()}`,
+        schoolId,
+        schoolName,
+        visitDate: new Date(),
+        visitType,
+        conductedBy,
+        conductedByName,
+        conductedByRole,
+        status: 'in_progress',
+        gpsLocation: { lat: 28.6139 + Math.random() * 0.1, lng: 77.209 + Math.random() * 0.1 },
+        indicators: mockIndicators.map((ind) => ({ ...ind })),
+        comments: '',
+        photoCount: 0,
+        voiceNotesCount: 0,
+        voiceNotes: [],
+        photos: [],
+      };
+
+      setVisits((prev) => [newVisit, ...prev]);
+      return newVisit;
+    },
+    []
+  );
+
   const updateVisit = useCallback(
     (visitId: string, updates: Partial<SchoolVisit>) => {
       setVisits((prev) =>
@@ -214,6 +248,7 @@ export function useMockVisits() {
     visits,
     getVisitsForUser,
     getVisit,
+    createVisit,
     updateVisit,
     updateVisitIndicators,
     addIndicator,
