@@ -3,14 +3,16 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useMockDataRequests } from '@/hooks/useMockDataRequests';
 import { useMockTeacherData } from '@/hooks/useMockTeacherData';
+import { useMockVisits } from '@/hooks/useMockVisits';
 import { useLocation } from 'wouter';
-import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2 } from 'lucide-react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin } from 'lucide-react';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
   const { getRequestsForUser } = useMockDataRequests();
   const { getTeacherStats } = useMockTeacherData();
+  const { getVisitsForUser } = useMockVisits();
 
   if (!user) {
     navigate('/');
@@ -145,6 +147,18 @@ export default function Dashboard() {
               <Building2 className="w-5 h-5 mr-2" />
               School Inventory
             </Button>
+            {(user.role === 'AEO' || user.role === 'DEO' || user.role === 'DDEO') && (
+              <Button
+                onClick={() => navigate('/school-visits')}
+                variant="secondary"
+                size="lg"
+                className="h-auto py-4"
+                data-testid="button-view-visits"
+              >
+                <MapPin className="w-5 h-5 mr-2" />
+                School Visits
+              </Button>
+            )}
           </div>
         </div>
 

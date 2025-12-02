@@ -11,6 +11,9 @@ import CreateRequest from "@/pages/CreateRequest";
 import ViewRequest from "@/pages/ViewRequest";
 import Calendar from "@/pages/Calendar";
 import SchoolData from "@/pages/SchoolData";
+import SchoolVisits from "@/pages/SchoolVisits";
+import CreateVisit from "@/pages/CreateVisit";
+import ViewVisit from "@/pages/ViewVisit";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -25,6 +28,9 @@ function Router() {
       <Route path="/request/:id" component={ViewRequest} />
       <Route path="/calendar" component={Calendar} />
       <Route path="/school-data" component={SchoolData} />
+      <Route path="/school-visits" component={SchoolVisits} />
+      <Route path="/create-visit" component={CreateVisit} />
+      <Route path="/visit/:id" component={ViewVisit} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
