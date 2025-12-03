@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/auth";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
+import CEODashboard from "@/pages/CEODashboard";
 import DataRequests from "@/pages/DataRequests";
 import CreateRequest from "@/pages/CreateRequest";
 import ViewRequest from "@/pages/ViewRequest";
@@ -22,12 +23,12 @@ import ViewCollaborativeForm from "@/pages/ViewCollaborativeForm";
 import NotFound from "@/pages/not-found";
 
 function Router() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <Switch>
       <Route path="/" component={isAuthenticated ? Dashboard : Login} />
-      <Route path="/dashboard" component={Dashboard} />
+      <Route path="/dashboard" component={isAuthenticated ? (user?.role === 'CEO' ? CEODashboard : Dashboard) : Login} />
       <Route path="/data-requests" component={DataRequests} />
       <Route path="/create-request" component={CreateRequest} />
       <Route path="/request/:id" component={ViewRequest} />

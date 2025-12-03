@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { AlertCircle } from 'lucide-react';
 
 const roles: { value: UserRole; label: string; description: string }[] = [
+  { value: 'CEO', label: 'CEO', description: 'System oversight, all data' },
   { value: 'DEO', label: 'District Education Officer', description: 'Full access, all data' },
   { value: 'DDEO', label: 'Deputy DEO', description: 'Regional oversight' },
   { value: 'AEO', label: 'Area Education Officer', description: 'Cluster management' },
@@ -113,7 +114,7 @@ export default function Login() {
                 data-testid="input-password"
                 className="w-full"
               />
-              <p className="text-xs text-muted-foreground mt-1">Demo: Any 4+ character password</p>
+              <p className="text-xs text-muted-foreground mt-1">Demo: Any 4+ characters</p>
             </div>
 
             {/* Error */}

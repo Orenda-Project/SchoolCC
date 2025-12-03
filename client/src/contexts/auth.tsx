@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-export type UserRole = 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHER';
+export type UserRole = 'CEO' | 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHER';
 
 export interface User {
   id: string;
@@ -28,6 +28,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Mock authentication
     if (password.length >= 4) {
       const mockUsers: Record<UserRole, Omit<User, 'phoneNumber'>> = {
+        CEO: {
+          id: 'ceo-1',
+          role: 'CEO',
+          name: 'Mr. Suresh Desai',
+        },
         DEO: {
           id: 'deo-1',
           role: 'DEO',
