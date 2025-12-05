@@ -231,9 +231,12 @@ export default function CreateRequest() {
                         type="button"
                         variant="outline"
                         size="icon"
-                        disabled
+                        onClick={() => {
+                          // Simulate playing audio - in real app would use Web Audio API
+                          alert('Voice note playing...');
+                        }}
                         data-testid="button-play-description"
-                        title="Voice note recorded"
+                        title="Play voice note"
                       >
                         <Play className="w-4 h-4" />
                       </Button>
@@ -360,7 +363,10 @@ export default function CreateRequest() {
                                 variant="outline"
                                 size="sm"
                                 className="text-xs"
-                                disabled
+                                onClick={() => {
+                                  // Simulate playing audio
+                                  alert('Playing voice note...');
+                                }}
                                 data-testid={`button-play-voice-${field.id}`}
                               >
                                 <Play className="w-3 h-3 mr-1" />
