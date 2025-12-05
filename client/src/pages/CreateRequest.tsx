@@ -204,7 +204,7 @@ export default function CreateRequest() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Request Title *
+                  Request Title
                 </label>
                 <div className="flex gap-2">
                   <Input
