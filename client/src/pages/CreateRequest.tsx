@@ -47,7 +47,6 @@ export default function CreateRequest() {
   const [description, setDescription] = useState('');
   const [fields, setFields] = useState<DataField[]>([]);
   const [selectedAssignees, setSelectedAssignees] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
   const [recordingField, setRecordingField] = useState<string | null>(null);
   const [recordedVoiceNotes, setRecordedVoiceNotes] = useState<Record<string, boolean>>({});
 
@@ -142,59 +141,64 @@ export default function CreateRequest() {
       return;
     }
 
-    setLoading(true);
-    // Create the data request
-    createRequest(
-      title,
-      description,
-      fields,
-      selectedAssignees.map((id) => {
-        const assignee = ALL_USERS.find((a) => a.id === id);
-        return {
-          userId: assignee?.id || '',
-          userName: assignee?.name || '',
-          userRole: assignee?.role || '',
-          schoolId: 'school-1',
-          schoolName: assignee?.school || '',
-        };
-      }),
-      user.id,
-      user.name,
-      user.role,
-      user.schoolId,
-      user.clusterId,
-      user.districtId
-    );
+    try {
+      // Create the data request
+      createRequest(
+        title,
+        description,
+        fields,
+        selectedAssignees.map((id) => {
+          const assignee = ALL_USERS.find((a) => a.id === id);
+          return {
+            userId: assignee?.id || '',
+            userName: assignee?.name || '',
+            userRole: assignee?.role || '',
+            schoolId: 'school-1',
+            schoolName: assignee?.school || '',
+          };
+        }),
+        user.id,
+        user.name,
+        user.role,
+        user.schoolId,
+        user.clusterId,
+        user.districtId
+      );
 
-    // Automatically create collaborative form for the same data
-    const userSchool = getSchoolById('school-1');
-    if (userSchool) {
-      // Convert data request fields to collaborative form fields (text, number, and voice_note types)
-      // Voice notes are allowed for non-teacher roles
-      const collaborativeFields: FormField[] = fields
-        .filter((f) => f.type === 'text' || f.type === 'number' || f.type === 'voice_note')
-        .map((f) => ({
-          id: f.id,
-          name: f.name,
-          type: f.type === 'number' ? 'number' : f.type === 'voice_note' ? 'voice_note' : 'text',
-          required: f.required,
-        }));
+      // Automatically create collaborative form for the same data
+      const userSchool = getSchoolById('school-1');
+      if (userSchool) {
+        // Convert data request fields to collaborative form fields (text, number, and voice_note types)
+        // Voice notes are allowed for non-teacher roles
+        const collaborativeFields: FormField[] = fields
+          .filter((f) => f.type === 'text' || f.type === 'number' || f.type === 'voice_note')
+          .map((f) => ({
+            id: f.id,
+            name: f.name,
+            type: f.type === 'number' ? 'number' : f.type === 'voice_note' ? 'voice_note' : 'text',
+            required: f.required,
+          }));
 
-      // Only create form if there are compatible fields
-      if (collaborativeFields.length > 0) {
-        createForm(
-          userSchool.id,
-          userSchool.name,
-          title,
-          description || 'Data collection form - teachers fill their information',
-          collaborativeFields,
-          user.id,
-          user.name
-        );
+        // Only create form if there are compatible fields
+        if (collaborativeFields.length > 0) {
+          createForm(
+            userSchool.id,
+            userSchool.name,
+            title,
+            description || 'Data collection form - teachers fill their information',
+            collaborativeFields,
+            user.id,
+            user.name
+          );
+        }
       }
-    }
 
-    navigate('/data-requests');
+      // Navigate after successful creation
+      navigate('/data-requests');
+    } catch (error) {
+      console.error('Error creating request:', error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -499,10 +503,10 @@ export default function CreateRequest() {
             </Button>
             <Button
               type="submit"
-              disabled={!title.trim() || fields.length === 0 || selectedAssignees.length === 0 || loading}
+              disabled={!title.trim() || fields.length === 0 || selectedAssignees.length === 0}
               data-testid="button-create"
             >
-              {loading ? 'Creating...' : 'Create Request'}
+              Create Request
             </Button>
           </div>
         </form>
