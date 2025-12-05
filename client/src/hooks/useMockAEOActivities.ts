@@ -77,6 +77,7 @@ export interface MentoringVisitArea {
   indicators: Array<{
     id: string;
     name: string;
+    description?: string;
     rating: 'emerging' | 'developing' | 'proficient' | null;
     rubric: {
       emerging: string;
@@ -172,6 +173,7 @@ const MENTORING_AREAS = [
       {
         id: 'ce-1',
         name: 'Physical Setup & Organization',
+        description: 'Evaluate how well the classroom space is organized, including arrangement of furniture, availability of learning materials, and overall classroom aesthetics.',
         rating: null,
         rubric: {
           emerging: 'Classroom is disorganized with cluttered learning materials',
@@ -182,6 +184,7 @@ const MENTORING_AREAS = [
       {
         id: 'ce-2',
         name: 'Classroom Management & Discipline',
+        description: 'Assess the teacher\'s ability to maintain order, implement consistent procedures, and manage student behavior effectively throughout the lesson.',
         rating: null,
         rubric: {
           emerging: 'Poor classroom management with frequent disruptions and off-task behavior',
@@ -192,6 +195,7 @@ const MENTORING_AREAS = [
       {
         id: 'ce-3',
         name: 'Student-Centered Learning Environment',
+        description: 'Observe whether the learning environment promotes student voice, choice, and active participation in meaningful learning activities.',
         rating: null,
         rubric: {
           emerging: 'Teacher-dominated environment with minimal student voice',
@@ -208,6 +212,7 @@ const MENTORING_AREAS = [
       {
         id: 'lp-1',
         name: 'Clear Learning Objectives',
+        description: 'Check if the lesson has well-defined learning objectives that are specific, measurable, achievable, relevant, and time-bound (SMART).',
         rating: null,
         rubric: {
           emerging: 'Lesson lacks clear objectives',
@@ -218,6 +223,7 @@ const MENTORING_AREAS = [
       {
         id: 'lp-2',
         name: 'Higher-Order Thinking Integration',
+        description: 'Assess whether the lesson incorporates activities that promote analysis, evaluation, synthesis, and creative problem-solving beyond simple recall.',
         rating: null,
         rubric: {
           emerging: 'Limited focus on HOTS; activities focus on recall only',
@@ -228,6 +234,7 @@ const MENTORING_AREAS = [
       {
         id: 'lp-3',
         name: 'Resource & Material Planning',
+        description: 'Evaluate the quality, variety, and appropriate use of teaching materials and resources to support student learning.',
         rating: null,
         rubric: {
           emerging: 'Few or inadequate resources planned for the lesson',
@@ -244,6 +251,7 @@ const MENTORING_AREAS = [
       {
         id: 'inst-1',
         name: 'Direct Instruction Effectiveness',
+        description: 'Evaluate the clarity, pace, and organization of teacher-led instruction in explaining concepts and modeling skills.',
         rating: null,
         rubric: {
           emerging: 'Instruction is unclear or difficult to follow',
@@ -254,6 +262,7 @@ const MENTORING_AREAS = [
       {
         id: 'inst-2',
         name: 'Questioning Techniques',
+        description: 'Assess the quality and variety of questions used by the teacher to promote thinking, engagement, and understanding.',
         rating: null,
         rubric: {
           emerging: 'Primarily uses closed-ended recall questions',
@@ -264,6 +273,7 @@ const MENTORING_AREAS = [
       {
         id: 'inst-3',
         name: 'Interactive & Collaborative Methods',
+        description: 'Observe the use of group work, peer interactions, and collaborative problem-solving strategies in the lesson.',
         rating: null,
         rubric: {
           emerging: 'Limited use of group work or collaborative learning',
@@ -280,6 +290,7 @@ const MENTORING_AREAS = [
       {
         id: 'se-1',
         name: 'Active Participation',
+        description: 'Monitor the level and quality of student involvement in classroom discussions, activities, and responses to questions.',
         rating: null,
         rubric: {
           emerging: 'Few students participate; mostly passive learning',
@@ -290,6 +301,7 @@ const MENTORING_AREAS = [
       {
         id: 'se-2',
         name: 'On-Task Behavior',
+        description: 'Assess how well students stay focused on learning tasks and maintain engagement with the lesson content.',
         rating: null,
         rubric: {
           emerging: 'Many students off-task or disengaged',
@@ -300,6 +312,7 @@ const MENTORING_AREAS = [
       {
         id: 'se-3',
         name: 'Critical Thinking & Problem-Solving',
+        description: 'Evaluate evidence of students applying higher-order thinking skills to analyze, evaluate, and solve problems.',
         rating: null,
         rubric: {
           emerging: 'Limited evidence of student problem-solving or critical thinking',
@@ -316,6 +329,7 @@ const MENTORING_AREAS = [
       {
         id: 'af-1',
         name: 'Formative Assessment Practices',
+        description: 'Observe how the teacher checks for student understanding during the lesson through informal methods like questioning and observation.',
         rating: null,
         rubric: {
           emerging: 'Limited or no formative assessment used',
@@ -326,6 +340,7 @@ const MENTORING_AREAS = [
       {
         id: 'af-2',
         name: 'Quality of Feedback',
+        description: 'Evaluate the quality and specificity of feedback provided to students to guide their learning and improvement.',
         rating: null,
         rubric: {
           emerging: 'Minimal feedback or only correctness feedback provided',
@@ -336,6 +351,7 @@ const MENTORING_AREAS = [
       {
         id: 'af-3',
         name: 'Student Self & Peer Assessment',
+        description: 'Assess opportunities provided for students to reflect on their own learning and evaluate peer work.',
         rating: null,
         rubric: {
           emerging: 'No opportunities for student self or peer assessment',

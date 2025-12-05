@@ -262,7 +262,10 @@ export default function MentoringVisitForm({ onClose }: Props) {
 
                         return (
                           <div key={indicator.id} className="border-l-2 border-slate-300 pl-4">
-                            <h4 className="font-semibold text-slate-800 mb-3">{indicator.name}</h4>
+                            <h4 className="font-semibold text-slate-800 mb-1">{indicator.name}</h4>
+                            {indicator.description && (
+                              <p className="text-xs text-slate-600 mb-3">{indicator.description}</p>
+                            )}
 
                             {/* Rating Buttons */}
                             <div className="grid grid-cols-3 gap-2 mb-3">
