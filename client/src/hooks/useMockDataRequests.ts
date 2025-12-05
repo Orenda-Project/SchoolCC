@@ -118,7 +118,27 @@ const mockRequests: DataRequest[] = [
 ];
 
 export function useMockDataRequests() {
-  const [requests, setRequests] = useState<DataRequest[]>(mockRequests);
+  const [requests, setRequests] = useState<DataRequest[]>(() => {
+    // Load from localStorage if available
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('dataRequests') : null;
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        return parsed.map((req: any) => ({
+          ...req,
+          createdAt: new Date(req.createdAt),
+          dueDate: new Date(req.dueDate),
+          assignees: req.assignees.map((a: any) => ({
+            ...a,
+            submittedAt: a.submittedAt ? new Date(a.submittedAt) : undefined,
+          })),
+        }));
+      } catch {
+        return mockRequests;
+      }
+    }
+    return mockRequests;
+  });
 
   const getRequestsForUser = useCallback(
     (userId: string, userRole: string) => {
@@ -193,7 +213,14 @@ export function useMockDataRequests() {
         isArchived: false,
       };
 
-      setRequests((prev) => [newRequest, ...prev]);
+      setRequests((prev) => {
+        const updated = [newRequest, ...prev];
+        // Save to localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('dataRequests', JSON.stringify(updated));
+        }
+        return updated;
+      });
       return newRequest;
     },
     []
