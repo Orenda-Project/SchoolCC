@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/auth';
-import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,9 +16,12 @@ const SCHOOLS = [
 
 const SUBJECTS = ['English', 'Urdu', 'Mathematics', 'Science', 'Social Studies', 'General'];
 
-export default function MentoringVisitForm() {
+interface Props {
+  onClose?: () => void;
+}
+
+export default function MentoringVisitForm({ onClose }: Props) {
   const { user } = useAuth();
-  const [, navigate] = useLocation();
   const { addMentoringVisit, mentoringIndicators } = useMockAEOActivities();
 
   const [formData, setFormData] = useState<Partial<MentoringVisitData>>({
@@ -87,7 +89,7 @@ export default function MentoringVisitForm() {
       };
       addMentoringVisit(visit);
       toast.success('Mentoring visit submitted successfully!');
-      navigate('/aeo-activity/hub');
+      onClose?.();
     }, 1000);
   };
 
@@ -105,24 +107,22 @@ export default function MentoringVisitForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="bg-white rounded-lg p-6 max-h-[90vh] overflow-y-auto">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate('/aeo-activity/hub')}
-            data-testid="button-back"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <h1 className="text-2xl font-bold text-slate-900 ml-4">Mentoring Visit Form (HOTS)</h1>
-        </div>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-slate-900">Mentoring Visit Form (HOTS)</h1>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          data-testid="button-back"
+        >
+          ✕
+        </Button>
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="space-y-6">
         <Tabs defaultValue="basic" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="basic">Basic Info</TabsTrigger>
@@ -376,7 +376,7 @@ export default function MentoringVisitForm() {
         <div className="flex gap-4 mt-8">
           <Button
             variant="outline"
-            onClick={() => navigate('/aeo-activity/hub')}
+            onClick={onClose}
             className="flex-1"
             data-testid="button-cancel"
           >

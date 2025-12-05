@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/auth';
-import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,9 +8,12 @@ import { ArrowLeft, Plus, Trash2, CheckCircle2 } from 'lucide-react';
 import { useMockAEOActivities, OfficeVisitData } from '@/hooks/useMockAEOActivities';
 import { toast } from 'sonner';
 
-export default function OfficeVisitForm() {
+interface Props {
+  onClose?: () => void;
+}
+
+export default function OfficeVisitForm({ onClose }: Props) {
   const { user } = useAuth();
-  const [, navigate] = useLocation();
   const { addOfficeVisit } = useMockAEOActivities();
 
   const [formData, setFormData] = useState<Partial<OfficeVisitData>>({
@@ -75,32 +77,29 @@ export default function OfficeVisitForm() {
       };
       addOfficeVisit(visit);
       toast.success('Office visit submitted successfully!');
-      navigate('/aeo-activity/hub');
+      onClose?.();
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="bg-white rounded-lg p-6 max-h-[90vh] overflow-y-auto">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate('/aeo-activity/hub')}
-            data-testid="button-back"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <h1 className="text-2xl font-bold text-slate-900 ml-4">Office Visit Form</h1>
-        </div>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-slate-900">Office Visit Form</h1>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          data-testid="button-back"
+        >
+          ✕
+        </Button>
       </div>
 
       {/* Content */}
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="space-y-6">
-          {/* Basic Information */}
-          <Card className="p-6">
+      <div className="space-y-6">
+        {/* Basic Information */}
+        <Card className="p-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-4">Visit Details</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -140,10 +139,10 @@ export default function OfficeVisitForm() {
                 />
               </div>
             </div>
-          </Card>
+        </Card>
 
-          {/* Activities Completed */}
-          <Card className="p-6">
+        {/* Activities Completed */}
+        <Card className="p-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-4">Activities Completed</h2>
             <p className="text-sm text-slate-600 mb-4">Check the activities you completed during this office visit</p>
 
@@ -190,10 +189,10 @@ export default function OfficeVisitForm() {
                 />
               </div>
             )}
-          </Card>
+        </Card>
 
-          {/* Comments */}
-          <Card className="p-6">
+        {/* Comments */}
+        <Card className="p-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-4">Comments</h2>
             <textarea
               className="w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900 min-h-24"
@@ -202,10 +201,10 @@ export default function OfficeVisitForm() {
               onChange={(e) => handleInputChange('comments', e.target.value)}
               data-testid="textarea-comments"
             />
-          </Card>
+        </Card>
 
-          {/* Evidence */}
-          <Card className="p-6">
+        {/* Evidence */}
+        <Card className="p-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-4">Evidence & Documentation</h2>
 
             <div className="space-y-4">
@@ -244,13 +243,13 @@ export default function OfficeVisitForm() {
                 </div>
               )}
             </div>
-          </Card>
+        </Card>
 
-          {/* Submit Button */}
-          <div className="flex gap-4">
+        {/* Submit Button */}
+        <div className="flex gap-4">
             <Button
               variant="outline"
-              onClick={() => navigate('/aeo-activity/hub')}
+              onClick={onClose}
               className="flex-1"
               data-testid="button-cancel"
             >
@@ -269,7 +268,6 @@ export default function OfficeVisitForm() {
                 </>
               )}
             </Button>
-          </div>
         </div>
       </div>
     </div>

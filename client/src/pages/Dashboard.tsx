@@ -4,8 +4,14 @@ import { Card } from '@/components/ui/card';
 import { useMockDataRequests } from '@/hooks/useMockDataRequests';
 import { useMockTeacherData } from '@/hooks/useMockTeacherData';
 import { useMockVisits } from '@/hooks/useMockVisits';
+import { useMockAEOActivities } from '@/hooks/useMockAEOActivities';
 import { useLocation } from 'wouter';
-import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award } from 'lucide-react';
+import MonitoringVisitForm from '@/pages/MonitoringVisitForm';
+import MentoringVisitForm from '@/pages/MentoringVisitForm';
+import OfficeVisitForm from '@/pages/OfficeVisitForm';
+import OtherActivityForm from '@/pages/OtherActivityForm';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -13,11 +19,16 @@ export default function Dashboard() {
   const { getRequestsForUser } = useMockDataRequests();
   const { getTeacherStats } = useMockTeacherData();
   const { getVisitsForUser } = useMockVisits();
+  const { getAllActivities } = useMockAEOActivities();
+  
+  const [activeActivityForm, setActiveActivityForm] = useState<string | null>(null);
 
   if (!user || user.role === 'CEO') {
     navigate('/');
     return null;
   }
+  
+  const activities = user.role === 'AEO' ? getAllActivities() : null;
 
   const userRequests = getRequestsForUser(user.id, user.role);
   const pendingCount = userRequests.filter((r) =>
@@ -175,8 +186,75 @@ export default function Dashboard() {
                 School Visits
               </Button>
             )}
+            {user.role === 'AEO' && (
+              <>
+                <Button
+                  onClick={() => setActiveActivityForm('visit-selector')}
+                  size="lg"
+                  className="h-auto py-4 bg-blue-600 hover:bg-blue-700"
+                  data-testid="button-plan-visit"
+                >
+                  <ClipboardList className="w-5 h-5 mr-2" />
+                  Plan a Visit
+                </Button>
+                <Button
+                  onClick={() => setActiveActivityForm('other-activity')}
+                  size="lg"
+                  className="h-auto py-4 bg-emerald-600 hover:bg-emerald-700"
+                  data-testid="button-log-activity"
+                >
+                  <CheckSquare className="w-5 h-5 mr-2" />
+                  Log Other Activity
+                </Button>
+              </>
+            )}
           </div>
         </div>
+
+        {/* AEO Activity Summary */}
+        {user.role === 'AEO' && activities && (
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-foreground mb-4">Your Activities</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground font-medium">Monitoring Visits</p>
+                    <p className="text-2xl font-bold text-foreground mt-1">{activities.monitoring.length}</p>
+                  </div>
+                  <FileText className="w-6 h-6 text-blue-200" />
+                </div>
+              </Card>
+              <Card className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground font-medium">Mentoring Visits</p>
+                    <p className="text-2xl font-bold text-foreground mt-1">{activities.mentoring.length}</p>
+                  </div>
+                  <Award className="w-6 h-6 text-purple-200" />
+                </div>
+              </Card>
+              <Card className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground font-medium">Office Visits</p>
+                    <p className="text-2xl font-bold text-foreground mt-1">{activities.office.length}</p>
+                  </div>
+                  <Building2 className="w-6 h-6 text-emerald-200" />
+                </div>
+              </Card>
+              <Card className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground font-medium">Other Activities</p>
+                    <p className="text-2xl font-bold text-foreground mt-1">{activities.other.length}</p>
+                  </div>
+                  <CheckSquare className="w-6 h-6 text-slate-200" />
+                </div>
+              </Card>
+            </div>
+          </div>
+        )}
 
         {/* Recent Requests */}
         <div>
@@ -214,6 +292,124 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+
+      {/* Activity Forms Modal */}
+      {user.role === 'AEO' && activeActivityForm === 'visit-selector' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Select Visit Type</h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setActiveActivityForm(null)}
+                  data-testid="button-close-modal"
+                >
+                  ✕
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 mb-6">
+                <Card
+                  className="p-4 border-2 border-border hover:border-blue-400 cursor-pointer transition-all"
+                  onClick={() => setActiveActivityForm('monitoring')}
+                  data-testid="card-visit-type-monitoring"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-semibold text-foreground">Monitoring Visit</h3>
+                      <p className="text-sm text-muted-foreground">Infrastructure, attendance & facilities</p>
+                    </div>
+                    <Button size="sm">Select</Button>
+                  </div>
+                </Card>
+
+                <Card
+                  className="p-4 border-2 border-border hover:border-purple-400 cursor-pointer transition-all"
+                  onClick={() => setActiveActivityForm('mentoring')}
+                  data-testid="card-visit-type-mentoring"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-semibold text-foreground">Mentoring Visit</h3>
+                      <p className="text-sm text-muted-foreground">Higher-Order Thinking Skills (HOTS)</p>
+                    </div>
+                    <Button size="sm">Select</Button>
+                  </div>
+                </Card>
+
+                <Card
+                  className="p-4 border-2 border-border hover:border-emerald-400 cursor-pointer transition-all"
+                  onClick={() => setActiveActivityForm('office')}
+                  data-testid="card-visit-type-office"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-semibold text-foreground">Office Visit</h3>
+                      <p className="text-sm text-muted-foreground">Administrative tasks & coordination</p>
+                    </div>
+                    <Button size="sm">Select</Button>
+                  </div>
+                </Card>
+              </div>
+
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setActiveActivityForm(null)}
+                data-testid="button-cancel-visit-selector"
+              >
+                Cancel
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Monitoring Visit Form */}
+      {activeActivityForm === 'monitoring' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="w-full max-w-4xl my-8">
+            <div className="bg-background rounded-lg">
+              <MonitoringVisitForm onClose={() => setActiveActivityForm(null)} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mentoring Visit Form */}
+      {activeActivityForm === 'mentoring' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="w-full max-w-4xl my-8">
+            <div className="bg-background rounded-lg">
+              <MentoringVisitForm onClose={() => setActiveActivityForm(null)} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Office Visit Form */}
+      {activeActivityForm === 'office' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl my-8">
+            <div className="bg-background rounded-lg">
+              <OfficeVisitForm onClose={() => setActiveActivityForm(null)} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Other Activity Form */}
+      {activeActivityForm === 'other-activity' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl my-8">
+            <div className="bg-background rounded-lg">
+              <OtherActivityForm onClose={() => setActiveActivityForm(null)} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/auth';
-import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,9 +7,12 @@ import { ArrowLeft, Plus, Trash2, CheckCircle2 } from 'lucide-react';
 import { useMockAEOActivities, OtherActivityData, OTHER_ACTIVITIES_LIST } from '@/hooks/useMockAEOActivities';
 import { toast } from 'sonner';
 
-export default function OtherActivityForm() {
+interface Props {
+  onClose?: () => void;
+}
+
+export default function OtherActivityForm({ onClose }: Props) {
   const { user } = useAuth();
-  const [, navigate] = useLocation();
   const { addOtherActivity } = useMockAEOActivities();
 
   const [formData, setFormData] = useState<Partial<OtherActivityData>>({
@@ -54,32 +56,29 @@ export default function OtherActivityForm() {
       };
       addOtherActivity(activity);
       toast.success('Activity logged successfully!');
-      navigate('/aeo-activity/hub');
+      onClose?.();
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="bg-white rounded-lg p-6 max-h-[90vh] overflow-y-auto">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate('/aeo-activity/hub')}
-            data-testid="button-back"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <h1 className="text-2xl font-bold text-slate-900 ml-4">Log Other Activity</h1>
-        </div>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-slate-900">Log Other Activity</h1>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          data-testid="button-back"
+        >
+          ✕
+        </Button>
       </div>
 
       {/* Content */}
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="space-y-6">
-          {/* Activity Selection */}
-          <Card className="p-6">
+      <div className="space-y-6">
+        {/* Activity Selection */}
+        <Card className="p-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-4">Activity Type</h2>
             <p className="text-sm text-slate-600 mb-4">
               Select the type of activity you are logging
@@ -99,10 +98,10 @@ export default function OtherActivityForm() {
                 </option>
               ))}
             </select>
-          </Card>
+        </Card>
 
-          {/* Activity Details */}
-          <Card className="p-6">
+        {/* Activity Details */}
+        <Card className="p-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-4">Activity Details</h2>
 
             <div className="grid grid-cols-2 gap-4">
@@ -137,85 +136,85 @@ export default function OtherActivityForm() {
                 />
               </div>
             </div>
-          </Card>
+        </Card>
 
-          {/* Description */}
-          <Card className="p-6">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Description</h2>
+        {/* Description */}
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">Description</h2>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-slate-700 mb-2">Activity Description</label>
-              <textarea
-                className="w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900 min-h-20"
-                placeholder="Describe the activity, key topics covered, participants involved, etc."
-                value={formData.description || ''}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                data-testid="textarea-description"
-              />
-            </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-slate-700 mb-2">Activity Description</label>
+            <textarea
+              className="w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900 min-h-20"
+              placeholder="Describe the activity, key topics covered, participants involved, etc."
+              value={formData.description || ''}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              data-testid="textarea-description"
+            />
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Additional Comments</label>
-              <textarea
-                className="w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900 min-h-20"
-                placeholder="Any additional notes or observations..."
-                value={formData.comments || ''}
-                onChange={(e) => handleInputChange('comments', e.target.value)}
-                data-testid="textarea-comments"
-              />
-            </div>
-          </Card>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Additional Comments</label>
+            <textarea
+              className="w-full px-3 py-2 border border-slate-300 rounded-md text-slate-900 min-h-20"
+              placeholder="Any additional notes or observations..."
+              value={formData.comments || ''}
+              onChange={(e) => handleInputChange('comments', e.target.value)}
+              data-testid="textarea-comments"
+            />
+          </div>
+        </Card>
 
-          {/* Evidence */}
-          <Card className="p-6">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Evidence & Documentation</h2>
-            <p className="text-sm text-slate-600 mb-4">
-              Attach photos, documents, or voice notes as evidence
-            </p>
+        {/* Evidence */}
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">Evidence & Documentation</h2>
+          <p className="text-sm text-slate-600 mb-4">
+            Attach photos, documents, or voice notes as evidence
+          </p>
 
-            <div className="space-y-4">
-              <Button
-                onClick={handleAddEvidence}
-                className="w-full"
-                variant="outline"
-                data-testid="button-add-evidence"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Evidence
-              </Button>
+          <div className="space-y-4">
+            <Button
+              onClick={handleAddEvidence}
+              className="w-full"
+              variant="outline"
+              data-testid="button-add-evidence"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Evidence
+            </Button>
 
-              {evidence.length > 0 && (
-                <div className="space-y-3 mt-4">
-                  {evidence.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
-                      data-testid={`evidence-item-${item.id}`}
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-slate-900">{item.name}</p>
-                        <p className="text-xs text-slate-600">{item.type}</p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleRemoveEvidence(item.id)}
-                        data-testid={`button-remove-evidence-${item.id}`}
-                      >
-                        <Trash2 className="w-4 h-4 text-red-500" />
-                      </Button>
+            {evidence.length > 0 && (
+              <div className="space-y-3 mt-4">
+                {evidence.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
+                    data-testid={`evidence-item-${item.id}`}
+                  >
+                    <div>
+                      <p className="text-sm font-medium text-slate-900">{item.name}</p>
+                      <p className="text-xs text-slate-600">{item.type}</p>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </Card>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleRemoveEvidence(item.id)}
+                      data-testid={`button-remove-evidence-${item.id}`}
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </Card>
 
-          {/* Submit Button */}
-          <div className="flex gap-4">
+        {/* Submit Button */}
+        <div className="flex gap-4">
             <Button
               variant="outline"
-              onClick={() => navigate('/aeo-activity/hub')}
+              onClick={onClose}
               className="flex-1"
               data-testid="button-cancel"
             >
@@ -234,7 +233,6 @@ export default function OtherActivityForm() {
                 </>
               )}
             </Button>
-          </div>
         </div>
       </div>
     </div>
