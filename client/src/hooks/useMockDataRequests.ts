@@ -165,8 +165,8 @@ export function useMockDataRequests() {
 
   const updateAssigneeFields = useCallback(
     (requestId: string, assigneeId: string, fields: DataField[]) => {
-      setRequests((prev) =>
-        prev.map((req) => {
+      setRequests((prev) => {
+        const updated = prev.map((req) => {
           if (req.id === requestId) {
             return {
               ...req,
@@ -176,8 +176,13 @@ export function useMockDataRequests() {
             };
           }
           return req;
-        })
-      );
+        });
+        // Save to localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('dataRequests', JSON.stringify(updated));
+        }
+        return updated;
+      });
     },
     []
   );

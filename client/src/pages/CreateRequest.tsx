@@ -34,7 +34,7 @@ export default function CreateRequest() {
   const [selectedAssignees, setSelectedAssignees] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [recordingField, setRecordingField] = useState<string | null>(null);
-  const [recordedVoiceNotes, setRecordedVoiceNotes] = useState<Set<string>>(new Set());
+  const [recordedVoiceNotes, setRecordedVoiceNotes] = useState<Record<string, boolean>>({});
 
   if (!user) return null;
 
@@ -52,11 +52,11 @@ export default function CreateRequest() {
 
   const removeField = (id: string) => {
     setFields(fields.filter((f) => f.id !== id));
-    if (recordedVoiceNotes.has(id)) {
+    if (recordedVoiceNotes[id]) {
       deleteRecording(id);
       setRecordedVoiceNotes((prev) => {
-        const updated = new Set(prev);
-        updated.delete(id);
+        const updated = { ...prev };
+        delete updated[id];
         return updated;
       });
     }
@@ -77,7 +77,7 @@ export default function CreateRequest() {
       // Stop recording
       setRecordingField(null);
       stopRecording(fieldId).then(() => {
-        setRecordedVoiceNotes((prev) => new Set([...prev, fieldId]));
+        setRecordedVoiceNotes((prev) => ({ ...prev, [fieldId]: true }));
       });
     } else {
       // Start recording
@@ -89,8 +89,8 @@ export default function CreateRequest() {
   const deleteVoiceNote = (fieldId: string) => {
     deleteRecording(fieldId);
     setRecordedVoiceNotes((prev) => {
-      const updated = new Set(prev);
-      updated.delete(fieldId);
+      const updated = { ...prev };
+      delete updated[fieldId];
       return updated;
     });
     setRecordingField(null);
@@ -100,7 +100,7 @@ export default function CreateRequest() {
     if (recordingField === 'description') {
       setRecordingField(null);
       stopRecording('description').then(() => {
-        setRecordedVoiceNotes((prev) => new Set([...prev, 'description']));
+        setRecordedVoiceNotes((prev) => ({ ...prev, description: true }));
       });
     } else {
       setRecordingField('description');
@@ -111,8 +111,8 @@ export default function CreateRequest() {
   const deleteDescriptionVoice = () => {
     deleteRecording('description');
     setRecordedVoiceNotes((prev) => {
-      const updated = new Set(prev);
-      updated.delete('description');
+      const updated = { ...prev };
+      delete updated['description'];
       return updated;
     });
     setRecordingField(null);
@@ -241,7 +241,7 @@ export default function CreateRequest() {
                         <Mic className="w-4 h-4" />
                       )}
                     </Button>
-                    {recordedVoiceNotes.has('description') && (
+                    {recordedVoiceNotes['description'] && (
                       <Button
                         type="button"
                         variant="outline"
@@ -253,7 +253,7 @@ export default function CreateRequest() {
                         <Play className="w-4 h-4" />
                       </Button>
                     )}
-                    {recordedVoiceNotes.has('description') && (
+                    {recordedVoiceNotes['description'] && (
                       <Button
                         type="button"
                         variant="ghost"
@@ -274,7 +274,7 @@ export default function CreateRequest() {
                     <span className="text-red-700 font-medium">Recording...</span>
                   </div>
                 )}
-                {recordedVoiceNotes.has('description') && recordingField !== 'description' && (
+                {recordedVoiceNotes['description'] && recordingField !== 'description' && (
                   <div className="text-xs text-green-600 font-medium mt-2">✓ Voice note recorded</div>
                 )}
               </div>
@@ -369,7 +369,7 @@ export default function CreateRequest() {
                             </Button>
 
                             {/* Play Button - only show if recording exists */}
-                            {recordedVoiceNotes.has(field.id) && (
+                            {recordedVoiceNotes[field.id] && (
                               <Button
                                 type="button"
                                 variant="outline"
@@ -384,7 +384,7 @@ export default function CreateRequest() {
                             )}
 
                             {/* Delete Button - only show if recording exists */}
-                            {recordedVoiceNotes.has(field.id) && (
+                            {recordedVoiceNotes[field.id] && (
                               <Button
                                 type="button"
                                 variant="ghost"
@@ -406,7 +406,7 @@ export default function CreateRequest() {
                             )}
 
                             {/* Recorded status */}
-                            {recordedVoiceNotes.has(field.id) && recordingField !== field.id && (
+                            {recordedVoiceNotes[field.id] && recordingField !== field.id && (
                               <span className="text-xs text-green-600 font-medium ml-2">✓ Recorded</span>
                             )}
                           </div>
