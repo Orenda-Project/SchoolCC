@@ -30,6 +30,8 @@ export default function CreateRequest() {
   const [loading, setLoading] = useState(false);
   const [recordingField, setRecordingField] = useState<string | null>(null);
   const [recordedVoiceNotes, setRecordedVoiceNotes] = useState<Record<string, string>>({});
+  const [recordedTitle, setRecordedTitle] = useState<string | null>(null);
+  const [recordedDescription, setRecordedDescription] = useState<string | null>(null);
 
   if (!user) return null;
 
@@ -85,6 +87,34 @@ export default function CreateRequest() {
       delete updated[fieldId];
       return updated;
     });
+    setRecordingField(null);
+  };
+
+  const toggleTitleRecording = () => {
+    if (recordingField === 'title') {
+      setRecordingField(null);
+      setRecordedTitle(`voice_${Date.now()}`);
+    } else {
+      setRecordingField('title');
+    }
+  };
+
+  const toggleDescriptionRecording = () => {
+    if (recordingField === 'description') {
+      setRecordingField(null);
+      setRecordedDescription(`voice_${Date.now()}`);
+    } else {
+      setRecordingField('description');
+    }
+  };
+
+  const deleteTitleVoice = () => {
+    setRecordedTitle(null);
+    setRecordingField(null);
+  };
+
+  const deleteDescriptionVoice = () => {
+    setRecordedDescription(null);
     setRecordingField(null);
   };
 
@@ -176,24 +206,128 @@ export default function CreateRequest() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Request Title *
                 </label>
-                <Input
-                  placeholder="e.g., Monthly Attendance Verification"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  data-testid="input-title"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="e.g., Monthly Attendance Verification"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    data-testid="input-title"
+                  />
+                  <Button
+                    type="button"
+                    variant={recordingField === 'title' ? 'destructive' : 'outline'}
+                    size="icon"
+                    onClick={toggleTitleRecording}
+                    className={recordingField === 'title' ? 'bg-red-600 hover:bg-red-700' : ''}
+                    data-testid="button-record-title"
+                    title={recordingField === 'title' ? 'Stop recording' : 'Record voice note'}
+                  >
+                    {recordingField === 'title' ? (
+                      <Square className="w-4 h-4" />
+                    ) : (
+                      <Mic className="w-4 h-4" />
+                    )}
+                  </Button>
+                  {recordedTitle && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      disabled
+                      data-testid="button-play-title"
+                      title="Voice note recorded"
+                    >
+                      <Play className="w-4 h-4" />
+                    </Button>
+                  )}
+                  {recordedTitle && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={deleteTitleVoice}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      data-testid="button-delete-title-voice"
+                      title="Delete voice note"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+                {recordingField === 'title' && (
+                  <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 rounded w-fit text-xs">
+                    <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
+                    <span className="text-red-700 font-medium">Recording...</span>
+                  </div>
+                )}
+                {recordedTitle && recordingField !== 'title' && (
+                  <div className="text-xs text-green-600 font-medium mt-2">✓ Voice note recorded</div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Description
                 </label>
-                <textarea
-                  placeholder="Provide context about this request..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-24"
-                  data-testid="textarea-description"
-                />
+                <div className="flex gap-2">
+                  <textarea
+                    placeholder="Provide context about this request..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-24"
+                    data-testid="textarea-description"
+                  />
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      type="button"
+                      variant={recordingField === 'description' ? 'destructive' : 'outline'}
+                      size="icon"
+                      onClick={toggleDescriptionRecording}
+                      className={recordingField === 'description' ? 'bg-red-600 hover:bg-red-700' : ''}
+                      data-testid="button-record-description"
+                      title={recordingField === 'description' ? 'Stop recording' : 'Record voice note'}
+                    >
+                      {recordingField === 'description' ? (
+                        <Square className="w-4 h-4" />
+                      ) : (
+                        <Mic className="w-4 h-4" />
+                      )}
+                    </Button>
+                    {recordedDescription && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        disabled
+                        data-testid="button-play-description"
+                        title="Voice note recorded"
+                      >
+                        <Play className="w-4 h-4" />
+                      </Button>
+                    )}
+                    {recordedDescription && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={deleteDescriptionVoice}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        data-testid="button-delete-description-voice"
+                        title="Delete voice note"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                {recordingField === 'description' && (
+                  <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 rounded w-fit text-xs">
+                    <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
+                    <span className="text-red-700 font-medium">Recording...</span>
+                  </div>
+                )}
+                {recordedDescription && recordingField !== 'description' && (
+                  <div className="text-xs text-green-600 font-medium mt-2">✓ Voice note recorded</div>
+                )}
               </div>
             </div>
           </Card>
