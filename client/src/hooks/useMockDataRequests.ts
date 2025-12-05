@@ -147,7 +147,8 @@ export function useMockDataRequests() {
           return true; // See all requests
         }
         if (userRole === 'AEO') {
-          return req.createdBy === userId; // See own requests
+          // See requests they created OR requests assigned to them
+          return req.createdBy === userId || req.assignees.some((a) => a.userId === userId);
         }
         // HEAD_TEACHER and TEACHER see requests assigned to them
         return req.assignees.some((a) => a.userId === userId);
