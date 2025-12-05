@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 
 export default function DataRequests() {
   const { user } = useAuth();
+  const [location] = useLocation();
   const [, navigate] = useLocation();
   const { getRequestsForUser } = useMockDataRequests();
   const [requests, setRequests] = useState<DataRequest[]>([]);
@@ -20,6 +21,13 @@ export default function DataRequests() {
       setRequests(freshRequests);
     }
   }, [user?.id, user?.role, user?.schoolId, user?.clusterId, user?.districtId, refreshTrigger]);
+
+  // Auto-refresh when navigating back to this page
+  useEffect(() => {
+    if (location === '/data-requests') {
+      setRefreshTrigger((t) => t + 1);
+    }
+  }, [location]);
 
   // Auto-refresh when component becomes visible (page focus)
   useEffect(() => {
