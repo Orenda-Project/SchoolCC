@@ -1,18 +1,26 @@
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useMockDataRequests } from '@/hooks/useMockDataRequests';
+import { useMockDataRequests, type DataRequest } from '@/hooks/useMockDataRequests';
 import { useLocation } from 'wouter';
 import { Plus, Download, ChevronRight, Clock, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function DataRequests() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
   const { getRequestsForUser } = useMockDataRequests();
+  const [requests, setRequests] = useState<DataRequest[]>([]);
+
+  // Fetch fresh requests whenever page is visited or user changes
+  useEffect(() => {
+    if (user) {
+      const freshRequests = getRequestsForUser(user.id, user.role);
+      setRequests(freshRequests);
+    }
+  }, [user?.id, user?.role, getRequestsForUser]);
 
   if (!user) return null;
-
-  const requests = getRequestsForUser(user.id, user.role);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -76,7 +84,7 @@ export default function DataRequests() {
         ) : (
           <div className="space-y-3">
             {requests.map((req) => {
-              const userAssignee = req.assignees.find((a) => a.userId === user.id);
+              const userAssignee = req.assignees.find((a: any) => a.userId === user.id);
               const displayStatus = userAssignee?.status || 'assigned';
 
               return (
@@ -118,7 +126,7 @@ export default function DataRequests() {
                           </span>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          {req.assignees.filter((a) => a.status === 'completed').length}/
+                          {req.assignees.filter((a: any) => a.status === 'completed').length}/
                           {req.assignees.length} completed
                         </p>
                       </div>
