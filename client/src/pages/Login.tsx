@@ -4,7 +4,7 @@ import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, School, Check } from 'lucide-react';
 
 const roles: { value: UserRole; label: string; description: string }[] = [
   { value: 'CEO', label: 'CEO', description: 'System oversight, all data' },
@@ -40,22 +40,22 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-primary/10 mb-4">
-            <div className="text-2xl font-bold text-primary">🏫</div>
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary shadow-xl mb-6">
+            <School className="w-10 h-10 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">SchoolHub</h1>
-          <p className="text-muted-foreground">Education Field Monitoring System</p>
+          <h1 className="text-4xl font-bold text-foreground mb-3">SchoolHub</h1>
+          <p className="text-lg text-muted-foreground">Education Field Monitoring System</p>
         </div>
 
-        <Card className="p-6 shadow-lg">
-          <form onSubmit={handleLogin} className="space-y-6">
+        <Card className="p-8 shadow-2xl">
+          <form onSubmit={handleLogin} className="space-y-8">
             {/* Phone Number */}
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-base font-semibold text-foreground mb-3">
                 Phone Number
               </label>
               <Input
@@ -64,37 +64,46 @@ export default function Login() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
                 data-testid="input-phone"
-                className="w-full"
+                className="w-full h-14 text-lg rounded-xl"
               />
             </div>
 
             {/* Role Selection */}
             <div>
-              <label className="block text-sm font-medium text-foreground mb-3">
+              <label className="block text-base font-semibold text-foreground mb-4">
                 Select Your Role
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {roles.map((role) => (
                   <label
                     key={role.value}
-                    className={`flex items-center p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                    className={`flex items-center p-4 rounded-xl cursor-pointer transition-all duration-200 ${
                       selectedRole === role.value
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border bg-card hover:border-primary/30'
+                        ? 'bg-primary/10 border-2 border-primary shadow-md'
+                        : 'bg-secondary/50 border-2 border-transparent hover:bg-secondary hover:border-primary/20'
                     }`}
                     data-testid={`radio-role-${role.value}`}
                   >
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                      selectedRole === role.value
+                        ? 'border-primary bg-primary'
+                        : 'border-muted-foreground'
+                    }`}>
+                      {selectedRole === role.value && (
+                        <Check className="w-4 h-4 text-primary-foreground" />
+                      )}
+                    </div>
                     <input
                       type="radio"
                       name="role"
                       value={role.value}
                       checked={selectedRole === role.value}
                       onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-                      className="w-4 h-4"
+                      className="sr-only"
                     />
-                    <div className="ml-3 flex-1">
-                      <div className="font-medium text-foreground">{role.label}</div>
-                      <div className="text-xs text-muted-foreground">{role.description}</div>
+                    <div className="ml-4 flex-1">
+                      <div className="font-semibold text-foreground text-base">{role.label}</div>
+                      <div className="text-sm text-muted-foreground">{role.description}</div>
                     </div>
                   </label>
                 ))}
@@ -103,7 +112,7 @@ export default function Login() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="block text-base font-semibold text-foreground mb-3">
                 Password
               </label>
               <Input
@@ -112,16 +121,16 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 data-testid="input-password"
-                className="w-full"
+                className="w-full h-14 text-lg rounded-xl"
               />
-              <p className="text-xs text-muted-foreground mt-1">Demo: Any 4+ characters</p>
+              <p className="text-sm text-muted-foreground mt-2">Demo: Any 4+ characters</p>
             </div>
 
             {/* Error */}
             {error && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 text-destructive">
-                <AlertCircle className="w-4 h-4" />
-                <span className="text-sm">{error}</span>
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-destructive/10 text-destructive">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-base font-medium">{error}</span>
               </div>
             )}
 
@@ -138,7 +147,7 @@ export default function Login() {
           </form>
         </Card>
 
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <p className="text-center text-sm text-muted-foreground mt-8">
           Demo credentials pre-filled • Password: any 4+ characters
         </p>
       </div>
