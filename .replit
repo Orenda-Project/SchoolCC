@@ -19,10 +19,6 @@ externalPort = 80
 localPort = 5001
 externalPort = 3000
 
-[[ports]]
-localPort = 43363
-externalPort = 3001
-
 [env]
 PORT = "5000"
 
@@ -49,3 +45,8 @@ waitForPort = 5000
 
 [agent]
 mockupState = "FULLSTACK"
+
+[userenv]
+
+[userenv.shared]
+VITE_POSTHOG_KEY = "phc_kiVhZ9ggDn9BREC3mgCiJSLCk7iX3mi2nnDErQHNyha"
