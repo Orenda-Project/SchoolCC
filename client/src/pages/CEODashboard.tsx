@@ -396,7 +396,24 @@ export default function CEODashboard() {
         </Card>
 
         {/* Quick Actions */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card className="p-6 bg-gradient-to-br from-violet-50 to-violet-100 border-violet-200">
+            <div className="flex items-start justify-between mb-4">
+              <h3 className="font-semibold text-violet-900">Create Request</h3>
+              <Plus className="w-5 h-5 text-violet-600" />
+            </div>
+            <p className="text-sm text-violet-800 mb-4">Send data requests to any level in the hierarchy.</p>
+            <Button 
+              size="sm" 
+              className="w-full bg-violet-600 hover:bg-violet-700 text-white" 
+              onClick={() => navigate('/create-request')}
+              data-testid="button-create-request"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              New Request
+            </Button>
+          </Card>
+
           <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
             <div className="flex items-start justify-between mb-4">
               <h3 className="font-semibold text-blue-900">View Analytics</h3>
