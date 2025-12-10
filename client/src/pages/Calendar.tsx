@@ -30,6 +30,10 @@ export default function Calendar() {
   const [selectedLeave, setSelectedLeave] = useState<LeaveRecord | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showDayLeavesDialog, setShowDayLeavesDialog] = useState(false);
+  const [dayLeaves, setDayLeaves] = useState<LeaveRecord[]>([]);
+
   const [newLeave, setNewLeave] = useState({
     teacherName: '',
     leaveType: 'casual' as 'sick' | 'casual' | 'earned' | 'special',
@@ -158,6 +162,26 @@ export default function Calendar() {
     setIsEditing(false);
   };
 
+  const handleDateClick = (day: Date) => {
+    if (user.role !== 'HEAD_TEACHER') return;
+    const year = day.getFullYear();
+    const month = String(day.getMonth() + 1).padStart(2, '0');
+    const dayOfMonth = String(day.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${dayOfMonth}`;
+    setNewLeave(prev => ({
+      ...prev,
+      startDate: dateStr,
+      endDate: dateStr,
+    }));
+    setShowCreateDialog(true);
+  };
+
+  const handleShowMoreLeaves = (day: Date, leaves: LeaveRecord[]) => {
+    setSelectedDate(day);
+    setDayLeaves(leaves);
+    setShowDayLeavesDialog(true);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-white border-b border-border">
@@ -173,7 +197,11 @@ export default function Calendar() {
             </Button>
             <div>
               <h1 className="text-2xl font-bold text-foreground">Staff Leave Calendar</h1>
-              <p className="text-sm text-muted-foreground">Track and manage teacher leave requests</p>
+              <p className="text-sm text-muted-foreground">
+                {user.role === 'HEAD_TEACHER' 
+                  ? 'Click on any date to add a leave. Click on teacher name to view details.'
+                  : 'Track and manage teacher leave requests'}
+              </p>
             </div>
           </div>
           
@@ -328,16 +356,17 @@ export default function Calendar() {
                 return (
                   <div
                     key={idx}
-                    className={`relative p-2 rounded-lg text-center min-h-24 border-2 transition-all ${
+                    className={`relative p-2 rounded-lg min-h-24 border-2 transition-all ${
                       isCurrentMonth
                         ? isToday
                           ? 'border-primary bg-primary/10'
                           : 'border-border bg-card hover:border-primary/30'
                         : 'border-transparent bg-muted/20 text-muted-foreground'
-                    }`}
+                    } ${user.role === 'HEAD_TEACHER' && isCurrentMonth ? 'cursor-pointer' : ''}`}
+                    onClick={() => isCurrentMonth && handleDateClick(day)}
                     data-testid={`calendar-day-${day.getDate()}`}
                   >
-                    <div className="text-sm font-semibold text-foreground">{day.getDate()}</div>
+                    <div className="text-sm font-semibold text-foreground text-center">{day.getDate()}</div>
                     {leavesForDay.length > 0 && (
                       <div className="mt-1 space-y-0.5">
                         {leavesForDay.slice(0, 2).map((leave) => (
@@ -345,13 +374,24 @@ export default function Calendar() {
                             key={leave.id}
                             className={`text-xs px-1 py-0.5 rounded truncate cursor-pointer hover:opacity-80 border ${leaveTypeColors[leave.leaveType]}`}
                             title={`${leave.teacherName} - ${leave.reason}`}
-                            onClick={() => handleViewLeave(leave)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewLeave(leave);
+                            }}
                           >
-                            {leave.teacherName.split(' ').slice(-1)[0]}
+                            {leave.teacherName}
                           </div>
                         ))}
                         {leavesForDay.length > 2 && (
-                          <div className="text-xs text-muted-foreground">+{leavesForDay.length - 2} more</div>
+                          <div 
+                            className="text-xs text-center bg-muted/50 rounded py-0.5 cursor-pointer hover:bg-muted"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleShowMoreLeaves(day, leavesForDay);
+                            }}
+                          >
+                            +{leavesForDay.length - 2} more
+                          </div>
                         )}
                       </div>
                     )}
@@ -524,6 +564,40 @@ export default function Calendar() {
               )}
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showDayLeavesDialog} onOpenChange={setShowDayLeavesDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              Teachers on Leave - {selectedDate?.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
+            {dayLeaves.map((leave) => (
+              <div 
+                key={leave.id} 
+                className={`p-3 rounded-lg border cursor-pointer hover:bg-muted/50 ${leaveTypeColors[leave.leaveType]}`}
+                onClick={() => {
+                  setShowDayLeavesDialog(false);
+                  handleViewLeave(leave);
+                }}
+                data-testid={`day-leave-${leave.id}`}
+              >
+                <div className="flex items-center justify-between">
+                  <p className="font-medium">{leave.teacherName}</p>
+                  <span className="text-xs capitalize">{leave.leaveType}</span>
+                </div>
+                <p className="text-xs mt-1 opacity-80">{leave.reason}</p>
+                {leave.evidenceFileName && (
+                  <p className="text-xs mt-1 flex items-center gap-1">
+                    <Eye className="w-3 h-3" /> Evidence attached
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
