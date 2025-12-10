@@ -1,0 +1,79 @@
+[33mcea6048[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Add user and organization management capabilities to the application
+[33mb87666f[m Transitioned from Plan to Build mode
+[33md6579cf[m Expand CEO request assignment and add creation button
+[33m0755985[m Add create request functionality to CEO dashboard
+[33m70cdd00[m Enhance UI with cool visual effects and animations
+[33me32d2a1[m Turn quick actions into a persistent sidebar for easier access
+[33m087d320[m Update project documentation with platform overview and architecture details
+[33md97b36d[m Update app visuals with modern design and improved user experience
+[33m1a96343[m Modernize the website's appearance with updated styling and layout
+[33mfce4a50[m Update application colors to a specific beige and black theme
+[33ma61b34b[m Update color theme to use a specific golden beige
+[33m83e1d98[m Update website color scheme and meta tags for a modern aesthetic
+[33m2d9fb72[m Saved your changes before starting work
+[33m65349d6[m Add utility to parse PDF documents for content extraction
+[33ma82e94d[m Add performance indicators for Assistant Education Officers
+[33m70a80c9[m Add other AEO activities documentation and image files
+[33mb827702[m Confirm all required fields are present in the monitoring visit form
+[33m2d9a030[m Add missing indicator for instructional strategies to the assessment
+[33maa543ec[m Saved your changes before starting work
+[33m196e0be[m Ensure requests are properly removed and lists are updated
+[33md6c1423[m Improve request deletion by ensuring data synchronization
+[33m45afec5[m Transition to a full-stack application for persistent data access
+[33m37902f3[m Remove unused loading state from request creation error handling
+[33m65e90ca[m Correctly refresh data requests when navigating back to the page
+[33mf6523ef[m Add auto-refresh to data requests page on navigation
+[33mfcfce1f[m Add ability for request creators to edit and delete requests
+[33mb16b892[m Fix form submission to prevent requests from being unsaved
+[33m22cd571[m Implement request workflow rules based on organizational hierarchy
+[33m6c79816[m Saved your changes before starting work
+[33m6a8a781[m Improve visibility of newly created requests by removing delays
+[33m159624c[m Update data requests page to show newly created items immediately
+[33m643aa85[m Saved your changes before starting work
+[33m366e3dd[m Improve request visibility for all users
+[33me93a9d0[m Make new requests immediately visible after saving
+[33mcc307ee[m Improve request visibility for AEO users by expanding filtering criteria
+[33md738d77[m Improve request creation and visibility by fixing voice note recording
+[33mc8d9d5e[m Make data requests persist across browser sessions
+[33meedd477[m Add more assignees to the data request form
+[33mb80607a[m Add actual voice note recording and playback functionality
+[33mb241f4f[m Make voice note play buttons functional
+[33m2aabda3[m Remove voice recorder button from request title field
+[33m1364433[m Add descriptions to the indicators for mentoring visits
+[33m53e48d8[m Organize mentoring visit indicators into hierarchical areas
+[33mf87210e[m Update mentoring form to include voice note functionality and correct assessment areas
+[33me272022[m Add mentoring visit form details from PDF document
+[33mf9992f8[m Make the request title an optional field
+[33mf58a8bc[m Add voice note recording to request details and fields
+[33mab6e3dc[m Add comprehensive voice note capabilities to data request fields
+[33m2777630[m Saved progress at the end of the loop
+[33m8cc1593[m Integrate AEO activity logging into the main dashboard interface
+[33mb8aacb3[m Add AEO activity management system with visit planning and logging features
+[33m3e84d71[m Saved your changes before starting work
+[33mf1467f6[m Implement role-based routing for different user dashboards
+[33m2a63ab8[m Redirect CEO users to their specific dashboard and add CEO stats
+[33m94ad2fa[m Add CEO dashboard with hierarchical data visualization
+[33m4cd0fa1[m Saved your changes before starting work
+[33mffdb2d9[m Add voice note recording to collaborative forms for all users except teachers
+[33m058b936[m Update automatic form creation for all assignees
+[33m93fa7be[m Make collaborative forms a mandatory part of data requests
+[33mb858045[m Update application colors to a modern vibrant palette
+[33m2518e9c[m Add a collaborative data collection and review system
+[33m9c7f959[m Restrict leave approval view to head teachers only
+[33mca75f39[m Update button styles to use solid colors and remove gradient utilities
+[33m0258cd2[m Modernize the application theme with premium design elements
+[33mf56b0ea[m Update visit flow with monitoring and mentoring types and detailed indicators
+[33m250df07[m Restrict school data view based on user role
+[33m42c0bd9[m Add album button to school cards for viewing community activities
+[33m62b0854[m Add photo album feature for schools to share activities
+[33md58f40e[m Fix an error in the visit creation process and update the application's visual theme
+[33m9160e4c[m Enable AEO users to fully edit visit details and add new evidence
+[33mc0e55b8[m Allow AEO users to fully edit completed school visits
+[33me4a8dd9[m Add school visit monitoring functionality to the application
+[33m8aff7a6[m Add teacher statistics, calendar view, and school data pages
+[33m959d2cc[m Add navigation buttons to easily move between pages
+[33md2a71c4[m Add voice note recording feature to requests and fix view request errors
+[33mb67d2cf[m Add SchoolHub platform with user authentication and data request workflow
+[33mc5c519e[m Update website metadata and fonts for school platform
+[33m8b436d2[m Extracted stack files
+[33md522357[m Initial commit

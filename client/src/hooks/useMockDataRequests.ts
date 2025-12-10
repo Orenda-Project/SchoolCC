@@ -51,7 +51,7 @@ const mockRequests: DataRequest[] = [
     title: 'Monthly Attendance Verification',
     description: 'Verify attendance records for December 2024',
     createdBy: 'aeo-1',
-    createdByName: 'Mr. Amit Patel',
+    createdByName: 'AEO User',
     createdByRole: 'AEO',
     createdAt: new Date('2024-12-01'),
     dueDate: new Date('2024-12-05'),
@@ -68,10 +68,10 @@ const mockRequests: DataRequest[] = [
       {
         id: 'a1',
         userId: 'teacher-1',
-        userName: 'Mr. Vikram Das',
+        userName: 'Teacher 1',
         userRole: 'TEACHER',
         schoolId: 'school-1',
-        schoolName: 'Government Primary School, Zone A',
+        schoolName: 'Demo School',
         status: 'pending',
         fields: [
           { id: 'f1', name: 'Total Students', type: 'number', required: true },
@@ -87,7 +87,7 @@ const mockRequests: DataRequest[] = [
     title: 'Infrastructure Status Check',
     description: 'Report on school infrastructure - water, toilets, electricity',
     createdBy: 'aeo-1',
-    createdByName: 'Mr. Amit Patel',
+    createdByName: 'AEO User',
     createdByRole: 'AEO',
     createdAt: new Date('2024-11-28'),
     dueDate: new Date('2024-12-10'),
@@ -105,10 +105,10 @@ const mockRequests: DataRequest[] = [
       {
         id: 'a2',
         userId: 'ht-1',
-        userName: 'Mrs. Anjali Singh',
+        userName: 'Head Teacher',
         userRole: 'HEAD_TEACHER',
         schoolId: 'school-1',
-        schoolName: 'Government Primary School, Zone A',
+        schoolName: 'Demo School',
         status: 'pending',
         fields: [
           { id: 'f1', name: 'Water Available', type: 'text', required: true, value: 'Yes, 2 taps functioning' },

@@ -9,25 +9,35 @@ import { useMockTeacherData } from '@/hooks/useMockTeacherData';
 import { useVoiceRecorder } from '@/hooks/useVoiceRecorder';
 import { useLocation } from 'wouter';
 import { Plus, X, ArrowLeft, Mic, Square, Play } from 'lucide-react';
+import { realAEOs, realSchools, realHeadmasters } from '@/data/realData';
 
 const FIELD_TYPES = ['text', 'number', 'file', 'photo', 'voice_note'];
 
 // Org hierarchy with valid direct subordinates
 const ALL_USERS = [
   // DEOs
-  { id: 'deo-1', name: 'Dr. Rajesh Kumar', role: 'DEO' as const, school: 'District' },
+  { id: 'deo-1', name: 'DEO User', role: 'DEO' as const, school: 'District' },
   // DDEOs
-  { id: 'ddeo-1', name: 'Ms. Priya Sharma', role: 'DDEO' as const, school: 'District' },
-  // AEOs
-  { id: 'aeo-1', name: 'Mr. Amit Patel', role: 'AEO' as const, school: 'Cluster 1' },
-  // Head Teachers
-  { id: 'ht-1', name: 'Mrs. Anjali Singh', role: 'HEAD_TEACHER' as const, school: 'School A' },
-  { id: 'ht-2', name: 'Mr. Rajesh Kumar', role: 'HEAD_TEACHER' as const, school: 'School B' },
+  { id: 'ddeo-1', name: 'DDEO User', role: 'DDEO' as const, school: 'District' },
+  // Real AEOs
+  ...realAEOs.map(aeo => ({
+    id: aeo.id,
+    name: `${aeo.name} (${aeo.area})`,
+    role: 'AEO' as const,
+    school: aeo.area,
+  })),
+  // Real Head Teachers
+  ...realHeadmasters.map(hm => ({
+    id: hm.id,
+    name: hm.name,
+    role: 'HEAD_TEACHER' as const,
+    school: hm.schoolName,
+  })),
   // Teachers
-  { id: 'teacher-1', name: 'Mr. Vikram Das', role: 'TEACHER' as const, school: 'School A' },
-  { id: 'teacher-2', name: 'Ms. Priya Verma', role: 'TEACHER' as const, school: 'School A' },
-  { id: 'teacher-3', name: 'Mr. Hassan Ali', role: 'TEACHER' as const, school: 'School B' },
-  { id: 'teacher-4', name: 'Ms. Fatima Ahmed', role: 'TEACHER' as const, school: 'School B' },
+  { id: 'teacher-1', name: 'Teacher 1', role: 'TEACHER' as const, school: 'School A' },
+  { id: 'teacher-2', name: 'Teacher 2', role: 'TEACHER' as const, school: 'School A' },
+  { id: 'teacher-3', name: 'Teacher 3', role: 'TEACHER' as const, school: 'School B' },
+  { id: 'teacher-4', name: 'Teacher 4', role: 'TEACHER' as const, school: 'School B' },
 ];
 
 const getValidAssigneesForUser = (userRole: UserRole): typeof ALL_USERS => {

@@ -23,6 +23,7 @@ export const schools = pgTable("schools", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   code: text("code").notNull().unique(),
+  emisNumber: text("emis_number").notNull().unique(),
   clusterId: varchar("cluster_id").notNull(),
   districtId: varchar("district_id").notNull(),
   address: text("address"),
@@ -72,6 +73,64 @@ export const requestAssignees = pgTable("request_assignees", {
   status: text("status").notNull().default("pending"), // pending, completed, overdue
   fieldResponses: json("field_responses").notNull(), // JSON array of responses
   submittedAt: timestamp("submitted_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Teacher leaves table
+export const teacherLeaves = pgTable("teacher_leaves", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  teacherId: varchar("teacher_id").notNull(),
+  teacherName: text("teacher_name").notNull(),
+  schoolId: varchar("school_id").notNull(),
+  schoolName: text("school_name").notNull(),
+  leaveType: text("leave_type").notNull(), // sick, casual, earned, special
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  numberOfDays: integer("number_of_days").notNull(),
+  reason: text("reason").notNull(),
+  status: text("status").notNull().default("pending"), // pending, approved, rejected
+  evidenceUrl: text("evidence_url"), // URL to uploaded photo evidence
+  evidenceFileName: text("evidence_file_name"),
+  approvedBy: varchar("approved_by"),
+  approvedByName: text("approved_by_name"),
+  approvedAt: timestamp("approved_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// Queries/tickets table
+export const queries = pgTable("queries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  ticketNumber: text("ticket_number").notNull().unique(),
+  subject: text("subject").notNull(),
+  message: text("message").notNull(),
+  senderId: varchar("sender_id").notNull(),
+  senderName: text("sender_name").notNull(),
+  senderRole: text("sender_role").notNull(),
+  senderSchoolId: varchar("sender_school_id"),
+  senderSchoolName: text("sender_school_name"),
+  recipientId: varchar("recipient_id").notNull(),
+  recipientName: text("recipient_name").notNull(),
+  recipientRole: text("recipient_role").notNull(),
+  status: text("status").notNull().default("open"), // open, in_progress, resolved, closed
+  priority: text("priority").notNull().default("medium"), // low, medium, high
+  category: text("category"), // general, leave, infrastructure, complaint, etc.
+  attachmentUrl: text("attachment_url"),
+  attachmentFileName: text("attachment_file_name"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// Query responses table (for threading)
+export const queryResponses = pgTable("query_responses", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  queryId: varchar("query_id").notNull(),
+  senderId: varchar("sender_id").notNull(),
+  senderName: text("sender_name").notNull(),
+  senderRole: text("sender_role").notNull(),
+  message: text("message").notNull(),
+  attachmentUrl: text("attachment_url"),
+  attachmentFileName: text("attachment_file_name"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

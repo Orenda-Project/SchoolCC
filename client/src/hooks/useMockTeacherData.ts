@@ -43,32 +43,32 @@ export interface SchoolData {
 }
 
 const mockTeachers: Teacher[] = [
-  { id: 't1', name: 'Mr. Vikram Das', schoolId: 'school-1', schoolName: 'Government Primary School, Zone A', subject: 'Mathematics', status: 'present' },
-  { id: 't2', name: 'Ms. Priya Verma', schoolId: 'school-1', schoolName: 'Government Primary School, Zone A', subject: 'English', status: 'present' },
-  { id: 't3', name: 'Mr. Rajesh Kumar', schoolId: 'school-1', schoolName: 'Government Primary School, Zone A', subject: 'Science', status: 'on_leave' },
-  { id: 't4', name: 'Mrs. Anjali Singh', schoolId: 'school-1', schoolName: 'Government Primary School, Zone A', subject: 'Social Studies', status: 'present' },
-  { id: 't5', name: 'Mr. Ashok Yadav', schoolId: 'school-2', schoolName: 'Government Upper Primary School', subject: 'Hindi', status: 'absent' },
-  { id: 't6', name: 'Ms. Sunita Sharma', schoolId: 'school-2', schoolName: 'Government Upper Primary School', subject: 'Mathematics', status: 'present' },
-  { id: 't7', name: 'Mr. Rohan Patel', schoolId: 'school-3', schoolName: 'Government Secondary School', subject: 'Physics', status: 'on_leave' },
-  { id: 't8', name: 'Mrs. Meera Desai', schoolId: 'school-3', schoolName: 'Government Secondary School', subject: 'Chemistry', status: 'present' },
-  { id: 't9', name: 'Mr. Suresh Gupta', schoolId: 'school-3', schoolName: 'Government Secondary School', subject: 'Biology', status: 'present' },
-  { id: 't10', name: 'Ms. Neha Kapoor', schoolId: 'school-2', schoolName: 'Government Upper Primary School', subject: 'English', status: 'on_leave' },
+  { id: 't1', name: 'Teacher 1', schoolId: 'school-1', schoolName: 'Demo School', subject: 'Mathematics', status: 'present' },
+  { id: 't2', name: 'Teacher 2', schoolId: 'school-1', schoolName: 'Demo School', subject: 'English', status: 'present' },
+  { id: 't3', name: 'Teacher 3', schoolId: 'school-1', schoolName: 'Demo School', subject: 'Science', status: 'on_leave' },
+  { id: 't4', name: 'Teacher 4', schoolId: 'school-1', schoolName: 'Demo School', subject: 'Social Studies', status: 'present' },
+  { id: 't5', name: 'Teacher 5', schoolId: 'school-2', schoolName: 'Demo School 2', subject: 'Hindi', status: 'absent' },
+  { id: 't6', name: 'Teacher 6', schoolId: 'school-2', schoolName: 'Demo School 2', subject: 'Mathematics', status: 'present' },
+  { id: 't7', name: 'Teacher 7', schoolId: 'school-3', schoolName: 'Demo School 3', subject: 'Physics', status: 'on_leave' },
+  { id: 't8', name: 'Teacher 8', schoolId: 'school-3', schoolName: 'Demo School 3', subject: 'Chemistry', status: 'present' },
+  { id: 't9', name: 'Teacher 9', schoolId: 'school-3', schoolName: 'Demo School 3', subject: 'Biology', status: 'present' },
+  { id: 't10', name: 'Teacher 10', schoolId: 'school-2', schoolName: 'Demo School 2', subject: 'English', status: 'on_leave' },
 ];
 
 const mockLeaves: LeaveRecord[] = [
-  { id: 'l1', teacherId: 't3', teacherName: 'Mr. Rajesh Kumar', leaveType: 'sick', startDate: new Date('2024-12-02'), endDate: new Date('2024-12-03'), status: 'approved', reason: 'Fever', school: 'Government Primary School, Zone A' },
-  { id: 'l2', teacherId: 't7', teacherName: 'Mr. Rohan Patel', leaveType: 'earned', startDate: new Date('2024-12-02'), endDate: new Date('2024-12-02'), status: 'approved', reason: 'Personal', school: 'Government Secondary School' },
-  { id: 'l3', teacherId: 't10', teacherName: 'Ms. Neha Kapoor', leaveType: 'casual', startDate: new Date('2024-12-02'), endDate: new Date('2024-12-04'), status: 'approved', reason: 'Family work', school: 'Government Upper Primary School' },
-  { id: 'l4', teacherId: 't1', teacherName: 'Mr. Vikram Das', leaveType: 'casual', startDate: new Date('2024-12-05'), endDate: new Date('2024-12-06'), status: 'pending', reason: 'Travel', school: 'Government Primary School, Zone A' },
+  { id: 'l1', teacherId: 't3', teacherName: 'Teacher 3', leaveType: 'sick', startDate: new Date('2024-12-02'), endDate: new Date('2024-12-03'), status: 'approved', reason: 'Fever', school: 'Demo School' },
+  { id: 'l2', teacherId: 't7', teacherName: 'Teacher 7', leaveType: 'earned', startDate: new Date('2024-12-02'), endDate: new Date('2024-12-02'), status: 'approved', reason: 'Personal', school: 'Demo School 3' },
+  { id: 'l3', teacherId: 't10', teacherName: 'Teacher 10', leaveType: 'casual', startDate: new Date('2024-12-02'), endDate: new Date('2024-12-04'), status: 'approved', reason: 'Family work', school: 'Demo School 2' },
+  { id: 'l4', teacherId: 't1', teacherName: 'Teacher 1', leaveType: 'casual', startDate: new Date('2024-12-05'), endDate: new Date('2024-12-06'), status: 'pending', reason: 'Travel', school: 'Demo School' },
 ];
 
 const mockSchools: SchoolData[] = [
   {
     id: 'school-1',
-    name: 'Government Primary School, Zone A',
+    name: 'Demo School',
     district: 'District One',
     block: 'Block A',
-    principalName: 'Dr. Ramesh Singh',
+    principalName: 'Principal 1',
     totalStudents: 345,
     totalTeachers: 12,
     infrastructure: { classrooms: 8, toilets: 4, waterSource: true, electricity: true },
@@ -77,10 +77,10 @@ const mockSchools: SchoolData[] = [
   },
   {
     id: 'school-2',
-    name: 'Government Upper Primary School',
+    name: 'Demo School 2',
     district: 'District One',
     block: 'Block B',
-    principalName: 'Mrs. Priya Sharma',
+    principalName: 'Principal 2',
     totalStudents: 512,
     totalTeachers: 18,
     infrastructure: { classrooms: 12, toilets: 6, waterSource: true, electricity: true },
@@ -89,10 +89,10 @@ const mockSchools: SchoolData[] = [
   },
   {
     id: 'school-3',
-    name: 'Government Secondary School',
+    name: 'Demo School 3',
     district: 'District One',
     block: 'Block C',
-    principalName: 'Prof. Arun Kumar',
+    principalName: 'Principal 3',
     totalStudents: 687,
     totalTeachers: 25,
     infrastructure: { classrooms: 18, toilets: 10, waterSource: true, electricity: true },

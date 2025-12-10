@@ -75,7 +75,7 @@ export default function Dashboard() {
   const stats = dashboardStats[user.role];
 
   return (
-    <div className="min-h-screen gradient-animated flex">
+    <div className="min-h-screen bg-background flex">
       {/* Sidebar - Quick Actions */}
       <aside className="hidden lg:flex flex-col w-72 glass border-r border-white/20 fixed left-0 top-0 h-screen z-40 animate-slideInLeft">
         {/* Sidebar Header */}
