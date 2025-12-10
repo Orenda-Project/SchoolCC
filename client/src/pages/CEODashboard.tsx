@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/auth';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { LogOut, ChevronRight, ChevronDown, Download, Filter, Users, Building2, AlertCircle, TrendingUp, CheckCircle, Clock } from 'lucide-react';
+import { LogOut, ChevronRight, ChevronDown, Download, Filter, Users, Building2, AlertCircle, TrendingUp, CheckCircle, Clock, Plus, FileText } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 interface School {
