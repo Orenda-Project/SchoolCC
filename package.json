@@ -10,7 +10,8 @@
     "start": "NODE_ENV=production node dist/index.cjs",
     "check": "tsc",
     "db:push": "drizzle-kit push",
-    "seed:aeos": "tsx server/seedAEOUsers.ts"
+    "seed:aeos": "tsx server/seedAEOUsers.ts",
+    "seed:all": "tsx server/seedAllUsers.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
