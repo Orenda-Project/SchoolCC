@@ -47,6 +47,7 @@ export interface IStorage {
   getDataRequestsForUser(userId: string, userRole: string, userSchoolId?: string, userClusterId?: string, userDistrictId?: string): Promise<DataRequest[]>;
   updateDataRequest(id: string, updates: Partial<DataRequest>): Promise<DataRequest>;
   deleteDataRequest(id: string): Promise<void>;
+  generateRequestSheets(requestId: string): Promise<{ schoolSheetUrl: string; aggregatedSheetUrl: string }>;
   
   // Request assignee operations
   createRequestAssignee(assignee: InsertRequestAssignee): Promise<RequestAssignee>;
@@ -296,6 +297,93 @@ export class DBStorage implements IStorage {
       .update(notifications)
       .set({ isRead: true })
       .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
+  }
+
+  // Generate Google Sheets from request responses
+  async generateRequestSheets(requestId: string): Promise<{ schoolSheetUrl: string; aggregatedSheetUrl: string }> {
+    // Get the data request
+    const request = await this.getDataRequest(requestId);
+    if (!request) throw new Error('Request not found');
+
+    // Get all assignees with their responses
+    const assignees = await this.getRequestAssignees(requestId);
+    const completedAssignees = assignees.filter(a => a.status === 'completed');
+
+    if (completedAssignees.length === 0) {
+      throw new Error('No completed responses found');
+    }
+
+    // Parse field definitions
+    const fields = request.fields as any[];
+
+    // Group responses by school
+    const responsesBySchool: { [schoolId: string]: any[] } = {};
+    completedAssignees.forEach(assignee => {
+      const schoolId = assignee.schoolId || 'unknown';
+      if (!responsesBySchool[schoolId]) {
+        responsesBySchool[schoolId] = [];
+      }
+      responsesBySchool[schoolId].push({
+        userName: assignee.userName,
+        userRole: assignee.userRole,
+        schoolName: assignee.schoolName,
+        responses: assignee.fieldResponses as any[],
+        submittedAt: assignee.submittedAt,
+      });
+    });
+
+    // Generate CSV headers
+    const headers = ['Teacher Name', 'Role', 'School', ...fields.map((f: any) => f.label), 'Submitted At'];
+
+    // Generate school-level CSV (for head teacher)
+    const schoolCsvRows = [headers.join(',')];
+    Object.entries(responsesBySchool).forEach(([schoolId, responses]) => {
+      responses.forEach(resp => {
+        const row = [
+          `"${resp.userName}"`,
+          resp.userRole,
+          `"${resp.schoolName}"`,
+          ...fields.map((f: any) => {
+            const response = resp.responses.find((r: any) => r.fieldId === f.id);
+            return response ? `"${response.value}"` : '';
+          }),
+          resp.submittedAt ? new Date(resp.submittedAt).toLocaleString() : '',
+        ];
+        schoolCsvRows.push(row.join(','));
+      });
+    });
+    const schoolCsv = schoolCsvRows.join('\n');
+
+    // Generate aggregated CSV (for upper management)
+    const aggregatedCsvRows = [headers.join(',')];
+    completedAssignees.forEach(assignee => {
+      const responses = assignee.fieldResponses as any[];
+      const row = [
+        `"${assignee.userName}"`,
+        assignee.userRole,
+        `"${assignee.schoolName || 'N/A'}"`,
+        ...fields.map((f: any) => {
+          const response = responses.find((r: any) => r.fieldId === f.id);
+          return response ? `"${response.value}"` : '';
+        }),
+        assignee.submittedAt ? new Date(assignee.submittedAt).toLocaleString() : '',
+      ];
+      aggregatedCsvRows.push(row.join(','));
+    });
+    const aggregatedCsv = aggregatedCsvRows.join('\n');
+
+    // For now, return data URLs (in production, upload to cloud storage)
+    const schoolSheetUrl = `data:text/csv;charset=utf-8,${encodeURIComponent(schoolCsv)}`;
+    const aggregatedSheetUrl = `data:text/csv;charset=utf-8,${encodeURIComponent(aggregatedCsv)}`;
+
+    // Update the request with sheet URLs
+    await this.updateDataRequest(requestId, {
+      schoolSheetUrl,
+      aggregatedSheetUrl,
+      sheetGeneratedAt: new Date(),
+    });
+
+    return { schoolSheetUrl, aggregatedSheetUrl };
   }
 }
 

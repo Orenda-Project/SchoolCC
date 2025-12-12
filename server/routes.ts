@@ -86,6 +86,16 @@ export async function registerRoutes(
     }
   });
 
+  // Generate Google Sheets for a request
+  app.post("/api/requests/:id/generate-sheets", async (req, res) => {
+    try {
+      const sheets = await storage.generateRequestSheets(req.params.id);
+      res.json(sheets);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to generate sheets" });
+    }
+  });
+
   // Admin: Districts endpoints
   app.get("/api/admin/districts", async (req, res) => {
     try {

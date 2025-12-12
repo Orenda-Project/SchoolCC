@@ -69,6 +69,10 @@ export const dataRequests = pgTable("data_requests", {
   isArchived: boolean("is_archived").notNull().default(false),
   dueDate: timestamp("due_date").notNull(),
   fields: json("fields").notNull(), // JSON array of field definitions
+  // Google Sheet attachments
+  schoolSheetUrl: text("school_sheet_url"), // CSV download URL for individual school sheets
+  aggregatedSheetUrl: text("aggregated_sheet_url"), // CSV download URL for aggregated data
+  sheetGeneratedAt: timestamp("sheet_generated_at"), // When sheets were generated
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
