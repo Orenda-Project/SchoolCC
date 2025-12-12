@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useLeaveRecords, LeaveRecord } from '@/hooks/useLeaveRecords';
 import { useLocation } from 'wouter';
-import { ArrowLeft, ArrowRight, Check, Clock, AlertCircle, Plus, X, Calendar as CalendarIcon, Upload, Eye, Edit2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Plus, Calendar as CalendarIcon, Eye, Edit2 } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,7 +22,7 @@ const leaveTypeColors: Record<string, string> = {
 export default function Calendar() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
-  const { getApprovedLeaves, getPendingLeaves, getLeavesByDate, addLeave, approveLeave, rejectLeave, updateLeave } = useLeaveRecords();
+  const { getApprovedLeaves, getLeavesByDate, addLeave } = useLeaveRecords();
   const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -74,9 +74,6 @@ export default function Calendar() {
     days.push(new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000));
   }
 
-  const pendingLeaves = user.role === 'HEAD_TEACHER' 
-    ? getPendingLeaves(user.schoolId) 
-    : getPendingLeaves();
   const approvedLeaves = getApprovedLeaves();
 
   const handlePrevMonth = () => {
@@ -138,22 +135,6 @@ export default function Calendar() {
       numberOfDays: 1,
     });
     setShowCreateDialog(false);
-  };
-
-  const handleApprove = (leaveId: string) => {
-    approveLeave(leaveId, user.id, user.name);
-    toast({
-      title: "Leave Approved",
-      description: "The leave request has been approved.",
-    });
-  };
-
-  const handleReject = (leaveId: string) => {
-    rejectLeave(leaveId);
-    toast({
-      title: "Leave Rejected",
-      description: "The leave request has been rejected.",
-    });
   };
 
   const handleViewLeave = (leave: LeaveRecord) => {
@@ -402,51 +383,6 @@ export default function Calendar() {
           </Card>
 
           <div className="space-y-6">
-            {(user.role === 'HEAD_TEACHER' || user.role === 'DEO' || user.role === 'DDEO' || user.role === 'AEO') && pendingLeaves.length > 0 && (
-              <Card className="p-6">
-                <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-blue-600" />
-                  Pending Approvals ({pendingLeaves.length})
-                </h3>
-                <div className="space-y-3 max-h-64 overflow-y-auto">
-                  {pendingLeaves.map((leave) => (
-                    <div key={leave.id} className="border border-border rounded-lg p-3 text-sm">
-                      <p className="font-medium text-foreground">{leave.teacherName}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {leave.startDate.toLocaleDateString()} - {leave.endDate.toLocaleDateString()}
-                      </p>
-                      <p className="text-xs text-muted-foreground capitalize">{leave.leaveType} • {leave.numberOfDays} days</p>
-                      <p className="text-xs text-muted-foreground mt-1">{leave.reason}</p>
-                      {user.role === 'HEAD_TEACHER' && (
-                        <div className="flex gap-2 mt-2">
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="h-7 text-xs flex-1 hover:bg-green-50 hover:text-green-600 hover:border-green-200" 
-                            onClick={() => handleApprove(leave.id)}
-                            data-testid={`button-approve-${leave.id}`}
-                          >
-                            <Check className="w-3 h-3 mr-1" />
-                            Approve
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="h-7 text-xs flex-1 hover:bg-red-50 hover:text-red-600 hover:border-red-200" 
-                            onClick={() => handleReject(leave.id)}
-                            data-testid={`button-reject-${leave.id}`}
-                          >
-                            <X className="w-3 h-3 mr-1" />
-                            Reject
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            )}
-
             <Card className="p-6">
               <h3 className="font-semibold text-foreground mb-4">Upcoming Leaves</h3>
               <div className="space-y-3 max-h-48 overflow-y-auto">
