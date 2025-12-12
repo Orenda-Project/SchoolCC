@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,7 @@ interface UserProfile {
 export default function UserProfile() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [, navigate] = useLocation();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -38,6 +40,15 @@ export default function UserProfile() {
   const [editedProfile, setEditedProfile] = useState<Partial<UserProfile>>({});
 
   useEffect(() => {
+    if (!user?.id) {
+      toast({
+        title: "Authentication Error",
+        description: "Please log in again to view your profile",
+        variant: "destructive",
+      });
+      navigate('/');
+      return;
+    }
     fetchProfile();
   }, [user?.id]);
 

@@ -5,12 +5,25 @@ export type UserRole = 'CEO' | 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHE
 export interface User {
   id: string;
   phoneNumber: string;
+  password?: string;
   role: UserRole;
   name: string;
   schoolId?: string;
   schoolName?: string;
   clusterId?: string;
   districtId?: string;
+  // Profile fields
+  fatherName?: string;
+  spouseName?: string;
+  email?: string;
+  residentialAddress?: string;
+  cnic?: string;
+  dateOfBirth?: string;
+  dateOfJoining?: string;
+  qualification?: string;
+  profilePicture?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // Hierarchy: CEO > DEO > DDEO/AEO > HEAD_TEACHER > TEACHER

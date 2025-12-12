@@ -222,53 +222,109 @@ export default function CEODashboard() {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="p-6 bg-white border-slate-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Total Schools</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">{calculateAggregates.totalSchools}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+          <Card className="group relative overflow-hidden hover-lift">
+            <div className="p-8">
+              <div className="flex items-start justify-between mb-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl blur-xl" />
+                  <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <Building2 className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                  <span className="text-xs font-semibold text-primary">Live</span>
+                </div>
               </div>
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Building2 className="w-6 h-6 text-blue-600" />
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                  Total Schools
+                </p>
+                <p className="text-5xl font-bold gradient-text tracking-tight">
+                  {calculateAggregates.totalSchools}
+                </p>
+                <p className="text-xs text-muted-foreground">Across all districts</p>
               </div>
             </div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </Card>
 
-          <Card className="p-6 bg-white border-slate-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Total Teachers</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">{calculateAggregates.totalTeachers}</p>
+          <Card className="group relative overflow-hidden hover-lift">
+            <div className="p-8">
+              <div className="flex items-start justify-between mb-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl blur-xl" />
+                  <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <Users className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                  <span className="text-xs font-semibold text-primary">Live</span>
+                </div>
               </div>
-              <div className="p-3 bg-green-100 rounded-lg">
-                <Users className="w-6 h-6 text-green-600" />
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                  Total Teachers
+                </p>
+                <p className="text-5xl font-bold gradient-text tracking-tight">
+                  {calculateAggregates.totalTeachers}
+                </p>
+                <p className="text-xs text-muted-foreground">Active educators</p>
               </div>
             </div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </Card>
 
-          <Card className="p-6 bg-white border-slate-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Pending Requests</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">{calculateAggregates.totalPendingRequests}</p>
+          <Card className="group relative overflow-hidden hover-lift">
+            <div className="p-8">
+              <div className="flex items-start justify-between mb-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl blur-xl" />
+                  <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <AlertCircle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                  <span className="text-xs font-semibold text-primary">Live</span>
+                </div>
               </div>
-              <div className="p-3 bg-amber-100 rounded-lg">
-                <AlertCircle className="w-6 h-6 text-amber-600" />
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                  Pending Requests
+                </p>
+                <p className="text-5xl font-bold gradient-text tracking-tight">
+                  {calculateAggregates.totalPendingRequests}
+                </p>
+                <p className="text-xs text-muted-foreground">Awaiting response</p>
               </div>
             </div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </Card>
 
-          <Card className="p-6 bg-white border-slate-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Avg Compliance</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">{calculateAggregates.avgCompliance}%</p>
+          <Card className="group relative overflow-hidden hover-lift">
+            <div className="p-8">
+              <div className="flex items-start justify-between mb-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl blur-xl" />
+                  <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <CheckCircle className="w-7 h-7 text-primary" />
+                  </div>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                  <span className="text-xs font-semibold text-primary">Live</span>
+                </div>
               </div>
-              <div className="p-3 bg-emerald-100 rounded-lg">
-                <CheckCircle className="w-6 h-6 text-emerald-600" />
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                  Avg Compliance
+                </p>
+                <p className="text-5xl font-bold gradient-text tracking-tight">
+                  {calculateAggregates.avgCompliance}%
+                </p>
+                <p className="text-xs text-muted-foreground">System-wide metric</p>
               </div>
             </div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </Card>
         </div>
 
@@ -409,72 +465,127 @@ export default function CEODashboard() {
         </Card>
 
         {/* Quick Actions */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          <Card className="p-6 bg-gradient-to-br from-violet-50 to-violet-100 border-violet-200">
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-semibold text-violet-900">Create Request</h3>
-              <Plus className="w-5 h-5 text-violet-600" />
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <Card
+            className="group relative overflow-hidden cursor-pointer hover-lift"
+            onClick={() => navigate('/create-request')}
+            data-testid="button-create-request"
+          >
+            <div className="p-6">
+              <div className="mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Plus className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                Create Request
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Send data requests to any level in the hierarchy
+              </p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all duration-300">
+                <span>Open</span>
+                <ChevronRight className="w-4 h-4" />
+              </div>
             </div>
-            <p className="text-sm text-violet-800 mb-4">Send data requests to any level in the hierarchy.</p>
-            <Button
-              size="sm"
-              className="w-full bg-violet-600 hover:bg-violet-700 text-white"
-              onClick={() => navigate('/create-request')}
-              data-testid="button-create-request"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Request
-            </Button>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200">
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-semibold text-indigo-900">View Requests</h3>
-              <FileText className="w-5 h-5 text-indigo-600" />
+          <Card
+            className="group relative overflow-hidden cursor-pointer hover-lift"
+            onClick={() => navigate('/data-requests')}
+            data-testid="button-view-requests"
+          >
+            <div className="p-6">
+              <div className="mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <FileText className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                View Requests
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Monitor all data requests across the system
+              </p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all duration-300">
+                <span>Open</span>
+                <ChevronRight className="w-4 h-4" />
+              </div>
             </div>
-            <p className="text-sm text-indigo-800 mb-4">Monitor all data requests across the system.</p>
-            <Button
-              size="sm"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
-              onClick={() => navigate('/data-requests')}
-              data-testid="button-view-requests"
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              All Requests
-            </Button>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-semibold text-blue-900">View Analytics</h3>
-              <TrendingUp className="w-5 h-5 text-blue-600" />
+          <Card
+            className="group relative overflow-hidden cursor-pointer hover-lift"
+            data-testid="button-analytics"
+          >
+            <div className="p-6">
+              <div className="mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <TrendingUp className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                View Analytics
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Detailed reports and trends across all DEOs
+              </p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all duration-300">
+                <span>Open</span>
+                <ChevronRight className="w-4 h-4" />
+              </div>
             </div>
-            <p className="text-sm text-blue-800 mb-4">Detailed reports and trends across all DEOs.</p>
-            <Button size="sm" variant="outline" className="w-full bg-white hover:bg-blue-50" data-testid="button-analytics">
-              View Reports
-            </Button>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-semibold text-amber-900">Escalations</h3>
-              <AlertCircle className="w-5 h-5 text-amber-600" />
+          <Card
+            className="group relative overflow-hidden cursor-pointer hover-lift"
+            data-testid="button-escalations"
+          >
+            <div className="p-6">
+              <div className="mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <AlertCircle className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                Escalations
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {calculateAggregates.totalPendingRequests} items flagged for action
+              </p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all duration-300">
+                <span>Open</span>
+                <ChevronRight className="w-4 h-4" />
+              </div>
             </div>
-            <p className="text-sm text-amber-800 mb-4">{calculateAggregates.totalPendingRequests} items flagged for action.</p>
-            <Button size="sm" variant="outline" className="w-full bg-white hover:bg-amber-50" data-testid="button-escalations">
-              Review Now
-            </Button>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200">
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-semibold text-emerald-900">Audit Trail</h3>
-              <Clock className="w-5 h-5 text-emerald-600" />
+          <Card
+            className="group relative overflow-hidden cursor-pointer hover-lift"
+            data-testid="button-audit"
+          >
+            <div className="p-6">
+              <div className="mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Clock className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                Audit Trail
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Track all system changes and evidence submissions
+              </p>
+              <div className="mt-4 flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all duration-300">
+                <span>Open</span>
+                <ChevronRight className="w-4 h-4" />
+              </div>
             </div>
-            <p className="text-sm text-emerald-800 mb-4">Track all system changes and evidence submissions.</p>
-            <Button size="sm" variant="outline" className="w-full bg-white hover:bg-emerald-50" data-testid="button-audit">
-              View Trail
-            </Button>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </Card>
         </div>
       </div>
