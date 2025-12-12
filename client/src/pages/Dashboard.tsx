@@ -12,6 +12,7 @@ import MonitoringVisitForm from '@/pages/MonitoringVisitForm';
 import MentoringVisitForm from '@/pages/MentoringVisitForm';
 import OfficeVisitForm from '@/pages/OfficeVisitForm';
 import OtherActivityForm from '@/pages/OtherActivityForm';
+import NotificationBell from '@/components/NotificationBell';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -322,9 +323,12 @@ export default function Dashboard() {
 
         {/* Desktop Header */}
         <div className="hidden lg:block glass border-b border-white/20 sticky top-0 z-30">
-          <div className="px-8 py-6">
-            <h1 className="text-2xl font-bold gradient-text">Welcome back, {user.name}</h1>
-            <p className="text-base text-muted-foreground mt-1">Here's your dashboard overview</p>
+          <div className="px-8 py-6 flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold gradient-text">Welcome back, {user.name}</h1>
+              <p className="text-base text-muted-foreground mt-1">Here's your dashboard overview</p>
+            </div>
+            <NotificationBell />
           </div>
         </div>
 

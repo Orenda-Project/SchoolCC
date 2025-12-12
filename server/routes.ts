@@ -328,5 +328,51 @@ export async function registerRoutes(
     }
   });
 
+  // Notification endpoints
+  app.get("/api/notifications/:userId", async (req, res) => {
+    try {
+      const notifications = await storage.getUserNotifications(req.params.userId);
+      res.json(notifications);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch notifications" });
+    }
+  });
+
+  app.get("/api/notifications/:userId/unread-count", async (req, res) => {
+    try {
+      const count = await storage.getUnreadCount(req.params.userId);
+      res.json({ count });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch unread count" });
+    }
+  });
+
+  app.patch("/api/notifications/:id/read", async (req, res) => {
+    try {
+      const notification = await storage.markAsRead(req.params.id);
+      res.json(notification);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to mark notification as read" });
+    }
+  });
+
+  app.patch("/api/notifications/:userId/read-all", async (req, res) => {
+    try {
+      await storage.markAllAsRead(req.params.userId);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to mark all as read" });
+    }
+  });
+
+  app.post("/api/notifications", async (req, res) => {
+    try {
+      const notification = await storage.createNotification(req.body);
+      res.json(notification);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create notification" });
+    }
+  });
+
   return httpServer;
 }

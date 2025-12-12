@@ -145,6 +145,22 @@ export const queryResponses = pgTable("query_responses", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+// Notifications table
+export const notifications = pgTable("notifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  type: text("type").notNull(), // request, query, leave, update, system
+  priority: text("priority").notNull().default("medium"), // low, medium, high
+  isRead: boolean("is_read").notNull().default(false),
+  actionUrl: text("action_url"), // URL to navigate when clicked
+  relatedId: varchar("related_id"), // ID of related entity (request, query, etc.)
+  createdBy: varchar("created_by"),
+  createdByName: text("created_by_name"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 // Organization insert schemas
 export const insertDistrictSchema = createInsertSchema(districts).omit({
   id: true,
@@ -177,6 +193,11 @@ export const insertRequestAssigneeSchema = createInsertSchema(requestAssignees).
   createdAt: true,
 });
 
+export const insertNotificationSchema = createInsertSchema(notifications).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Organization types
 export type InsertDistrict = z.infer<typeof insertDistrictSchema>;
 export type District = typeof districts.$inferSelect;
@@ -192,3 +213,5 @@ export type InsertDataRequest = z.infer<typeof insertDataRequestSchema>;
 export type DataRequest = typeof dataRequests.$inferSelect;
 export type InsertRequestAssignee = z.infer<typeof insertRequestAssigneeSchema>;
 export type RequestAssignee = typeof requestAssignees.$inferSelect;
+export type InsertNotification = z.infer<typeof insertNotificationSchema>;
+export type Notification = typeof notifications.$inferSelect;
