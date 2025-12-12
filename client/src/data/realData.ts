@@ -19,22 +19,22 @@ export interface RealAEO {
 }
 
 export const realSchools: RealSchool[] = [
-  { emisNumber: '37330227', name: 'GGPS Chakra', code: 'SCH-001', clusterId: 'cluster-1', districtId: 'district-1' },
-  { emisNumber: '37330433', name: 'GGPS Carriage Factory', code: 'SCH-002', clusterId: 'cluster-2', districtId: 'district-1' },
-  { emisNumber: '37330130', name: 'GES JAWA', code: 'SCH-003', clusterId: 'cluster-3', districtId: 'district-1' },
-  { emisNumber: '37330322', name: 'GGPS Dhok Munshi', code: 'SCH-004', clusterId: 'cluster-4', districtId: 'district-1' },
-  { emisNumber: '37330209', name: 'GBPS Dhoke Ziarat', code: 'SCH-005', clusterId: 'cluster-5', districtId: 'district-1' },
-  { emisNumber: '37330172', name: 'GPS MILLAT ISLAMIA', code: 'SCH-006', clusterId: 'cluster-6', districtId: 'district-1' },
-  { emisNumber: '37330598', name: 'GGPS Westridge 1', code: 'SCH-007', clusterId: 'cluster-7', districtId: 'district-1' },
-  { emisNumber: '37330317', name: 'GPS DHAMIAL', code: 'SCH-008', clusterId: 'cluster-8', districtId: 'district-1' },
-  { emisNumber: '37330172-A', name: 'GGPS ARAZI SOHAL', code: 'SCH-009', clusterId: 'cluster-9', districtId: 'district-1' }, // Note: Duplicate EMIS, added suffix
-  { emisNumber: '37330612', name: 'GGES Pind Habtal', code: 'SCH-010', clusterId: 'cluster-10', districtId: 'district-1' },
-  { emisNumber: '37330410', name: 'GMPS Khabba Barala', code: 'SCH-011', clusterId: 'cluster-11', districtId: 'district-1' },
-  { emisNumber: '37330312', name: 'GPS CHAK DENAL', code: 'SCH-012', clusterId: 'cluster-12', districtId: 'district-1' },
-  { emisNumber: '37330383', name: 'GPS REHMATABAD', code: 'SCH-013', clusterId: 'cluster-13', districtId: 'district-1' },
-  { emisNumber: '37330151', name: 'GGES Anwar ul Islam Kamalabad', code: 'SCH-014', clusterId: 'cluster-1', districtId: 'district-1' },
-  { emisNumber: '37330561', name: 'GGES Kotha Kallan', code: 'SCH-015', clusterId: 'cluster-2', districtId: 'district-1' },
-  { emisNumber: '37330627', name: 'GGPS RAIKA MAIRA', code: 'SCH-016', clusterId: 'cluster-7', districtId: 'district-1' },
+  { emisNumber: '37330227', name: 'GGPS Chakra', code: 'SCH-001', clusterId: 'cluster-1', districtId: 'Rawalpindi' },
+  { emisNumber: '37330433', name: 'GGPS Carriage Factory', code: 'SCH-002', clusterId: 'cluster-2', districtId: 'Rawalpindi' },
+  { emisNumber: '37330130', name: 'GES JAWA', code: 'SCH-003', clusterId: 'cluster-3', districtId: 'Rawalpindi' },
+  { emisNumber: '37330322', name: 'GGPS Dhok Munshi', code: 'SCH-004', clusterId: 'cluster-4', districtId: 'Rawalpindi' },
+  { emisNumber: '37330209', name: 'GBPS Dhoke Ziarat', code: 'SCH-005', clusterId: 'cluster-5', districtId: 'Rawalpindi' },
+  { emisNumber: '37330172', name: 'GPS MILLAT ISLAMIA', code: 'SCH-006', clusterId: 'cluster-6', districtId: 'Rawalpindi' },
+  { emisNumber: '37330598', name: 'GGPS Westridge 1', code: 'SCH-007', clusterId: 'cluster-7', districtId: 'Rawalpindi' },
+  { emisNumber: '37330317', name: 'GPS DHAMIAL', code: 'SCH-008', clusterId: 'cluster-8', districtId: 'Rawalpindi' },
+  { emisNumber: '37330172-A', name: 'GGPS ARAZI SOHAL', code: 'SCH-009', clusterId: 'cluster-9', districtId: 'Rawalpindi' }, // Note: Duplicate EMIS, added suffix
+  { emisNumber: '37330612', name: 'GGES Pind Habtal', code: 'SCH-010', clusterId: 'cluster-10', districtId: 'Rawalpindi' },
+  { emisNumber: '37330410', name: 'GMPS Khabba Barala', code: 'SCH-011', clusterId: 'cluster-11', districtId: 'Rawalpindi' },
+  { emisNumber: '37330312', name: 'GPS CHAK DENAL', code: 'SCH-012', clusterId: 'cluster-12', districtId: 'Rawalpindi' },
+  { emisNumber: '37330383', name: 'GPS REHMATABAD', code: 'SCH-013', clusterId: 'cluster-13', districtId: 'Rawalpindi' },
+  { emisNumber: '37330151', name: 'GGES Anwar ul Islam Kamalabad', code: 'SCH-014', clusterId: 'cluster-1', districtId: 'Rawalpindi' },
+  { emisNumber: '37330561', name: 'GGES Kotha Kallan', code: 'SCH-015', clusterId: 'cluster-2', districtId: 'Rawalpindi' },
+  { emisNumber: '37330627', name: 'GGPS RAIKA MAIRA', code: 'SCH-016', clusterId: 'cluster-7', districtId: 'Rawalpindi' },
 ];
 
 export const realAEOs: RealAEO[] = [
@@ -91,22 +91,22 @@ export interface RealHeadmaster {
 
 // Headmasters - one for each school
 export const realHeadmasters: RealHeadmaster[] = [
-  { id: 'ht-1', name: 'Headmaster - GGPS Chakra', phoneNumber: '03002000001', role: 'HEAD_TEACHER', schoolId: 'SCH-001', schoolName: 'GGPS Chakra', schoolEmisNumber: '37330227', clusterId: 'cluster-1', districtId: 'district-1' },
-  { id: 'ht-2', name: 'Headmaster - GGPS Carriage Factory', phoneNumber: '03002000002', role: 'HEAD_TEACHER', schoolId: 'SCH-002', schoolName: 'GGPS Carriage Factory', schoolEmisNumber: '37330433', clusterId: 'cluster-2', districtId: 'district-1' },
-  { id: 'ht-3', name: 'Headmaster - GES JAWA', phoneNumber: '03002000003', role: 'HEAD_TEACHER', schoolId: 'SCH-003', schoolName: 'GES JAWA', schoolEmisNumber: '37330130', clusterId: 'cluster-3', districtId: 'district-1' },
-  { id: 'ht-4', name: 'Headmaster - GGPS Dhok Munshi', phoneNumber: '03002000004', role: 'HEAD_TEACHER', schoolId: 'SCH-004', schoolName: 'GGPS Dhok Munshi', schoolEmisNumber: '37330322', clusterId: 'cluster-4', districtId: 'district-1' },
-  { id: 'ht-5', name: 'Headmaster - GBPS Dhoke Ziarat', phoneNumber: '03002000005', role: 'HEAD_TEACHER', schoolId: 'SCH-005', schoolName: 'GBPS Dhoke Ziarat', schoolEmisNumber: '37330209', clusterId: 'cluster-5', districtId: 'district-1' },
-  { id: 'ht-6', name: 'Headmaster - GPS MILLAT ISLAMIA', phoneNumber: '03002000006', role: 'HEAD_TEACHER', schoolId: 'SCH-006', schoolName: 'GPS MILLAT ISLAMIA', schoolEmisNumber: '37330172', clusterId: 'cluster-6', districtId: 'district-1' },
-  { id: 'ht-7', name: 'Headmaster - GGPS Westridge 1', phoneNumber: '03002000007', role: 'HEAD_TEACHER', schoolId: 'SCH-007', schoolName: 'GGPS Westridge 1', schoolEmisNumber: '37330598', clusterId: 'cluster-7', districtId: 'district-1' },
-  { id: 'ht-8', name: 'Headmaster - GPS DHAMIAL', phoneNumber: '03002000008', role: 'HEAD_TEACHER', schoolId: 'SCH-008', schoolName: 'GPS DHAMIAL', schoolEmisNumber: '37330317', clusterId: 'cluster-8', districtId: 'district-1' },
-  { id: 'ht-9', name: 'Headmaster - GGPS ARAZI SOHAL', phoneNumber: '03002000009', role: 'HEAD_TEACHER', schoolId: 'SCH-009', schoolName: 'GGPS ARAZI SOHAL', schoolEmisNumber: '37330172-A', clusterId: 'cluster-9', districtId: 'district-1' },
-  { id: 'ht-10', name: 'Headmaster - GGES Pind Habtal', phoneNumber: '03002000010', role: 'HEAD_TEACHER', schoolId: 'SCH-010', schoolName: 'GGES Pind Habtal', schoolEmisNumber: '37330612', clusterId: 'cluster-10', districtId: 'district-1' },
-  { id: 'ht-11', name: 'Headmaster - GMPS Khabba Barala', phoneNumber: '03002000011', role: 'HEAD_TEACHER', schoolId: 'SCH-011', schoolName: 'GMPS Khabba Barala', schoolEmisNumber: '37330410', clusterId: 'cluster-11', districtId: 'district-1' },
-  { id: 'ht-12', name: 'Headmaster - GPS CHAK DENAL', phoneNumber: '03002000012', role: 'HEAD_TEACHER', schoolId: 'SCH-012', schoolName: 'GPS CHAK DENAL', schoolEmisNumber: '37330312', clusterId: 'cluster-12', districtId: 'district-1' },
-  { id: 'ht-13', name: 'Headmaster - GPS REHMATABAD', phoneNumber: '03002000013', role: 'HEAD_TEACHER', schoolId: 'SCH-013', schoolName: 'GPS REHMATABAD', schoolEmisNumber: '37330383', clusterId: 'cluster-13', districtId: 'district-1' },
-  { id: 'ht-14', name: 'Headmaster - GGES Anwar ul Islam Kamalabad', phoneNumber: '03002000014', role: 'HEAD_TEACHER', schoolId: 'SCH-014', schoolName: 'GGES Anwar ul Islam Kamalabad', schoolEmisNumber: '37330151', clusterId: 'cluster-1', districtId: 'district-1' },
-  { id: 'ht-15', name: 'Headmaster - GGES Kotha Kallan', phoneNumber: '03002000015', role: 'HEAD_TEACHER', schoolId: 'SCH-015', schoolName: 'GGES Kotha Kallan', schoolEmisNumber: '37330561', clusterId: 'cluster-2', districtId: 'district-1' },
-  { id: 'ht-16', name: 'Headmaster - GGPS RAIKA MAIRA', phoneNumber: '03002000016', role: 'HEAD_TEACHER', schoolId: 'SCH-016', schoolName: 'GGPS RAIKA MAIRA', schoolEmisNumber: '37330627', clusterId: 'cluster-7', districtId: 'district-1' },
+  { id: 'ht-1', name: 'Headmaster - GGPS Chakra', phoneNumber: '03002000001', role: 'HEAD_TEACHER', schoolId: 'SCH-001', schoolName: 'GGPS Chakra', schoolEmisNumber: '37330227', clusterId: 'cluster-1', districtId: 'Rawalpindi' },
+  { id: 'ht-2', name: 'Headmaster - GGPS Carriage Factory', phoneNumber: '03002000002', role: 'HEAD_TEACHER', schoolId: 'SCH-002', schoolName: 'GGPS Carriage Factory', schoolEmisNumber: '37330433', clusterId: 'cluster-2', districtId: 'Rawalpindi' },
+  { id: 'ht-3', name: 'Headmaster - GES JAWA', phoneNumber: '03002000003', role: 'HEAD_TEACHER', schoolId: 'SCH-003', schoolName: 'GES JAWA', schoolEmisNumber: '37330130', clusterId: 'cluster-3', districtId: 'Rawalpindi' },
+  { id: 'ht-4', name: 'Headmaster - GGPS Dhok Munshi', phoneNumber: '03002000004', role: 'HEAD_TEACHER', schoolId: 'SCH-004', schoolName: 'GGPS Dhok Munshi', schoolEmisNumber: '37330322', clusterId: 'cluster-4', districtId: 'Rawalpindi' },
+  { id: 'ht-5', name: 'Headmaster - GBPS Dhoke Ziarat', phoneNumber: '03002000005', role: 'HEAD_TEACHER', schoolId: 'SCH-005', schoolName: 'GBPS Dhoke Ziarat', schoolEmisNumber: '37330209', clusterId: 'cluster-5', districtId: 'Rawalpindi' },
+  { id: 'ht-6', name: 'Headmaster - GPS MILLAT ISLAMIA', phoneNumber: '03002000006', role: 'HEAD_TEACHER', schoolId: 'SCH-006', schoolName: 'GPS MILLAT ISLAMIA', schoolEmisNumber: '37330172', clusterId: 'cluster-6', districtId: 'Rawalpindi' },
+  { id: 'ht-7', name: 'Headmaster - GGPS Westridge 1', phoneNumber: '03002000007', role: 'HEAD_TEACHER', schoolId: 'SCH-007', schoolName: 'GGPS Westridge 1', schoolEmisNumber: '37330598', clusterId: 'cluster-7', districtId: 'Rawalpindi' },
+  { id: 'ht-8', name: 'Headmaster - GPS DHAMIAL', phoneNumber: '03002000008', role: 'HEAD_TEACHER', schoolId: 'SCH-008', schoolName: 'GPS DHAMIAL', schoolEmisNumber: '37330317', clusterId: 'cluster-8', districtId: 'Rawalpindi' },
+  { id: 'ht-9', name: 'Headmaster - GGPS ARAZI SOHAL', phoneNumber: '03002000009', role: 'HEAD_TEACHER', schoolId: 'SCH-009', schoolName: 'GGPS ARAZI SOHAL', schoolEmisNumber: '37330172-A', clusterId: 'cluster-9', districtId: 'Rawalpindi' },
+  { id: 'ht-10', name: 'Headmaster - GGES Pind Habtal', phoneNumber: '03002000010', role: 'HEAD_TEACHER', schoolId: 'SCH-010', schoolName: 'GGES Pind Habtal', schoolEmisNumber: '37330612', clusterId: 'cluster-10', districtId: 'Rawalpindi' },
+  { id: 'ht-11', name: 'Headmaster - GMPS Khabba Barala', phoneNumber: '03002000011', role: 'HEAD_TEACHER', schoolId: 'SCH-011', schoolName: 'GMPS Khabba Barala', schoolEmisNumber: '37330410', clusterId: 'cluster-11', districtId: 'Rawalpindi' },
+  { id: 'ht-12', name: 'Headmaster - GPS CHAK DENAL', phoneNumber: '03002000012', role: 'HEAD_TEACHER', schoolId: 'SCH-012', schoolName: 'GPS CHAK DENAL', schoolEmisNumber: '37330312', clusterId: 'cluster-12', districtId: 'Rawalpindi' },
+  { id: 'ht-13', name: 'Headmaster - GPS REHMATABAD', phoneNumber: '03002000013', role: 'HEAD_TEACHER', schoolId: 'SCH-013', schoolName: 'GPS REHMATABAD', schoolEmisNumber: '37330383', clusterId: 'cluster-13', districtId: 'Rawalpindi' },
+  { id: 'ht-14', name: 'Headmaster - GGES Anwar ul Islam Kamalabad', phoneNumber: '03002000014', role: 'HEAD_TEACHER', schoolId: 'SCH-014', schoolName: 'GGES Anwar ul Islam Kamalabad', schoolEmisNumber: '37330151', clusterId: 'cluster-1', districtId: 'Rawalpindi' },
+  { id: 'ht-15', name: 'Headmaster - GGES Kotha Kallan', phoneNumber: '03002000015', role: 'HEAD_TEACHER', schoolId: 'SCH-015', schoolName: 'GGES Kotha Kallan', schoolEmisNumber: '37330561', clusterId: 'cluster-2', districtId: 'Rawalpindi' },
+  { id: 'ht-16', name: 'Headmaster - GGPS RAIKA MAIRA', phoneNumber: '03002000016', role: 'HEAD_TEACHER', schoolId: 'SCH-016', schoolName: 'GGPS RAIKA MAIRA', schoolEmisNumber: '37330627', clusterId: 'cluster-7', districtId: 'Rawalpindi' },
 ];
 
 // Get headmaster by school

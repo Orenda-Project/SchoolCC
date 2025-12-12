@@ -38,7 +38,7 @@ async function seedAllUsers() {
       password: defaultPassword,
       role: "CEO",
       clusterId: null,
-      districtId: "district-1",
+      districtId: "Rawalpindi",
       schoolId: null,
       schoolName: null,
     };
@@ -61,7 +61,7 @@ async function seedAllUsers() {
       password: defaultPassword,
       role: "DEO",
       clusterId: null,
-      districtId: "district-1",
+      districtId: "Rawalpindi",
       schoolId: null,
       schoolName: null,
     };
@@ -84,7 +84,7 @@ async function seedAllUsers() {
       password: defaultPassword,
       role: "DDEO",
       clusterId: null,
-      districtId: "district-1",
+      districtId: "Rawalpindi",
       schoolId: null,
       schoolName: null,
     };
@@ -111,7 +111,7 @@ async function seedAllUsers() {
           password: defaultPassword,
           role: "AEO",
           clusterId: aeo.clusterId,
-          districtId: "district-1",
+          districtId: "Rawalpindi",
           schoolId: null,
           schoolName: null,
         });

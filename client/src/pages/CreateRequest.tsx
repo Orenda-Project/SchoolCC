@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth, VALID_ASSIGNEES, type UserRole } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { MultiSelect } from '@/components/ui/multi-select';
 import { useMockDataRequests, DataField } from '@/hooks/useMockDataRequests';
 import { useMockCollaborativeForms, FormField } from '@/hooks/useMockCollaborativeForms';
 import { useMockTeacherData } from '@/hooks/useMockTeacherData';
@@ -13,36 +14,16 @@ import { realAEOs, realSchools, realHeadmasters } from '@/data/realData';
 
 const FIELD_TYPES = ['text', 'number', 'file', 'photo', 'voice_note'];
 
-// Org hierarchy with valid direct subordinates
-const ALL_USERS = [
-  // DEOs
-  { id: 'deo-1', name: 'DEO User', role: 'DEO' as const, school: 'District' },
-  // DDEOs
-  { id: 'ddeo-1', name: 'DDEO User', role: 'DDEO' as const, school: 'District' },
-  // Real AEOs
-  ...realAEOs.map(aeo => ({
-    id: aeo.id,
-    name: `${aeo.name} (${aeo.area})`,
-    role: 'AEO' as const,
-    school: aeo.area,
-  })),
-  // Real Head Teachers
-  ...realHeadmasters.map(hm => ({
-    id: hm.id,
-    name: hm.name,
-    role: 'HEAD_TEACHER' as const,
-    school: hm.schoolName,
-  })),
-  // Teachers
-  { id: 'teacher-1', name: 'Teacher 1', role: 'TEACHER' as const, school: 'School A' },
-  { id: 'teacher-2', name: 'Teacher 2', role: 'TEACHER' as const, school: 'School A' },
-  { id: 'teacher-3', name: 'Teacher 3', role: 'TEACHER' as const, school: 'School B' },
-  { id: 'teacher-4', name: 'Teacher 4', role: 'TEACHER' as const, school: 'School B' },
-];
+interface UserOption {
+  id: string;
+  name: string;
+  role: UserRole;
+  school: string;
+}
 
-const getValidAssigneesForUser = (userRole: UserRole): typeof ALL_USERS => {
+const getValidAssigneesForUser = (allUsers: UserOption[], userRole: UserRole): UserOption[] => {
   const validRoles = VALID_ASSIGNEES[userRole] || [];
-  return ALL_USERS.filter(u => validRoles.includes(u.role as UserRole));
+  return allUsers.filter(u => validRoles.includes(u.role));
 };
 
 export default function CreateRequest() {
@@ -59,11 +40,40 @@ export default function CreateRequest() {
   const [selectedAssignees, setSelectedAssignees] = useState<string[]>([]);
   const [recordingField, setRecordingField] = useState<string | null>(null);
   const [recordedVoiceNotes, setRecordedVoiceNotes] = useState<Record<string, boolean>>({});
+  const [allUsers, setAllUsers] = useState<UserOption[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
+
+  // Fetch all users from the database
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoadingUsers(true);
+        const response = await fetch('/api/admin/users');
+        if (!response.ok) throw new Error('Failed to fetch users');
+
+        const users = await response.json();
+        const formattedUsers: UserOption[] = users.map((u: any) => ({
+          id: u.id,
+          name: u.name,
+          role: u.role as UserRole,
+          school: u.schoolName || u.clusterId || u.districtId || 'District',
+        }));
+
+        setAllUsers(formattedUsers);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   if (!user) return null;
 
-  // Get valid assignees based on user role
-  const validAssignees = getValidAssigneesForUser(user.role);
+  // Get valid assignees based on user role and hierarchy
+  const validAssignees = getValidAssigneesForUser(allUsers, user.role);
 
   const addField = () => {
     setFields([
@@ -91,12 +101,6 @@ export default function CreateRequest() {
 
   const updateField = (id: string, updates: Partial<DataField>) => {
     setFields(fields.map((f) => (f.id === id ? { ...f, ...updates } : f)));
-  };
-
-  const toggleAssignee = (id: string) => {
-    setSelectedAssignees((prev) =>
-      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
-    );
   };
 
   const toggleVoiceRecording = (fieldId: string) => {
@@ -158,7 +162,7 @@ export default function CreateRequest() {
         description,
         fields,
         selectedAssignees.map((id) => {
-          const assignee = ALL_USERS.find((a) => a.id === id);
+          const assignee = allUsers.find((a) => a.id === id);
           return {
             userId: assignee?.id || '',
             userName: assignee?.name || '',
@@ -470,32 +474,26 @@ export default function CreateRequest() {
           {/* Assignees */}
           <Card className="p-6">
             <h2 className="text-lg font-semibold text-foreground mb-4">Assign To</h2>
-            {validAssignees.length === 0 ? (
+            {loadingUsers ? (
+              <p className="text-muted-foreground text-sm">Loading users...</p>
+            ) : validAssignees.length === 0 ? (
               <p className="text-muted-foreground text-sm">
                 Your role cannot create requests (assign to subordinates). Check your permissions.
               </p>
             ) : (
-              <div className="space-y-2">
-                {validAssignees.map((assignee) => (
-                  <label
-                    key={assignee.id}
-                    className="flex items-center p-3 border border-border rounded-lg cursor-pointer hover:bg-muted/30"
-                    data-testid={`label-assignee-${assignee.id}`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedAssignees.includes(assignee.id)}
-                      onChange={() => toggleAssignee(assignee.id)}
-                      data-testid={`checkbox-assignee-${assignee.id}`}
-                    />
-                    <div className="ml-3 flex-1">
-                      <div className="font-medium text-foreground">{assignee.name}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {assignee.role} • {assignee.school}
-                      </div>
-                    </div>
-                  </label>
-                ))}
+              <div>
+                <MultiSelect
+                  options={validAssignees}
+                  selected={selectedAssignees}
+                  onSelectionChange={setSelectedAssignees}
+                  placeholder="Select assignees..."
+                  searchPlaceholder="Search by name, role, or school..."
+                />
+                {selectedAssignees.length > 0 && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {selectedAssignees.length} assignee{selectedAssignees.length === 1 ? '' : 's'} selected
+                  </p>
+                )}
               </div>
             )}
           </Card>
