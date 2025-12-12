@@ -149,7 +149,7 @@ export default function SchoolData() {
         {/* All Schools in District */}
         <div>
           <h2 className="text-lg font-semibold text-foreground mb-4">
-            {user.role === 'DEO' || user.role === 'DDEO' ? 'All Schools in District' : user.role === 'AEO' ? 'Schools in Your Area' : 'Your School'}
+            {user.role === 'CEO' ? 'All Schools' : user.role === 'DEO' || user.role === 'DDEO' ? 'All Schools in District' : user.role === 'AEO' ? 'Schools in Your Area' : 'Your School'}
           </h2>
           <div className="grid gap-4">
             {visibleSchools.map((school) => (

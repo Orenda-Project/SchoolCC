@@ -70,7 +70,7 @@ export default function DataRequests() {
             </div>
           </div>
           <div className="flex gap-2">
-            {(user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DEO' || user.role === 'DDEO') && (
+            {(user.role === 'CEO' || user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DEO' || user.role === 'DDEO') && (
               <Button
                 onClick={() => navigate('/create-request')}
                 data-testid="button-create-new"
