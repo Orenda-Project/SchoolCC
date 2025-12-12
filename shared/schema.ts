@@ -69,6 +69,9 @@ export const dataRequests = pgTable("data_requests", {
   isArchived: boolean("is_archived").notNull().default(false),
   dueDate: timestamp("due_date").notNull(),
   fields: json("fields").notNull(), // JSON array of field definitions
+  // Voice note attachment for description
+  descriptionVoiceUrl: text("description_voice_url"),
+  descriptionVoiceFileName: text("description_voice_file_name"),
   // Google Sheet attachments
   schoolSheetUrl: text("school_sheet_url"), // CSV download URL for individual school sheets
   aggregatedSheetUrl: text("aggregated_sheet_url"), // CSV download URL for aggregated data
