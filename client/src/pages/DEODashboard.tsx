@@ -954,7 +954,14 @@ export default function DEODashboard() {
             </div>
             <div className="space-y-4">
               {activeVisits.map((visit) => (
-                <Card key={visit.id} className="p-6">
+                <Card 
+                  key={visit.id} 
+                  className="p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:border-purple-300"
+                  onClick={() => {
+                    setShowVisitsModal(false);
+                    navigate(`/visit/${visit.id}`);
+                  }}
+                >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
@@ -985,9 +992,12 @@ export default function DEODashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                      <span className="text-sm font-medium text-green-600">In Progress</span>
+                    <div className="flex flex-col items-end gap-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                        <span className="text-sm font-medium text-green-600">In Progress</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">Click to view details</span>
                     </div>
                   </div>
                 </Card>
