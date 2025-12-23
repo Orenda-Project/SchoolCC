@@ -1,4 +1,11 @@
 import { useState, useCallback } from 'react';
+import { realSchools } from '@/data/realData';
+
+// Build school names lookup from real data
+const SCHOOL_NAMES: Record<string, string> = realSchools.reduce((acc, school) => {
+  acc[school.code] = school.name;
+  return acc;
+}, {} as Record<string, string>);
 
 export interface ActivityComment {
   id: string;
@@ -35,8 +42,8 @@ export interface Activity {
 const mockActivities: Activity[] = [
   {
     id: 'act-1',
-    schoolId: 'school-1',
-    schoolName: 'Government Primary School, Zone A',
+    schoolId: 'SCH-001',
+    schoolName: SCHOOL_NAMES['SCH-001'] || 'GGPS Chakra',
     createdBy: 'teacher-1',
     createdByName: 'Teacher 1',
     createdByRole: 'TEACHER',
@@ -66,8 +73,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-2',
-    schoolId: 'school-1',
-    schoolName: 'Government Primary School, Zone A',
+    schoolId: 'SCH-001',
+    schoolName: SCHOOL_NAMES['SCH-001'] || 'GGPS Chakra',
     createdBy: 'teacher-2',
     createdByName: 'Teacher 2',
     createdByRole: 'TEACHER',
@@ -86,8 +93,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-3',
-    schoolId: 'school-1',
-    schoolName: 'Government Primary School, Zone A',
+    schoolId: 'SCH-001',
+    schoolName: SCHOOL_NAMES['SCH-001'] || 'GGPS Chakra',
     createdBy: 'teacher-1',
     createdByName: 'Teacher 1',
     createdByRole: 'TEACHER',
@@ -117,8 +124,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-4',
-    schoolId: 'school-2',
-    schoolName: 'Government Upper Primary School',
+    schoolId: 'SCH-002',
+    schoolName: SCHOOL_NAMES['SCH-002'] || 'GGPS Carriage Factory',
     createdBy: 'teacher-3',
     createdByName: 'Teacher 3',
     createdByRole: 'TEACHER',
@@ -148,8 +155,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-5',
-    schoolId: 'school-2',
-    schoolName: 'Government Upper Primary School',
+    schoolId: 'SCH-002',
+    schoolName: SCHOOL_NAMES['SCH-002'] || 'GGPS Carriage Factory',
     createdBy: 'teacher-4',
     createdByName: 'Teacher 4',
     createdByRole: 'TEACHER',
@@ -187,8 +194,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-6',
-    schoolId: 'school-3',
-    schoolName: 'Government Secondary School',
+    schoolId: 'SCH-003',
+    schoolName: SCHOOL_NAMES['SCH-003'] || 'GES JAWA',
     createdBy: 'teacher-5',
     createdByName: 'Teacher 5',
     createdByRole: 'TEACHER',
@@ -219,8 +226,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-7',
-    schoolId: 'school-3',
-    schoolName: 'Government Secondary School',
+    schoolId: 'SCH-003',
+    schoolName: SCHOOL_NAMES['SCH-003'] || 'GES JAWA',
     createdBy: 'teacher-6',
     createdByName: 'Teacher 6',
     createdByRole: 'TEACHER',
@@ -239,8 +246,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-8',
-    schoolId: 'school-1',
-    schoolName: 'Government Primary School, Zone A',
+    schoolId: 'SCH-001',
+    schoolName: SCHOOL_NAMES['SCH-001'] || 'GGPS Chakra',
     createdBy: 'head-1',
     createdByName: 'Head Teacher',
     createdByRole: 'HEAD_TEACHER',
@@ -270,8 +277,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-9',
-    schoolId: 'school-2',
-    schoolName: 'Government Upper Primary School',
+    schoolId: 'SCH-002',
+    schoolName: SCHOOL_NAMES['SCH-002'] || 'GGPS Carriage Factory',
     createdBy: 'teacher-3',
     createdByName: 'Teacher 3',
     createdByRole: 'TEACHER',
@@ -310,8 +317,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-10',
-    schoolId: 'school-3',
-    schoolName: 'Government Secondary School',
+    schoolId: 'SCH-003',
+    schoolName: SCHOOL_NAMES['SCH-003'] || 'GES JAWA',
     createdBy: 'teacher-5',
     createdByName: 'Teacher 5',
     createdByRole: 'TEACHER',
@@ -331,8 +338,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-11',
-    schoolId: 'school-1',
-    schoolName: 'Government Primary School, Zone A',
+    schoolId: 'SCH-001',
+    schoolName: SCHOOL_NAMES['SCH-001'] || 'GGPS Chakra',
     createdBy: 'teacher-2',
     createdByName: 'Teacher 2',
     createdByRole: 'TEACHER',
@@ -361,8 +368,8 @@ const mockActivities: Activity[] = [
   },
   {
     id: 'act-12',
-    schoolId: 'school-2',
-    schoolName: 'Government Upper Primary School',
+    schoolId: 'SCH-002',
+    schoolName: SCHOOL_NAMES['SCH-002'] || 'GGPS Carriage Factory',
     createdBy: 'head-2',
     createdByName: 'Head Teacher 2',
     createdByRole: 'HEAD_TEACHER',

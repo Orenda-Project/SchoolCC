@@ -9,14 +9,15 @@ import { useLocation } from 'wouter';
 import { ArrowLeft, Plus, Heart, MessageCircle, Share2, Download, FileImage, Images, Archive } from 'lucide-react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { realSchools } from '@/data/realData';
 
-const SCHOOL_NAMES: Record<string, string> = {
-  'school-1': 'Government Primary School, Zone A',
-  'school-2': 'Government Upper Primary School',
-  'school-3': 'Government Secondary School',
-};
+// Build school names lookup from real data
+const SCHOOL_NAMES: Record<string, string> = realSchools.reduce((acc, school) => {
+  acc[school.code] = school.name;
+  return acc;
+}, {} as Record<string, string>);
 
-const DEFAULT_SCHOOL_ID = 'school-1';
+const DEFAULT_SCHOOL_ID = 'SCH-001';
 
 export default function SchoolAlbum() {
   const { schoolId } = useParams();

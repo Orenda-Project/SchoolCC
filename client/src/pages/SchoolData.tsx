@@ -316,6 +316,150 @@ export default function SchoolData() {
           </div>
         </div>
       </div>
+
+      {/* School Details Modal */}
+      {selectedSchool && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedSchool(null)}>
+          <div className="bg-white dark:bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="p-6 border-b border-border flex items-center justify-between sticky top-0 bg-white dark:bg-gray-900">
+              <div>
+                <h2 className="text-xl font-bold text-foreground">{selectedSchool.name}</h2>
+                <p className="text-sm text-muted-foreground">{selectedSchool.district} • {selectedSchool.block}</p>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setSelectedSchool(null)}>
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Basic Information */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3">Basic Information</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-muted-foreground">Principal</p>
+                    <p className="font-medium">{selectedSchool.principalName}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Compliance Score</p>
+                    <p className={`font-bold ${selectedSchool.compliance >= 90 ? 'text-green-600' : selectedSchool.compliance >= 80 ? 'text-blue-600' : 'text-red-600'}`}>
+                      {selectedSchool.compliance}%
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Enrollment */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3">Enrollment</h3>
+                <div className="grid grid-cols-4 gap-4 text-sm">
+                  <div className="bg-muted/20 p-3 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-primary">{selectedSchool.totalStudents}</p>
+                    <p className="text-xs text-muted-foreground">Total Students</p>
+                  </div>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-blue-600">{selectedSchool.enrollment.boys}</p>
+                    <p className="text-xs text-muted-foreground">Boys</p>
+                  </div>
+                  <div className="bg-pink-50 dark:bg-pink-900/20 p-3 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-pink-600">{selectedSchool.enrollment.girls}</p>
+                    <p className="text-xs text-muted-foreground">Girls</p>
+                  </div>
+                  <div className="bg-muted/20 p-3 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-foreground">{selectedSchool.totalTeachers}</p>
+                    <p className="text-xs text-muted-foreground">Teachers</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Infrastructure */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3">Infrastructure</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground">Classrooms:</span>
+                    <span className="font-medium">{selectedSchool.infrastructure.classrooms}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground">Toilets:</span>
+                    <span className="font-medium">{selectedSchool.infrastructure.toilets}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Droplet className={`w-4 h-4 ${selectedSchool.infrastructure.waterSource ? 'text-blue-600' : 'text-gray-400'}`} />
+                    <span className={selectedSchool.infrastructure.waterSource ? 'text-green-600' : 'text-red-600'}>
+                      {selectedSchool.infrastructure.waterSource ? 'Water Available' : 'No Water'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Zap className={`w-4 h-4 ${selectedSchool.infrastructure.electricity ? 'text-yellow-600' : 'text-gray-400'}`} />
+                    <span className={selectedSchool.infrastructure.electricity ? 'text-green-600' : 'text-red-600'}>
+                      {selectedSchool.infrastructure.electricity ? 'Electricity Available' : 'No Electricity'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Furniture Inventory */}
+              {selectedSchool.furniture && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">Furniture Inventory</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border">
+                          <th className="text-left py-2 px-2 font-medium">Item</th>
+                          <th className="text-center py-2 px-2 font-medium text-green-600">New</th>
+                          <th className="text-center py-2 px-2 font-medium text-gray-600">Old</th>
+                          <th className="text-center py-2 px-2 font-medium text-blue-600">In Use</th>
+                          <th className="text-center py-2 px-2 font-medium text-red-600">Broken</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.entries(selectedSchool.furniture).map(([key, value]) => (
+                          <tr key={key} className="border-b border-border/50">
+                            <td className="py-2 px-2 capitalize">{key}</td>
+                            <td className="py-2 px-2 text-center text-green-600">{value.new}</td>
+                            <td className="py-2 px-2 text-center text-gray-600">{value.old}</td>
+                            <td className="py-2 px-2 text-center text-blue-600">{value.inUse}</td>
+                            <td className="py-2 px-2 text-center text-red-600">{value.broken}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-4 border-t border-border">
+                <Button
+                  onClick={() => {
+                    const schoolId = selectedSchool.id;
+                    setSelectedSchool(null);
+                    navigate(`/album/${schoolId}`);
+                  }}
+                  className="flex-1"
+                >
+                  <ImageIcon className="w-4 h-4 mr-2" />
+                  View Album
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    if (selectedSchool) {
+                      downloadSchoolInventory(selectedSchool);
+                    }
+                  }}
+                  className="flex-1"
+                >
+                  <FileSpreadsheet className="w-4 h-4 mr-2" />
+                  Download XLSX
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
