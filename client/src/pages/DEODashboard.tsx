@@ -28,6 +28,7 @@ import {
   UserX,
   UsersRound,
   ChevronRight,
+  ChevronDown,
   Eye,
   X,
   Menu,
@@ -36,6 +37,26 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { SchoolsTable } from '@/components/deo/SchoolsTable';
+import { LucideIcon } from 'lucide-react';
+
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  color: string;
+  action: () => void;
+  description: string;
+  badge?: number | string;
+  live?: boolean;
+  alert?: boolean;
+}
+
+interface MenuCategory {
+  category: string;
+  icon: LucideIcon;
+  color: string;
+  items: MenuItem[];
+}
 
 export default function DEODashboard() {
   const { user, logout } = useAuth();
@@ -177,106 +198,189 @@ export default function DEODashboard() {
     };
   }, [schools, staffStats, visits, requests, activities]);
 
-  // Menu items for quick access
-  const menuItems = [
+  // Grouped menu categories for quick access
+  const menuCategories: MenuCategory[] = [
     {
-      label: 'Schools Overview',
+      category: 'Schools & Performance',
       icon: Building2,
-      color: 'from-blue-500 to-blue-600',
-      action: () => { setShowSchoolsModal(true); setShowMenuSidebar(false); },
-      description: 'View all schools and performance'
+      color: 'from-blue-500 to-indigo-600',
+      items: [
+        {
+          id: 'schools-overview',
+          label: 'Schools Overview',
+          icon: Building2,
+          color: 'from-blue-500 to-blue-600',
+          action: () => { setShowSchoolsModal(true); setShowMenuSidebar(false); },
+          description: 'View all schools and performance',
+          badge: schools.length,
+        },
+        {
+          id: 'school-performance',
+          label: 'School Performance',
+          icon: Award,
+          color: 'from-emerald-500 to-emerald-600',
+          action: () => { setShowPerformanceModal(true); setShowMenuSidebar(false); },
+          description: 'View rankings and compliance',
+          badge: `${avgCompliance}%`,
+        },
+        {
+          id: 'school-inventory',
+          label: 'School Inventory',
+          icon: Building2,
+          color: 'from-indigo-500 to-indigo-600',
+          action: () => { navigate('/school-data'); setShowMenuSidebar(false); },
+          description: 'Infrastructure and resources',
+        },
+        {
+          id: 'school-albums',
+          label: 'School Albums',
+          icon: Image,
+          color: 'from-pink-500 to-pink-600',
+          action: () => { navigate('/school-data'); setShowMenuSidebar(false); },
+          description: 'School photos and activities',
+        },
+      ],
     },
     {
-      label: 'Active Visits',
+      category: 'Field Operations',
       icon: MapPin,
-      color: 'from-purple-500 to-purple-600',
-      action: () => { setShowVisitsModal(true); setShowMenuSidebar(false); },
-      description: 'Track live AEO field visits'
+      color: 'from-purple-500 to-rose-600',
+      items: [
+        {
+          id: 'active-visits',
+          label: 'Active Visits',
+          icon: MapPin,
+          color: 'from-purple-500 to-purple-600',
+          action: () => { setShowVisitsModal(true); setShowMenuSidebar(false); },
+          description: 'Track live AEO field visits',
+          badge: activeVisits.length,
+          live: activeVisits.length > 0,
+        },
+        {
+          id: 'school-visits',
+          label: 'School Visits',
+          icon: MapPin,
+          color: 'from-rose-500 to-rose-600',
+          action: () => { navigate('/school-visits'); setShowMenuSidebar(false); },
+          description: 'All scheduled visits',
+        },
+        {
+          id: 'recent-activities',
+          label: 'Recent Activities',
+          icon: Activity,
+          color: 'from-slate-500 to-slate-600',
+          action: () => { setShowActivitiesModal(true); setShowMenuSidebar(false); },
+          description: 'Latest AEO activities',
+          badge: recentActivities.length,
+        },
+      ],
     },
     {
-      label: 'Staff Attendance',
+      category: 'Staff Management',
       icon: UsersRound,
-      color: 'from-teal-500 to-teal-600',
-      action: () => { setShowStaffModal(true); setShowMenuSidebar(false); },
-      description: 'View staff presence and absences'
+      color: 'from-teal-500 to-green-600',
+      items: [
+        {
+          id: 'staff-attendance',
+          label: 'Staff Attendance',
+          icon: UsersRound,
+          color: 'from-teal-500 to-teal-600',
+          action: () => { setShowStaffModal(true); setShowMenuSidebar(false); },
+          description: 'View staff presence and absences',
+          badge: `${totalPresent}/${totalStaff}`,
+        },
+        {
+          id: 'staff-present',
+          label: 'Staff Present',
+          icon: UserCheck,
+          color: 'from-green-500 to-green-600',
+          action: () => { setShowStaffModal(true); setShowMenuSidebar(false); },
+          description: 'View present staff today',
+          badge: totalPresent,
+        },
+        {
+          id: 'staff-absent',
+          label: 'Staff Absent',
+          icon: UserX,
+          color: 'from-red-500 to-red-600',
+          action: () => { setShowStaffModal(true); setShowMenuSidebar(false); },
+          description: 'View absent staff today',
+          badge: totalAbsent,
+        },
+        {
+          id: 'leave-calendar',
+          label: 'Leave Calendar',
+          icon: Calendar,
+          color: 'from-sky-500 to-sky-600',
+          action: () => { navigate('/calendar'); setShowMenuSidebar(false); },
+          description: 'Staff leave schedules',
+        },
+      ],
     },
     {
-      label: 'Pending Requests',
+      category: 'Data & Requests',
       icon: FileText,
-      color: 'from-amber-500 to-amber-600',
-      action: () => { setShowRequestsModal(true); setShowMenuSidebar(false); },
-      description: 'Manage data requests'
-    },
-    {
-      label: 'School Performance',
-      icon: Award,
-      color: 'from-emerald-500 to-emerald-600',
-      action: () => { setShowPerformanceModal(true); setShowMenuSidebar(false); },
-      description: 'View rankings and compliance'
-    },
-    {
-      label: 'Recent Activities',
-      icon: Activity,
-      color: 'from-slate-500 to-slate-600',
-      action: () => { setShowActivitiesModal(true); setShowMenuSidebar(false); },
-      description: 'Latest AEO activities'
-    },
-    {
-      label: 'School Inventory',
-      icon: Building2,
-      color: 'from-indigo-500 to-indigo-600',
-      action: () => { navigate('/school-data'); setShowMenuSidebar(false); },
-      description: 'Infrastructure and resources'
-    },
-    {
-      label: 'School Albums',
-      icon: Image,
-      color: 'from-pink-500 to-pink-600',
-      action: () => { navigate('/school-data'); setShowMenuSidebar(false); },
-      description: 'School photos and activities'
-    },
-    {
-      label: 'All Data Requests',
-      icon: FileText,
-      color: 'from-violet-500 to-violet-600',
-      action: () => { navigate('/data-requests'); setShowMenuSidebar(false); },
-      description: 'View all requests'
-    },
-    {
-      label: 'Leave Calendar',
-      icon: Calendar,
-      color: 'from-sky-500 to-sky-600',
-      action: () => { navigate('/calendar'); setShowMenuSidebar(false); },
-      description: 'Staff leave schedules'
-    },
-    {
-      label: 'School Visits',
-      icon: MapPin,
-      color: 'from-rose-500 to-rose-600',
-      action: () => { navigate('/school-visits'); setShowMenuSidebar(false); },
-      description: 'All scheduled visits'
-    },
-    {
-      label: 'Queries',
-      icon: MessageSquare,
-      color: 'from-fuchsia-500 to-fuchsia-600',
-      action: () => { navigate('/queries'); setShowMenuSidebar(false); },
-      description: 'Staff queries and support'
-    },
-    {
-      label: 'Create Request',
-      icon: Plus,
-      color: 'from-green-500 to-green-600',
-      action: () => { navigate('/create-request'); setShowMenuSidebar(false); },
-      description: 'Create new data request'
+      color: 'from-amber-500 to-violet-600',
+      items: [
+        {
+          id: 'pending-requests',
+          label: 'Pending Requests',
+          icon: FileText,
+          color: 'from-amber-500 to-amber-600',
+          action: () => { setShowRequestsModal(true); setShowMenuSidebar(false); },
+          description: 'Manage data requests',
+          badge: pendingRequests.length,
+          alert: highPriorityCount > 0,
+        },
+        {
+          id: 'all-requests',
+          label: 'All Data Requests',
+          icon: FileText,
+          color: 'from-violet-500 to-violet-600',
+          action: () => { navigate('/data-requests'); setShowMenuSidebar(false); },
+          description: 'View all requests',
+        },
+        {
+          id: 'create-request',
+          label: 'Create Request',
+          icon: Plus,
+          color: 'from-green-500 to-green-600',
+          action: () => { navigate('/create-request'); setShowMenuSidebar(false); },
+          description: 'Create new data request',
+        },
+        {
+          id: 'queries',
+          label: 'Queries',
+          icon: MessageSquare,
+          color: 'from-fuchsia-500 to-fuchsia-600',
+          action: () => { navigate('/queries'); setShowMenuSidebar(false); },
+          description: 'Staff queries and support',
+        },
+      ],
     },
   ];
 
+  // Flattened menu items for search
+  const allMenuItems = menuCategories.flatMap(cat => cat.items);
+
   // Filter menu items based on search query
-  const filteredMenuItems = menuItems.filter(item =>
+  const filteredMenuItems = allMenuItems.filter(item =>
     item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Track expanded categories
+  const [expandedCategories, setExpandedCategories] = useState<string[]>(
+    menuCategories.map(c => c.category)
+  );
+
+  const toggleCategory = (category: string) => {
+    setExpandedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -361,31 +465,98 @@ export default function DEODashboard() {
               </div>
             </div>
 
-            {/* Menu Items */}
-            <div className="p-4 space-y-2">
-              {filteredMenuItems.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <p>No features found</p>
-                  <p className="text-sm mt-1">Try a different search term</p>
-                </div>
+            {/* Menu Items - Grouped */}
+            <div className="p-4 space-y-4">
+              {searchQuery ? (
+                filteredMenuItems.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <p>No features found</p>
+                    <p className="text-sm mt-1">Try a different search term</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {filteredMenuItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={item.action}
+                          className="w-full flex items-start gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 group text-left"
+                        >
+                          <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-110 transition-transform duration-200`}>
+                            <Icon className="w-5 h-5 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="font-semibold text-gray-900 dark:text-white text-sm">{item.label}</p>
+                              {item.badge !== undefined && (
+                                <Badge className="text-xs">{String(item.badge)}</Badge>
+                              )}
+                              {item.live && (
+                                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                )
               ) : (
-                filteredMenuItems.map((item, index) => {
-                  const Icon = item.icon;
+                menuCategories.map((category) => {
+                  const CategoryIcon = category.icon;
+                  const isExpanded = expandedCategories.includes(category.category);
                   return (
-                    <button
-                      key={index}
-                      onClick={item.action}
-                      className="w-full flex items-start gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 group text-left"
-                    >
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-110 transition-transform duration-200`}>
-                        <Icon className="w-5 h-5 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900 dark:text-white text-sm">{item.label}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </button>
+                    <div key={category.category} className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                      <button
+                        onClick={() => toggleCategory(category.category)}
+                        className={`w-full flex items-center gap-3 p-3 bg-gradient-to-r ${category.color} text-white hover:opacity-90 transition-all duration-200`}
+                      >
+                        <CategoryIcon className="w-5 h-5" />
+                        <span className="font-semibold flex-1 text-left">{category.category}</span>
+                        <Badge className="bg-white/20 text-white">{category.items.length}</Badge>
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`} />
+                      </button>
+                      {isExpanded && (
+                        <div className="p-2 space-y-1 bg-gray-50 dark:bg-gray-800/50">
+                          {category.items.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                              <button
+                                key={item.id}
+                                onClick={item.action}
+                                className="w-full flex items-start gap-3 p-3 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition-all duration-200 group text-left"
+                              >
+                                <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center shadow-sm flex-shrink-0 group-hover:scale-110 transition-transform duration-200`}>
+                                  <Icon className="w-4 h-4 text-white" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <p className="font-medium text-gray-900 dark:text-white text-sm">{item.label}</p>
+                                    {item.badge !== undefined && (
+                                      <Badge variant="secondary" className="text-xs h-5">{item.badge}</Badge>
+                                    )}
+                                    {item.live && (
+                                      <div className="flex items-center gap-1">
+                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                                        <span className="text-xs text-green-600 font-medium">Live</span>
+                                      </div>
+                                    )}
+                                    {item.alert && (
+                                      <AlertCircle className="w-4 h-4 text-red-500" />
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>
+                                </div>
+                                <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   );
                 })
               )}
