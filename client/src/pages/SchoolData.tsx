@@ -51,14 +51,33 @@ export default function SchoolData() {
       { Category: 'Electricity', Item: school.infrastructure.electricity ? 'Available' : 'Not Available', Details: '' },
     ];
 
+    // Add furniture inventory if available
+    if (school.furniture) {
+      inventoryData.push(
+        { Category: '', Item: '', Details: '' },
+        { Category: 'FURNITURE INVENTORY', Item: '', Details: '' },
+        { Category: '', Item: 'New', Details: 'Old', Status: 'In Use', Broken: 'Broken' } as any,
+        { Category: 'Desks', Item: school.furniture.desks.new.toString(), Details: school.furniture.desks.old.toString(), Status: school.furniture.desks.inUse.toString(), Broken: school.furniture.desks.broken.toString() } as any,
+        { Category: 'Chairs', Item: school.furniture.chairs.new.toString(), Details: school.furniture.chairs.old.toString(), Status: school.furniture.chairs.inUse.toString(), Broken: school.furniture.chairs.broken.toString() } as any,
+        { Category: 'Benches', Item: school.furniture.benches.new.toString(), Details: school.furniture.benches.old.toString(), Status: school.furniture.benches.inUse.toString(), Broken: school.furniture.benches.broken.toString() } as any,
+        { Category: 'Blackboards', Item: school.furniture.blackboards.new.toString(), Details: school.furniture.blackboards.old.toString(), Status: school.furniture.blackboards.inUse.toString(), Broken: school.furniture.blackboards.broken.toString() } as any,
+        { Category: 'Whiteboards', Item: school.furniture.whiteboards.new.toString(), Details: school.furniture.whiteboards.old.toString(), Status: school.furniture.whiteboards.inUse.toString(), Broken: school.furniture.whiteboards.broken.toString() } as any,
+        { Category: 'Fans', Item: school.furniture.fans.new.toString(), Details: school.furniture.fans.old.toString(), Status: school.furniture.fans.inUse.toString(), Broken: school.furniture.fans.broken.toString() } as any,
+        { Category: 'Computers', Item: school.furniture.computers.new.toString(), Details: school.furniture.computers.old.toString(), Status: school.furniture.computers.inUse.toString(), Broken: school.furniture.computers.broken.toString() } as any,
+        { Category: 'Cupboards', Item: school.furniture.cupboards.new.toString(), Details: school.furniture.cupboards.old.toString(), Status: school.furniture.cupboards.inUse.toString(), Broken: school.furniture.cupboards.broken.toString() } as any
+      );
+    }
+
     // Create worksheet
     const ws = XLSX.utils.json_to_sheet(inventoryData);
 
     // Set column widths
     ws['!cols'] = [
       { wch: 25 },  // Category
-      { wch: 30 },  // Item
-      { wch: 20 },  // Details
+      { wch: 15 },  // Item/New
+      { wch: 15 },  // Details/Old
+      { wch: 15 },  // Status/In Use
+      { wch: 15 },  // Broken
     ];
 
     // Create workbook

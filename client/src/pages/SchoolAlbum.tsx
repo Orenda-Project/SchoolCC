@@ -4,9 +4,11 @@ import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useMockActivities } from '@/hooks/useMockActivities';
+import { useMockActivities, Activity } from '@/hooks/useMockActivities';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Plus, Heart, MessageCircle, Share2 } from 'lucide-react';
+import { ArrowLeft, Plus, Heart, MessageCircle, Share2, Download, FileImage, Images, Archive } from 'lucide-react';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const SCHOOL_NAMES: Record<string, string> = {
   'school-1': 'Government Primary School, Zone A',
@@ -66,6 +68,53 @@ export default function SchoolAlbum() {
     }
   };
 
+  // Download single activity (mini album)
+  const downloadMiniAlbum = async (activity: Activity) => {
+    const zip = new JSZip();
+    const folder = zip.folder(activity.title.substring(0, 30));
+
+    // Add activity metadata
+    const metadata = `Title: ${activity.title}\nDate: ${activity.createdAt.toLocaleDateString()}\nCreated By: ${activity.createdByName}\nDescription: ${activity.description}\n\nPhotos: ${activity.photos.length}`;
+    folder?.file('README.txt', metadata);
+
+    // In real scenario, photos would be downloaded from URLs
+    // For now, creating placeholder files
+    activity.photos.forEach((photo, index) => {
+      const photoInfo = `Photo ${index + 1}\nCaption: ${photo.caption}\nURL: ${photo.url}`;
+      folder?.file(`photo_${index + 1}_${photo.caption.substring(0, 20).replace(/[^a-z0-9]/gi, '_')}.txt`, photoInfo);
+    });
+
+    // Generate and download zip
+    const content = await zip.generateAsync({ type: 'blob' });
+    saveAs(content, `${schoolName.replace(/[^a-z0-9]/gi, '_')}_${activity.title.substring(0, 20).replace(/[^a-z0-9]/gi, '_')}.zip`);
+  };
+
+  // Download full school album
+  const downloadFullAlbum = async () => {
+    const zip = new JSZip();
+
+    // Add school info
+    const schoolInfo = `School: ${schoolName}\nTotal Activities: ${activities.length}\nDownloaded: ${new Date().toLocaleString()}`;
+    zip.file('School_Album_Info.txt', schoolInfo);
+
+    // Add each activity
+    activities.forEach((activity, idx) => {
+      const activityFolder = zip.folder(`${idx + 1}_${activity.title.substring(0, 30).replace(/[^a-z0-9]/gi, '_')}`);
+
+      const metadata = `Title: ${activity.title}\nDate: ${activity.createdAt.toLocaleDateString()}\nCreated By: ${activity.createdByName}\nDescription: ${activity.description}\n\nComments: ${activity.comments.length}\nReactions: ${activity.reactions.length}`;
+      activityFolder?.file('Activity_Info.txt', metadata);
+
+      activity.photos.forEach((photo, photoIdx) => {
+        const photoInfo = `Photo ${photoIdx + 1}\nCaption: ${photo.caption}\nURL: ${photo.url}`;
+        activityFolder?.file(`${photoIdx + 1}_${photo.caption.substring(0, 20).replace(/[^a-z0-9]/gi, '_')}.txt`, photoInfo);
+      });
+    });
+
+    // Generate and download zip
+    const content = await zip.generateAsync({ type: 'blob' });
+    saveAs(content, `${schoolName.replace(/[^a-z0-9]/gi, '_')}_Full_Album_${new Date().toISOString().split('T')[0]}.zip`);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -85,15 +134,27 @@ export default function SchoolAlbum() {
               <p className="text-sm text-muted-foreground">School Album & Activities</p>
             </div>
           </div>
-          {(user.role === 'TEACHER' || user.role === 'HEAD_TEACHER') && (
-            <Button
-              onClick={() => navigate(`/create-activity/${schoolId}`)}
-              data-testid="button-create-activity"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Activity
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {activities.length > 0 && (
+              <Button
+                variant="outline"
+                onClick={downloadFullAlbum}
+                data-testid="button-download-full-album"
+              >
+                <Archive className="w-4 h-4 mr-2" />
+                Download Album
+              </Button>
+            )}
+            {(user.role === 'TEACHER' || user.role === 'HEAD_TEACHER') && (
+              <Button
+                onClick={() => navigate(`/create-activity/${schoolId}`)}
+                data-testid="button-create-activity"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                New Activity
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -122,6 +183,15 @@ export default function SchoolAlbum() {
                         by {activity.createdByName} • {activity.createdAt.toLocaleDateString()}
                       </p>
                     </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => downloadMiniAlbum(activity)}
+                      data-testid={`button-download-activity-${activity.id}`}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download
+                    </Button>
                   </div>
                   <p className="text-foreground mt-3">{activity.description}</p>
                 </div>

@@ -52,6 +52,16 @@ export interface SchoolData {
     girls: number;
   };
   compliance: number; // percentage
+  furniture?: {
+    desks: { new: number; old: number; inUse: number; broken: number };
+    chairs: { new: number; old: number; inUse: number; broken: number };
+    benches: { new: number; old: number; inUse: number; broken: number };
+    blackboards: { new: number; old: number; inUse: number; broken: number };
+    whiteboards: { new: number; old: number; inUse: number; broken: number };
+    fans: { new: number; old: number; inUse: number; broken: number };
+    computers: { new: number; old: number; inUse: number; broken: number };
+    cupboards: { new: number; old: number; inUse: number; broken: number };
+  };
 }
 
 const mockTeachers: Teacher[] = [
@@ -87,6 +97,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 8, toilets: 4, waterSource: true, electricity: true },
     enrollment: { boys: 185, girls: 160 },
     compliance: 95,
+    furniture: {
+      desks: { new: 45, old: 80, inUse: 120, broken: 5 },
+      chairs: { new: 50, old: 95, inUse: 140, broken: 5 },
+      benches: { new: 20, old: 35, inUse: 50, broken: 5 },
+      blackboards: { new: 4, old: 4, inUse: 8, broken: 0 },
+      whiteboards: { new: 2, old: 1, inUse: 3, broken: 0 },
+      fans: { new: 12, old: 8, inUse: 18, broken: 2 },
+      computers: { new: 10, old: 5, inUse: 12, broken: 3 },
+      cupboards: { new: 6, old: 4, inUse: 10, broken: 0 },
+    },
   },
   {
     id: 'SCH-002',
@@ -99,6 +119,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 12, toilets: 6, waterSource: true, electricity: true },
     enrollment: { boys: 280, girls: 232 },
     compliance: 93,
+    furniture: {
+      desks: { new: 75, old: 120, inUse: 180, broken: 15 },
+      chairs: { new: 80, old: 140, inUse: 210, broken: 10 },
+      benches: { new: 30, old: 50, inUse: 75, broken: 5 },
+      blackboards: { new: 6, old: 6, inUse: 12, broken: 0 },
+      whiteboards: { new: 3, old: 2, inUse: 5, broken: 0 },
+      fans: { new: 18, old: 12, inUse: 25, broken: 5 },
+      computers: { new: 20, old: 8, inUse: 25, broken: 3 },
+      cupboards: { new: 8, old: 6, inUse: 14, broken: 0 },
+    },
   },
   {
     id: 'SCH-003',
@@ -111,6 +141,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 18, toilets: 10, waterSource: true, electricity: true },
     enrollment: { boys: 375, girls: 312 },
     compliance: 92,
+    furniture: {
+      desks: { new: 100, old: 180, inUse: 260, broken: 20 },
+      chairs: { new: 120, old: 200, inUse: 300, broken: 20 },
+      benches: { new: 45, old: 70, inUse: 110, broken: 5 },
+      blackboards: { new: 9, old: 9, inUse: 18, broken: 0 },
+      whiteboards: { new: 5, old: 3, inUse: 8, broken: 0 },
+      fans: { new: 25, old: 18, inUse: 38, broken: 5 },
+      computers: { new: 30, old: 15, inUse: 40, broken: 5 },
+      cupboards: { new: 12, old: 8, inUse: 20, broken: 0 },
+    },
   },
   {
     id: 'SCH-004',
@@ -123,6 +163,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 10, toilets: 5, waterSource: true, electricity: true },
     enrollment: { boys: 220, girls: 200 },
     compliance: 91,
+    furniture: {
+      desks: { new: 60, old: 95, inUse: 145, broken: 10 },
+      chairs: { new: 65, old: 110, inUse: 165, broken: 10 },
+      benches: { new: 25, old: 42, inUse: 62, broken: 5 },
+      blackboards: { new: 5, old: 5, inUse: 10, broken: 0 },
+      whiteboards: { new: 3, old: 2, inUse: 5, broken: 0 },
+      fans: { new: 15, old: 10, inUse: 22, broken: 3 },
+      computers: { new: 12, old: 6, inUse: 15, broken: 3 },
+      cupboards: { new: 7, old: 5, inUse: 12, broken: 0 },
+    },
   },
 
   // Good Performance (80-89%) - 8 schools
@@ -137,6 +187,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 9, toilets: 4, waterSource: true, electricity: true },
     enrollment: { boys: 200, girls: 180 },
     compliance: 88,
+    furniture: {
+      desks: { new: 55, old: 85, inUse: 130, broken: 10 },
+      chairs: { new: 60, old: 100, inUse: 150, broken: 10 },
+      benches: { new: 22, old: 38, inUse: 55, broken: 5 },
+      blackboards: { new: 4, old: 5, inUse: 9, broken: 0 },
+      whiteboards: { new: 2, old: 2, inUse: 4, broken: 0 },
+      fans: { new: 14, old: 9, inUse: 20, broken: 3 },
+      computers: { new: 10, old: 5, inUse: 13, broken: 2 },
+      cupboards: { new: 6, old: 4, inUse: 10, broken: 0 },
+    },
   },
   {
     id: 'SCH-006',
@@ -149,6 +209,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 7, toilets: 3, waterSource: true, electricity: false },
     enrollment: { boys: 155, girls: 135 },
     compliance: 86,
+    furniture: {
+      desks: { new: 40, old: 65, inUse: 95, broken: 10 },
+      chairs: { new: 45, old: 75, inUse: 110, broken: 10 },
+      benches: { new: 18, old: 30, inUse: 45, broken: 3 },
+      blackboards: { new: 3, old: 4, inUse: 7, broken: 0 },
+      whiteboards: { new: 1, old: 1, inUse: 2, broken: 0 },
+      fans: { new: 10, old: 7, inUse: 14, broken: 3 },
+      computers: { new: 5, old: 3, inUse: 6, broken: 2 },
+      cupboards: { new: 5, old: 3, inUse: 8, broken: 0 },
+    },
   },
   {
     id: 'SCH-007',
@@ -161,6 +231,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 8, toilets: 4, waterSource: true, electricity: true },
     enrollment: { boys: 170, girls: 155 },
     compliance: 85,
+    furniture: {
+      desks: { new: 48, old: 72, inUse: 110, broken: 10 },
+      chairs: { new: 52, old: 82, inUse: 125, broken: 9 },
+      benches: { new: 20, old: 33, inUse: 48, broken: 5 },
+      blackboards: { new: 4, old: 4, inUse: 8, broken: 0 },
+      whiteboards: { new: 2, old: 1, inUse: 3, broken: 0 },
+      fans: { new: 12, old: 8, inUse: 18, broken: 2 },
+      computers: { new: 8, old: 4, inUse: 10, broken: 2 },
+      cupboards: { new: 6, old: 4, inUse: 10, broken: 0 },
+    },
   },
   {
     id: 'SCH-008',
@@ -173,6 +253,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 11, toilets: 5, waterSource: true, electricity: true },
     enrollment: { boys: 240, girls: 215 },
     compliance: 84,
+    furniture: {
+      desks: { new: 68, old: 102, inUse: 160, broken: 10 },
+      chairs: { new: 72, old: 115, inUse: 180, broken: 7 },
+      benches: { new: 28, old: 45, inUse: 68, broken: 5 },
+      blackboards: { new: 5, old: 6, inUse: 11, broken: 0 },
+      whiteboards: { new: 3, old: 2, inUse: 5, broken: 0 },
+      fans: { new: 16, old: 11, inUse: 24, broken: 3 },
+      computers: { new: 15, old: 7, inUse: 19, broken: 3 },
+      cupboards: { new: 7, old: 5, inUse: 12, broken: 0 },
+    },
   },
   {
     id: 'SCH-009',
@@ -185,6 +275,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 8, toilets: 3, waterSource: true, electricity: false },
     enrollment: { boys: 165, girls: 145 },
     compliance: 83,
+    furniture: {
+      desks: { new: 45, old: 68, inUse: 105, broken: 8 },
+      chairs: { new: 48, old: 78, inUse: 118, broken: 8 },
+      benches: { new: 19, old: 32, inUse: 47, broken: 4 },
+      blackboards: { new: 4, old: 4, inUse: 8, broken: 0 },
+      whiteboards: { new: 2, old: 1, inUse: 3, broken: 0 },
+      fans: { new: 11, old: 8, inUse: 16, broken: 3 },
+      computers: { new: 6, old: 3, inUse: 8, broken: 1 },
+      cupboards: { new: 5, old: 4, inUse: 9, broken: 0 },
+    },
   },
   {
     id: 'SCH-010',
@@ -197,6 +297,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 7, toilets: 3, waterSource: true, electricity: true },
     enrollment: { boys: 145, girls: 130 },
     compliance: 82,
+    furniture: {
+      desks: { new: 38, old: 60, inUse: 90, broken: 8 },
+      chairs: { new: 42, old: 70, inUse: 105, broken: 7 },
+      benches: { new: 16, old: 28, inUse: 40, broken: 4 },
+      blackboards: { new: 3, old: 4, inUse: 7, broken: 0 },
+      whiteboards: { new: 1, old: 1, inUse: 2, broken: 0 },
+      fans: { new: 10, old: 6, inUse: 14, broken: 2 },
+      computers: { new: 5, old: 2, inUse: 6, broken: 1 },
+      cupboards: { new: 5, old: 3, inUse: 8, broken: 0 },
+    },
   },
   {
     id: 'SCH-011',
@@ -209,6 +319,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 9, toilets: 4, waterSource: false, electricity: true },
     enrollment: { boys: 180, girls: 160 },
     compliance: 81,
+    furniture: {
+      desks: { new: 50, old: 75, inUse: 115, broken: 10 },
+      chairs: { new: 54, old: 85, inUse: 130, broken: 9 },
+      benches: { new: 21, old: 34, inUse: 50, broken: 5 },
+      blackboards: { new: 4, old: 5, inUse: 9, broken: 0 },
+      whiteboards: { new: 2, old: 2, inUse: 4, broken: 0 },
+      fans: { new: 13, old: 8, inUse: 19, broken: 2 },
+      computers: { new: 7, old: 4, inUse: 9, broken: 2 },
+      cupboards: { new: 6, old: 4, inUse: 10, broken: 0 },
+    },
   },
   {
     id: 'SCH-012',
@@ -221,6 +341,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 10, toilets: 4, waterSource: true, electricity: true },
     enrollment: { boys: 210, girls: 185 },
     compliance: 80,
+    furniture: {
+      desks: { new: 58, old: 88, inUse: 135, broken: 11 },
+      chairs: { new: 62, old: 98, inUse: 150, broken: 10 },
+      benches: { new: 24, old: 38, inUse: 58, broken: 4 },
+      blackboards: { new: 5, old: 5, inUse: 10, broken: 0 },
+      whiteboards: { new: 2, old: 2, inUse: 4, broken: 0 },
+      fans: { new: 14, old: 9, inUse: 21, broken: 2 },
+      computers: { new: 9, old: 5, inUse: 12, broken: 2 },
+      cupboards: { new: 6, old: 5, inUse: 11, broken: 0 },
+    },
   },
 
   // Needs Attention (<80%) - 4 schools
@@ -235,6 +365,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 6, toilets: 2, waterSource: false, electricity: false },
     enrollment: { boys: 130, girls: 115 },
     compliance: 78,
+    furniture: {
+      desks: { new: 25, old: 50, inUse: 65, broken: 10 },
+      chairs: { new: 28, old: 58, inUse: 75, broken: 11 },
+      benches: { new: 12, old: 24, inUse: 32, broken: 4 },
+      blackboards: { new: 2, old: 4, inUse: 6, broken: 0 },
+      whiteboards: { new: 0, old: 1, inUse: 1, broken: 0 },
+      fans: { new: 6, old: 4, inUse: 8, broken: 2 },
+      computers: { new: 2, old: 1, inUse: 2, broken: 1 },
+      cupboards: { new: 4, old: 2, inUse: 6, broken: 0 },
+    },
   },
   {
     id: 'SCH-014',
@@ -247,6 +387,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 6, toilets: 2, waterSource: true, electricity: false },
     enrollment: { boys: 115, girls: 105 },
     compliance: 75,
+    furniture: {
+      desks: { new: 22, old: 45, inUse: 60, broken: 7 },
+      chairs: { new: 25, old: 52, inUse: 70, broken: 7 },
+      benches: { new: 10, old: 22, inUse: 30, broken: 2 },
+      blackboards: { new: 2, old: 4, inUse: 6, broken: 0 },
+      whiteboards: { new: 0, old: 1, inUse: 1, broken: 0 },
+      fans: { new: 5, old: 3, inUse: 7, broken: 1 },
+      computers: { new: 2, old: 0, inUse: 2, broken: 0 },
+      cupboards: { new: 3, old: 2, inUse: 5, broken: 0 },
+    },
   },
   {
     id: 'SCH-015',
@@ -259,6 +409,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 5, toilets: 2, waterSource: false, electricity: false },
     enrollment: { boys: 100, girls: 95 },
     compliance: 72,
+    furniture: {
+      desks: { new: 18, old: 40, inUse: 52, broken: 6 },
+      chairs: { new: 20, old: 45, inUse: 60, broken: 5 },
+      benches: { new: 8, old: 18, inUse: 24, broken: 2 },
+      blackboards: { new: 2, old: 3, inUse: 5, broken: 0 },
+      whiteboards: { new: 0, old: 0, inUse: 0, broken: 0 },
+      fans: { new: 4, old: 2, inUse: 5, broken: 1 },
+      computers: { new: 0, old: 1, inUse: 1, broken: 0 },
+      cupboards: { new: 3, old: 2, inUse: 5, broken: 0 },
+    },
   },
   {
     id: 'SCH-016',
@@ -271,6 +431,16 @@ const mockSchools: SchoolData[] = [
     infrastructure: { classrooms: 5, toilets: 1, waterSource: false, electricity: false },
     enrollment: { boys: 95, girls: 85 },
     compliance: 70,
+    furniture: {
+      desks: { new: 15, old: 38, inUse: 48, broken: 5 },
+      chairs: { new: 18, old: 42, inUse: 55, broken: 5 },
+      benches: { new: 7, old: 16, inUse: 22, broken: 1 },
+      blackboards: { new: 1, old: 4, inUse: 5, broken: 0 },
+      whiteboards: { new: 0, old: 0, inUse: 0, broken: 0 },
+      fans: { new: 3, old: 2, inUse: 4, broken: 1 },
+      computers: { new: 0, old: 0, inUse: 0, broken: 0 },
+      cupboards: { new: 2, old: 2, inUse: 4, broken: 0 },
+    },
   },
 ];
 
