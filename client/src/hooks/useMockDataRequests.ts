@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { ROLE_HIERARCHY, UserRole } from '@/contexts/auth';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { realAEOs } from '@/data/realData';
 
 export interface DataField {
   id: string;
@@ -53,7 +54,7 @@ const mockRequests: DataRequest[] = [
     title: 'Monthly Attendance Verification',
     description: 'Verify attendance records for December 2024',
     createdBy: 'aeo-1',
-    createdByName: 'AEO User',
+    createdByName: realAEOs[0].name,
     createdByRole: 'AEO',
     createdAt: new Date('2024-12-01'),
     dueDate: new Date('2024-12-05'),
@@ -88,8 +89,8 @@ const mockRequests: DataRequest[] = [
     id: 'req-2',
     title: 'Infrastructure Status Check',
     description: 'Report on school infrastructure - water, toilets, electricity',
-    createdBy: 'aeo-1',
-    createdByName: 'AEO User',
+    createdBy: 'aeo-2',
+    createdByName: realAEOs[1].name,
     createdByRole: 'AEO',
     createdAt: new Date('2024-11-28'),
     dueDate: new Date('2024-12-10'),

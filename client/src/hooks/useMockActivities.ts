@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { realSchools } from '@/data/realData';
+import { realSchools, realAEOs } from '@/data/realData';
 
 // Build school names lookup from real data
 const SCHOOL_NAMES: Record<string, string> = realSchools.reduce((acc, school) => {
@@ -58,14 +58,14 @@ const mockActivities: Activity[] = [
       {
         id: 'c-1',
         authorId: 'aeo-1',
-        authorName: 'AEO User',
+        authorName: realAEOs[0].name,
         authorRole: 'AEO',
         text: 'Excellent initiative! Great to see students so engaged in learning.',
         timestamp: new Date(Date.now() - 86400000),
       },
     ],
     reactions: [
-      { id: 'r-1', type: 'love', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-1', type: 'love', userId: 'aeo-1', userName: realAEOs[0].name },
       { id: 'r-2', type: 'clap', userId: 'head-1', userName: 'Head Teacher' },
     ],
     createdAt: new Date(Date.now() - 172800000),
@@ -116,7 +116,7 @@ const mockActivities: Activity[] = [
     ],
     reactions: [
       { id: 'r-4', type: 'love', userId: 'deo-1', userName: 'DEO User' },
-      { id: 'r-5', type: 'clap', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-5', type: 'clap', userId: 'aeo-1', userName: realAEOs[0].name },
       { id: 'r-6', type: 'celebrate', userId: 'ceo-1', userName: 'CEO User' },
     ],
     createdAt: new Date(Date.now() - 345600000),
@@ -148,7 +148,7 @@ const mockActivities: Activity[] = [
     ],
     reactions: [
       { id: 'r-7', type: 'celebrate', userId: 'ddeo-1', userName: 'DDEO User' },
-      { id: 'r-8', type: 'love', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-8', type: 'love', userId: 'aeo-1', userName: realAEOs[0].name },
     ],
     createdAt: new Date(Date.now() - 432000000),
     updatedAt: new Date(Date.now() - 432000000),
@@ -218,7 +218,7 @@ const mockActivities: Activity[] = [
     reactions: [
       { id: 'r-12', type: 'celebrate', userId: 'deo-1', userName: 'DEO User' },
       { id: 'r-13', type: 'clap', userId: 'ddeo-1', userName: 'DDEO User' },
-      { id: 'r-14', type: 'love', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-14', type: 'love', userId: 'aeo-1', userName: realAEOs[0].name },
       { id: 'r-15', type: 'like', userId: 'ceo-1', userName: 'CEO User' },
     ],
     createdAt: new Date(Date.now() - 604800000),
@@ -261,14 +261,14 @@ const mockActivities: Activity[] = [
       {
         id: 'c-7',
         authorId: 'aeo-1',
-        authorName: 'AEO User',
+        authorName: realAEOs[0].name,
         authorRole: 'AEO',
         text: 'Excellent parent engagement! This is how schools build strong communities.',
         timestamp: new Date(Date.now() - 518400000),
       },
     ],
     reactions: [
-      { id: 'r-17', type: 'clap', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-17', type: 'clap', userId: 'aeo-1', userName: realAEOs[0].name },
       { id: 'r-18', type: 'love', userId: 'deo-1', userName: 'DEO User' },
       { id: 'r-19', type: 'like', userId: 'teacher-1', userName: 'Teacher 1' },
     ],
@@ -331,7 +331,7 @@ const mockActivities: Activity[] = [
     comments: [],
     reactions: [
       { id: 'r-23', type: 'celebrate', userId: 'deo-1', userName: 'DEO User' },
-      { id: 'r-24', type: 'love', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-24', type: 'love', userId: 'aeo-1', userName: realAEOs[0].name },
     ],
     createdAt: new Date(Date.now() - 1036800000),
     updatedAt: new Date(Date.now() - 1036800000),
@@ -361,7 +361,7 @@ const mockActivities: Activity[] = [
     ],
     reactions: [
       { id: 'r-25', type: 'clap', userId: 'head-1', userName: 'Head Teacher' },
-      { id: 'r-26', type: 'like', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-26', type: 'like', userId: 'aeo-1', userName: realAEOs[0].name },
     ],
     createdAt: new Date(Date.now() - 1209600000),
     updatedAt: new Date(Date.now() - 1209600000),
@@ -401,7 +401,7 @@ const mockActivities: Activity[] = [
       { id: 'r-27', type: 'love', userId: 'ceo-1', userName: 'CEO User' },
       { id: 'r-28', type: 'celebrate', userId: 'deo-1', userName: 'DEO User' },
       { id: 'r-29', type: 'clap', userId: 'ddeo-1', userName: 'DDEO User' },
-      { id: 'r-30', type: 'love', userId: 'aeo-1', userName: 'AEO User' },
+      { id: 'r-30', type: 'love', userId: 'aeo-1', userName: realAEOs[0].name },
     ],
     createdAt: new Date(Date.now() - 1382400000),
     updatedAt: new Date(Date.now() - 1382400000),
