@@ -472,7 +472,11 @@ export default function Dashboard() {
           <div className="mb-12">
             <h2 className="text-2xl font-bold gradient-text mb-6">Your Activities</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
-              <Card className="p-6 hover-lift cursor-pointer bg-card border border-blue-200/50 dark:border-blue-800/50 card-shine">
+              <Card 
+                className="p-6 hover-lift cursor-pointer bg-card border border-blue-200/50 dark:border-blue-800/50 card-shine"
+                onClick={() => setActiveActivityForm('monitoring')}
+                data-testid="card-monitoring-activity"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg animate-float" style={{animationDelay: '0s'}}>
                     <FileText className="w-6 h-6 text-white" />
@@ -483,7 +487,11 @@ export default function Dashboard() {
                   </div>
                 </div>
               </Card>
-              <Card className="p-6 hover-lift cursor-pointer bg-card border border-purple-200/50 dark:border-purple-800/50 card-shine">
+              <Card 
+                className="p-6 hover-lift cursor-pointer bg-card border border-purple-200/50 dark:border-purple-800/50 card-shine"
+                onClick={() => setActiveActivityForm('mentoring')}
+                data-testid="card-mentoring-activity"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-lg animate-float" style={{animationDelay: '0.5s'}}>
                     <Award className="w-6 h-6 text-white" />
@@ -494,7 +502,11 @@ export default function Dashboard() {
                   </div>
                 </div>
               </Card>
-              <Card className="p-6 hover-lift cursor-pointer bg-card border border-emerald-200/50 dark:border-emerald-800/50 card-shine">
+              <Card 
+                className="p-6 hover-lift cursor-pointer bg-card border border-emerald-200/50 dark:border-emerald-800/50 card-shine"
+                onClick={() => setActiveActivityForm('office')}
+                data-testid="card-office-activity"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg animate-float" style={{animationDelay: '1s'}}>
                     <Building2 className="w-6 h-6 text-white" />
@@ -505,7 +517,11 @@ export default function Dashboard() {
                   </div>
                 </div>
               </Card>
-              <Card className="p-6 hover-lift cursor-pointer bg-card border border-slate-200/50 dark:border-slate-700/50 card-shine">
+              <Card 
+                className="p-6 hover-lift cursor-pointer bg-card border border-slate-200/50 dark:border-slate-700/50 card-shine"
+                onClick={() => setActiveActivityForm('other-activity')}
+                data-testid="card-other-activity"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-400 to-slate-600 flex items-center justify-center shadow-lg animate-float" style={{animationDelay: '1.5s'}}>
                     <CheckSquare className="w-6 h-6 text-white" />
