@@ -130,10 +130,10 @@ export default function MentoringVisitForm({ onClose }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-lg p-6 max-h-[90vh] overflow-y-auto">
+    <div className="bg-card rounded-lg p-6 max-h-[90vh] overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Mentoring Visit Form (HOTS)</h1>
+        <h1 className="text-2xl font-bold text-foreground">Mentoring Visit Form (HOTS)</h1>
         <Button
           variant="ghost"
           size="icon"

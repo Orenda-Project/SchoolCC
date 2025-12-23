@@ -18,13 +18,13 @@ export default function AEOActivityHub() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm">
+      <div className="bg-background border-b border-border shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Activity Management</h1>
-            <p className="text-sm text-slate-600 mt-1">Welcome, {user.name}</p>
+            <h1 className="text-3xl font-bold text-foreground">Activity Management</h1>
+            <p className="text-sm text-muted-foreground mt-1">Welcome, {user.name}</p>
           </div>
           <Button
             variant="outline"
@@ -45,10 +45,10 @@ export default function AEOActivityHub() {
       <div className="max-w-6xl mx-auto px-4 py-12">
         {/* Hero Section */}
         <div className="mb-12 text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-3">
+          <h2 className="text-4xl font-bold text-foreground mb-3">
             Plan Your Next Activity
           </h2>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-muted-foreground">
             Start a school visit or log other professional activities
           </p>
         </div>
@@ -66,21 +66,21 @@ export default function AEOActivityHub() {
                 <ClipboardList className="w-6 h-6 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Plan a Visit</h3>
-                <p className="text-slate-600 mb-4">
+                <h3 className="text-2xl font-bold text-foreground mb-2">Plan a Visit</h3>
+                <p className="text-muted-foreground mb-4">
                   Conduct school monitoring, mentoring, or office visits
                 </p>
               </div>
               <div className="space-y-2 pt-4 border-t border-slate-100">
-                <div className="flex items-center text-sm text-slate-600">
+                <div className="flex items-center text-sm text-muted-foreground">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
                   Monitoring Visit - Infrastructure & Attendance
                 </div>
-                <div className="flex items-center text-sm text-slate-600">
+                <div className="flex items-center text-sm text-muted-foreground">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
                   Mentoring Visit - HOTS Development
                 </div>
-                <div className="flex items-center text-sm text-slate-600">
+                <div className="flex items-center text-sm text-muted-foreground">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
                   Office Visit - Administrative
                 </div>
@@ -102,21 +102,21 @@ export default function AEOActivityHub() {
                 <CheckSquare className="w-6 h-6 text-emerald-600" />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Other Activities</h3>
-                <p className="text-slate-600 mb-4">
+                <h3 className="text-2xl font-bold text-foreground mb-2">Other Activities</h3>
+                <p className="text-muted-foreground mb-4">
                   Log training, meetings, reports, and other professional tasks
                 </p>
               </div>
               <div className="space-y-2 pt-4 border-t border-slate-100">
-                <div className="flex items-center text-sm text-slate-600">
+                <div className="flex items-center text-sm text-muted-foreground">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
                   Training & Professional Development
                 </div>
-                <div className="flex items-center text-sm text-slate-600">
+                <div className="flex items-center text-sm text-muted-foreground">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
                   Administrative & Coordination
                 </div>
-                <div className="flex items-center text-sm text-slate-600">
+                <div className="flex items-center text-sm text-muted-foreground">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
                   Community Engagement
                 </div>
@@ -136,8 +136,8 @@ export default function AEOActivityHub() {
                 <HistoryIcon className="w-6 h-6 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">Activity History</h3>
-                <p className="text-sm text-slate-600">View all your submitted visits and activities</p>
+                <h3 className="text-xl font-bold text-foreground">Activity History</h3>
+                <p className="text-sm text-muted-foreground">View all your submitted visits and activities</p>
               </div>
             </div>
             <Button

@@ -347,7 +347,7 @@ export default function CEODashboard() {
   return (
     <div className="flex h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-slate-200 transition-all duration-300 flex flex-col`}>
+      <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-card border-r border-border transition-all duration-300 flex flex-col`}>
         <div className="p-6 border-b border-slate-200">
           <div className="flex items-center justify-between">
             {sidebarOpen && <h2 className="font-bold text-xl gradient-text">SchoolCC</h2>}

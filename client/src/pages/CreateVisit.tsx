@@ -70,7 +70,7 @@ export default function CreateVisit() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-border">
+      <div className="bg-background border-b border-border">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center">
           <Button
             variant="ghost"

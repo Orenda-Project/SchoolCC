@@ -71,15 +71,15 @@ export default function AEOActivityLogs() {
       blue: { bg: 'bg-blue-50', icon: 'text-blue-600', badge: 'bg-blue-100 text-blue-800' },
       purple: { bg: 'bg-purple-50', icon: 'text-purple-600', badge: 'bg-purple-100 text-purple-800' },
       emerald: { bg: 'bg-emerald-50', icon: 'text-emerald-600', badge: 'bg-emerald-100 text-emerald-800' },
-      slate: { bg: 'bg-slate-50', icon: 'text-slate-600', badge: 'bg-slate-100 text-slate-800' },
+      slate: { bg: 'bg-slate-50', icon: 'text-muted-foreground', badge: 'bg-slate-100 text-slate-800' },
     };
     return colors[color] || colors.slate;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+      <div className="bg-background border-b border-border shadow-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center">
             <Button
@@ -90,7 +90,7 @@ export default function AEOActivityLogs() {
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
-            <h1 className="text-2xl font-bold text-slate-900 ml-4">Activity History</h1>
+            <h1 className="text-2xl font-bold text-foreground ml-4">Activity History</h1>
           </div>
         </div>
       </div>
@@ -102,8 +102,8 @@ export default function AEOActivityLogs() {
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-600 font-medium">Monitoring Visits</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">{activities.monitoring.length}</p>
+                <p className="text-xs text-muted-foreground font-medium">Monitoring Visits</p>
+                <p className="text-2xl font-bold text-foreground mt-1">{activities.monitoring.length}</p>
               </div>
               <FileText className="w-8 h-8 text-blue-200" />
             </div>
@@ -112,8 +112,8 @@ export default function AEOActivityLogs() {
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-600 font-medium">Mentoring Visits</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">{activities.mentoring.length}</p>
+                <p className="text-xs text-muted-foreground font-medium">Mentoring Visits</p>
+                <p className="text-2xl font-bold text-foreground mt-1">{activities.mentoring.length}</p>
               </div>
               <Award className="w-8 h-8 text-purple-200" />
             </div>
@@ -122,8 +122,8 @@ export default function AEOActivityLogs() {
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-600 font-medium">Office Visits</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">{activities.office.length}</p>
+                <p className="text-xs text-muted-foreground font-medium">Office Visits</p>
+                <p className="text-2xl font-bold text-foreground mt-1">{activities.office.length}</p>
               </div>
               <FileText className="w-8 h-8 text-emerald-200" />
             </div>
@@ -132,8 +132,8 @@ export default function AEOActivityLogs() {
           <Card className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-600 font-medium">Other Activities</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">{activities.other.length}</p>
+                <p className="text-xs text-muted-foreground font-medium">Other Activities</p>
+                <p className="text-2xl font-bold text-foreground mt-1">{activities.other.length}</p>
               </div>
               <CheckSquare className="w-8 h-8 text-slate-200" />
             </div>
@@ -145,8 +145,8 @@ export default function AEOActivityLogs() {
           {allItems.length === 0 ? (
             <Card className="p-12 text-center">
               <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-              <p className="text-slate-500 font-medium">No activities logged yet</p>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-muted-foreground font-medium">No activities logged yet</p>
+              <p className="text-sm text-muted-foreground mt-1">
                 Start by planning a visit or logging an activity
               </p>
               <Button
@@ -175,8 +175,8 @@ export default function AEOActivityLogs() {
                         <Icon className="w-5 h-5" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-slate-900">{item.type}</h3>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
+                        <h3 className="font-semibold text-foreground">{item.type}</h3>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
                             {formattedDate}

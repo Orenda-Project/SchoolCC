@@ -161,7 +161,7 @@ export default function CreateQuery() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="bg-white border-b border-border">
+      <div className="bg-background border-b border-border">
         <div className="max-w-3xl mx-auto px-4 py-6 flex items-center gap-4">
           <Button
             variant="ghost"

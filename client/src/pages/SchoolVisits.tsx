@@ -36,7 +36,7 @@ export default function SchoolVisits() {
       case 'planned':
         return 'text-amber-600 bg-amber-100';
       default:
-        return 'text-gray-600 bg-gray-100';
+        return 'text-muted-foreground bg-muted';
     }
   };
 
@@ -47,14 +47,14 @@ export default function SchoolVisits() {
       case 'mentoring':
         return 'bg-blue-100 text-blue-700';
       default:
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-border">
+      <div className="bg-background border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button

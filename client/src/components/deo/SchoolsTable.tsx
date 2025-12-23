@@ -172,9 +172,9 @@ export function SchoolsTable({ districtId }: SchoolsTableProps) {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse bg-white shadow-sm rounded-lg">
+        <table className="w-full border-collapse bg-card shadow-sm rounded-lg">
           <thead>
-            <tr className="bg-gray-100 border-b">
+            <tr className="bg-muted border-b">
               <th className="text-left p-3 font-semibold">School</th>
               <th className="text-left p-3 font-semibold">Students (T/P/A)</th>
               <th className="text-left p-3 font-semibold">Attendance %</th>
@@ -195,13 +195,13 @@ export function SchoolsTable({ districtId }: SchoolsTableProps) {
               return (
                 <tr
                   key={school.id}
-                  className={`border-b hover:bg-gray-50 transition-colors ${
-                    redFlag ? 'bg-red-50' : ''
+                  className={`border-b hover:bg-muted/50 transition-colors ${
+                    redFlag ? 'bg-red-50 dark:bg-red-900/20' : ''
                   }`}
                 >
                   <td className="p-3">
                     <div className="font-medium">{school.name}</div>
-                    <div className="text-sm text-gray-500">{school.emisNumber}</div>
+                    <div className="text-sm text-muted-foreground">{school.emisNumber}</div>
                   </td>
 
                   <td className="p-3">
@@ -230,7 +230,7 @@ export function SchoolsTable({ districtId }: SchoolsTableProps) {
 
                   <td className="p-3">
                     <div className="flex items-center gap-2 text-sm">
-                      <Toilet className="w-4 h-4 text-gray-500" />
+                      <Toilet className="w-4 h-4 text-muted-foreground" />
                       <span>{school.workingToilets}</span>
                       {school.brokenToilets > 0 && (
                         <span className="text-red-600 font-semibold">
@@ -282,7 +282,7 @@ export function SchoolsTable({ districtId }: SchoolsTableProps) {
       </div>
 
       {schools.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-muted-foreground">
           No schools found
         </div>
       )}
