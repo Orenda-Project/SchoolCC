@@ -1,9 +1,10 @@
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useMockTeacherData } from '@/hooks/useMockTeacherData';
+import { useMockTeacherData, SchoolData as SchoolDataType } from '@/hooks/useMockTeacherData';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Download, Users, BookOpen, Droplet, Zap, BarChart3, ImageIcon } from 'lucide-react';
+import { ArrowLeft, Download, Users, BookOpen, Droplet, Zap, BarChart3, ImageIcon, FileSpreadsheet } from 'lucide-react';
+import * as XLSX from 'xlsx';
 
 export default function SchoolData() {
   const { user } = useAuth();
@@ -14,11 +15,60 @@ export default function SchoolData() {
 
   const allSchools = getSchoolData();
   const userSchool = user.schoolId ? getSchoolById(user.schoolId) : null;
-  
+
   // Teachers and head teachers only see their own school
   const visibleSchools = (user.role === 'TEACHER' || user.role === 'HEAD_TEACHER') && userSchool
-    ? [userSchool] 
+    ? [userSchool]
     : allSchools;
+
+  // Download individual school inventory as XLSX
+  const downloadSchoolInventory = (school: SchoolDataType) => {
+    // Create comprehensive school inventory data
+    const inventoryData = [
+      // Basic Information
+      { Category: 'SCHOOL INFORMATION', Item: '', Details: '' },
+      { Category: 'School Name', Item: school.name, Details: '' },
+      { Category: 'District', Item: school.district, Details: '' },
+      { Category: 'Block/Cluster', Item: school.block, Details: '' },
+      { Category: 'Principal Name', Item: school.principalName, Details: '' },
+      { Category: 'Compliance Score', Item: `${school.compliance}%`, Details: '' },
+      { Category: '', Item: '', Details: '' },
+
+      // Enrollment
+      { Category: 'ENROLLMENT', Item: '', Details: '' },
+      { Category: 'Total Students', Item: school.totalStudents.toString(), Details: '' },
+      { Category: 'Boys', Item: school.enrollment.boys.toString(), Details: '' },
+      { Category: 'Girls', Item: school.enrollment.girls.toString(), Details: '' },
+      { Category: 'Total Teachers', Item: school.totalTeachers.toString(), Details: '' },
+      { Category: 'Student-Teacher Ratio', Item: `1:${(school.totalStudents / school.totalTeachers).toFixed(1)}`, Details: '' },
+      { Category: '', Item: '', Details: '' },
+
+      // Infrastructure
+      { Category: 'INFRASTRUCTURE', Item: '', Details: '' },
+      { Category: 'Total Classrooms', Item: school.infrastructure.classrooms.toString(), Details: '' },
+      { Category: 'Total Toilets', Item: school.infrastructure.toilets.toString(), Details: '' },
+      { Category: 'Drinking Water', Item: school.infrastructure.waterSource ? 'Available' : 'Not Available', Details: '' },
+      { Category: 'Electricity', Item: school.infrastructure.electricity ? 'Available' : 'Not Available', Details: '' },
+    ];
+
+    // Create worksheet
+    const ws = XLSX.utils.json_to_sheet(inventoryData);
+
+    // Set column widths
+    ws['!cols'] = [
+      { wch: 25 },  // Category
+      { wch: 30 },  // Item
+      { wch: 20 },  // Details
+    ];
+
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'School Inventory');
+
+    // Download file
+    const fileName = `${school.name.replace(/[^a-z0-9]/gi, '_')}_Inventory_${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(wb, fileName);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -207,18 +257,30 @@ export default function SchoolData() {
                     </div>
                   </div>
 
-                  <div className="flex items-end gap-2">
-                    <Button variant="outline" size="sm" className="flex-1" data-testid={`button-view-school-${school.id}`}>
-                      View Details
-                    </Button>
-                    <Button 
-                      onClick={() => navigate(`/album/${school.id}`)}
-                      size="sm" 
-                      className="flex-1"
-                      data-testid={`button-album-${school.id}`}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="flex-1" data-testid={`button-view-school-${school.id}`}>
+                        View Details
+                      </Button>
+                      <Button
+                        onClick={() => navigate(`/album/${school.id}`)}
+                        size="sm"
+                        className="flex-1"
+                        data-testid={`button-album-${school.id}`}
+                      >
+                        <ImageIcon className="w-4 h-4 mr-2" />
+                        Album
+                      </Button>
+                    </div>
+                    <Button
+                      onClick={() => downloadSchoolInventory(school)}
+                      size="sm"
+                      variant="secondary"
+                      className="w-full"
+                      data-testid={`button-download-${school.id}`}
                     >
-                      <ImageIcon className="w-4 h-4 mr-2" />
-                      Album
+                      <FileSpreadsheet className="w-4 h-4 mr-2" />
+                      Download XLSX
                     </Button>
                   </div>
                 </div>
