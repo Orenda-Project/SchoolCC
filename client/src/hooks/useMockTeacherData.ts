@@ -301,11 +301,16 @@ const mockStaff: StaffMember[] = [
   { id: 't10', name: 'Teacher 10', role: 'TEACHER', schoolId: 'SCH-002', schoolName: 'GGPS Carriage Factory', subject: 'English', status: 'on_leave' },
 ];
 
-export function useMockTeacherData() {
+export function useMockTeacherData(assignedSchoolIds?: string[]) {
   const [teachers] = useState<Teacher[]>(mockTeachers);
   const [leaves] = useState<LeaveRecord[]>(mockLeaves);
   const [schools] = useState<SchoolData[]>(mockSchools);
   const [staff] = useState<StaffMember[]>(mockStaff);
+
+  // Filter schools based on assigned schools for AEO
+  const filteredSchools = assignedSchoolIds && assignedSchoolIds.length > 0
+    ? schools.filter(school => assignedSchoolIds.includes(school.id))
+    : schools;
 
   const getTeacherStats = useCallback(() => {
     const today = new Date();
@@ -363,8 +368,8 @@ export function useMockTeacherData() {
   }, [leaves]);
 
   const getSchoolData = useCallback(() => {
-    return schools;
-  }, [schools]);
+    return filteredSchools;
+  }, [filteredSchools]);
 
   const getSchoolById = useCallback(
     (schoolId: string) => {

@@ -18,7 +18,7 @@ export default function Dashboard() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
   const { getRequestsForUser } = useMockDataRequests();
-  const { getTeacherStats, getStaffStats } = useMockTeacherData();
+  const { getTeacherStats, getStaffStats } = useMockTeacherData(user?.assignedSchools);
   const { getVisitsForUser } = useMockVisits();
   const { getAllActivities } = useMockAEOActivities();
 

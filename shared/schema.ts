@@ -80,6 +80,8 @@ export const users = pgTable("users", {
   dateOfJoining: date("date_of_joining"),
   qualification: text("qualification"),
   profilePicture: text("profile_picture"),
+  // AEO assigned schools (array of school IDs)
+  assignedSchools: json("assigned_schools").$type<string[]>().default([]),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

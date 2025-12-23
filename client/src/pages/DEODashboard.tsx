@@ -297,7 +297,10 @@ export default function DEODashboard() {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   DEO Command Center
                 </h1>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p
+                  className="text-sm text-muted-foreground mt-1 cursor-pointer hover:text-foreground transition-colors"
+                  onClick={() => navigate('/profile')}
+                >
                   {user.name} • District Education Officer
                 </p>
               </div>

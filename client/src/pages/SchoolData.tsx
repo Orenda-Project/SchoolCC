@@ -8,7 +8,7 @@ import { ArrowLeft, Download, Users, BookOpen, Droplet, Zap, BarChart3, ImageIco
 export default function SchoolData() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
-  const { getSchoolData, getSchoolById } = useMockTeacherData();
+  const { getSchoolData, getSchoolById } = useMockTeacherData(user?.assignedSchools);
 
   if (!user) return null;
 

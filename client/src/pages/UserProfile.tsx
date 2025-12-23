@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Edit, Save, X, User, ArrowLeft } from "lucide-react";
+import { Loader2, Edit, Save, X, User, ArrowLeft, School } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface UserProfile {
   id: string;
@@ -27,6 +28,7 @@ interface UserProfile {
   dateOfJoining?: string;
   qualification?: string;
   profilePicture?: string;
+  assignedSchools?: string[];
 }
 
 export default function UserProfile() {
@@ -38,6 +40,7 @@ export default function UserProfile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editedProfile, setEditedProfile] = useState<Partial<UserProfile>>({});
+  const [availableSchools, setAvailableSchools] = useState<Array<{ id: string; name: string }>>([]);
 
   useEffect(() => {
     if (!user?.id) {
@@ -50,7 +53,24 @@ export default function UserProfile() {
       return;
     }
     fetchProfile();
+
+    // Fetch available schools for AEO
+    if (user?.role === 'AEO' && user?.clusterId) {
+      fetchAvailableSchools(user.clusterId);
+    }
   }, [user?.id]);
+
+  const fetchAvailableSchools = async (clusterId: string) => {
+    try {
+      const response = await fetch(`/api/admin/clusters/${clusterId}/schools`);
+      if (response.ok) {
+        const schools = await response.json();
+        setAvailableSchools(schools);
+      }
+    } catch (error) {
+      console.error("Error fetching schools:", error);
+    }
+  };
 
   const fetchProfile = async () => {
     if (!user?.id) return;
@@ -114,6 +134,16 @@ export default function UserProfile() {
 
   const handleChange = (field: keyof UserProfile, value: string) => {
     setEditedProfile((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const toggleSchool = (schoolId: string) => {
+    setEditedProfile((prev) => {
+      const current = prev.assignedSchools || [];
+      const updated = current.includes(schoolId)
+        ? current.filter(id => id !== schoolId)
+        : [...current, schoolId];
+      return { ...prev, assignedSchools: updated };
+    });
   };
 
   if (loading) {
@@ -355,6 +385,63 @@ export default function UserProfile() {
               )}
             </div>
           </div>
+
+          {/* AEO School Selection - Only for AEO users */}
+          {profile.role === 'AEO' && availableSchools.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                <School className="w-5 h-5" />
+                Assigned Schools
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Select schools you want to monitor. Data will be filtered to show only selected schools.
+              </p>
+              {editMode ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto border rounded-lg p-4">
+                  {availableSchools.map((school) => (
+                    <div key={school.id} className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
+                      <Checkbox
+                        id={`school-${school.id}`}
+                        checked={editedProfile.assignedSchools?.includes(school.id) || false}
+                        onCheckedChange={() => toggleSchool(school.id)}
+                      />
+                      <label
+                        htmlFor={`school-${school.id}`}
+                        className="text-sm cursor-pointer flex-1"
+                      >
+                        {school.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {profile.assignedSchools && profile.assignedSchools.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {profile.assignedSchools.map((schoolId) => {
+                        const school = availableSchools.find(s => s.id === schoolId);
+                        return school ? (
+                          <div key={schoolId} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
+                            <School className="w-4 h-4 text-blue-500" />
+                            <span className="text-sm">{school.name}</span>
+                          </div>
+                        ) : null;
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground italic">
+                      No schools assigned. Click Edit Profile to select schools.
+                    </p>
+                  )}
+                </div>
+              )}
+              {editMode && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Selected {editedProfile.assignedSchools?.length || 0} out of {availableSchools.length} schools
+                </p>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

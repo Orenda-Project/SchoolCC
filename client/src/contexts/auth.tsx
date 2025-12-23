@@ -22,6 +22,7 @@ export interface User {
   dateOfJoining?: string;
   qualification?: string;
   profilePicture?: string;
+  assignedSchools?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
