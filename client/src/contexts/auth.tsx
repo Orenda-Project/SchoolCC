@@ -190,6 +190,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             name: 'DDEO - Deputy District Education Officer',
             districtId: 'Rawalpindi',
           },
+          '03000000004': {
+            id: 'mock-coach-1',
+            phoneNumber: '03000000004',
+            role: 'COACH',
+            name: 'Coach - Education Monitor',
+            districtId: 'Rawalpindi',
+          },
         };
 
         const mockUser = mockUsers[phoneNumber];
