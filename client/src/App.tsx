@@ -27,6 +27,8 @@ import Queries from "@/pages/Queries";
 import CreateQuery from "@/pages/CreateQuery";
 import ViewQuery from "@/pages/ViewQuery";
 import UserProfile from "@/pages/UserProfile";
+import Signup from "@/pages/Signup";
+import UserManagement from "@/pages/UserManagement";
 import NotFound from "@/pages/not-found";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 
@@ -67,6 +69,8 @@ function Router() {
         <Route path="/create-query" component={CreateQuery} />
         <Route path="/query/:id" component={ViewQuery} />
         <Route path="/profile" component={UserProfile} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/user-management" component={UserManagement} />
         {/* Fallback to 404 */}
         <Route component={NotFound} />
       </Switch>

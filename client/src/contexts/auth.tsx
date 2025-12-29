@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-export type UserRole = 'CEO' | 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHER';
+export type UserRole = 'CEO' | 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHER' | 'COACH';
 
 export interface User {
   id: string;
@@ -8,6 +8,7 @@ export interface User {
   password?: string;
   role: UserRole;
   name: string;
+  status?: 'pending' | 'active' | 'restricted';
   schoolId?: string;
   schoolName?: string;
   clusterId?: string;
@@ -27,12 +28,13 @@ export interface User {
   updatedAt?: string;
 }
 
-// Hierarchy: CEO > DEO > DDEO/AEO > HEAD_TEACHER > TEACHER
+// Hierarchy: CEO > DEO > DDEO/AEO/COACH > HEAD_TEACHER > TEACHER
 export const ROLE_HIERARCHY: Record<UserRole, number> = {
   'CEO': 5,
   'DEO': 4,
   'DDEO': 3,
   'AEO': 3,
+  'COACH': 3, // Same viewing level as AEO, but read-only
   'HEAD_TEACHER': 2,
   'TEACHER': 1,
 };
@@ -45,6 +47,7 @@ export const VALID_ASSIGNEES: Record<UserRole, UserRole[]> = {
   'AEO': ['HEAD_TEACHER'],
   'HEAD_TEACHER': ['TEACHER'],
   'TEACHER': [],
+  'COACH': [], // Cannot assign tasks to anyone
 };
 
 interface AuthContextType {

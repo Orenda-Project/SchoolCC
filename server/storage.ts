@@ -37,11 +37,15 @@ export interface IStorage {
   // User operations
   getAllUsers(): Promise<User[]>;
   getUsersByRole(role: string): Promise<User[]>;
+  getUsersByStatus(status: string): Promise<User[]>;
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(phoneNumber: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, updates: Partial<User>): Promise<User>;
   deleteUser(id: string): Promise<void>;
+
+  // School operations
+  getSchoolByEmis(emisNumber: string): Promise<School | undefined>;
   
   // Data request operations
   createDataRequest(request: InsertDataRequest): Promise<DataRequest>;
@@ -231,6 +235,15 @@ export class DBStorage implements IStorage {
 
   async deleteUser(id: string): Promise<void> {
     await db.delete(users).where(eq(users.id, id));
+  }
+
+  async getUsersByStatus(status: string): Promise<User[]> {
+    return await db.select().from(users).where(eq(users.status, status));
+  }
+
+  async getSchoolByEmis(emisNumber: string): Promise<School | undefined> {
+    const result = await db.select().from(schools).where(eq(schools.emisNumber, emisNumber)).limit(1);
+    return result[0];
   }
 
   async createDataRequest(request: InsertDataRequest): Promise<DataRequest> {

@@ -13,6 +13,7 @@ const roles: { value: UserRole; label: string; description: string; icon: any }[
   { value: 'AEO', label: 'Area Education Officer', description: 'Cluster management', icon: GraduationCap },
   { value: 'HEAD_TEACHER', label: 'Head Teacher', description: 'School management', icon: UserCheck },
   { value: 'TEACHER', label: 'Teacher', description: 'Assign to me', icon: BookOpen },
+  { value: 'COACH', label: 'Coach', description: 'Read-only monitoring', icon: Eye },
 ];
 
 export default function Login() {
@@ -243,6 +244,17 @@ export default function Login() {
                 : 'Use your school EMIS number and registered phone number'
               }
             </p>
+
+            {/* Create Account Link */}
+            <div className="mt-4 text-center">
+              <button
+                type="button"
+                onClick={() => navigate('/signup')}
+                className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+              >
+                Don't have an account? Create Account
+              </button>
+            </div>
           </div>
         </Card>
 

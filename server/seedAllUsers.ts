@@ -57,7 +57,7 @@ async function seedAllUsers() {
     console.log("\n=== Creating DEO Account ===");
     const deoData = {
       name: "DEO - District Education Officer",
-      phoneNumber: "03000000002",
+      phoneNumber: "03007194767",
       password: defaultPassword,
       role: "DEO",
       clusterId: null,
@@ -225,7 +225,7 @@ async function seedAllUsers() {
 
     console.log("📱 Sample Login Credentials:");
     console.log("   CEO:         03000000001 / admin123");
-    console.log("   DEO:         03000000002 / admin123");
+    console.log("   DEO:         03007194767 / admin123");
     console.log("   DDEO:        03000000003 / admin123");
     console.log("   AEO:         03001000001 / admin123");
     console.log("   Headmaster:  03002000001 / admin123");

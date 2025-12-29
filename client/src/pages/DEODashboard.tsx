@@ -358,6 +358,13 @@ export default function DEODashboard() {
         },
       ],
     },
+    {
+      label: 'User Management',
+      icon: Users,
+      color: 'from-orange-500 to-orange-600',
+      action: () => { navigate('/user-management'); setShowMenuSidebar(false); },
+      description: 'Manage user accounts and approvals'
+    },
   ];
 
   // Flattened menu items for search

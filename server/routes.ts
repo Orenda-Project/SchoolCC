@@ -282,9 +282,201 @@ export async function registerRoutes(
       if (!user || user.password !== password) {
         return res.status(401).json({ error: "Invalid credentials" });
       }
+
+      // Check user status
+      if (user.status === 'pending') {
+        return res.status(403).json({
+          error: "Account pending approval. Please wait for DEO to approve your request."
+        });
+      }
+
+      if (user.status === 'restricted') {
+        return res.status(403).json({
+          error: "Account restricted. Please contact DEO."
+        });
+      }
+
       res.json({ ...user, password: undefined });
     } catch (error) {
       res.status(500).json({ error: "Login failed" });
+    }
+  });
+
+  // Signup endpoint
+  app.post("/api/auth/signup", async (req, res) => {
+    try {
+      const {
+        name,
+        phoneNumber,
+        password,
+        role,
+        fatherName,
+        spouseName,
+        email,
+        residentialAddress,
+        cnic,
+        dateOfBirth,
+        dateOfJoining,
+        qualification,
+        clusterId,
+        schoolEmis,
+        districtId,
+      } = req.body;
+
+      // Validation
+      if (!name || !phoneNumber || !password || !role) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      // Check if phone number already exists
+      const existingUser = await storage.getUserByUsername(phoneNumber);
+      if (existingUser) {
+        return res.status(400).json({ error: "Phone number already registered" });
+      }
+
+      // Validate role-specific fields
+      if (role === 'AEO' && !clusterId) {
+        return res.status(400).json({ error: "Cluster selection required for AEO" });
+      }
+      if ((role === 'HEAD_TEACHER' || role === 'TEACHER') && !schoolEmis) {
+        return res.status(400).json({ error: "School EMIS number required" });
+      }
+      if (role === 'DDEO' && !districtId) {
+        return res.status(400).json({ error: "District selection required for DDEO" });
+      }
+
+      // For school staff, lookup school details by EMIS
+      let schoolId = null;
+      let schoolName = null;
+      let schoolClusterId = null;
+      let schoolDistrictId = null;
+
+      if (schoolEmis) {
+        const school = await storage.getSchoolByEmis(schoolEmis);
+        if (!school) {
+          return res.status(400).json({ error: "Invalid EMIS number" });
+        }
+        schoolId = school.id;
+        schoolName = school.name;
+        schoolClusterId = school.clusterId;
+        schoolDistrictId = school.districtId;
+      }
+
+      // Create pending user
+      const newUser = await storage.createUser({
+        name,
+        phoneNumber,
+        password,
+        role,
+        status: 'pending',
+        fatherName,
+        spouseName,
+        email,
+        residentialAddress,
+        cnic,
+        dateOfBirth,
+        dateOfJoining,
+        qualification,
+        clusterId: clusterId || schoolClusterId,
+        districtId: districtId || schoolDistrictId || 'Rawalpindi',
+        schoolId,
+        schoolName,
+        assignedSchools: [],
+      });
+
+      res.json({
+        success: true,
+        message: "Account request submitted. You'll be notified when DEO approves."
+      });
+    } catch (error) {
+      console.error('Signup error:', error);
+      res.status(500).json({ error: "Failed to create account request" });
+    }
+  });
+
+  // DEO User Management endpoints
+  app.get("/api/admin/pending-users", async (req, res) => {
+    try {
+      const { userId } = req.query;
+
+      // Verify DEO permission
+      const user = await storage.getUser(userId as string);
+      if (!user || user.role !== 'DEO') {
+        return res.status(403).json({ error: "Access denied. DEO role required." });
+      }
+
+      const pendingUsers = await storage.getUsersByStatus('pending');
+      res.json(pendingUsers.map(u => ({ ...u, password: undefined })));
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch pending users" });
+    }
+  });
+
+  app.patch("/api/admin/users/:id/approve", async (req, res) => {
+    try {
+      const { approverId } = req.body;
+
+      // Verify DEO permission
+      const approver = await storage.getUser(approverId);
+      if (!approver || approver.role !== 'DEO') {
+        return res.status(403).json({ error: "Access denied. DEO role required." });
+      }
+
+      const user = await storage.updateUser(req.params.id, { status: 'active' });
+      res.json({ ...user, password: undefined });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to approve user" });
+    }
+  });
+
+  app.patch("/api/admin/users/:id/reject", async (req, res) => {
+    try {
+      const { approverId } = req.body;
+
+      // Verify DEO permission
+      const approver = await storage.getUser(approverId);
+      if (!approver || approver.role !== 'DEO') {
+        return res.status(403).json({ error: "Access denied. DEO role required." });
+      }
+
+      await storage.deleteUser(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to reject user" });
+    }
+  });
+
+  app.patch("/api/admin/users/:id/restrict", async (req, res) => {
+    try {
+      const { adminId } = req.body;
+
+      // Verify DEO permission
+      const admin = await storage.getUser(adminId);
+      if (!admin || admin.role !== 'DEO') {
+        return res.status(403).json({ error: "Access denied. DEO role required." });
+      }
+
+      const user = await storage.updateUser(req.params.id, { status: 'restricted' });
+      res.json({ ...user, password: undefined });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to restrict user" });
+    }
+  });
+
+  app.patch("/api/admin/users/:id/unrestrict", async (req, res) => {
+    try {
+      const { adminId } = req.body;
+
+      // Verify DEO permission
+      const admin = await storage.getUser(adminId);
+      if (!admin || admin.role !== 'DEO') {
+        return res.status(403).json({ error: "Access denied. DEO role required." });
+      }
+
+      const user = await storage.updateUser(req.params.id, { status: 'active' });
+      res.json({ ...user, password: undefined });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to unrestrict user" });
     }
   });
 
