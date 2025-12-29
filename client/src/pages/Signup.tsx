@@ -73,12 +73,14 @@ export default function Signup() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Signup failed');
+        const errorMsg = data.details ? `${data.error}: ${data.details}` : data.error;
+        throw new Error(errorMsg || 'Signup failed');
       }
 
       setSuccess(true);
       setTimeout(() => navigate('/'), 3000);
     } catch (err: any) {
+      console.error('Signup error:', err);
       setError(err.message || 'Failed to create account');
     } finally {
       setLoading(false);

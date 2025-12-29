@@ -388,9 +388,12 @@ export async function registerRoutes(
         success: true,
         message: "Account request submitted. You'll be notified when DEO approves."
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Signup error:', error);
-      res.status(500).json({ error: "Failed to create account request" });
+      res.status(500).json({
+        error: "Failed to create account request",
+        details: error.message || "Unknown error"
+      });
     }
   });
 
