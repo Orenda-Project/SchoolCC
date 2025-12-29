@@ -27,10 +27,11 @@ export default function ViewRequest() {
   useEffect(() => {
     if (request && user) {
       const userAssignee = request.assignees.find((a) => a.userId === user.id);
+      // Only set editedAssignee once on mount if not already set
       if (userAssignee && !editedAssignee) {
         setEditedAssignee(userAssignee);
       }
-      // Only initialize once when request loads
+      // Only initialize request form fields once when request loads
       if (request.title && requestTitle === '') {
         setRequestTitle(request.title);
         setRequestDescription(request.description);
@@ -38,8 +39,8 @@ export default function ViewRequest() {
         setRequestDueDate(request.dueDate.toISOString().split('T')[0]);
       }
     }
-    // Remove requestTitle from dependencies to prevent infinite loop
-  }, [request, user, editedAssignee]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [request?.id, user?.id]);
 
   if (!request || !user) {
     return null;
