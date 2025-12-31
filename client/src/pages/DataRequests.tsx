@@ -16,11 +16,14 @@ export default function DataRequests() {
 
   // Fetch fresh requests whenever component mounts, user changes, or refresh is triggered
   useEffect(() => {
-    if (user) {
-      const freshRequests = getRequestsForUser(user.id, user.role, user.schoolId, user.clusterId, user.districtId);
-      setRequests(freshRequests);
-    }
-  }, [user?.id, user?.role, user?.schoolId, user?.clusterId, user?.districtId, refreshTrigger]);
+    const fetchRequests = async () => {
+      if (user) {
+        const freshRequests = await getRequestsForUser(user.id, user.role, user.schoolId, user.clusterId, user.districtId);
+        setRequests(freshRequests);
+      }
+    };
+    fetchRequests();
+  }, [user?.id, user?.role, user?.schoolId, user?.clusterId, user?.districtId, refreshTrigger, getRequestsForUser]);
 
   // Auto-refresh when navigating back to this page
   useEffect(() => {

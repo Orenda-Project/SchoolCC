@@ -149,7 +149,7 @@ export default function CreateRequest() {
     setRecordingField(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || fields.length === 0 || selectedAssignees.length === 0) {
       return;
@@ -160,7 +160,7 @@ export default function CreateRequest() {
       const descriptionVoice = recordedVoiceNotes['description'] && hasRecording('description');
 
       // Create the data request
-      createRequest(
+      await createRequest(
         title,
         description,
         fields,

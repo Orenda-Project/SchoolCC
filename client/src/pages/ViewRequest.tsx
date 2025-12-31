@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useMockDataRequests, DataField, RequestAssignee } from '@/hooks/useMockDataRequests';
+import { useMockDataRequests, DataRequest, RequestAssignee } from '@/hooks/useMockDataRequests';
 import { useLocation } from 'wouter';
 import { ArrowLeft, Mic, Play, Upload, Download, Lock, Square, Trash2, Edit } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -21,8 +21,17 @@ export default function ViewRequest() {
   const [requestDescription, setRequestDescription] = useState('');
   const [requestPriority, setRequestPriority] = useState<'low' | 'medium' | 'high'>('medium');
   const [requestDueDate, setRequestDueDate] = useState('');
+  const [request, setRequest] = useState<DataRequest | null>(null);
 
-  const request = getRequest(id || '');
+  useEffect(() => {
+    const fetchRequest = async () => {
+      if (id) {
+        const fetchedRequest = await getRequest(id);
+        setRequest(fetchedRequest);
+      }
+    };
+    fetchRequest();
+  }, [id, getRequest]);
 
   useEffect(() => {
     if (request && user) {
