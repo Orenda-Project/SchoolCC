@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, ArrowRight, CheckCircle2, Check, Upload, X } from 'lucide-react';
 import { useActivities, OtherActivityData, OTHER_ACTIVITIES_LIST } from '@/contexts/activities';
 import { toast } from 'sonner';
+import { VoiceRecorder } from '@/components/VoiceRecorder';
 
 const STEPS = [
   { id: 0, label: 'Activity Type' },
@@ -40,6 +41,14 @@ export default function OtherActivityForm({ onClose }: Props) {
 
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
+  const [voiceNoteTranscription, setVoiceNoteTranscription] = useState<string>('');
+  const [voiceNoteBlob, setVoiceNoteBlob] = useState<Blob | null>(null);
+
+  const handleVoiceNoteComplete = (transcription: string, audioBlob: Blob) => {
+    setVoiceNoteTranscription(transcription);
+    setVoiceNoteBlob(audioBlob);
+    handleInputChange('voiceNotes', transcription);
+  };
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -267,7 +276,7 @@ export default function OtherActivityForm({ onClose }: Props) {
         />
       </div>
 
-      <div>
+      <div className="mb-4">
         <label className="block text-sm font-medium text-muted-foreground mb-2">Additional Comments</label>
         <textarea
           className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground min-h-20"
@@ -276,6 +285,21 @@ export default function OtherActivityForm({ onClose }: Props) {
           onChange={(e) => handleInputChange('comments', e.target.value)}
           data-testid="textarea-comments"
         />
+      </div>
+
+      <div className="border-t pt-4">
+        <h3 className="text-sm font-medium text-muted-foreground mb-3">Voice Notes (Optional)</h3>
+        <p className="text-xs text-muted-foreground mb-4">
+          Record your observations. Voice notes will be transcribed automatically using AI.
+        </p>
+        <VoiceRecorder onTranscriptionComplete={handleVoiceNoteComplete} />
+        
+        {voiceNoteTranscription && (
+          <div className="mt-4 p-4 bg-muted rounded-lg border">
+            <h4 className="text-sm font-medium text-foreground mb-2">Transcribed Voice Note</h4>
+            <p className="text-sm text-muted-foreground whitespace-pre-wrap">{voiceNoteTranscription}</p>
+          </div>
+        )}
       </div>
     </Card>
   );
