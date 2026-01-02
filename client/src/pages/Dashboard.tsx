@@ -14,18 +14,20 @@ import OfficeVisitForm from '@/pages/OfficeVisitForm';
 import OtherActivityForm from '@/pages/OtherActivityForm';
 import NotificationBell from '@/components/NotificationBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { MetricCard } from '@/components/dashboard';
+import { MetricCard, TeacherDetailsDialog } from '@/components/dashboard';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
   const { getRequestsForUser } = useMockDataRequests();
-  const { getTeacherStats, getStaffStats } = useMockTeacherData(user?.assignedSchools);
+  const { getTeacherStats, getStaffStats, teachers, leaves } = useMockTeacherData(user?.assignedSchools);
   const { getVisitsForUser } = useMockVisits();
   const { getAllActivities } = useMockAEOActivities();
 
   const [activeActivityForm, setActiveActivityForm] = useState<string | null>(null);
   const [userRequests, setUserRequests] = useState<any[]>([]);
+  const [teacherDialogOpen, setTeacherDialogOpen] = useState(false);
+  const [teacherDialogType, setTeacherDialogType] = useState<'total' | 'present' | 'onLeave' | 'absent'>('total');
 
   useEffect(() => {
     if (user) {
@@ -66,37 +68,42 @@ export default function Dashboard() {
   const { totalTeachers, presentToday, onLeaveToday, absentToday } = getTeacherStats();
   const staffStats = getStaffStats();
 
+  const openTeacherDialog = (type: 'total' | 'present' | 'onLeave' | 'absent') => {
+    setTeacherDialogType(type);
+    setTeacherDialogOpen(true);
+  };
+
   const dashboardStats = {
     CEO: [
-      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50' },
-      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50' },
-      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50' },
+      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50', teacherType: 'total' as const },
+      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50', teacherType: 'present' as const },
+      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50', teacherType: 'onLeave' as const },
     ],
-    DEO: null, // DEO will have custom staff overview section
+    DEO: null,
     DDEO: [
-      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50' },
-      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50' },
-      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50' },
+      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50', teacherType: 'total' as const },
+      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50', teacherType: 'present' as const },
+      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50', teacherType: 'onLeave' as const },
     ],
     AEO: [
-      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50' },
-      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50' },
-      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50' },
+      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50', teacherType: 'total' as const },
+      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50', teacherType: 'present' as const },
+      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50', teacherType: 'onLeave' as const },
     ],
     HEAD_TEACHER: [
-      { label: 'Pending Tasks', value: pendingCount, icon: FileText, color: 'bg-orange-50' },
-      { label: 'Completed', value: completedCount, icon: TrendingUp, color: 'bg-emerald-50' },
-      { label: 'Staff Present Today', value: presentToday, icon: Users, color: 'bg-blue-50' },
+      { label: 'Pending Tasks', value: pendingCount, icon: FileText, color: 'bg-orange-50', taskType: 'pending' as const },
+      { label: 'Completed', value: completedCount, icon: TrendingUp, color: 'bg-emerald-50', taskType: 'completed' as const },
+      { label: 'Staff Present Today', value: presentToday, icon: Users, color: 'bg-blue-50', teacherType: 'present' as const },
     ],
     TEACHER: [
-      { label: 'My Tasks', value: pendingCount, icon: FileText, color: 'bg-orange-50' },
-      { label: 'Completed', value: completedCount, icon: TrendingUp, color: 'bg-emerald-50' },
-      { label: 'Colleagues Present', value: presentToday, icon: Users, color: 'bg-blue-50' },
+      { label: 'My Tasks', value: pendingCount, icon: FileText, color: 'bg-orange-50', taskType: 'pending' as const },
+      { label: 'Completed', value: completedCount, icon: TrendingUp, color: 'bg-emerald-50', taskType: 'completed' as const },
+      { label: 'Colleagues Present', value: presentToday, icon: Users, color: 'bg-blue-50', teacherType: 'present' as const },
     ],
     COACH: [
-      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50' },
-      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50' },
-      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50' },
+      { label: 'Total Teachers', value: totalTeachers, icon: Users, color: 'bg-blue-50', teacherType: 'total' as const },
+      { label: 'Present Today', value: presentToday, icon: TrendingUp, color: 'bg-emerald-50', teacherType: 'present' as const },
+      { label: 'On Leave Today', value: onLeaveToday, icon: Calendar, color: 'bg-amber-50', teacherType: 'onLeave' as const },
     ],
   };
 
@@ -430,11 +437,9 @@ export default function Dashboard() {
                   'from-emerald-500 to-emerald-600',
                   'from-amber-500 to-amber-600',
                 ];
-                const isTaskRelated = stat.label.includes('Tasks') || stat.label === 'Completed' || stat.label === 'Pending Tasks';
-                const isTeacherRelated = stat.label.includes('Teachers') || stat.label.includes('Present') || stat.label.includes('Leave') || stat.label.includes('Staff') || stat.label.includes('Colleagues');
                 const getClickHandler = () => {
-                  if (isTaskRelated) return () => navigate('/data-requests');
-                  if (isTeacherRelated) return () => navigate('/calendar');
+                  if ('taskType' in stat) return () => navigate('/data-requests');
+                  if ('teacherType' in stat) return () => openTeacherDialog(stat.teacherType);
                   return undefined;
                 };
                 return (
@@ -452,6 +457,14 @@ export default function Dashboard() {
               })}
             </div>
           )}
+
+          <TeacherDetailsDialog
+            open={teacherDialogOpen}
+            onOpenChange={setTeacherDialogOpen}
+            type={teacherDialogType}
+            teachers={teachers}
+            leaves={leaves}
+          />
 
           {/* AEO Activity Summary */}
         {user.role === 'AEO' && activities && (
