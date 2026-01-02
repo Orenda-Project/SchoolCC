@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
@@ -87,8 +87,23 @@ export default function DEODashboard() {
   const staffStats = getStaffStats();
   const staff = staffMembers;
   const visits = getVisitsForUser(user.id, user.role);
-  const requests = getRequestsForUser(user.id, user.role);
   const activities = getAllActivities();
+  
+  // Fetch requests using React Query or state
+  const [requests, setRequests] = useState<any[]>([]);
+  
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const data = await getRequestsForUser(user.id, user.role);
+        setRequests(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error('Error fetching requests:', error);
+        setRequests([]);
+      }
+    };
+    fetchRequests();
+  }, [user.id, user.role, getRequestsForUser]);
 
   // Calculate aggregations
   const {
@@ -361,11 +376,19 @@ export default function DEODashboard() {
       ],
     },
     {
-      label: 'User Management',
+      category: 'User Management',
       icon: Users,
       color: 'from-orange-500 to-orange-600',
-      action: () => { navigate('/user-management'); setShowMenuSidebar(false); },
-      description: 'Manage user accounts and approvals'
+      items: [
+        {
+          id: 'user-management',
+          label: 'Manage Users',
+          icon: Users,
+          color: 'from-orange-500 to-orange-600',
+          action: () => { navigate('/user-management'); setShowMenuSidebar(false); },
+          description: 'Manage user accounts and approvals'
+        },
+      ],
     },
   ];
 
