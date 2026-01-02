@@ -430,6 +430,7 @@ export default function Dashboard() {
                   'from-emerald-500 to-emerald-600',
                   'from-amber-500 to-amber-600',
                 ];
+                const isTaskRelated = stat.label.includes('Tasks') || stat.label === 'Completed' || stat.label === 'Pending Tasks';
                 return (
                   <MetricCard
                     key={idx}
@@ -438,7 +439,7 @@ export default function Dashboard() {
                     icon={stat.icon}
                     iconGradient={gradients[idx % 3]}
                     size="xl"
-                    onClick={() => navigate('/data-requests')}
+                    onClick={isTaskRelated ? () => navigate('/data-requests') : undefined}
                     className="hover-lift card-shine"
                   />
                 );
