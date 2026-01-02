@@ -1,22 +1,98 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useMockVisits } from '@/hooks/useMockVisits';
+import { useActivities } from '@/contexts/activities';
 import { useLocation } from 'wouter';
 import { ArrowLeft, Plus, MapPin, CheckCircle, Clock, Eye, Search, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
+interface NormalizedVisit {
+  id: string;
+  schoolName: string;
+  visitType: 'monitoring' | 'mentoring' | 'office';
+  visitDate: Date;
+  status: 'planned' | 'in_progress' | 'completed';
+  photoCount: number;
+  voiceNotesCount: number;
+  gpsLocation?: { lat: number; lng: number };
+  gpsStartLocation?: { lat: number; lng: number };
+  gpsEndLocation?: { lat: number; lng: number };
+  startTime?: string;
+  endTime?: string;
+  duration?: number;
+}
+
 export default function SchoolVisits() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
-  const { getVisitsForUser } = useMockVisits();
+  const { monitoringVisits, mentoringVisits, officeVisits } = useActivities();
   const [searchQuery, setSearchQuery] = useState('');
 
   if (!user) return null;
 
-  const userVisits = getVisitsForUser(user.id, user.role);
+  // Combine and normalize all visits from the activities context
+  const userVisits = useMemo(() => {
+    const visits: NormalizedVisit[] = [];
+
+    // Filter by user for AEO role, show all for leadership
+    const filterByUser = user.role === 'AEO';
+
+    // Normalize monitoring visits (cast to any to access API fields)
+    (monitoringVisits as any[])
+      .filter(v => !filterByUser || v.aeoId === user.id)
+      .forEach(v => {
+        visits.push({
+          id: v.id,
+          schoolName: v.schoolName,
+          visitType: 'monitoring',
+          visitDate: new Date(v.visitDate),
+          status: v.status === 'submitted' ? 'completed' : 'planned',
+          photoCount: v.evidence?.filter((e: any) => e.type === 'photo').length || 0,
+          voiceNotesCount: v.evidence?.filter((e: any) => e.type === 'voice').length || 0,
+          startTime: v.arrivalTime,
+          endTime: v.departureTime,
+        });
+      });
+
+    // Normalize mentoring visits
+    (mentoringVisits as any[])
+      .filter(v => !filterByUser || v.aeoId === user.id)
+      .forEach(v => {
+        visits.push({
+          id: v.id,
+          schoolName: v.schoolName,
+          visitType: 'mentoring',
+          visitDate: new Date(v.visitDate),
+          status: v.status === 'submitted' ? 'completed' : 'planned',
+          photoCount: v.evidence?.filter((e: any) => e.type === 'photo').length || 0,
+          voiceNotesCount: v.evidence?.filter((e: any) => e.type === 'voice').length || 0,
+          startTime: v.arrivalTime,
+          endTime: v.departureTime,
+        });
+      });
+
+    // Normalize office visits
+    (officeVisits as any[])
+      .filter(v => !filterByUser || v.aeoId === user.id)
+      .forEach(v => {
+        visits.push({
+          id: v.id,
+          schoolName: 'Office Visit',
+          visitType: 'office',
+          visitDate: new Date(v.visitDate),
+          status: v.status === 'submitted' ? 'completed' : 'planned',
+          photoCount: v.evidence?.filter((e: any) => e.type === 'photo').length || 0,
+          voiceNotesCount: v.evidence?.filter((e: any) => e.type === 'voice').length || 0,
+          startTime: v.arrivalTime,
+          endTime: v.departureTime,
+        });
+      });
+
+    // Sort by date descending
+    return visits.sort((a, b) => b.visitDate.getTime() - a.visitDate.getTime());
+  }, [monitoringVisits, mentoringVisits, officeVisits, user.id, user.role]);
   
   const filteredVisits = userVisits.filter((visit) => {
     if (!searchQuery.trim()) return true;
@@ -47,6 +123,8 @@ export default function SchoolVisits() {
         return 'bg-purple-100 text-purple-700';
       case 'mentoring':
         return 'bg-blue-100 text-blue-700';
+      case 'office':
+        return 'bg-amber-100 text-amber-700';
       default:
         return 'bg-muted text-muted-foreground';
     }
