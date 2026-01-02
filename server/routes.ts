@@ -335,6 +335,8 @@ export async function registerRoutes(
         clusterId,
         schoolEmis,
         districtId,
+        markazName,
+        assignedSchools,
       } = req.body;
 
       // Validation
@@ -349,8 +351,11 @@ export async function registerRoutes(
       }
 
       // Validate role-specific fields
-      if (role === 'AEO' && !clusterId) {
-        return res.status(400).json({ error: "Cluster selection required for AEO" });
+      if (role === 'AEO' && !markazName && !clusterId) {
+        return res.status(400).json({ error: "Markaz name required for AEO" });
+      }
+      if (role === 'AEO' && (!assignedSchools || assignedSchools.length === 0)) {
+        return res.status(400).json({ error: "School selection required for AEO" });
       }
       if ((role === 'HEAD_TEACHER' || role === 'TEACHER') && !schoolEmis) {
         return res.status(400).json({ error: "School EMIS number required" });
@@ -391,11 +396,11 @@ export async function registerRoutes(
         dateOfBirth,
         dateOfJoining,
         qualification,
-        clusterId: clusterId || schoolClusterId,
+        clusterId: markazName || clusterId || schoolClusterId,
         districtId: districtId || schoolDistrictId || 'Rawalpindi',
         schoolId,
         schoolName,
-        assignedSchools: [],
+        assignedSchools: assignedSchools || [],
       });
 
       res.json({

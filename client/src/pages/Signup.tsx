@@ -5,8 +5,29 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import type { UserRole } from '@/contexts/auth';
+
+// All 16 schools in the district
+const ALL_SCHOOLS = [
+  "GBPS Dhoke Ziarat",
+  "GES JAWA",
+  "GGES Anwar ul Islam Kamalabad",
+  "GGES Kotha Kallan",
+  "GGES Pind Habtal",
+  "GGPS ARAZI SOHAL",
+  "GGPS Carriage Factory",
+  "GGPS Chakra",
+  "GGPS Dhok Munshi",
+  "GGPS RAIKA MAIRA",
+  "GGPS Westridge 1",
+  "GMPS Khabba Barala",
+  "GPS CHAK DENAL",
+  "GPS DHAMIAL",
+  "GPS MILLAT ISLAMIA",
+  "GPS REHMATABAD"
+];
 
 export default function Signup() {
   const [, navigate] = useLocation();
@@ -37,6 +58,8 @@ export default function Signup() {
     clusterId: '',
     schoolEmis: '',
     districtId: 'Rawalpindi',
+    markazName: '',
+    assignedSchools: [] as string[],
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,6 +84,20 @@ export default function Signup() {
       setError('Password must be at least 6 characters');
       setLoading(false);
       return;
+    }
+
+    // AEO-specific validation
+    if (formData.role === 'AEO') {
+      if (!formData.markazName) {
+        setError('Please enter your Markaz name');
+        setLoading(false);
+        return;
+      }
+      if (formData.assignedSchools.length === 0) {
+        setError('Please select at least one school to oversee');
+        setLoading(false);
+        return;
+      }
     }
 
     try {
@@ -191,14 +228,54 @@ export default function Signup() {
 
               {/* Role-specific fields */}
               {formData.role === 'AEO' && (
-                <div>
-                  <Label>Cluster *</Label>
-                  <Input
-                    value={formData.clusterId}
-                    onChange={(e) => setFormData({ ...formData, clusterId: e.target.value })}
-                    placeholder="Enter cluster ID"
-                    required
-                  />
+                <div className="space-y-4">
+                  <div>
+                    <Label>Markaz Name *</Label>
+                    <Input
+                      value={formData.markazName}
+                      onChange={(e) => setFormData({ ...formData, markazName: e.target.value, clusterId: e.target.value })}
+                      placeholder="Enter your Markaz name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label>Select Schools to Oversee *</Label>
+                    <p className="text-sm text-muted-foreground mb-2">Choose the schools you will be monitoring</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-64 overflow-y-auto border rounded-lg p-3 bg-muted/30">
+                      {ALL_SCHOOLS.map((school) => (
+                        <div key={school} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={school}
+                            checked={formData.assignedSchools.includes(school)}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setFormData({
+                                  ...formData,
+                                  assignedSchools: [...formData.assignedSchools, school]
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  assignedSchools: formData.assignedSchools.filter(s => s !== school)
+                                });
+                              }
+                            }}
+                          />
+                          <label
+                            htmlFor={school}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                          >
+                            {school}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                    {formData.assignedSchools.length > 0 && (
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Selected: {formData.assignedSchools.length} school(s)
+                      </p>
+                    )}
+                  </div>
                 </div>
               )}
 

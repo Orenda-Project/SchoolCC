@@ -471,15 +471,17 @@ const mockStaff: StaffMember[] = [
   { id: 't10', name: 'Teacher 10', role: 'TEACHER', schoolId: 'SCH-002', schoolName: 'GGPS Carriage Factory', subject: 'English', status: 'on_leave' },
 ];
 
-export function useMockTeacherData(assignedSchoolIds?: string[]) {
+export function useMockTeacherData(assignedSchools?: string[]) {
   const [teachers] = useState<Teacher[]>(mockTeachers);
   const [leaves] = useState<LeaveRecord[]>(mockLeaves);
   const [schools] = useState<SchoolData[]>(mockSchools);
   const [staff] = useState<StaffMember[]>(mockStaff);
 
-  // Filter schools based on assigned schools for AEO
-  const filteredSchools = assignedSchoolIds && assignedSchoolIds.length > 0
-    ? schools.filter(school => assignedSchoolIds.includes(school.id))
+  // Filter schools based on assigned schools for AEO (by name or ID)
+  const filteredSchools = assignedSchools && assignedSchools.length > 0
+    ? schools.filter(school => 
+        assignedSchools.includes(school.name) || assignedSchools.includes(school.id)
+      )
     : schools;
 
   const getTeacherStats = useCallback(() => {
