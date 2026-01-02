@@ -431,6 +431,12 @@ export default function Dashboard() {
                   'from-amber-500 to-amber-600',
                 ];
                 const isTaskRelated = stat.label.includes('Tasks') || stat.label === 'Completed' || stat.label === 'Pending Tasks';
+                const isTeacherRelated = stat.label.includes('Teachers') || stat.label.includes('Present') || stat.label.includes('Leave') || stat.label.includes('Staff') || stat.label.includes('Colleagues');
+                const getClickHandler = () => {
+                  if (isTaskRelated) return () => navigate('/data-requests');
+                  if (isTeacherRelated) return () => navigate('/calendar');
+                  return undefined;
+                };
                 return (
                   <MetricCard
                     key={idx}
@@ -439,7 +445,7 @@ export default function Dashboard() {
                     icon={stat.icon}
                     iconGradient={gradients[idx % 3]}
                     size="xl"
-                    onClick={isTaskRelated ? () => navigate('/data-requests') : undefined}
+                    onClick={getClickHandler()}
                     className="hover-lift card-shine"
                   />
                 );
