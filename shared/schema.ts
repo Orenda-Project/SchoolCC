@@ -274,6 +274,115 @@ export const announcements = pgTable("announcements", {
   expiresAt: timestamp("expires_at"), // Optional expiration date
 });
 
+// Monitoring Visits table - school monitoring visits by AEO
+export const monitoringVisits = pgTable("monitoring_visits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  aeoId: varchar("aeo_id").notNull(),
+  aeoName: text("aeo_name").notNull(),
+  schoolId: varchar("school_id").notNull(),
+  schoolName: text("school_name").notNull(),
+  markaz: text("markaz"),
+  visitDate: text("visit_date").notNull(),
+  arrivalTime: text("arrival_time").notNull(),
+  departureTime: text("departure_time").notNull(),
+  teacherTotal: integer("teacher_total").notNull().default(0),
+  teacherPresent: integer("teacher_present").notNull().default(0),
+  teacherPercentage: integer("teacher_percentage").notNull().default(0),
+  headTeacherStatus: text("head_teacher_status").notNull().default("yes"),
+  studentTotal: integer("student_total").notNull().default(0),
+  studentPresent: integer("student_present").notNull().default(0),
+  studentPercentage: integer("student_percentage").notNull().default(0),
+  furnitureTotal: integer("furniture_total").notNull().default(0),
+  furnitureWith: integer("furniture_with").notNull().default(0),
+  furnitureWithout: integer("furniture_without").notNull().default(0),
+  classroomObservation: text("classroom_observation").notNull().default("good"),
+  lndEnglishPercent: integer("lnd_english_percent").notNull().default(0),
+  lndUrduPercent: integer("lnd_urdu_percent").notNull().default(0),
+  lndMathsPercent: integer("lnd_maths_percent").notNull().default(0),
+  nsbAllocation: integer("nsb_allocation").notNull().default(0),
+  nsbExpenditure: integer("nsb_expenditure").notNull().default(0),
+  nsbBalance: integer("nsb_balance").notNull().default(0),
+  nsbUtilizationPercent: integer("nsb_utilization_percent").notNull().default(0),
+  toiletStudentTotal: integer("toilet_student_total").notNull().default(0),
+  toiletTotal: integer("toilet_total").notNull().default(0),
+  toiletRequired: integer("toilet_required").notNull().default(0),
+  drinkingWater: text("drinking_water").notNull().default("available"),
+  hygieneWashrooms: text("hygiene_washrooms").notNull().default("good"),
+  hygieneBuilding: text("hygiene_building").notNull().default("good"),
+  hygieneClassrooms: text("hygiene_classrooms").notNull().default("good"),
+  retentionTotal: integer("retention_total").notNull().default(0),
+  retentionRetained: integer("retention_retained").notNull().default(0),
+  retentionDropped: integer("retention_dropped").notNull().default(0),
+  partialFacilityTypes: text("partial_facility_types"),
+  partialFacilityReason: text("partial_facility_reason"),
+  dataHealthVariation: integer("data_health_variation").notNull().default(0),
+  generalRemarks: text("general_remarks"),
+  headTeacherSignature: boolean("head_teacher_signature").notNull().default(false),
+  aeoSignature: boolean("aeo_signature").notNull().default(false),
+  evidence: json("evidence").$type<{ id: string; name: string; type: string; url: string }[]>().default([]),
+  status: text("status").notNull().default("draft"),
+  submittedAt: timestamp("submitted_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Mentoring Visits table - teacher mentoring visits by AEO
+export const mentoringVisits = pgTable("mentoring_visits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  aeoId: varchar("aeo_id").notNull(),
+  aeoName: text("aeo_name").notNull(),
+  schoolId: varchar("school_id"),
+  schoolName: text("school_name").notNull(),
+  visitDate: text("visit_date").notNull(),
+  arrivalTime: text("arrival_time").notNull(),
+  departureTime: text("departure_time").notNull(),
+  classObserved: text("class_observed"),
+  teacherName: text("teacher_name"),
+  subject: text("subject"),
+  indicators: json("indicators").$type<{ id: string; name: string; rating: string | null; rubricText: string; examples: string }[]>().default([]),
+  generalFeedback: text("general_feedback"),
+  strengthsObserved: text("strengths_observed"),
+  areasForImprovement: text("areas_for_improvement"),
+  actionItems: text("action_items"),
+  evidence: json("evidence").$type<{ id: string; name: string; type: string; url: string }[]>().default([]),
+  status: text("status").notNull().default("draft"),
+  submittedAt: timestamp("submitted_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Office Visits table - office/admin visits by AEO
+export const officeVisits = pgTable("office_visits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  aeoId: varchar("aeo_id").notNull(),
+  aeoName: text("aeo_name").notNull(),
+  visitDate: text("visit_date").notNull(),
+  arrivalTime: text("arrival_time").notNull(),
+  departureTime: text("departure_time").notNull(),
+  purpose: text("purpose"),
+  activitiesCompleted: json("activities_completed").$type<Record<string, boolean | string>>().default({}),
+  comments: text("comments"),
+  evidence: json("evidence").$type<{ id: string; name: string; type: string; url: string }[]>().default([]),
+  status: text("status").notNull().default("draft"),
+  submittedAt: timestamp("submitted_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Other Activities table - miscellaneous activities by AEO
+export const otherActivities = pgTable("other_activities", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  aeoId: varchar("aeo_id").notNull(),
+  aeoName: text("aeo_name").notNull(),
+  activityType: text("activity_type").notNull(),
+  activityDate: text("activity_date").notNull(),
+  startTime: text("start_time").notNull(),
+  endTime: text("end_time").notNull(),
+  description: text("description"),
+  comments: text("comments"),
+  evidence: json("evidence").$type<{ id: string; name: string; type: string; url: string }[]>().default([]),
+  status: text("status").notNull().default("draft"),
+  submittedAt: timestamp("submitted_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 // Organization insert schemas
 export const insertDistrictSchema = createInsertSchema(districts).omit({
   id: true,
@@ -353,6 +462,26 @@ export const insertAnnouncementSchema = createInsertSchema(announcements).omit({
   createdAt: true,
 });
 
+export const insertMonitoringVisitSchema = createInsertSchema(monitoringVisits).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertMentoringVisitSchema = createInsertSchema(mentoringVisits).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertOfficeVisitSchema = createInsertSchema(officeVisits).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertOtherActivitySchema = createInsertSchema(otherActivities).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Organization types
 export type InsertDistrict = z.infer<typeof insertDistrictSchema>;
 export type District = typeof districts.$inferSelect;
@@ -386,3 +515,11 @@ export type InsertAlbumReaction = z.infer<typeof insertAlbumReactionSchema>;
 export type AlbumReaction = typeof albumReactions.$inferSelect;
 export type InsertAnnouncement = z.infer<typeof insertAnnouncementSchema>;
 export type Announcement = typeof announcements.$inferSelect;
+export type InsertMonitoringVisit = z.infer<typeof insertMonitoringVisitSchema>;
+export type MonitoringVisit = typeof monitoringVisits.$inferSelect;
+export type InsertMentoringVisit = z.infer<typeof insertMentoringVisitSchema>;
+export type MentoringVisit = typeof mentoringVisits.$inferSelect;
+export type InsertOfficeVisit = z.infer<typeof insertOfficeVisitSchema>;
+export type OfficeVisit = typeof officeVisits.$inferSelect;
+export type InsertOtherActivity = z.infer<typeof insertOtherActivitySchema>;
+export type OtherActivity = typeof otherActivities.$inferSelect;

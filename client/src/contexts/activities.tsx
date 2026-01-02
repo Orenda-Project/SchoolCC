@@ -302,26 +302,67 @@ interface ActivitiesContextType {
 
 const ActivitiesContext = createContext<ActivitiesContextType | undefined>(undefined);
 
+// Helper functions for localStorage persistence
+const STORAGE_KEYS = {
+  monitoring: 'taleemhub_monitoring_visits',
+  mentoring: 'taleemhub_mentoring_visits',
+  office: 'taleemhub_office_visits',
+  other: 'taleemhub_other_activities',
+};
+
+const loadFromStorage = <T,>(key: string): T[] => {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveToStorage = <T,>(key: string, data: T[]) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    console.error('Failed to save to localStorage:', error);
+  }
+};
+
 export function ActivitiesProvider({ children }: { children: ReactNode }) {
-  const [monitoringVisits, setMonitoringVisits] = useState<MonitoringVisitData[]>([]);
-  const [mentoringVisits, setMentoringVisits] = useState<MentoringVisitData[]>([]);
-  const [officeVisits, setOfficeVisits] = useState<OfficeVisitData[]>([]);
-  const [otherActivities, setOtherActivities] = useState<OtherActivityData[]>([]);
+  const [monitoringVisits, setMonitoringVisits] = useState<MonitoringVisitData[]>(() => loadFromStorage(STORAGE_KEYS.monitoring));
+  const [mentoringVisits, setMentoringVisits] = useState<MentoringVisitData[]>(() => loadFromStorage(STORAGE_KEYS.mentoring));
+  const [officeVisits, setOfficeVisits] = useState<OfficeVisitData[]>(() => loadFromStorage(STORAGE_KEYS.office));
+  const [otherActivities, setOtherActivities] = useState<OtherActivityData[]>(() => loadFromStorage(STORAGE_KEYS.other));
 
   const addMonitoringVisit = useCallback((visit: MonitoringVisitData) => {
-    setMonitoringVisits((prev) => [...prev, visit]);
+    setMonitoringVisits((prev) => {
+      const updated = [...prev, visit];
+      saveToStorage(STORAGE_KEYS.monitoring, updated);
+      return updated;
+    });
   }, []);
 
   const addMentoringVisit = useCallback((visit: MentoringVisitData) => {
-    setMentoringVisits((prev) => [...prev, visit]);
+    setMentoringVisits((prev) => {
+      const updated = [...prev, visit];
+      saveToStorage(STORAGE_KEYS.mentoring, updated);
+      return updated;
+    });
   }, []);
 
   const addOfficeVisit = useCallback((visit: OfficeVisitData) => {
-    setOfficeVisits((prev) => [...prev, visit]);
+    setOfficeVisits((prev) => {
+      const updated = [...prev, visit];
+      saveToStorage(STORAGE_KEYS.office, updated);
+      return updated;
+    });
   }, []);
 
   const addOtherActivity = useCallback((activity: OtherActivityData) => {
-    setOtherActivities((prev) => [...prev, activity]);
+    setOtherActivities((prev) => {
+      const updated = [...prev, activity];
+      saveToStorage(STORAGE_KEYS.other, updated);
+      return updated;
+    });
   }, []);
 
   const getAllActivities = useCallback(() => {

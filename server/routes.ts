@@ -14,11 +14,17 @@ export async function registerRoutes(
   // Data Requests endpoints
   app.post("/api/requests", async (req, res) => {
     try {
-      const body = insertDataRequestSchema.parse(req.body);
+      // Convert date string to Date object
+      const requestBody = {
+        ...req.body,
+        dueDate: req.body.dueDate ? new Date(req.body.dueDate) : new Date(),
+      };
+      const body = insertDataRequestSchema.parse(requestBody);
       const request = await storage.createDataRequest(body);
       res.json(request);
-    } catch (error) {
-      res.status(400).json({ error: "Invalid request" });
+    } catch (error: any) {
+      console.error("Request validation error:", error?.message || error);
+      res.status(400).json({ error: "Invalid request", details: error?.message || String(error) });
     }
   });
 
@@ -582,10 +588,17 @@ export async function registerRoutes(
   // Query endpoints
   app.post("/api/queries", async (req, res) => {
     try {
-      const query = await storage.createQuery(req.body);
+      // Generate ticket number if not provided
+      const ticketNumber = req.body.ticketNumber || `TKT-${Date.now()}`;
+      const queryData = {
+        ...req.body,
+        ticketNumber,
+      };
+      const query = await storage.createQuery(queryData);
       res.json(query);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to create query" });
+    } catch (error: any) {
+      console.error("Query creation error:", error?.message || error);
+      res.status(400).json({ error: "Failed to create query", details: error?.message || String(error) });
     }
   });
 
@@ -655,10 +668,17 @@ export async function registerRoutes(
   // Visit Logs endpoints
   app.post("/api/visits", async (req, res) => {
     try {
-      const visitLog = await storage.createVisitLog(req.body);
+      // Convert date strings to Date objects
+      const visitData = {
+        ...req.body,
+        visitStartTime: req.body.visitStartTime ? new Date(req.body.visitStartTime) : new Date(),
+        visitEndTime: req.body.visitEndTime ? new Date(req.body.visitEndTime) : undefined,
+      };
+      const visitLog = await storage.createVisitLog(visitData);
       res.json(visitLog);
-    } catch (error) {
-      res.status(400).json({ error: "Failed to create visit log" });
+    } catch (error: any) {
+      console.error("Visit creation error:", error?.message || error);
+      res.status(400).json({ error: "Failed to create visit log", details: error?.message || String(error) });
     }
   });
 
