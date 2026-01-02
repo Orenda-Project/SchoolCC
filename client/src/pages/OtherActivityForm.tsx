@@ -112,8 +112,8 @@ export default function OtherActivityForm({ onClose }: Props) {
       }));
 
       const activity: OtherActivityData = {
-        id: `other-${Date.now()}`,
         ...(dataWithoutId as OtherActivityData),
+        id: `other-${Date.now()}`,
         evidence,
         status: 'submitted',
         submittedAt: new Date(),

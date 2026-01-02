@@ -125,8 +125,8 @@ export default function OfficeVisitForm({ onClose }: Props) {
       }));
 
       const visit: OfficeVisitData = {
-        id: `off-${Date.now()}`,
         ...(dataWithoutId as OfficeVisitData),
+        id: `off-${Date.now()}`,
         evidence,
         status: 'submitted',
         submittedAt: new Date(),
