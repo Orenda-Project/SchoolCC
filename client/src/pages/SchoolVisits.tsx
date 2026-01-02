@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useActivities } from '@/contexts/activities';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Plus, MapPin, CheckCircle, Clock, Eye, Search, X } from 'lucide-react';
+import { ArrowLeft, MapPin, CheckCircle, Clock, Eye, Search, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface NormalizedVisit {
@@ -145,18 +145,12 @@ export default function SchoolVisits() {
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">School Visits</h1>
-              <p className="text-sm text-muted-foreground">Plan, conduct, and monitor school visits</p>
+              <h1 className="text-2xl font-bold text-foreground">Visit History</h1>
+              <p className="text-sm text-muted-foreground">View all your completed school visits</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            {user.role === 'AEO' && (
-              <Button onClick={() => navigate('/create-visit')} data-testid="button-create-visit">
-                <Plus className="w-4 h-4 mr-2" />
-                Plan Visit
-              </Button>
-            )}
           </div>
         </div>
       </div>
@@ -203,10 +197,8 @@ export default function SchoolVisits() {
           </Card>
         ) : userVisits.length === 0 ? (
           <Card className="p-12 text-center">
-            <p className="text-muted-foreground mb-4">No visits recorded</p>
-            {user.role === 'AEO' && (
-              <Button onClick={() => navigate('/create-visit')}>Plan Your First Visit</Button>
-            )}
+            <p className="text-muted-foreground">No visits recorded yet</p>
+            <p className="text-sm text-muted-foreground mt-2">Your completed visits will appear here</p>
           </Card>
         ) : (
           <div className="space-y-4">
