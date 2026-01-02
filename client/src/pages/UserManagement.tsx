@@ -9,7 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, UserCheck, UserX, CheckCircle, XCircle, Trash2, ArrowLeft, Plus, Edit } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Users, UserCheck, UserX, CheckCircle, XCircle, Trash2, ArrowLeft, Plus, Edit, School } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface UserAccount {
@@ -22,7 +23,28 @@ interface UserAccount {
   clusterId?: string;
   email?: string;
   createdAt: string;
+  assignedSchools?: string[];
 }
+
+// All 16 schools in the district (uppercase)
+const ALL_SCHOOLS = [
+  "GBPS DHOKE ZIARAT",
+  "GES JAWA",
+  "GGES ANWAR UL ISLAM KAMALABAD",
+  "GGES KOTHA KALLAN",
+  "GGES PIND HABTAL",
+  "GGPS ARAZI SOHAL",
+  "GGPS CARRIAGE FACTORY",
+  "GGPS CHAKRA",
+  "GGPS DHOK MUNSHI",
+  "GGPS RAIKA MAIRA",
+  "GGPS WESTRIDGE 1",
+  "GMPS KHABBA BARALA",
+  "GPS CHAK DENAL",
+  "GPS DHAMIAL",
+  "GPS MILLAT ISLAMIA",
+  "GPS REHMATABAD"
+];
 
 const AVAILABLE_ROLES: { value: UserRole; label: string }[] = [
   { value: 'CEO', label: 'CEO' },
@@ -45,8 +67,12 @@ export default function UserManagement() {
   const [restrictedUsers, setRestrictedUsers] = useState<UserAccount[]>([]);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showSchoolsDialog, setShowSchoolsDialog] = useState(false);
   const [editingUser, setEditingUser] = useState<UserAccount | null>(null);
+  const [managingAeo, setManagingAeo] = useState<UserAccount | null>(null);
+  const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
   const [creating, setCreating] = useState(false);
+  const [savingSchools, setSavingSchools] = useState(false);
   
   // Create user form state
   const [newUserName, setNewUserName] = useState('');
@@ -301,6 +327,55 @@ export default function UserManagement() {
     }
   };
 
+  const openSchoolsDialog = (aeoUser: UserAccount) => {
+    setManagingAeo(aeoUser);
+    setSelectedSchools(aeoUser.assignedSchools || []);
+    setShowSchoolsDialog(true);
+  };
+
+  const toggleSchool = (school: string) => {
+    setSelectedSchools(prev => 
+      prev.includes(school)
+        ? prev.filter(s => s !== school)
+        : [...prev, school]
+    );
+  };
+
+  const handleSaveSchools = async () => {
+    if (!managingAeo) return;
+    
+    setSavingSchools(true);
+    try {
+      const res = await fetch(`/api/admin/users/${managingAeo.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          assignedSchools: selectedSchools,
+          adminId: user.id 
+        }),
+      });
+
+      if (!res.ok) throw new Error('Failed to update schools');
+
+      toast({
+        title: 'Success',
+        description: `Updated school assignments for ${managingAeo.name}`,
+      });
+
+      setShowSchoolsDialog(false);
+      setManagingAeo(null);
+      fetchUsers();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update school assignments',
+        variant: 'destructive',
+      });
+    } finally {
+      setSavingSchools(false);
+    }
+  };
+
   const UserCard = ({ user: userAccount, actions }: { user: UserAccount; actions: React.ReactNode }) => (
     <Card className="p-4">
       <div className="flex items-start justify-between">
@@ -339,6 +414,20 @@ export default function UserManagement() {
                 <span className="ml-2 font-medium">{userAccount.schoolName}</span>
               </div>
             )}
+            {userAccount.role === 'AEO' && (
+              <div className="col-span-2">
+                <span className="text-muted-foreground">Assigned Schools:</span>
+                <span className="ml-2 font-medium">
+                  {userAccount.assignedSchools?.length || 0} school(s)
+                </span>
+                {userAccount.assignedSchools && userAccount.assignedSchools.length > 0 && (
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {userAccount.assignedSchools.slice(0, 3).join(', ')}
+                    {userAccount.assignedSchools.length > 3 && ` +${userAccount.assignedSchools.length - 3} more`}
+                  </div>
+                )}
+              </div>
+            )}
             {userAccount.email && (
               <div className="col-span-2">
                 <span className="text-muted-foreground">Email:</span>
@@ -348,6 +437,17 @@ export default function UserManagement() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
+          {userAccount.role === 'AEO' && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => openSchoolsDialog(userAccount)}
+              data-testid={`button-manage-schools-${userAccount.id}`}
+            >
+              <School className="w-4 h-4 mr-1" />
+              Schools
+            </Button>
+          )}
           {actions}
         </div>
       </div>
@@ -483,6 +583,58 @@ export default function UserManagement() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* AEO School Assignment Dialog */}
+        <Dialog open={showSchoolsDialog} onOpenChange={setShowSchoolsDialog}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Manage School Assignments</DialogTitle>
+              <DialogDescription>
+                Select schools for {managingAeo?.name} to oversee
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="text-sm text-muted-foreground">
+                Currently assigned: {selectedSchools.length} school(s)
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-80 overflow-y-auto border rounded-lg p-3 bg-muted/30">
+                {ALL_SCHOOLS.map((school) => (
+                  <div key={school} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`school-${school}`}
+                      checked={selectedSchools.includes(school)}
+                      onCheckedChange={() => toggleSchool(school)}
+                    />
+                    <label
+                      htmlFor={`school-${school}`}
+                      className="text-sm font-medium leading-none cursor-pointer"
+                    >
+                      {school}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowSchoolsDialog(false)} 
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSaveSchools} 
+                  disabled={savingSchools} 
+                  className="flex-1"
+                  data-testid="button-save-schools"
+                >
+                  {savingSchools ? 'Saving...' : 'Save Changes'}
+                </Button>
+              </div>
             </div>
           </DialogContent>
         </Dialog>
