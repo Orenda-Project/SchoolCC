@@ -303,12 +303,20 @@ export default function MentoringVisitForm({ onClose }: Props) {
         </div>
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-2">Class Observed</label>
-          <Input
-            placeholder="e.g., Class 5-A"
+          <select
+            className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
             value={formData.classObserved || ''}
             onChange={(e) => handleInputChange('classObserved', e.target.value)}
-            data-testid="input-class-observed"
-          />
+            data-testid="select-class-observed"
+          >
+            <option value="">Select class...</option>
+            <option value="Writing">Writing</option>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
+              <option key={num} value={`Class ${num}`}>
+                Class {num}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-2">Teacher Name</label>
