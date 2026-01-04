@@ -37,13 +37,11 @@ import {
   Menu,
   Search,
   Plus,
-  Settings2,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { SchoolsTable } from '@/components/deo/SchoolsTable';
 import { LucideIcon } from 'lucide-react';
-import { useDashboardWidgets } from '@/hooks/useDashboardWidgets';
-import { CustomizeDashboardModal } from '@/components/dashboard/CustomizeDashboardModal';
+import { DraggableCard } from '@/components/dashboard/DraggableCard';
 
 interface MenuItem {
   id: string;
@@ -80,15 +78,50 @@ export default function DEODashboard() {
   const [showActivitiesModal, setShowActivitiesModal] = useState(false);
   const [showMenuSidebar, setShowMenuSidebar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+  const [draggedCard, setDraggedCard] = useState<string | null>(null);
   
-  const {
-    widgets,
-    visibleWidgets,
-    toggleWidget,
-    moveWidget,
-    resetToDefault,
-  } = useDashboardWidgets(user?.id || 'guest', user?.role || 'DEO');
+  const storageKey = `deo_card_order_${user?.id || 'guest'}`;
+  const defaultCardOrder = [
+    'schools', 'visits', 'staff', 'present', 'absent', 'requests', 
+    'compliance', 'activities', 'inventory', 'albums', 'allRequests', 
+    'calendar', 'schoolVisits', 'queries'
+  ];
+  
+  const [cardOrder, setCardOrder] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const savedOrder = JSON.parse(saved) as string[];
+        const newCards = defaultCardOrder.filter(id => !savedOrder.includes(id));
+        const validCards = savedOrder.filter(id => defaultCardOrder.includes(id));
+        return [...validCards, ...newCards];
+      }
+    } catch (e) {
+      console.error('Error loading card order:', e);
+    }
+    return defaultCardOrder;
+  });
+  
+  useEffect(() => {
+    if (user?.id && user.id !== 'guest') {
+      localStorage.setItem(storageKey, JSON.stringify(cardOrder));
+    }
+  }, [cardOrder, storageKey, user?.id]);
+  
+  const handleDragStart = (id: string) => setDraggedCard(id);
+  const handleDragEnd = () => setDraggedCard(null);
+  const handleDrop = (targetId: string) => {
+    if (!draggedCard || draggedCard === targetId) return;
+    const fromIndex = cardOrder.indexOf(draggedCard);
+    const toIndex = cardOrder.indexOf(targetId);
+    if (fromIndex !== -1 && toIndex !== -1) {
+      const newOrder = [...cardOrder];
+      newOrder.splice(fromIndex, 1);
+      newOrder.splice(toIndex, 0, draggedCard);
+      setCardOrder(newOrder);
+    }
+    setDraggedCard(null);
+  };
 
   // Handle redirect in useEffect to avoid updating state during render
   useEffect(() => {
@@ -463,17 +496,7 @@ export default function DEODashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowCustomizeModal(true)}
-                className="gap-2"
-                data-testid="button-customize-dashboard"
-              >
-                <Settings2 className="w-4 h-4" />
-                Customize
-              </Button>
+            <div className="flex items-center gap-4">
               <ThemeToggle />
               <NotificationBell />
             </div>
@@ -636,205 +659,257 @@ export default function DEODashboard() {
 
       {/* Main Content */}
       <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <p className="text-sm text-muted-foreground mb-4 flex items-center gap-2">
+          <span className="inline-block w-4 h-4 border-2 border-dashed border-muted-foreground/50 rounded" />
+          Drag cards to rearrange your dashboard
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-          <MetricCard
-            value={schools.length}
-            label="Total Schools"
-            icon={Building2}
-            iconGradient="from-blue-500 to-blue-600"
-            borderColor="border-l-blue-500"
-            showChevron
-            onClick={() => setShowSchoolsModal(true)}
-            breakdown={[
-              { label: 'Excellent (≥90%)', value: excellentSchools.length, valueColor: 'bg-green-500' },
-              { label: 'Good (80-90%)', value: goodSchools.length, valueColor: 'bg-blue-500' },
-              { label: 'Needs Attention', value: needsAttentionSchools.length, valueColor: 'bg-red-500' },
-            ]}
-          />
-
-          <MetricCard
-            value={activeVisits.length}
-            label="Active AEO Visits"
-            icon={MapPin}
-            iconGradient="from-purple-500 to-purple-600"
-            borderColor="border-l-purple-500"
-            showChevron
-            onClick={() => setShowVisitsModal(true)}
-            breakdown={[
-              { label: 'Live Tracking', value: '', showAsBadge: false, valueColor: 'text-green-600 font-medium' },
-            ]}
-          />
-
-          <MetricCard
-            value={totalStaff}
-            label="Total Staff"
-            icon={UsersRound}
-            iconGradient="from-teal-500 to-teal-600"
-            borderColor="border-l-teal-500"
-            showChevron
-            onClick={() => setShowStaffModal(true)}
-            breakdown={[
-              { label: 'AEOs', value: staffStats.aeos.total, showAsBadge: false },
-              { label: 'Head Teachers', value: staffStats.headTeachers.total, showAsBadge: false },
-              { label: 'Teachers', value: staffStats.teachers.total, showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value={totalPresent}
-            label="Staff Present Today"
-            icon={UserCheck}
-            iconGradient="from-green-500 to-green-600"
-            borderColor="border-l-green-500"
-            showChevron
-            onClick={() => setShowStaffModal(true)}
-            breakdown={[
-              { label: 'AEOs', value: staffStats.aeos.present, valueColor: 'bg-green-500' },
-              { label: 'Head Teachers', value: staffStats.headTeachers.present, valueColor: 'bg-green-500' },
-              { label: 'Teachers', value: staffStats.teachers.present, valueColor: 'bg-green-500' },
-            ]}
-          />
-
-          <MetricCard
-            value={totalAbsent}
-            label="Staff Absent Today"
-            icon={UserX}
-            iconGradient="from-red-500 to-red-600"
-            borderColor="border-l-red-500"
-            showChevron
-            onClick={() => setShowStaffModal(true)}
-            breakdown={[
-              { label: 'AEOs', value: staffStats.aeos.total - staffStats.aeos.present, valueColor: 'bg-red-500' },
-              { label: 'Head Teachers', value: staffStats.headTeachers.total - staffStats.headTeachers.present, valueColor: 'bg-red-500' },
-              { label: 'Teachers', value: staffStats.teachers.total - staffStats.teachers.present, valueColor: 'bg-red-500' },
-            ]}
-          />
-
-          <MetricCard
-            value={pendingRequests.length}
-            label="Pending Requests"
-            icon={FileText}
-            iconGradient="from-amber-500 to-amber-600"
-            borderColor="border-l-amber-500"
-            showChevron
-            onClick={() => setShowRequestsModal(true)}
-            breakdown={[
-              { label: 'High Priority', value: highPriorityCount, valueColor: 'bg-red-500' },
-              ...(overdueCount > 0 ? [{ label: 'Overdue', value: overdueCount, valueColor: 'bg-red-600' }] : []),
-            ]}
-          />
-
-          <MetricCard
-            value={`${avgCompliance}%`}
-            label="Average Compliance"
-            icon={Award}
-            iconGradient="from-emerald-500 to-emerald-600"
-            borderColor="border-l-emerald-500"
-            showChevron
-            onClick={() => setShowPerformanceModal(true)}
-            breakdown={[
-              { label: 'View top performers and schools needing attention', value: '', showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value={recentActivities.length}
-            label="Recent Activities"
-            icon={Activity}
-            iconGradient="from-slate-500 to-slate-600"
-            borderColor="border-l-slate-500"
-            showChevron
-            onClick={() => setShowActivitiesModal(true)}
-            breakdown={[
-              { label: 'Latest AEO field activities and visits', value: '', showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value="School Inventory"
-            label="View and manage school data"
-            icon={Building2}
-            iconGradient="from-indigo-500 to-indigo-600"
-            borderColor="border-l-indigo-500"
-            showChevron
-            onClick={() => navigate('/school-data')}
-            size="md"
-            breakdown={[
-              { label: 'Infrastructure, resources, and facilities', value: '', showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value="School Albums"
-            label="View school photos and activities"
-            icon={Image}
-            iconGradient="from-pink-500 to-pink-600"
-            borderColor="border-l-pink-500"
-            showChevron
-            onClick={() => navigate('/school-data')}
-            size="md"
-            breakdown={[
-              { label: 'Photos from all schools in the district', value: '', showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value="All Requests"
-            label="View all data requests"
-            icon={FileText}
-            iconGradient="from-violet-500 to-violet-600"
-            borderColor="border-l-violet-500"
-            showChevron
-            onClick={() => navigate('/data-requests')}
-            size="md"
-            breakdown={[
-              { label: 'Manage and track request status', value: '', showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value="Leave Calendar"
-            label="View staff leave schedules"
-            icon={Calendar}
-            iconGradient="from-sky-500 to-sky-600"
-            borderColor="border-l-sky-500"
-            showChevron
-            onClick={() => navigate('/calendar')}
-            size="md"
-            breakdown={[
-              { label: 'Track absences and approvals', value: '', showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value="School Visits"
-            label="View all scheduled visits"
-            icon={MapPin}
-            iconGradient="from-rose-500 to-rose-600"
-            borderColor="border-l-rose-500"
-            showChevron
-            onClick={() => navigate('/school-visits')}
-            size="md"
-            breakdown={[
-              { label: 'Plan and track field visits', value: '', showAsBadge: false },
-            ]}
-          />
-
-          <MetricCard
-            value="Queries"
-            label="View and respond to queries"
-            icon={MessageSquare}
-            iconGradient="from-fuchsia-500 to-fuchsia-600"
-            borderColor="border-l-fuchsia-500"
-            showChevron
-            onClick={() => navigate('/queries')}
-            size="md"
-            breakdown={[
-              { label: 'Staff queries and support requests', value: '', showAsBadge: false },
-            ]}
-          />
-
+          {cardOrder.map((cardId) => {
+            const renderCard = () => {
+              switch (cardId) {
+                case 'schools':
+                  return (
+                    <MetricCard
+                      value={schools.length}
+                      label="Total Schools"
+                      icon={Building2}
+                      iconGradient="from-blue-500 to-blue-600"
+                      borderColor="border-l-blue-500"
+                      showChevron
+                      onClick={() => setShowSchoolsModal(true)}
+                      breakdown={[
+                        { label: 'Excellent (≥90%)', value: excellentSchools.length, valueColor: 'bg-green-500' },
+                        { label: 'Good (80-90%)', value: goodSchools.length, valueColor: 'bg-blue-500' },
+                        { label: 'Needs Attention', value: needsAttentionSchools.length, valueColor: 'bg-red-500' },
+                      ]}
+                    />
+                  );
+                case 'visits':
+                  return (
+                    <MetricCard
+                      value={activeVisits.length}
+                      label="Active AEO Visits"
+                      icon={MapPin}
+                      iconGradient="from-purple-500 to-purple-600"
+                      borderColor="border-l-purple-500"
+                      showChevron
+                      onClick={() => setShowVisitsModal(true)}
+                      breakdown={[
+                        { label: 'Live Tracking', value: '', showAsBadge: false, valueColor: 'text-green-600 font-medium' },
+                      ]}
+                    />
+                  );
+                case 'staff':
+                  return (
+                    <MetricCard
+                      value={totalStaff}
+                      label="Total Staff"
+                      icon={UsersRound}
+                      iconGradient="from-teal-500 to-teal-600"
+                      borderColor="border-l-teal-500"
+                      showChevron
+                      onClick={() => setShowStaffModal(true)}
+                      breakdown={[
+                        { label: 'AEOs', value: staffStats.aeos.total, showAsBadge: false },
+                        { label: 'Head Teachers', value: staffStats.headTeachers.total, showAsBadge: false },
+                        { label: 'Teachers', value: staffStats.teachers.total, showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'present':
+                  return (
+                    <MetricCard
+                      value={totalPresent}
+                      label="Staff Present Today"
+                      icon={UserCheck}
+                      iconGradient="from-green-500 to-green-600"
+                      borderColor="border-l-green-500"
+                      showChevron
+                      onClick={() => setShowStaffModal(true)}
+                      breakdown={[
+                        { label: 'AEOs', value: staffStats.aeos.present, valueColor: 'bg-green-500' },
+                        { label: 'Head Teachers', value: staffStats.headTeachers.present, valueColor: 'bg-green-500' },
+                        { label: 'Teachers', value: staffStats.teachers.present, valueColor: 'bg-green-500' },
+                      ]}
+                    />
+                  );
+                case 'absent':
+                  return (
+                    <MetricCard
+                      value={totalAbsent}
+                      label="Staff Absent Today"
+                      icon={UserX}
+                      iconGradient="from-red-500 to-red-600"
+                      borderColor="border-l-red-500"
+                      showChevron
+                      onClick={() => setShowStaffModal(true)}
+                      breakdown={[
+                        { label: 'AEOs', value: staffStats.aeos.total - staffStats.aeos.present, valueColor: 'bg-red-500' },
+                        { label: 'Head Teachers', value: staffStats.headTeachers.total - staffStats.headTeachers.present, valueColor: 'bg-red-500' },
+                        { label: 'Teachers', value: staffStats.teachers.total - staffStats.teachers.present, valueColor: 'bg-red-500' },
+                      ]}
+                    />
+                  );
+                case 'requests':
+                  return (
+                    <MetricCard
+                      value={pendingRequests.length}
+                      label="Pending Requests"
+                      icon={FileText}
+                      iconGradient="from-amber-500 to-amber-600"
+                      borderColor="border-l-amber-500"
+                      showChevron
+                      onClick={() => setShowRequestsModal(true)}
+                      breakdown={[
+                        { label: 'High Priority', value: highPriorityCount, valueColor: 'bg-red-500' },
+                        ...(overdueCount > 0 ? [{ label: 'Overdue', value: overdueCount, valueColor: 'bg-red-600' }] : []),
+                      ]}
+                    />
+                  );
+                case 'compliance':
+                  return (
+                    <MetricCard
+                      value={`${avgCompliance}%`}
+                      label="Average Compliance"
+                      icon={Award}
+                      iconGradient="from-emerald-500 to-emerald-600"
+                      borderColor="border-l-emerald-500"
+                      showChevron
+                      onClick={() => setShowPerformanceModal(true)}
+                      breakdown={[
+                        { label: 'View top performers and schools needing attention', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'activities':
+                  return (
+                    <MetricCard
+                      value={recentActivities.length}
+                      label="Recent Activities"
+                      icon={Activity}
+                      iconGradient="from-slate-500 to-slate-600"
+                      borderColor="border-l-slate-500"
+                      showChevron
+                      onClick={() => setShowActivitiesModal(true)}
+                      breakdown={[
+                        { label: 'Latest AEO field activities and visits', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'inventory':
+                  return (
+                    <MetricCard
+                      value="School Inventory"
+                      label="View and manage school data"
+                      icon={Building2}
+                      iconGradient="from-indigo-500 to-indigo-600"
+                      borderColor="border-l-indigo-500"
+                      showChevron
+                      onClick={() => navigate('/school-data')}
+                      size="md"
+                      breakdown={[
+                        { label: 'Infrastructure, resources, and facilities', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'albums':
+                  return (
+                    <MetricCard
+                      value="School Albums"
+                      label="View school photos and activities"
+                      icon={Image}
+                      iconGradient="from-pink-500 to-pink-600"
+                      borderColor="border-l-pink-500"
+                      showChevron
+                      onClick={() => navigate('/school-data')}
+                      size="md"
+                      breakdown={[
+                        { label: 'Photos from all schools in the district', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'allRequests':
+                  return (
+                    <MetricCard
+                      value="All Requests"
+                      label="View all data requests"
+                      icon={FileText}
+                      iconGradient="from-violet-500 to-violet-600"
+                      borderColor="border-l-violet-500"
+                      showChevron
+                      onClick={() => navigate('/data-requests')}
+                      size="md"
+                      breakdown={[
+                        { label: 'Manage and track request status', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'calendar':
+                  return (
+                    <MetricCard
+                      value="Leave Calendar"
+                      label="View staff leave schedules"
+                      icon={Calendar}
+                      iconGradient="from-sky-500 to-sky-600"
+                      borderColor="border-l-sky-500"
+                      showChevron
+                      onClick={() => navigate('/calendar')}
+                      size="md"
+                      breakdown={[
+                        { label: 'Track absences and approvals', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'schoolVisits':
+                  return (
+                    <MetricCard
+                      value="School Visits"
+                      label="View all scheduled visits"
+                      icon={MapPin}
+                      iconGradient="from-rose-500 to-rose-600"
+                      borderColor="border-l-rose-500"
+                      showChevron
+                      onClick={() => navigate('/school-visits')}
+                      size="md"
+                      breakdown={[
+                        { label: 'Plan and track field visits', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                case 'queries':
+                  return (
+                    <MetricCard
+                      value="Queries"
+                      label="View and respond to queries"
+                      icon={MessageSquare}
+                      iconGradient="from-fuchsia-500 to-fuchsia-600"
+                      borderColor="border-l-fuchsia-500"
+                      showChevron
+                      onClick={() => navigate('/queries')}
+                      size="md"
+                      breakdown={[
+                        { label: 'Staff queries and support requests', value: '', showAsBadge: false },
+                      ]}
+                    />
+                  );
+                default:
+                  return null;
+              }
+            };
+            
+            return (
+              <DraggableCard
+                key={cardId}
+                id={cardId}
+                onDragStart={handleDragStart}
+                onDrop={handleDrop}
+                onDragEnd={handleDragEnd}
+                isDragging={draggedCard === cardId}
+              >
+                {renderCard()}
+              </DraggableCard>
+            );
+          })}
         </div>
       </main>
 
@@ -1263,16 +1338,6 @@ export default function DEODashboard() {
       <div className="mt-8">
         <SchoolsTable districtId={user.districtId} />
       </div>
-
-      {/* Customize Dashboard Modal */}
-      <CustomizeDashboardModal
-        open={showCustomizeModal}
-        onClose={() => setShowCustomizeModal(false)}
-        widgets={widgets}
-        onToggleWidget={toggleWidget}
-        onMoveWidget={moveWidget}
-        onResetToDefault={resetToDefault}
-      />
     </div>
   );
 }
