@@ -70,6 +70,7 @@ Preferred communication style: Simple, everyday language.
 - **Mock Data Hooks**: Currently uses localStorage-based mock data (`useMockDataRequests`, `useMockVisits`, etc.) for prototyping - designed to be replaced with API calls
 - **Storage Interface**: `IStorage` interface in `server/storage.ts` abstracts database operations
 - **Path Aliases**: `@/` for client source, `@shared/` for shared code
+- **User Lookup Helper**: `findUserByIdOrPhone()` helper function in routes.ts supports looking up users by both UUID and phone number for session compatibility between mock and real authentication
 
 ## External Dependencies
 

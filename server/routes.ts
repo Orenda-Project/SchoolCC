@@ -259,7 +259,7 @@ export async function registerRoutes(
 
   app.get("/api/admin/users/:id", async (req, res) => {
     try {
-      const user = await storage.getUser(req.params.id);
+      const user = await findUserByIdOrPhone(req.params.id);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -281,7 +281,11 @@ export async function registerRoutes(
 
   app.patch("/api/admin/users/:id", async (req, res) => {
     try {
-      const user = await storage.updateUser(req.params.id, req.body);
+      const existingUser = await findUserByIdOrPhone(req.params.id);
+      if (!existingUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const user = await storage.updateUser(existingUser.id, req.body);
       res.json({ ...user, password: undefined });
     } catch (error) {
       res.status(500).json({ error: "Failed to update user" });
@@ -290,7 +294,11 @@ export async function registerRoutes(
 
   app.delete("/api/admin/users/:id", async (req, res) => {
     try {
-      await storage.deleteUser(req.params.id);
+      const existingUser = await findUserByIdOrPhone(req.params.id);
+      if (!existingUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      await storage.deleteUser(existingUser.id);
       res.json({ success: true });
     } catch (error) {
       res.status(500).json({ error: "Failed to delete user" });
@@ -541,14 +549,9 @@ export async function registerRoutes(
         phoneNumber,
       } = req.body;
 
-      console.log("PATCH /api/users/:id - Looking up user with ID:", req.params.id);
-      
       // Find user by ID or phone number (for session compatibility)
       const existingUser = await findUserByIdOrPhone(req.params.id);
-      console.log("PATCH /api/users/:id - Found user:", existingUser ? existingUser.id : "NOT FOUND");
-      
       if (!existingUser) {
-        console.log("PATCH /api/users/:id - User not found for ID:", req.params.id);
         return res.status(404).json({ error: "User not found" });
       }
 
