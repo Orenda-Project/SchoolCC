@@ -506,7 +506,14 @@ export async function registerRoutes(
   // User Profile endpoints
   app.get("/api/users/:id", async (req, res) => {
     try {
-      const user = await storage.getUser(req.params.id);
+      // Try to find user by ID first
+      let user = await storage.getUser(req.params.id);
+      
+      // If not found by ID, try finding by phone number (for compatibility with different session formats)
+      if (!user) {
+        user = await storage.getUserByUsername(req.params.id);
+      }
+      
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }

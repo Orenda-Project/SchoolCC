@@ -28,6 +28,7 @@ interface UserProfile {
   qualification?: string;
   profilePicture?: string;
   assignedSchools?: string[];
+  markaz?: string;
 }
 
 export default function UserProfile() {
