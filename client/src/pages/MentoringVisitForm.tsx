@@ -175,7 +175,6 @@ export default function MentoringVisitForm({ onClose }: Props) {
       onClose?.();
     } catch (error) {
       console.error('Error submitting mentoring visit:', error);
-      toast.error('Failed to submit visit. Please try again.');
     } finally {
       setLoading(false);
     }

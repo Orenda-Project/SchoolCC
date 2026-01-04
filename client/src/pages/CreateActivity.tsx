@@ -71,7 +71,6 @@ export default function CreateActivity() {
       }
     } catch (error) {
       console.error('Error creating activity:', error);
-      toast.error('Failed to create activity. Please try again.');
     } finally {
       setLoading(false);
     }

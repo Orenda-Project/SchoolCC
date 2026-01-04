@@ -228,11 +228,6 @@ export default function CreateRequest() {
       navigate('/data-requests');
     } catch (error) {
       console.error('Error creating request:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to create request. Please try again.',
-        variant: 'destructive',
-      });
     }
   };
 

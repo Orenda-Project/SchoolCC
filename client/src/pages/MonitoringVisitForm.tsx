@@ -142,7 +142,6 @@ export default function MonitoringVisitForm({ onClose }: Props) {
       onClose?.();
     } catch (error) {
       console.error('Error submitting monitoring visit:', error);
-      toast.error('Failed to submit visit. Please try again.');
     } finally {
       setLoading(false);
     }

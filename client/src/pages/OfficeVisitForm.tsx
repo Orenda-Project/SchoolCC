@@ -138,7 +138,6 @@ export default function OfficeVisitForm({ onClose }: Props) {
       onClose?.();
     } catch (error) {
       console.error('Error submitting office visit:', error);
-      toast.error('Failed to submit visit. Please try again.');
     } finally {
       setLoading(false);
     }
