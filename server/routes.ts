@@ -539,6 +539,16 @@ export async function registerRoutes(
         phoneNumber,
       } = req.body;
 
+      // Find user by ID first, then by phone number (for compatibility)
+      let existingUser = await storage.getUser(req.params.id);
+      if (!existingUser) {
+        existingUser = await storage.getUserByUsername(req.params.id);
+      }
+      
+      if (!existingUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
       const updateData: any = {
         updatedAt: new Date(),
       };
@@ -555,7 +565,8 @@ export async function registerRoutes(
       if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
       if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
 
-      const user = await storage.updateUser(req.params.id, updateData);
+      // Use the actual database ID for the update
+      const user = await storage.updateUser(existingUser.id, updateData);
       res.json({ ...user, password: undefined });
     } catch (error: any) {
       console.error("Error updating user profile:", error);
