@@ -1069,8 +1069,9 @@ export async function registerRoutes(
         }),
         new Paragraph({ text: '' }), // Empty line
         new Paragraph({
-          text: album.description || 'No description provided',
-          italics: true,
+          children: [
+            new TextRun({ text: album.description || 'No description provided', italics: true }),
+          ],
         }),
         new Paragraph({ text: '' }), // Empty line
         new Paragraph({
