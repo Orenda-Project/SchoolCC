@@ -541,9 +541,14 @@ export async function registerRoutes(
         phoneNumber,
       } = req.body;
 
+      console.log("PATCH /api/users/:id - Looking up user with ID:", req.params.id);
+      
       // Find user by ID or phone number (for session compatibility)
       const existingUser = await findUserByIdOrPhone(req.params.id);
+      console.log("PATCH /api/users/:id - Found user:", existingUser ? existingUser.id : "NOT FOUND");
+      
       if (!existingUser) {
+        console.log("PATCH /api/users/:id - User not found for ID:", req.params.id);
         return res.status(404).json({ error: "User not found" });
       }
 

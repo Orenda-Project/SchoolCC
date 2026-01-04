@@ -148,12 +148,14 @@ export default function UserProfile() {
   };
 
   const handleSave = async () => {
-    if (!user?.id) return;
+    // Use profile ID first (from API), fall back to phone number, then user.id
+    const saveId = profile?.id || user?.phoneNumber || user?.id;
+    if (!saveId) return;
 
     try {
       setSaving(true);
-      console.log("Saving profile with data:", editedProfile);
-      const response = await fetch(`/api/users/${user.id}`, {
+      console.log("Saving profile with ID:", saveId, "data:", editedProfile);
+      const response = await fetch(`/api/users/${saveId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editedProfile),
