@@ -549,8 +549,13 @@ export async function registerRoutes(
 
       const user = await storage.updateUser(req.params.id, updateData);
       res.json({ ...user, password: undefined });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to update user profile" });
+    } catch (error: any) {
+      console.error("Error updating user profile:", error);
+      if (error.message?.includes("unique") || error.code === "23505") {
+        res.status(400).json({ error: "This phone number is already in use by another user" });
+      } else {
+        res.status(500).json({ error: "Failed to update user profile" });
+      }
     }
   });
 

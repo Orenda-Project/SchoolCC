@@ -106,7 +106,10 @@ export default function UserProfile() {
         body: JSON.stringify(editedProfile),
       });
 
-      if (!response.ok) throw new Error("Failed to update profile");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update profile");
+      }
 
       const updatedProfile = await response.json();
       setProfile(updatedProfile);
@@ -115,11 +118,11 @@ export default function UserProfile() {
         title: "Success",
         description: "Profile updated successfully",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating profile:", error);
       toast({
         title: "Error",
-        description: "Failed to update profile",
+        description: error.message || "Failed to update profile",
         variant: "destructive",
       });
     } finally {
