@@ -401,6 +401,7 @@ export async function registerRoutes(
         schoolId,
         schoolName,
         assignedSchools: assignedSchools || [],
+        markaz: markazName || null,
       });
 
       res.json({

@@ -24,6 +24,7 @@ export interface User {
   qualification?: string;
   profilePicture?: string;
   assignedSchools?: string[];
+  markaz?: string;
   createdAt?: string;
   updatedAt?: string;
 }
