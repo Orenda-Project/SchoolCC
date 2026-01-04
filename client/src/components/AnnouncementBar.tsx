@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import { analytics } from '@/lib/analytics';
 
 interface Announcement {
   id: string;
@@ -105,7 +106,10 @@ export function AnnouncementBar({ districtId }: AnnouncementBarProps) {
         )}
 
         <button
-          onClick={() => setDismissed(true)}
+          onClick={() => {
+            analytics.announcement.dismissed(currentAnnouncement.id);
+            setDismissed(true);
+          }}
           className="shrink-0 hover:bg-white/20 rounded p-1 transition-colors"
           aria-label="Dismiss announcement"
         >

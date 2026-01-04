@@ -10,6 +10,7 @@ import { ArrowLeft, Plus, Heart, MessageCircle, Share2, Download, FileImage, Ima
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { realSchools } from '@/data/realData';
+import { analytics } from '@/lib/analytics';
 
 // Build school names lookup from real data
 const SCHOOL_NAMES: Record<string, string> = realSchools.reduce((acc, school) => {
@@ -54,6 +55,7 @@ export default function SchoolAlbum() {
   const handleAddComment = (activityId: string) => {
     if (!commentText.trim()) return;
     addComment(activityId, commentText, user.id, user.name, user.role);
+    analytics.album.commentAdded(activityId);
     setCommentText('');
   };
 
@@ -61,6 +63,7 @@ export default function SchoolAlbum() {
     const key = `${activityId}-${user.id}`;
     if (userReactions[key] === type) {
       removeReaction(activityId, user.id);
+      analytics.album.reactionRemoved(activityId, type);
       setUserReactions((prev) => {
         const newReactions = { ...prev };
         delete newReactions[key];
@@ -68,6 +71,7 @@ export default function SchoolAlbum() {
       });
     } else {
       addReaction(activityId, type, user.id, user.name);
+      analytics.album.reactionAdded(activityId, type);
       setUserReactions((prev) => ({ ...prev, [key]: type }));
     }
   };
@@ -91,6 +95,7 @@ export default function SchoolAlbum() {
     // Generate and download zip
     const content = await zip.generateAsync({ type: 'blob' });
     saveAs(content, `${schoolName.replace(/[^a-z0-9]/gi, '_')}_${activity.title.substring(0, 20).replace(/[^a-z0-9]/gi, '_')}.zip`);
+    analytics.report.zipDownloaded('mini_album', activity.photos.length);
   };
 
   // Download full school album
@@ -117,6 +122,7 @@ export default function SchoolAlbum() {
     // Generate and download zip
     const content = await zip.generateAsync({ type: 'blob' });
     saveAs(content, `${schoolName.replace(/[^a-z0-9]/gi, '_')}_Full_Album_${new Date().toISOString().split('T')[0]}.zip`);
+    analytics.report.zipDownloaded('full_album', activities.length);
   };
 
   return (

@@ -11,6 +11,7 @@ import { useVoiceRecorder } from '@/hooks/useVoiceRecorder';
 import { useLocation } from 'wouter';
 import { Plus, X, ArrowLeft, Mic, Square, Play } from 'lucide-react';
 import { realAEOs, realSchools, realHeadmasters } from '@/data/realData';
+import { analytics } from '@/lib/analytics';
 
 const FIELD_TYPES = ['text', 'number', 'file', 'photo', 'voice_note'];
 
@@ -212,6 +213,15 @@ export default function CreateRequest() {
         }
       }
 
+      // Track the data request creation
+      const assigneeRoles = selectedAssignees.map(id => {
+        const assignee = allUsers.find(a => a.id === id);
+        return assignee?.role;
+      }).filter(Boolean) as UserRole[];
+      
+      analytics.dataRequest.created(`request-${Date.now()}`, 'normal', fields.length);
+      analytics.dataRequest.assigned(`request-${Date.now()}`, selectedAssignees.length, assigneeRoles);
+      
       // Navigate after successful creation
       navigate('/data-requests');
     } catch (error) {

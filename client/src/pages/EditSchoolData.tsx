@@ -8,6 +8,7 @@ import { ArrowLeft, Save, Users, Building2, Droplet, Calculator } from 'lucide-r
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Checkbox } from '@/components/ui/checkbox';
+import { analytics } from '@/lib/analytics';
 
 export default function EditSchoolData() {
   const { user } = useAuth();
@@ -154,6 +155,22 @@ export default function EditSchoolData() {
       });
 
       if (response.ok) {
+        const fieldsUpdated = [];
+        if (formData.totalStudents > 0 || formData.presentStudents > 0) fieldsUpdated.push('attendance');
+        if (formData.totalToilets > 0) fieldsUpdated.push('toilets');
+        if (formData.isDrinkingWaterAvailable !== undefined) fieldsUpdated.push('water');
+        if (formData.desksNew > 0 || formData.desksInUse > 0 || formData.desksBroken > 0) fieldsUpdated.push('desks');
+        if (formData.fansNew > 0 || formData.fansInUse > 0 || formData.fansBroken > 0) fieldsUpdated.push('fans');
+        if (formData.chairsNew > 0 || formData.chairsInUse > 0 || formData.chairsBroken > 0) fieldsUpdated.push('chairs');
+        
+        analytics.school.dataUpdated(schoolId, fieldsUpdated);
+        
+        if (formData.totalStudents > 0) {
+          const studentPct = formData.totalStudents > 0 ? Math.round((formData.presentStudents / formData.totalStudents) * 100) : 0;
+          const teacherPct = formData.totalTeachers > 0 ? Math.round((formData.presentTeachers / formData.totalTeachers) * 100) : 0;
+          analytics.school.attendanceSubmitted(schoolId, studentPct, teacherPct);
+        }
+        
         toast({
           title: 'Success',
           description: 'School data updated successfully',

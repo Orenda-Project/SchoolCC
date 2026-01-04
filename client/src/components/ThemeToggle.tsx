@@ -1,15 +1,22 @@
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ThemeProvider";
+import { analytics } from "@/lib/analytics";
 
 export function ThemeToggle() {
   const { isDark, setTheme } = useTheme();
+
+  const handleThemeToggle = () => {
+    const newTheme = isDark ? "light" : "dark";
+    setTheme(newTheme);
+    analytics.ui.themeToggled(newTheme);
+  };
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={handleThemeToggle}
       data-testid="button-theme-toggle"
     >
       {isDark ? (

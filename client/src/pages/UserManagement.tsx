@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Users, UserCheck, UserX, CheckCircle, XCircle, Trash2, ArrowLeft, Plus, Edit, School } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { analytics } from '@/lib/analytics';
 
 interface UserAccount {
   id: string;
@@ -132,6 +133,9 @@ export default function UserManagement() {
 
       if (!res.ok) throw new Error('Failed to approve');
 
+      const approvedUser = pendingUsers.find(u => u.id === userId);
+      analytics.admin.userApproved(userId, approvedUser?.role as UserRole);
+      
       toast({
         title: 'Success',
         description: 'User account approved',
@@ -161,6 +165,9 @@ export default function UserManagement() {
 
       if (!res.ok) throw new Error('Failed to reject');
 
+      const rejectedUser = pendingUsers.find(u => u.id === userId);
+      analytics.admin.userRejected(userId, rejectedUser?.role as UserRole);
+      
       toast({
         title: 'Success',
         description: 'Account request rejected',
@@ -186,6 +193,9 @@ export default function UserManagement() {
 
       if (!res.ok) throw new Error('Failed to restrict');
 
+      const restrictedUser = activeUsers.find(u => u.id === userId);
+      analytics.admin.userRestricted(userId, restrictedUser?.role as UserRole);
+
       toast({
         title: 'Success',
         description: 'User account restricted',
@@ -210,6 +220,9 @@ export default function UserManagement() {
       });
 
       if (!res.ok) throw new Error('Failed to unrestrict');
+
+      const unrestrictedUser = restrictedUsers.find(u => u.id === userId);
+      analytics.admin.userUnrestricted(userId, unrestrictedUser?.role as UserRole);
 
       toast({
         title: 'Success',
@@ -237,6 +250,9 @@ export default function UserManagement() {
       });
 
       if (!res.ok) throw new Error('Failed to delete');
+
+      const removedUser = allUsers.find(u => u.id === userId);
+      analytics.admin.userRemoved(userId, removedUser?.role as UserRole);
 
       toast({
         title: 'Success',
@@ -276,6 +292,8 @@ export default function UserManagement() {
         throw new Error(data.error || 'Failed to create user');
       }
 
+      analytics.admin.userCreatedByAdmin('new-user', newUserRole);
+      
       toast({
         title: 'Success',
         description: 'User account created successfully',

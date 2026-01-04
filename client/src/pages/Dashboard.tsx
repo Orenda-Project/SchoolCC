@@ -15,6 +15,7 @@ import OtherActivityForm from '@/pages/OtherActivityForm';
 import NotificationBell from '@/components/NotificationBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MetricCard, TeacherDetailsDialog } from '@/components/dashboard';
+import { analytics } from '@/lib/analytics';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -43,6 +44,7 @@ export default function Dashboard() {
       navigate('/deo-dashboard');
       return;
     }
+    analytics.navigation.dashboardViewed(user.role);
   }, [user, navigate]);
 
   useEffect(() => {

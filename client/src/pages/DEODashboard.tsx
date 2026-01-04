@@ -11,6 +11,7 @@ import { useMockDataRequests } from '@/hooks/useMockDataRequests';
 import NotificationBell from '@/components/NotificationBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { MetricCard } from '@/components/dashboard';
+import { analytics } from '@/lib/analytics';
 import {
   Building2,
   MapPin,
@@ -81,7 +82,9 @@ export default function DEODashboard() {
   useEffect(() => {
     if (!user || user.role !== 'DEO') {
       navigate('/');
+      return;
     }
+    analytics.navigation.dashboardViewed('DEO');
   }, [user, navigate]);
 
   // Return null while redirecting
