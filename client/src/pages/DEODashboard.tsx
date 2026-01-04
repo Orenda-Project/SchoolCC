@@ -37,10 +37,13 @@ import {
   Menu,
   Search,
   Plus,
+  Settings2,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { SchoolsTable } from '@/components/deo/SchoolsTable';
 import { LucideIcon } from 'lucide-react';
+import { useDashboardWidgets } from '@/hooks/useDashboardWidgets';
+import { CustomizeDashboardModal } from '@/components/dashboard/CustomizeDashboardModal';
 
 interface MenuItem {
   id: string;
@@ -77,6 +80,15 @@ export default function DEODashboard() {
   const [showActivitiesModal, setShowActivitiesModal] = useState(false);
   const [showMenuSidebar, setShowMenuSidebar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+  
+  const {
+    widgets,
+    visibleWidgets,
+    toggleWidget,
+    moveWidget,
+    resetToDefault,
+  } = useDashboardWidgets(user?.id || 'guest', user?.role || 'DEO');
 
   // Handle redirect in useEffect to avoid updating state during render
   useEffect(() => {
@@ -451,7 +463,17 @@ export default function DEODashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowCustomizeModal(true)}
+                className="gap-2"
+                data-testid="button-customize-dashboard"
+              >
+                <Settings2 className="w-4 h-4" />
+                Customize
+              </Button>
               <ThemeToggle />
               <NotificationBell />
             </div>
@@ -1241,6 +1263,16 @@ export default function DEODashboard() {
       <div className="mt-8">
         <SchoolsTable districtId={user.districtId} />
       </div>
+
+      {/* Customize Dashboard Modal */}
+      <CustomizeDashboardModal
+        open={showCustomizeModal}
+        onClose={() => setShowCustomizeModal(false)}
+        widgets={widgets}
+        onToggleWidget={toggleWidget}
+        onMoveWidget={moveWidget}
+        onResetToDefault={resetToDefault}
+      />
     </div>
   );
 }
