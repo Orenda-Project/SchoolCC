@@ -119,11 +119,11 @@ export default function MonitoringVisitForm({ onClose }: Props) {
 
   const calculatePercentages = () => {
     if (formData.teacherTotal && formData.teacherPresent) {
-      const pct = Math.round((formData.teacherPresent / formData.teacherTotal) * 100);
+      const pct = Math.min(100, Math.round((formData.teacherPresent / formData.teacherTotal) * 100));
       handleInputChange('teacherPercentage', pct);
     }
     if (formData.studentTotal && formData.studentPresent) {
-      const pct = Math.round((formData.studentPresent / formData.studentTotal) * 100);
+      const pct = Math.min(100, Math.round((formData.studentPresent / formData.studentTotal) * 100));
       handleInputChange('studentPercentage', pct);
     }
   };
