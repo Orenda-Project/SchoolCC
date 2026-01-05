@@ -292,9 +292,16 @@ export class DBStorage implements IStorage {
   async getDataRequestsForUser(userId: string, userRole: string, userSchoolId?: string, userClusterId?: string, userDistrictId?: string): Promise<DataRequest[]> {
     const allRequests = await db.select().from(dataRequests).where(eq(dataRequests.isArchived, false));
     
+    // Get all request IDs where the user is an assignee
+    const userAssignments = await db.select().from(requestAssignees).where(eq(requestAssignees.userId, userId));
+    const assignedRequestIds = new Set(userAssignments.map(a => a.requestId));
+    
     return allRequests.filter((request: DataRequest) => {
       // Creator always sees their requests
       if (request.createdBy === userId) return true;
+      
+      // Assignee always sees requests assigned to them
+      if (assignedRequestIds.has(request.id)) return true;
       
       // Hierarchy visibility: superiors see all requests in their jurisdiction
       const hierarchyLevels: Record<string, number> = {
