@@ -37,13 +37,12 @@ const mockForms: CollaborativeForm[] = [
     schoolId: 'school-1',
     schoolName: 'Government Primary School, Zone A',
     title: 'Teacher Information Form',
-    description: 'Collect updated teacher information including spouse details',
+    description: 'Collect updated teacher information',
     fields: [
       { id: 'f-1', name: 'Teacher Name', type: 'text', required: true },
       { id: 'f-2', name: 'Employee Number', type: 'text', required: true },
-      { id: 'f-3', name: 'Spouse Name', type: 'text', required: false },
-      { id: 'f-4', name: 'Contact Number', type: 'text', required: true },
-      { id: 'f-5', name: 'Date of Birth', type: 'date', required: true },
+      { id: 'f-3', name: 'Contact Number', type: 'text', required: true },
+      { id: 'f-4', name: 'Date of Birth', type: 'date', required: true },
     ],
     responses: [
       {
@@ -53,9 +52,8 @@ const mockForms: CollaborativeForm[] = [
         data: {
           'f-1': 'Ms. Priya Singh',
           'f-2': 'T-001',
-          'f-3': 'Mr. Raj Singh',
-          'f-4': '9876543210',
-          'f-5': '1990-05-15',
+          'f-3': '9876543210',
+          'f-4': '1990-05-15',
         },
         status: 'submitted',
         submittedAt: new Date(Date.now() - 86400000),

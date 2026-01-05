@@ -354,7 +354,6 @@ export async function registerRoutes(
         password,
         role,
         fatherName,
-        spouseName,
         email,
         residentialAddress,
         cnic,
@@ -418,7 +417,6 @@ export async function registerRoutes(
         role,
         status: 'pending',
         fatherName,
-        spouseName,
         email,
         residentialAddress,
         cnic,
@@ -550,7 +548,6 @@ export async function registerRoutes(
       const {
         name,
         fatherName,
-        spouseName,
         email,
         residentialAddress,
         cnic,
@@ -573,7 +570,6 @@ export async function registerRoutes(
 
       if (name !== undefined) updateData.name = name;
       if (fatherName !== undefined) updateData.fatherName = fatherName;
-      if (spouseName !== undefined) updateData.spouseName = spouseName;
       if (email !== undefined) updateData.email = email;
       if (residentialAddress !== undefined) updateData.residentialAddress = residentialAddress;
       if (cnic !== undefined) updateData.cnic = cnic;

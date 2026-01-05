@@ -47,7 +47,6 @@ export default function Signup() {
 
     // Profile info
     fatherName: '',
-    spouseName: '',
     email: '',
     residentialAddress: '',
     cnic: '',
@@ -311,21 +310,12 @@ export default function Signup() {
             <div className="space-y-4 pt-4 border-t">
               <h3 className="text-lg font-semibold">Additional Information (Optional)</h3>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Father Name</Label>
-                  <Input
-                    value={formData.fatherName}
-                    onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <Label>Spouse Name</Label>
-                  <Input
-                    value={formData.spouseName}
-                    onChange={(e) => setFormData({ ...formData, spouseName: e.target.value })}
-                  />
-                </div>
+              <div>
+                <Label>Father Name</Label>
+                <Input
+                  value={formData.fatherName}
+                  onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })}
+                />
               </div>
 
               <div>
