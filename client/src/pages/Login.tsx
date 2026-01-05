@@ -112,8 +112,16 @@ export default function Login() {
 
         {/* Right Panel - Login Form */}
         <Card className="p-8 lg:p-10 shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-0">
+          {/* Mobile Logo - Only shown on small screens */}
+          <div className="lg:hidden flex flex-col items-center mb-6">
+            <img src="/taleemhub-logo.svg" alt="TaleemHub Logo" className="w-20 h-20 mb-3" />
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">TaleemHub</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">Education Command Center</p>
+          </div>
+          
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 lg:block hidden">Welcome Back</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 lg:hidden">Welcome Back</h2>
             <p className="text-gray-600 dark:text-gray-400">Sign in to continue your monitoring journey</p>
           </div>
 
