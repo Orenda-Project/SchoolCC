@@ -33,7 +33,7 @@ export default function SchoolVisits() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
   const { monitoringVisits, mentoringVisits, officeVisits } = useActivities();
-  const { activeSession, endSession } = useVisitSession();
+  const { activeSession, endVisit } = useVisitSession();
   const [searchQuery, setSearchQuery] = useState('');
   const [showStartVisitModal, setShowStartVisitModal] = useState(false);
   const [showFormType, setShowFormType] = useState<'monitoring' | 'mentoring' | null>(null);
@@ -151,7 +151,8 @@ export default function SchoolVisits() {
       {/* Active Visit Banner for AEOs */}
       {user.role === 'AEO' && activeSession && (
         <ActiveVisitBanner 
-          onOpenForm={(type) => setShowFormType(type)}
+          onOpenMonitoringForm={() => setShowFormType('monitoring')}
+          onOpenMentoringForm={() => setShowFormType('mentoring')}
         />
       )}
       

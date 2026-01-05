@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import { useAuth } from './auth';
 
 export const OTHER_ACTIVITIES_LIST = [
   'Attending in-service/departmental training',
@@ -304,25 +305,39 @@ interface ActivitiesContextType {
     office: OfficeVisitData[];
     other: OtherActivityData[];
   };
+  refreshActivities: () => Promise<void>;
 }
 
 const ActivitiesContext = createContext<ActivitiesContextType | undefined>(undefined);
 
 export function ActivitiesProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   const [monitoringVisits, setMonitoringVisits] = useState<MonitoringVisitData[]>([]);
   const [mentoringVisits, setMentoringVisits] = useState<MentoringVisitData[]>([]);
   const [officeVisits, setOfficeVisits] = useState<OfficeVisitData[]>([]);
   const [otherActivities, setOtherActivities] = useState<OtherActivityData[]>([]);
 
-  // Load activities from the API on mount
+  // Load activities from the API on mount and when user changes
   useEffect(() => {
     const loadActivities = async () => {
+      if (!user) {
+        setMonitoringVisits([]);
+        setMentoringVisits([]);
+        setOfficeVisits([]);
+        setOtherActivities([]);
+        return;
+      }
+
       try {
+        // For AEO role, filter by their own ID; for leadership roles, get all
+        const isLeadership = ['CEO', 'DEO', 'DDEO', 'COACH'].includes(user.role);
+        const aeoParam = !isLeadership && user.role === 'AEO' ? `?aeoId=${user.id}` : '';
+        
         const [monitoringRes, mentoringRes, officeRes, otherRes] = await Promise.all([
-          fetch('/api/activities/monitoring'),
-          fetch('/api/activities/mentoring'),
-          fetch('/api/activities/office'),
-          fetch('/api/activities/other'),
+          fetch(`/api/activities/monitoring${aeoParam}`),
+          fetch(`/api/activities/mentoring${aeoParam}`),
+          fetch(`/api/activities/office${aeoParam}`),
+          fetch(`/api/activities/other${aeoParam}`),
         ]);
 
         if (monitoringRes.ok) {
@@ -347,7 +362,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     };
 
     loadActivities();
-  }, []);
+  }, [user?.id, user?.role]);
 
   const addMonitoringVisit = useCallback(async (visit: MonitoringVisitData) => {
     // Omit frontend-generated id - server will generate it
@@ -423,6 +438,41 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     };
   }, [monitoringVisits, mentoringVisits, officeVisits, otherActivities]);
 
+  const refreshActivities = useCallback(async () => {
+    if (!user) return;
+    
+    try {
+      const isLeadership = ['CEO', 'DEO', 'DDEO', 'COACH'].includes(user.role);
+      const aeoParam = !isLeadership && user.role === 'AEO' ? `?aeoId=${user.id}` : '';
+      
+      const [monitoringRes, mentoringRes, officeRes, otherRes] = await Promise.all([
+        fetch(`/api/activities/monitoring${aeoParam}`),
+        fetch(`/api/activities/mentoring${aeoParam}`),
+        fetch(`/api/activities/office${aeoParam}`),
+        fetch(`/api/activities/other${aeoParam}`),
+      ]);
+
+      if (monitoringRes.ok) {
+        const data = await monitoringRes.json();
+        setMonitoringVisits(data);
+      }
+      if (mentoringRes.ok) {
+        const data = await mentoringRes.json();
+        setMentoringVisits(data);
+      }
+      if (officeRes.ok) {
+        const data = await officeRes.json();
+        setOfficeVisits(data);
+      }
+      if (otherRes.ok) {
+        const data = await otherRes.json();
+        setOtherActivities(data);
+      }
+    } catch (error) {
+      console.error('Failed to refresh activities:', error);
+    }
+  }, [user?.id, user?.role]);
+
   return (
     <ActivitiesContext.Provider
       value={{
@@ -435,6 +485,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
         addOfficeVisit,
         addOtherActivity,
         getAllActivities,
+        refreshActivities,
       }}
     >
       {children}
