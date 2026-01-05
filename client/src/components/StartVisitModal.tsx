@@ -26,6 +26,7 @@ export function StartVisitModal({ open, onOpenChange, onVisitStarted }: StartVis
   const [showManualLocation, setShowManualLocation] = useState(false);
   const [mapsLink, setMapsLink] = useState('');
   const [parsedCoords, setParsedCoords] = useState<{ lat: string; lng: string } | null>(null);
+  const [isExpandingUrl, setIsExpandingUrl] = useState(false);
   const [gpsStatus, setGpsStatus] = useState<'checking' | 'available' | 'unavailable' | 'error'>('checking');
 
   // Parse Google Maps link to extract coordinates
@@ -77,8 +78,46 @@ export function StartVisitModal({ open, onOpenChange, onVisitStarted }: StartVis
 
   // Update parsed coordinates when link changes
   useEffect(() => {
-    const coords = parseGoogleMapsLink(mapsLink);
-    setParsedCoords(coords);
+    const processLink = async () => {
+      if (!mapsLink) {
+        setParsedCoords(null);
+        return;
+      }
+
+      // First try local parsing
+      const localCoords = parseGoogleMapsLink(mapsLink);
+      if (localCoords) {
+        setParsedCoords(localCoords);
+        return;
+      }
+
+      // If it's a short link, try server-side expansion
+      if (isShortLink(mapsLink)) {
+        setIsExpandingUrl(true);
+        try {
+          const response = await fetch('/api/expand-maps-url', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: mapsLink })
+          });
+          const data = await response.json();
+          if (data.success && data.latitude && data.longitude) {
+            setParsedCoords({ lat: data.latitude, lng: data.longitude });
+          } else {
+            setParsedCoords(null);
+          }
+        } catch (error) {
+          console.error('Failed to expand URL:', error);
+          setParsedCoords(null);
+        } finally {
+          setIsExpandingUrl(false);
+        }
+      } else {
+        setParsedCoords(null);
+      }
+    };
+
+    processLink();
   }, [mapsLink]);
 
   const getSchools = (): string[] => {
@@ -243,20 +282,15 @@ export function StartVisitModal({ open, onOpenChange, onVisitStarted }: StartVis
                 </div>
                 {mapsLink && (
                   <div className={`text-xs ${parsedCoords ? 'text-green-600' : 'text-amber-600'}`}>
-                    {parsedCoords ? (
+                    {isExpandingUrl ? (
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        <span>Extracting coordinates from link...</span>
+                      </div>
+                    ) : parsedCoords ? (
                       <div className="flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3" />
                         <span>Coordinates found: {parsedCoords.lat}, {parsedCoords.lng}</span>
-                      </div>
-                    ) : isShortLink(mapsLink) ? (
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          <span>Short link detected - please use full URL</span>
-                        </div>
-                        <p className="text-muted-foreground">
-                          Open the link in browser, then copy the full URL from address bar
-                        </p>
                       </div>
                     ) : (
                       <div className="space-y-1">

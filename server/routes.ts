@@ -1315,6 +1315,60 @@ export async function registerRoutes(
     }
   });
 
+  // Expand shortened Google Maps URL endpoint
+  app.post("/api/expand-maps-url", async (req, res) => {
+    try {
+      const { url } = req.body;
+      if (!url) {
+        return res.status(400).json({ error: "URL is required" });
+      }
+
+      // Follow redirects to get the full URL
+      const response = await fetch(url, {
+        method: 'GET',
+        redirect: 'follow',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+      });
+
+      const fullUrl = response.url;
+      
+      // Parse coordinates from the expanded URL
+      const patterns = [
+        /@(-?\d+\.?\d*),(-?\d+\.?\d*)/,           // @lat,lng
+        /[?&]q=(-?\d+\.?\d*),(-?\d+\.?\d*)/,      // ?q=lat,lng
+        /ll=(-?\d+\.?\d*),(-?\d+\.?\d*)/,         // ll=lat,lng
+        /!3d(-?\d+\.?\d*).*?!4d(-?\d+\.?\d*)/,    // !3d and !4d format
+      ];
+
+      for (const pattern of patterns) {
+        const match = fullUrl.match(pattern);
+        if (match) {
+          return res.json({
+            success: true,
+            latitude: match[1],
+            longitude: match[2],
+            expandedUrl: fullUrl
+          });
+        }
+      }
+
+      res.json({
+        success: false,
+        error: "Could not extract coordinates from URL",
+        expandedUrl: fullUrl
+      });
+    } catch (error: any) {
+      console.error("URL expansion error:", error?.message || error);
+      res.status(500).json({ 
+        success: false, 
+        error: "Failed to expand URL", 
+        details: error?.message || String(error) 
+      });
+    }
+  });
+
   // Visit Session endpoints (GPS tracking)
   app.post("/api/visit-sessions/start", async (req, res) => {
     try {
