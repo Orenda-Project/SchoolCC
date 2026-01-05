@@ -23,9 +23,43 @@ export function StartVisitModal({ open, onClose, onVisitStarted }: StartVisitMod
   const [selectedSchool, setSelectedSchool] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showManualLocation, setShowManualLocation] = useState(false);
-  const [manualLatitude, setManualLatitude] = useState('');
-  const [manualLongitude, setManualLongitude] = useState('');
+  const [mapsLink, setMapsLink] = useState('');
+  const [parsedCoords, setParsedCoords] = useState<{ lat: string; lng: string } | null>(null);
   const [gpsStatus, setGpsStatus] = useState<'checking' | 'available' | 'unavailable' | 'error'>('checking');
+
+  // Parse Google Maps link to extract coordinates
+  const parseGoogleMapsLink = (link: string): { lat: string; lng: string } | null => {
+    if (!link) return null;
+    
+    // Pattern 1: ?q=lat,lng or @lat,lng
+    const coordPattern = /[?&@](-?\d+\.?\d*),(-?\d+\.?\d*)/;
+    const match1 = link.match(coordPattern);
+    if (match1) {
+      return { lat: match1[1], lng: match1[2] };
+    }
+    
+    // Pattern 2: /place/.../@lat,lng,zoom
+    const placePattern = /@(-?\d+\.?\d*),(-?\d+\.?\d*)/;
+    const match2 = link.match(placePattern);
+    if (match2) {
+      return { lat: match2[1], lng: match2[2] };
+    }
+    
+    // Pattern 3: ll=lat,lng
+    const llPattern = /ll=(-?\d+\.?\d*),(-?\d+\.?\d*)/;
+    const match3 = link.match(llPattern);
+    if (match3) {
+      return { lat: match3[1], lng: match3[2] };
+    }
+    
+    return null;
+  };
+
+  // Update parsed coordinates when link changes
+  useEffect(() => {
+    const coords = parseGoogleMapsLink(mapsLink);
+    setParsedCoords(coords);
+  }, [mapsLink]);
 
   const getSchools = (): string[] => {
     const allSchools = getAllSchools();
@@ -66,8 +100,8 @@ export function StartVisitModal({ open, onClose, onVisitStarted }: StartVisitMod
   const handleStartVisit = async () => {
     if (!selectedSchool) return;
 
-    const manualLocation = showManualLocation && manualLatitude && manualLongitude
-      ? { latitude: manualLatitude, longitude: manualLongitude, source: 'manual' as const }
+    const manualLocation = showManualLocation && parsedCoords
+      ? { latitude: parsedCoords.lat, longitude: parsedCoords.lng, source: 'manual' as const }
       : undefined;
 
     const session = await startVisit(selectedSchool, undefined, manualLocation);
@@ -176,27 +210,32 @@ export function StartVisitModal({ open, onClose, onVisitStarted }: StartVisitMod
             )}
 
             {showManualLocation && (
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t">
+              <div className="space-y-2 pt-2 border-t">
                 <div>
-                  <label className="text-xs text-muted-foreground">Latitude</label>
+                  <label className="text-xs text-muted-foreground">Paste Google Maps Link</label>
                   <Input
                     type="text"
-                    placeholder="e.g., 33.6844"
-                    value={manualLatitude}
-                    onChange={(e) => setManualLatitude(e.target.value)}
-                    data-testid="input-manual-latitude"
+                    placeholder="Paste Google Maps link here..."
+                    value={mapsLink}
+                    onChange={(e) => setMapsLink(e.target.value)}
+                    data-testid="input-google-maps-link"
                   />
                 </div>
-                <div>
-                  <label className="text-xs text-muted-foreground">Longitude</label>
-                  <Input
-                    type="text"
-                    placeholder="e.g., 73.0479"
-                    value={manualLongitude}
-                    onChange={(e) => setManualLongitude(e.target.value)}
-                    data-testid="input-manual-longitude"
-                  />
-                </div>
+                {mapsLink && (
+                  <div className={`text-xs flex items-center gap-1 ${parsedCoords ? 'text-green-600' : 'text-red-500'}`}>
+                    {parsedCoords ? (
+                      <>
+                        <CheckCircle2 className="w-3 h-3" />
+                        <span>Coordinates found: {parsedCoords.lat}, {parsedCoords.lng}</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertCircle className="w-3 h-3" />
+                        <span>Could not extract coordinates from link</span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
