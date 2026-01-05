@@ -31,28 +31,47 @@ export function StartVisitModal({ open, onClose, onVisitStarted }: StartVisitMod
   const parseGoogleMapsLink = (link: string): { lat: string; lng: string } | null => {
     if (!link) return null;
     
-    // Pattern 1: ?q=lat,lng or @lat,lng
-    const coordPattern = /[?&@](-?\d+\.?\d*),(-?\d+\.?\d*)/;
-    const match1 = link.match(coordPattern);
+    // Pattern 1: @lat,lng in URL (most common full URLs)
+    const atPattern = /@(-?\d+\.?\d+),(-?\d+\.?\d+)/;
+    const match1 = link.match(atPattern);
     if (match1) {
       return { lat: match1[1], lng: match1[2] };
     }
     
-    // Pattern 2: /place/.../@lat,lng,zoom
-    const placePattern = /@(-?\d+\.?\d*),(-?\d+\.?\d*)/;
-    const match2 = link.match(placePattern);
+    // Pattern 2: ?q=lat,lng or &q=lat,lng
+    const qPattern = /[?&]q=(-?\d+\.?\d+),(-?\d+\.?\d+)/;
+    const match2 = link.match(qPattern);
     if (match2) {
       return { lat: match2[1], lng: match2[2] };
     }
     
     // Pattern 3: ll=lat,lng
-    const llPattern = /ll=(-?\d+\.?\d*),(-?\d+\.?\d*)/;
+    const llPattern = /ll=(-?\d+\.?\d+),(-?\d+\.?\d+)/;
     const match3 = link.match(llPattern);
     if (match3) {
       return { lat: match3[1], lng: match3[2] };
     }
     
+    // Pattern 4: !3d and !4d parameters (used in some Google Maps URLs)
+    const dPattern = /!3d(-?\d+\.?\d+)!4d(-?\d+\.?\d+)/;
+    const match4 = link.match(dPattern);
+    if (match4) {
+      return { lat: match4[1], lng: match4[2] };
+    }
+    
+    // Pattern 5: Direct coordinates like "33.6844,73.0479" (user might paste just coords)
+    const directPattern = /^(-?\d+\.?\d+),\s*(-?\d+\.?\d+)$/;
+    const match5 = link.trim().match(directPattern);
+    if (match5) {
+      return { lat: match5[1], lng: match5[2] };
+    }
+    
     return null;
+  };
+  
+  // Check if link is a shortened URL
+  const isShortLink = (link: string): boolean => {
+    return link.includes('goo.gl') || link.includes('maps.app') || link.includes('g.co');
   };
 
   // Update parsed coordinates when link changes
@@ -212,27 +231,42 @@ export function StartVisitModal({ open, onClose, onVisitStarted }: StartVisitMod
             {showManualLocation && (
               <div className="space-y-2 pt-2 border-t">
                 <div>
-                  <label className="text-xs text-muted-foreground">Paste Google Maps Link</label>
+                  <label className="text-xs text-muted-foreground">Google Maps Link or Coordinates</label>
                   <Input
                     type="text"
-                    placeholder="Paste Google Maps link here..."
+                    placeholder="e.g., 33.6844, 73.0479 or full Maps URL"
                     value={mapsLink}
                     onChange={(e) => setMapsLink(e.target.value)}
                     data-testid="input-google-maps-link"
                   />
                 </div>
                 {mapsLink && (
-                  <div className={`text-xs flex items-center gap-1 ${parsedCoords ? 'text-green-600' : 'text-red-500'}`}>
+                  <div className={`text-xs ${parsedCoords ? 'text-green-600' : 'text-amber-600'}`}>
                     {parsedCoords ? (
-                      <>
+                      <div className="flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3" />
                         <span>Coordinates found: {parsedCoords.lat}, {parsedCoords.lng}</span>
-                      </>
+                      </div>
+                    ) : isShortLink(mapsLink) ? (
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          <span>Short link detected - please use full URL</span>
+                        </div>
+                        <p className="text-muted-foreground">
+                          Open the link in browser, then copy the full URL from address bar
+                        </p>
+                      </div>
                     ) : (
-                      <>
-                        <AlertCircle className="w-3 h-3" />
-                        <span>Could not extract coordinates from link</span>
-                      </>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          <span>Could not find coordinates</span>
+                        </div>
+                        <p className="text-muted-foreground">
+                          Try pasting coordinates directly: e.g., 33.6844, 73.0479
+                        </p>
+                      </div>
                     )}
                   </div>
                 )}
