@@ -57,6 +57,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<MonitoringVisitData>>(() => ({
+    aeoId: user?.id || '',
     aeoName: user?.name || '',
     markaz: user?.markaz || '',
     visitDate: new Date().toISOString().split('T')[0],
@@ -69,6 +70,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
     if (user) {
       setFormData(prev => ({
         ...prev,
+        aeoId: user.id || prev.aeoId,
         aeoName: user.name || prev.aeoName,
         markaz: user.markaz || prev.markaz,
       }));

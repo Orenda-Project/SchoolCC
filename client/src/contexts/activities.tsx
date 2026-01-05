@@ -171,6 +171,7 @@ export const MENTORING_AREAS = [
 
 export interface MonitoringVisitData {
   id: string;
+  aeoId: string;
   tehsil: string;
   markaz: string;
   aeoName: string;
@@ -248,6 +249,7 @@ export interface MentoringVisitData {
 
 export interface OfficeVisitData {
   id: string;
+  aeoId: string;
   aeoName: string;
   visitDate: string;
   arrivalTime: string;
@@ -272,6 +274,7 @@ export interface OfficeVisitData {
 
 export interface OtherActivityData {
   id: string;
+  aeoId: string;
   aeoName: string;
   activityType: string;
   activityDate: string;

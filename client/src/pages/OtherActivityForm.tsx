@@ -33,6 +33,7 @@ export default function OtherActivityForm({ onClose }: Props) {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<OtherActivityData>>({
+    aeoId: user?.id || '',
     aeoName: user?.name || '',
     activityDate: new Date().toISOString().split('T')[0],
     status: 'draft',

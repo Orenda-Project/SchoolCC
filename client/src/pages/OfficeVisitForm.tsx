@@ -29,6 +29,7 @@ export default function OfficeVisitForm({ onClose }: Props) {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<OfficeVisitData>>({
+    aeoId: user?.id || '',
     aeoName: user?.name || '',
     visitDate: new Date().toISOString().split('T')[0],
     status: 'draft',
