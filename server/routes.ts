@@ -62,7 +62,12 @@ export async function registerRoutes(
         return res.status(404).json({ error: "Request not found" });
       }
       const assignees = await storage.getRequestAssignees(req.params.id);
-      res.json({ ...request, assignees });
+      // Map fieldResponses to fields for frontend compatibility
+      const mappedAssignees = assignees.map(a => ({
+        ...a,
+        fields: a.fieldResponses || [],
+      }));
+      res.json({ ...request, assignees: mappedAssignees });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch request" });
     }
