@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { analytics } from '@/lib/analytics';
 
 export type UserRole = 'CEO' | 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHER' | 'COACH';
+
+const USER_STORAGE_KEY = 'taleemhub_user';
 
 export interface User {
   id: string;
@@ -61,7 +63,27 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    // Initialize from localStorage on first render
+    try {
+      const stored = localStorage.getItem(USER_STORAGE_KEY);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {
+      console.error('Failed to parse stored user:', e);
+    }
+    return null;
+  });
+
+  // Sync user state to localStorage
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(USER_STORAGE_KEY);
+    }
+  }, [user]);
 
   const login = async (phoneNumber: string, role: UserRole, password: string) => {
     // Real authentication with API - no mock fallback
@@ -95,6 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     analytics.auth.loggedOut();
     analytics.reset();
     setUser(null);
+    localStorage.removeItem(USER_STORAGE_KEY);
   };
 
   return (
