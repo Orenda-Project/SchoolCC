@@ -442,11 +442,14 @@ export default function CEODashboard() {
         {/* Header */}
         <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-slate-200">
           <div className="px-8 py-6 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Mission Control</h1>
-              <p className="text-sm text-muted-foreground mt-1">
-                Welcome back, <span className="font-semibold text-primary cursor-pointer hover:underline" onClick={() => navigate('/profile')}>{user.name}</span>
-              </p>
+            <div className="flex items-center gap-4">
+              <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Mission Control</h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Welcome back, <span className="font-semibold text-primary cursor-pointer hover:underline" onClick={() => navigate('/profile')}>{user.name}</span>
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <Button variant="outline" size="sm" onClick={() => navigate('/create-request')}>

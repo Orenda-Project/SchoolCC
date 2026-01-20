@@ -505,6 +505,7 @@ export default function DEODashboard() {
               >
                 <Menu className="w-5 h-5" />
               </Button>
+              <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   DEO Command Center

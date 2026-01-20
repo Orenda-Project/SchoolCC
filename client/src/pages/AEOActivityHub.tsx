@@ -22,9 +22,12 @@ export default function AEOActivityHub() {
       {/* Header */}
       <div className="bg-background border-b border-border shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Activity Management</h1>
-            <p className="text-sm text-muted-foreground mt-1">Welcome, {user.name}</p>
+          <div className="flex items-center gap-4">
+            <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Activity Management</h1>
+              <p className="text-sm text-muted-foreground mt-1">Welcome, {user.name}</p>
+            </div>
           </div>
           <Button
             variant="outline"
