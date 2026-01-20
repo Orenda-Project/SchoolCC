@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,52 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import type { UserRole } from '@/contexts/auth';
 import { analytics } from '@/lib/analytics';
+import { OnboardingTour, TourStep, useTourStatus } from '@/components/OnboardingTour';
+
+const SIGNUP_TOUR_KEY = 'taleemhub_signup_tour';
+
+const getSignupTourSteps = (role: string): TourStep[] => {
+  const baseSteps: TourStep[] = [
+    {
+      target: '[data-testid="select-role"]',
+      title: 'Step 1: Select Your Role',
+      content: 'Choose your role - Teacher or Head Teacher. This determines what information you need to provide.',
+      placement: 'right',
+    },
+  ];
+
+  if (role === 'TEACHER' || role === 'HEAD_TEACHER') {
+    return [
+      ...baseSteps,
+      {
+        target: '[data-testid="input-emis"]',
+        title: 'Step 2: School EMIS Number',
+        content: 'Enter your school\'s EMIS number. Ask your Head Teacher or AEO if you don\'t know it.',
+        placement: 'right',
+      },
+      {
+        target: '[data-testid="input-name"]',
+        title: 'Step 3: Your Full Name',
+        content: 'Enter your full name as it appears in official records.',
+        placement: 'right',
+      },
+      {
+        target: '[data-testid="input-phone"]',
+        title: 'Step 4: Phone Number',
+        content: 'Enter your phone number. You\'ll use this to log in - no password needed!',
+        placement: 'right',
+      },
+      {
+        target: '[data-testid="button-submit"]',
+        title: 'Step 5: Create Account',
+        content: 'Click here to create your account. You can log in immediately after!',
+        placement: 'top',
+      },
+    ];
+  }
+
+  return baseSteps;
+};
 
 // All 16 schools in the district (uppercase)
 const ALL_SCHOOLS = [
@@ -35,6 +81,10 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  
+  const { hasSeenTour } = useTourStatus(SIGNUP_TOUR_KEY);
+  const [showTour, setShowTour] = useState(false);
+  const [tourSteps, setTourSteps] = useState<TourStep[]>([]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -61,6 +111,22 @@ export default function Signup() {
     markazName: '',
     assignedSchools: [] as string[],
   });
+
+  // Initialize tour when page loads
+  useEffect(() => {
+    if (!hasSeenTour) {
+      setTourSteps(getSignupTourSteps(''));
+      const timer = setTimeout(() => setShowTour(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [hasSeenTour]);
+
+  // Update tour steps when role changes
+  useEffect(() => {
+    if (formData.role && (formData.role === 'TEACHER' || formData.role === 'HEAD_TEACHER')) {
+      setTourSteps(getSignupTourSteps(formData.role));
+    }
+  }, [formData.role]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -193,6 +259,7 @@ export default function Signup() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Enter full name"
                   required
+                  data-testid="input-name"
                 />
               </div>
 
@@ -204,6 +271,7 @@ export default function Signup() {
                   onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                   placeholder="03001234567"
                   required
+                  data-testid="input-phone"
                 />
               </div>
 
@@ -248,7 +316,7 @@ export default function Signup() {
                   value={formData.role}
                   onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger data-testid="select-role">
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
@@ -323,6 +391,7 @@ export default function Signup() {
                     onChange={(e) => setFormData({ ...formData, schoolEmis: e.target.value })}
                     placeholder="e.g., 37330227"
                     required
+                    data-testid="input-emis"
                   />
                 </div>
               )}
@@ -420,12 +489,24 @@ export default function Signup() {
               type="submit"
               disabled={loading}
               className="w-full"
+              data-testid="button-submit"
             >
               {loading ? 'Submitting...' : 'Submit Account Request'}
             </Button>
           </form>
         </Card>
       </div>
+
+      {/* Onboarding Tour */}
+      {tourSteps.length > 0 && (
+        <OnboardingTour
+          steps={tourSteps}
+          isOpen={showTour}
+          onComplete={() => setShowTour(false)}
+          onSkip={() => setShowTour(false)}
+          storageKey={SIGNUP_TOUR_KEY}
+        />
+      )}
     </div>
   );
 }

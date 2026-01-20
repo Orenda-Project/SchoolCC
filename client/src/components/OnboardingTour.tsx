@@ -99,43 +99,74 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
   if (!isOpen || !step || !targetRect) return null;
 
   const getTooltipPosition = () => {
-    const placement = step.placement || 'bottom';
-    const padding = 16;
-    const arrowOffset = 12;
-    
-    let top = 0;
-    let left = 0;
+    const preferredPlacement = step.placement || 'bottom';
+    const padding = 20;
+    const arrowOffset = 16;
     
     const tooltipWidth = 320;
-    const tooltipHeight = 180;
+    const tooltipHeight = 200;
     
-    switch (placement) {
-      case 'top':
-        top = targetRect.top - tooltipHeight - arrowOffset - padding;
-        left = targetRect.left + (targetRect.width / 2) - (tooltipWidth / 2);
-        break;
-      case 'bottom':
-        top = targetRect.bottom + arrowOffset + padding;
-        left = targetRect.left + (targetRect.width / 2) - (tooltipWidth / 2);
-        break;
-      case 'left':
-        top = targetRect.top + (targetRect.height / 2) - (tooltipHeight / 2);
-        left = targetRect.left - tooltipWidth - arrowOffset - padding;
-        break;
-      case 'right':
-        top = targetRect.top + (targetRect.height / 2) - (tooltipHeight / 2);
-        left = targetRect.right + arrowOffset + padding;
-        break;
+    const calculatePosition = (placement: string) => {
+      let top = 0;
+      let left = 0;
+      
+      switch (placement) {
+        case 'top':
+          top = targetRect.top - tooltipHeight - arrowOffset;
+          left = targetRect.left + (targetRect.width / 2) - (tooltipWidth / 2);
+          break;
+        case 'bottom':
+          top = targetRect.bottom + arrowOffset;
+          left = targetRect.left + (targetRect.width / 2) - (tooltipWidth / 2);
+          break;
+        case 'left':
+          top = targetRect.top + (targetRect.height / 2) - (tooltipHeight / 2);
+          left = targetRect.left - tooltipWidth - arrowOffset;
+          break;
+        case 'right':
+          top = targetRect.top + (targetRect.height / 2) - (tooltipHeight / 2);
+          left = targetRect.right + arrowOffset;
+          break;
+      }
+      
+      return { top, left, placement };
+    };
+    
+    let result = calculatePosition(preferredPlacement);
+    
+    if (result.left < padding) {
+      if (preferredPlacement === 'left') {
+        result = calculatePosition('right');
+      } else {
+        result.left = padding;
+      }
+    }
+    if (result.left + tooltipWidth > window.innerWidth - padding) {
+      if (preferredPlacement === 'right') {
+        result = calculatePosition('left');
+      } else {
+        result.left = window.innerWidth - tooltipWidth - padding;
+      }
+    }
+    if (result.top < padding) {
+      if (preferredPlacement === 'top') {
+        result = calculatePosition('bottom');
+      } else {
+        result.top = padding;
+      }
+    }
+    if (result.top + tooltipHeight > window.innerHeight - padding) {
+      if (preferredPlacement === 'bottom') {
+        result = calculatePosition('top');
+      } else {
+        result.top = window.innerHeight - tooltipHeight - padding;
+      }
     }
     
-    left = Math.max(padding, Math.min(left, window.innerWidth - tooltipWidth - padding));
-    top = Math.max(padding, Math.min(top, window.innerHeight - tooltipHeight - padding));
-    
-    return { top, left };
+    return result;
   };
 
-  const getArrowStyle = () => {
-    const placement = step.placement || 'bottom';
+  const getArrowStyle = (actualPlacement: string) => {
     const baseStyle = {
       position: 'absolute' as const,
       width: 0,
@@ -143,7 +174,7 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
       borderStyle: 'solid',
     };
     
-    switch (placement) {
+    switch (actualPlacement) {
       case 'top':
         return {
           ...baseStyle,
@@ -236,7 +267,7 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
           zIndex: 10000,
         }}
       >
-        <div style={getArrowStyle()} />
+        <div style={getArrowStyle(tooltipPos.placement)} />
         
         <button
           onClick={handleSkip}
