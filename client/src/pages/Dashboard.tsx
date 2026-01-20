@@ -8,7 +8,8 @@ import { useMockVisits } from '@/hooks/useMockVisits';
 import { useDashboardWidgets } from '@/hooks/useDashboardWidgets';
 import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
-import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2 } from 'lucide-react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import MonitoringVisitForm from '@/pages/MonitoringVisitForm';
 import MentoringVisitForm from '@/pages/MentoringVisitForm';
 import OfficeVisitForm from '@/pages/OfficeVisitForm';
@@ -26,6 +27,7 @@ export default function Dashboard() {
   const { getVisitsForUser } = useMockVisits();
   const { getAllActivities } = useActivities();
 
+  const { toast } = useToast();
   const [activeActivityForm, setActiveActivityForm] = useState<string | null>(null);
   const [userRequests, setUserRequests] = useState<any[]>([]);
   const [teacherDialogOpen, setTeacherDialogOpen] = useState(false);
@@ -527,6 +529,19 @@ export default function Dashboard() {
               </div>
               <span className="font-medium text-foreground">Queries</span>
             </button>
+            <button
+              onClick={() => toast({
+                title: "Coming Soon!",
+                description: "Lesson Plans feature is under development and will be available soon.",
+              })}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
+              data-testid="button-lesson-plans"
+            >
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
+              <span className="font-medium text-foreground">Lesson Plans</span>
+            </button>
           </nav>
         </div>
 
@@ -624,6 +639,18 @@ export default function Dashboard() {
               >
                 <Building2 className="w-4 h-4" />
                 Schools
+              </Button>
+              <Button
+                onClick={() => toast({
+                  title: "Coming Soon!",
+                  description: "Lesson Plans feature is under development.",
+                })}
+                size="sm"
+                className="rounded-full bg-gradient-to-r from-indigo-400 to-indigo-500 text-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 border-0"
+                data-testid="button-lesson-plans-mobile"
+              >
+                <BookOpen className="w-4 h-4" />
+                Lesson Plans
               </Button>
             </div>
           </div>
