@@ -32,6 +32,7 @@ import ViewQuery from "@/pages/ViewQuery";
 import UserProfile from "@/pages/UserProfile";
 import Signup from "@/pages/Signup";
 import UserManagement from "@/pages/UserManagement";
+import SchoolManagement from "@/pages/SchoolManagement";
 import NotFound from "@/pages/not-found";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
@@ -83,6 +84,7 @@ function Router() {
         <Route path="/profile" component={UserProfile} />
         <Route path="/signup" component={Signup} />
         <Route path="/user-management" component={UserManagement} />
+        <Route path="/school-management" component={SchoolManagement} />
         {/* Fallback to 404 */}
         <Route component={NotFound} />
       </Switch>
