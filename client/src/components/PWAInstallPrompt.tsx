@@ -39,11 +39,11 @@ export default function PWAInstallPrompt() {
     const dismissed = localStorage.getItem("pwa-install-dismissed");
     const dismissedTime = localStorage.getItem("pwa-install-dismissed-time");
 
-    // Show again after 7 days
+    // Show again after 30 days (reduced intrusiveness since we have sticky button)
     if (dismissed && dismissedTime) {
       const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
-      if (daysSinceDismissed < 7) {
-        console.log('[PWA] Prompt dismissed recently, waiting', 7 - daysSinceDismissed, 'more days');
+      if (daysSinceDismissed < 30) {
+        console.log('[PWA] Prompt dismissed recently, waiting', 30 - daysSinceDismissed, 'more days');
         return;
       }
     }
