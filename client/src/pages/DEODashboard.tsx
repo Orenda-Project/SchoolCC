@@ -508,13 +508,13 @@ export default function DEODashboard() {
               <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  DEO Command Center
+                  {user.role === 'DDEO' ? 'DDEO Command Center' : 'DEO Command Center'}
                 </h1>
                 <p
                   className="text-sm text-muted-foreground mt-1 cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => navigate('/profile')}
                 >
-                  {user.name} • District Education Officer
+                  {user.name} • {user.role === 'DDEO' ? 'Deputy District Education Officer' : 'District Education Officer'}
                 </p>
               </div>
             </div>
