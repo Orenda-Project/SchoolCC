@@ -31,22 +31,23 @@ export interface User {
   updatedAt?: string;
 }
 
-// Hierarchy: CEO > DEO > DDEO/AEO/TRAINING_MANAGER > HEAD_TEACHER > TEACHER
+// Hierarchy: CEO > DEO/DDEO > AEO/TRAINING_MANAGER > HEAD_TEACHER > TEACHER
+// Note: DEO and DDEO have same interface/abilities, but DEO is the super admin after CEO
 export const ROLE_HIERARCHY: Record<UserRole, number> = {
   'CEO': 5,
   'DEO': 4,
-  'DDEO': 3,
+  'DDEO': 4, // Same viewing level as DEO, full access to all data
   'AEO': 3,
   'TRAINING_MANAGER': 3, // Same viewing level as AEO, but read-only
   'HEAD_TEACHER': 2,
   'TEACHER': 1,
 };
 
-// Direct subordinates for each role - CEO can assign to anyone, DEO can assign to everyone except CEO
+// Direct subordinates for each role - CEO can assign to anyone, DEO/DDEO can assign to everyone except CEO
 export const VALID_ASSIGNEES: Record<UserRole, UserRole[]> = {
   'CEO': ['DEO', 'DDEO', 'AEO', 'HEAD_TEACHER', 'TEACHER'], // CEO is the king - can assign to anyone
   'DEO': ['DDEO', 'AEO', 'HEAD_TEACHER', 'TEACHER'], // DEO can assign from DDEO down to Teacher
-  'DDEO': ['AEO', 'HEAD_TEACHER', 'TEACHER'], // DDEO can assign to AEOs and below
+  'DDEO': ['DDEO', 'AEO', 'HEAD_TEACHER', 'TEACHER'], // DDEO has same assignment rights as DEO
   'AEO': ['HEAD_TEACHER'],
   'HEAD_TEACHER': ['TEACHER'],
   'TEACHER': [],

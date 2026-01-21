@@ -54,7 +54,7 @@ export default function Dashboard() {
       navigate('/');
       return;
     }
-    if (user.role === 'DEO') {
+    if (user.role === 'DEO' || user.role === 'DDEO') {
       navigate('/deo-dashboard');
       return;
     }

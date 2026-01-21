@@ -39,7 +39,15 @@ import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 function DashboardRoute() {
   const { isAuthenticated, user } = useAuth();
   if (!isAuthenticated) return <Login />;
-  return user?.role === 'CEO' ? <CEODashboard /> : <Dashboard />;
+
+  // CEO gets CEO Dashboard
+  if (user?.role === 'CEO') return <CEODashboard />;
+
+  // DEO and DDEO get DEO Dashboard (same interface, DEO is superior in hierarchy)
+  if (user?.role === 'DEO' || user?.role === 'DDEO') return <DEODashboard />;
+
+  // All other roles get general Dashboard
+  return <Dashboard />;
 }
 
 function Router() {

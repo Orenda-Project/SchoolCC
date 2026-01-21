@@ -493,7 +493,7 @@ export default function UserManagement() {
       <div className="max-w-7xl mx-auto p-6">
         <Button
           variant="ghost"
-          onClick={() => navigate(user.role === 'DEO' ? '/deo-dashboard' : '/dashboard')}
+          onClick={() => navigate(user.role === 'DEO' || user.role === 'DDEO' ? '/deo-dashboard' : '/dashboard')}
           className="mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
