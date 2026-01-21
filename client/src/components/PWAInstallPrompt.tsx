@@ -15,9 +15,12 @@ export default function PWAInstallPrompt() {
   const [isAndroid, setIsAndroid] = useState(false);
 
   useEffect(() => {
+    console.log('[PWA] Install prompt initializing...');
+
     // Check if app is already installed
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
     if (isStandalone || (window.navigator as any).standalone === true) {
+      console.log('[PWA] App already installed in standalone mode');
       setShowPrompt(false);
       return;
     }
@@ -26,6 +29,8 @@ export default function PWAInstallPrompt() {
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isiOS = /iphone|ipad|ipod/.test(userAgent);
     const isAndroidDevice = /android/.test(userAgent);
+
+    console.log('[PWA] Device detection:', { isiOS, isAndroidDevice, userAgent });
 
     setIsIOS(isiOS);
     setIsAndroid(isAndroidDevice);
@@ -38,58 +43,90 @@ export default function PWAInstallPrompt() {
     if (dismissed && dismissedTime) {
       const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
       if (daysSinceDismissed < 7) {
+        console.log('[PWA] Prompt dismissed recently, waiting', 7 - daysSinceDismissed, 'more days');
         return;
       }
     }
 
     // For iOS Safari, show instructions after a short delay
     if (isiOS) {
+      console.log('[PWA] iOS detected, will show instructions in 3 seconds');
       const timer = setTimeout(() => {
         setShowPrompt(true);
+        console.log('[PWA] Showing iOS install instructions');
       }, 3000); // Show after 3 seconds
       return () => clearTimeout(timer);
     }
 
     // For Android/Desktop Chrome, listen for beforeinstallprompt event
+    let promptTimer: NodeJS.Timeout | null = null;
+
     const handler = (e: Event) => {
+      console.log('[PWA] beforeinstallprompt event fired!');
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
 
-      const timer = setTimeout(() => {
-        setShowPrompt(true);
-      }, 2000); // Show after 2 seconds
+      // Clear any existing timer
+      if (promptTimer) clearTimeout(promptTimer);
 
-      return () => clearTimeout(timer);
+      promptTimer = setTimeout(() => {
+        setShowPrompt(true);
+        console.log('[PWA] Showing Android install prompt');
+      }, 2000); // Show after 2 seconds
     };
 
     window.addEventListener("beforeinstallprompt", handler);
+    console.log('[PWA] Listening for beforeinstallprompt event...');
+
+    // Check service worker registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration().then(reg => {
+        console.log('[PWA] Service worker registration:', reg ? 'Registered' : 'Not registered');
+        if (reg) {
+          console.log('[PWA] Service worker scope:', reg.scope);
+          console.log('[PWA] Service worker state:', reg.active?.state);
+        }
+      });
+    }
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
+      if (promptTimer) clearTimeout(promptTimer);
     };
   }, []);
 
   const handleInstallClick = async () => {
+    console.log('[PWA] Install button clicked');
     if (!deferredPrompt) {
+      console.log('[PWA] No deferred prompt available');
       return;
     }
 
-    // Show the install prompt
-    await deferredPrompt.prompt();
+    try {
+      // Show the install prompt
+      console.log('[PWA] Showing native install prompt');
+      await deferredPrompt.prompt();
 
-    // Wait for the user to respond to the prompt
-    const { outcome } = await deferredPrompt.userChoice;
+      // Wait for the user to respond to the prompt
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log('[PWA] User choice:', outcome);
 
-    if (outcome === "accepted") {
-      console.log("User accepted the install prompt");
+      if (outcome === "accepted") {
+        console.log("[PWA] User accepted the install prompt");
+      } else {
+        console.log("[PWA] User dismissed the install prompt");
+      }
+
+      // Clear the deferred prompt
+      setDeferredPrompt(null);
+      setShowPrompt(false);
+    } catch (error) {
+      console.error('[PWA] Error during installation:', error);
     }
-
-    // Clear the deferred prompt
-    setDeferredPrompt(null);
-    setShowPrompt(false);
   };
 
   const handleDismiss = () => {
+    console.log('[PWA] User dismissed the prompt');
     setShowPrompt(false);
     localStorage.setItem("pwa-install-dismissed", "true");
     localStorage.setItem("pwa-install-dismissed-time", Date.now().toString());
