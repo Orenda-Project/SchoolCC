@@ -125,15 +125,15 @@ export default function DEODashboard() {
 
   // Handle redirect in useEffect to avoid updating state during render
   useEffect(() => {
-    if (!user || user.role !== 'DEO') {
+    if (!user || (user.role !== 'DEO' && user.role !== 'DDEO')) {
       navigate('/');
       return;
     }
-    analytics.navigation.dashboardViewed('DEO');
+    analytics.navigation.dashboardViewed(user.role);
   }, [user, navigate]);
 
   // Return null while redirecting
-  if (!user || user.role !== 'DEO') {
+  if (!user || (user.role !== 'DEO' && user.role !== 'DDEO')) {
     return null;
   }
 
