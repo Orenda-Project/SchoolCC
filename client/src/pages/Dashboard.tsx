@@ -641,7 +641,7 @@ export default function Dashboard() {
                 </div>
                 <span className="font-medium text-foreground">Community Album</span>
               </button>
-              {user.role !== 'TEACHER' && (
+              {user.role !== 'TEACHER' && user.role !== 'HEAD_TEACHER' && (
                 <button
                   onClick={() => { navigate('/school-data'); setShowMobileSidebar(false); }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-teal-100/80 dark:hover:bg-teal-900/30 transition-all duration-300 group"
@@ -823,7 +823,7 @@ export default function Dashboard() {
             {user.role === 'HEAD_TEACHER' && (
               <>
                 <button
-                  onClick={() => navigate('/edit-school')}
+                  onClick={() => navigate('/school-data')}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-teal-100/80 dark:hover:bg-teal-900/30 transition-all duration-300 group press-effect"
                   data-testid="button-edit-school"
                 >
@@ -881,7 +881,7 @@ export default function Dashboard() {
               </div>
               <span className="font-medium text-foreground">Community Album</span>
             </button>
-            {user.role !== 'TEACHER' && (
+            {user.role !== 'TEACHER' && user.role !== 'HEAD_TEACHER' && (
               <button
                 onClick={() => navigate('/school-data')}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-teal-100/80 dark:hover:bg-teal-900/30 transition-all duration-300 group press-effect"

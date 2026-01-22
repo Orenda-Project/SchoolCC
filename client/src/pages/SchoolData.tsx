@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useMockTeacherData, SchoolData as SchoolDataType } from '@/hooks/useMockTeacherData';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Download, Users, BookOpen, Droplet, Zap, BarChart3, FileSpreadsheet, X, Calendar, Clock, Loader2 } from 'lucide-react';
+import { ArrowLeft, Download, Users, BookOpen, Droplet, Zap, BarChart3, FileSpreadsheet, X, Calendar, Clock, Loader2, Pencil } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { VoiceNotePlayer } from '@/components/VoiceNotePlayer';
@@ -164,8 +164,12 @@ export default function SchoolData() {
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">School Inventory & Data</h1>
-              <p className="text-sm text-muted-foreground">Infrastructure, enrollment, and compliance records</p>
+              <h1 className="text-2xl font-bold text-foreground">
+                {user.role === 'HEAD_TEACHER' ? 'School Management' : 'School Inventory & Data'}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {user.role === 'HEAD_TEACHER' ? 'View and manage your school details' : 'Infrastructure, enrollment, and compliance records'}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -308,14 +312,25 @@ export default function SchoolData() {
               </Card>
             )}
 
-            {/* Download Button */}
-            <div className="flex justify-end">
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3">
+              {user.role === 'HEAD_TEACHER' && (
+                <Button
+                  onClick={() => navigate('/edit-school')}
+                  variant="default"
+                  className="bg-gradient-to-r from-teal-500 to-teal-600"
+                  data-testid="button-edit-school-details"
+                >
+                  <Pencil className="w-4 h-4 mr-2" />
+                  Edit School Details
+                </Button>
+              )}
               <Button
                 onClick={() => downloadSchoolInventory(userSchool)}
-                className="bg-primary"
+                variant="outline"
               >
                 <FileSpreadsheet className="w-4 h-4 mr-2" />
-                Download School Inventory (XLSX)
+                Download XLSX
               </Button>
             </div>
           </div>
