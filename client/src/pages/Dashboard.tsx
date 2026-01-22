@@ -577,19 +577,7 @@ export default function Dashboard() {
                 </>
               )}
               
-              {(user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DDEO') && (
-                <button
-                  onClick={() => { navigate('/create-request'); setShowMobileSidebar(false); }}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-violet-100/80 dark:hover:bg-violet-900/30 transition-all duration-300 group"
-                  data-testid="mobile-button-create-request"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center shadow-md">
-                    <Plus className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="font-medium text-foreground">Create Request</span>
-                </button>
-              )}
-              
+                            
               <div className="pt-4 pb-2">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Navigate</p>
               </div>
@@ -819,16 +807,16 @@ export default function Dashboard() {
                 </button>
               </>
             )}
-            {(user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DDEO') && (
+            {(user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DDEO' || user.role === 'DEO') && (
               <button
-                onClick={() => navigate('/create-request')}
+                onClick={() => navigate('/data-requests')}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-violet-100/80 dark:hover:bg-violet-900/30 transition-all duration-300 group press-effect"
-                data-testid="button-create-request"
+                data-testid="button-data-requests"
               >
                 <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                  <Plus className="w-5 h-5 text-white" />
+                  <FileText className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-foreground">Create Request</span>
+                <span className="font-medium text-foreground">Data Requests</span>
               </button>
             )}
             
@@ -836,19 +824,6 @@ export default function Dashboard() {
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Navigate</p>
             </div>
             
-            <button
-              onClick={() => toast({
-                title: "Coming Soon!",
-                description: "All Requests feature is under development and will be available soon.",
-              })}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition-all duration-300 group press-effect"
-              data-testid="button-view-requests"
-            >
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-slate-400 to-slate-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                <FileText className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-medium text-foreground">All Requests</span>
-            </button>
             <button
               onClick={() => navigate('/calendar')}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-blue-100/80 dark:hover:bg-blue-900/30 transition-all duration-300 group press-effect"

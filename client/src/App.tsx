@@ -70,7 +70,7 @@ function Router() {
         <Route path="/dashboard" component={DashboardRoute} />
         <Route path="/deo-dashboard" component={DEODashboard} />
         <Route path="/data-requests" component={DataRequests} />
-        <Route path="/create-request" component={CreateRequest} />
+        <Route path="/create-request" component={DataRequests} />
         <Route path="/request/:id" component={ViewRequest} />
         <Route path="/calendar" component={Calendar} />
         <Route path="/school-data" component={SchoolData} />
