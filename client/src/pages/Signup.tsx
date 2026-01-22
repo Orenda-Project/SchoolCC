@@ -9,35 +9,40 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import type { UserRole } from '@/contexts/auth';
 import { analytics } from '@/lib/analytics';
-import PersistentHelpBanner, { HelpStep, useHelpBannerStatus } from '@/components/PersistentHelpBanner';
-import FloatingHelpButton from '@/components/FloatingHelpButton';
+import CompactTooltipGuide, { TooltipStep, useTooltipGuideStatus } from '@/components/CompactTooltipGuide';
 
-const SIGNUP_TOUR_KEY = 'taleemhub_signup_tour';
+const SIGNUP_GUIDE_KEY = 'taleemhub_signup_guide_v2';
 
-const signupHelpSteps: HelpStep[] = [
+const signupGuideSteps: TooltipStep[] = [
   {
-    title: 'Welcome to TaleemHub! 👋',
-    content: 'Let\'s set up your account in just a few steps. This will only take a minute. You can minimize this help at any time and reopen it by tapping the help button.',
+    target: '[data-guide="welcome"]',
+    title: '👋 Welcome!',
+    message: 'Let\'s create your account in 4 quick steps.',
+    placement: 'bottom',
   },
   {
-    title: 'Step 1: Choose Your Role',
-    content: 'Select your role from the dropdown. Teachers and Head Teachers can create accounts directly and log in with just their phone number.',
-    action: 'Look above - find and tap the "Role" dropdown',
+    target: '[data-guide="role-select"]',
+    title: 'Step 1: Choose Role',
+    message: 'Tap here to select your role. Teachers & Head Teachers can sign up directly!',
+    placement: 'bottom',
   },
   {
-    title: 'Step 2: Fill Basic Information',
-    content: 'Enter your name and phone number (required). Add other details if you want - they\'re optional but help complete your profile.',
-    action: 'Scroll up to see all form fields',
+    target: '[data-guide="name-input"]',
+    title: 'Step 2: Enter Name',
+    message: 'Type your full name here.',
+    placement: 'auto',
   },
   {
-    title: 'Step 3: Enter School Details',
-    content: 'For Teachers/Head Teachers: Enter your school\'s EMIS number. For other roles: Fill in the relevant organizational information.',
-    action: 'Find your school EMIS or role-specific fields',
+    target: '[data-guide="phone-input"]',
+    title: 'Step 3: Phone Number',
+    message: 'Enter your phone number. Teachers use this to log in (no password needed).',
+    placement: 'auto',
   },
   {
-    title: 'Step 4: Submit & Start!',
-    content: 'Once required fields are filled, tap "Submit Account Request". You can log in immediately after!',
-    action: 'Tap the Submit button when ready',
+    target: '[data-guide="submit-button"]',
+    title: 'Step 4: Submit!',
+    message: 'Fill any required fields, then tap here to create your account.',
+    placement: 'top',
   },
 ];
 
@@ -67,9 +72,8 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const { hasCompletedHelp } = useHelpBannerStatus(SIGNUP_TOUR_KEY);
-  const [showHelp, setShowHelp] = useState(false);
-  const [helpMinimized, setHelpMinimized] = useState(false);
+  const { hasCompleted } = useTooltipGuideStatus(SIGNUP_GUIDE_KEY);
+  const [showGuide, setShowGuide] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -97,26 +101,13 @@ export default function Signup() {
     assignedSchools: [] as string[],
   });
 
-  // Initialize help banner when page loads
+  // Initialize tooltip guide when page loads
   useEffect(() => {
-    if (!hasCompletedHelp) {
-      const timer = setTimeout(() => setShowHelp(true), 800);
+    if (!hasCompleted) {
+      const timer = setTimeout(() => setShowGuide(true), 1000);
       return () => clearTimeout(timer);
     }
-  }, [hasCompletedHelp]);
-
-  // Track help banner minimize state
-  useEffect(() => {
-    const checkMinimized = () => {
-      const isMinimized = localStorage.getItem(`${SIGNUP_TOUR_KEY}-minimized`) === 'true';
-      setHelpMinimized(isMinimized);
-    };
-
-    checkMinimized();
-    // Check periodically in case user minimizes/expands
-    const interval = setInterval(checkMinimized, 500);
-    return () => clearInterval(interval);
-  }, []);
+  }, [hasCompleted]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -232,17 +223,19 @@ export default function Signup() {
         </Button>
 
         <Card className="p-8">
-          <h1 className="text-3xl font-bold mb-2">Create Account</h1>
-          <p className="text-muted-foreground mb-6">
-            Submit your request for DEO approval
-          </p>
+          <div data-guide="welcome">
+            <h1 className="text-3xl font-bold mb-2">Create Account</h1>
+            <p className="text-muted-foreground mb-6">
+              Submit your request for DEO approval
+            </p>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Basic Information</h3>
 
-              <div>
+              <div data-guide="name-input">
                 <Label>Full Name *</Label>
                 <Input
                   value={formData.name}
@@ -253,7 +246,7 @@ export default function Signup() {
                 />
               </div>
 
-              <div>
+              <div data-guide="phone-input">
                 <Label>Phone Number *</Label>
                 <Input
                   type="tel"
@@ -300,7 +293,7 @@ export default function Signup() {
                 </div>
               )}
 
-              <div>
+              <div data-guide="role-select">
                 <Label>Role *</Label>
                 <Select
                   value={formData.role}
@@ -475,37 +468,26 @@ export default function Signup() {
               </div>
             )}
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full"
-              data-testid="button-submit"
-            >
-              {loading ? 'Submitting...' : 'Submit Account Request'}
-            </Button>
+            <div data-guide="submit-button">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full"
+                data-testid="button-submit"
+              >
+                {loading ? 'Submitting...' : 'Submit Account Request'}
+              </Button>
+            </div>
           </form>
         </Card>
       </div>
 
-      {/* Persistent Help Banner - Anchored to bottom, never blocks content */}
-      <PersistentHelpBanner
-        steps={signupHelpSteps}
-        isOpen={showHelp && !hasCompletedHelp}
-        onComplete={() => setShowHelp(false)}
-        storageKey={SIGNUP_TOUR_KEY}
-        position="bottom"
-        allowMinimize={true}
-      />
-
-      {/* Floating Help Button - Shows when help is minimized */}
-      <FloatingHelpButton
-        show={showHelp && !hasCompletedHelp && helpMinimized}
-        onClick={() => {
-          // Expand the help banner
-          localStorage.removeItem(`${SIGNUP_TOUR_KEY}-minimized`);
-          setHelpMinimized(false);
-        }}
-        position="bottom-right"
+      {/* Compact Tooltip Guide - Points directly at form elements, never blocks them */}
+      <CompactTooltipGuide
+        steps={signupGuideSteps}
+        isOpen={showGuide && !hasCompleted}
+        onComplete={() => setShowGuide(false)}
+        storageKey={SIGNUP_GUIDE_KEY}
       />
     </div>
   );
