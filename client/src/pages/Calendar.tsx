@@ -108,8 +108,8 @@ export default function Calendar() {
       return;
     }
 
-    // Teachers submit pending leaves; Head Teachers can directly approve
-    const leaveStatus = isTeacher ? 'pending' : 'approved';
+    // All leaves are auto-approved since they're approved in person
+    const leaveStatus = 'approved';
 
     addLeave({
       teacherId: isTeacher ? user.id : `teacher-${Date.now()}`,
@@ -130,10 +130,8 @@ export default function Calendar() {
     });
 
     toast({
-      title: isTeacher ? "Leave Request Submitted" : "Leave Added",
-      description: isTeacher 
-        ? "Your leave request has been submitted for approval." 
-        : "The leave has been added to the calendar.",
+      title: "Leave Added",
+      description: "The leave has been added to the calendar.",
     });
 
     setNewLeave({
@@ -398,12 +396,6 @@ export default function Calendar() {
                   <div className="w-4 h-4 bg-purple-100 rounded border border-purple-200" />
                   <span className="text-muted-foreground">Special Leave</span>
                 </div>
-                {isTeacher && (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-amber-100 rounded border border-amber-200 flex items-center justify-center text-xs">⏳</div>
-                    <span className="text-muted-foreground">Pending Approval</span>
-                  </div>
-                )}
                 <div className="flex items-center gap-2 pt-2 border-t">
                   <div className="w-4 h-4 border-2 border-primary rounded" />
                   <span className="text-muted-foreground">Today</span>
@@ -418,7 +410,7 @@ export default function Calendar() {
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{isTeacher ? 'Request Leave' : 'Add Teacher Leave'}</DialogTitle>
+            <DialogTitle>{isTeacher ? 'Add Leave' : 'Add Teacher Leave'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 mt-4">
             {!isTeacher && (
@@ -496,17 +488,12 @@ export default function Calendar() {
                 data-testid="input-reason"
               />
             </div>
-            {isTeacher && (
-              <p className="text-sm text-amber-600 bg-amber-50 p-2 rounded">
-                Your leave request will be submitted for approval by your Head Teacher.
-              </p>
-            )}
             <div className="flex justify-end gap-2 pt-4">
               <Button variant="outline" onClick={() => setShowCreateDialog(false)} data-testid="button-cancel-leave">
                 Cancel
               </Button>
               <Button onClick={handleCreateLeave} data-testid="button-save-leave">
-                {isTeacher ? 'Submit Request' : 'Add Leave'}
+                Add Leave
               </Button>
             </div>
           </div>
