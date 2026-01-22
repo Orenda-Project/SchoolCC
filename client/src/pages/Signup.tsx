@@ -348,7 +348,7 @@ export default function Signup() {
                     <SelectItem value="AEO">Assistant Education Officer</SelectItem>
                     <SelectItem value="HEAD_TEACHER">Head Teacher</SelectItem>
                     <SelectItem value="TEACHER">Teacher</SelectItem>
-                    <SelectItem value="TRAINING_MANAGER">Training Manager (Read-only)</SelectItem>
+                    <SelectItem value="TRAINING_MANAGER">Training Manager</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
