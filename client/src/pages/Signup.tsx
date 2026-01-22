@@ -17,31 +17,73 @@ const signupGuideSteps: TooltipStep[] = [
   {
     target: '[data-guide="welcome"]',
     title: '👋 خوش آمدید! Welcome!',
-    message: 'آئیں 4 آسان مراحل میں اپنا اکاؤنٹ بنائیں۔\nLet\'s create your account in 4 quick steps.',
-    placement: 'bottom',
-  },
-  {
-    target: '[data-guide="role-select"]',
-    title: 'مرحلہ 1: اپنا کردار منتخب کریں\nStep 1: Choose Role',
-    message: 'یہاں ٹیپ کریں اور اپنا کردار منتخب کریں۔ ٹیچرز اور ہیڈ ٹیچرز فوری طور پر سائن اپ کر سکتے ہیں!\nTap here to select your role. Teachers & Head Teachers can sign up directly!',
+    message: 'آئیں اپنا اکاؤنٹ بنائیں۔\nLet\'s create your account step by step.',
     placement: 'bottom',
   },
   {
     target: '[data-guide="name-input"]',
-    title: 'مرحلہ 2: نام درج کریں\nStep 2: Enter Name',
+    title: '1. نام | Name',
     message: 'اپنا پورا نام یہاں لکھیں۔\nType your full name here.',
-    placement: 'auto',
+    placement: 'bottom',
   },
   {
     target: '[data-guide="phone-input"]',
-    title: 'مرحلہ 3: فون نمبر\nStep 3: Phone Number',
-    message: 'اپنا فون نمبر درج کریں۔ ٹیچرز صرف فون نمبر سے لاگ ان ہو سکتے ہیں (پاس ورڈ کی ضرورت نہیں)۔\nEnter your phone number. Teachers use this to log in (no password needed).',
-    placement: 'auto',
+    title: '2. فون نمبر | Phone',
+    message: 'اپنا فون نمبر درج کریں۔\nEnter your phone number.',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="password-input"]',
+    title: '3. پاس ورڈ | Password',
+    message: 'کم از کم 6 حروف کا پاس ورڈ بنائیں۔\nCreate a password (min 6 characters).',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="role-select"]',
+    title: '4. کردار | Role',
+    message: 'اپنا کردار منتخب کریں۔\nSelect your role.',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="father-name"]',
+    title: '5. والد کا نام | Father Name',
+    message: 'والد کا نام درج کریں (اختیاری)۔\nEnter father name (optional).',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="email-input"]',
+    title: '6. ای میل | Email',
+    message: 'اپنا ای میل درج کریں (اختیاری)۔\nEnter your email (optional).',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="cnic-input"]',
+    title: '7. شناختی کارڈ | CNIC',
+    message: 'اپنا شناختی کارڈ نمبر درج کریں (اختیاری)۔\nEnter CNIC number (optional).',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="dob-input"]',
+    title: '8. تاریخ پیدائش | Date of Birth',
+    message: 'اپنی تاریخ پیدائش منتخب کریں (اختیاری)۔\nSelect your date of birth (optional).',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="doj-input"]',
+    title: '9. تاریخ شمولیت | Date of Joining',
+    message: 'ملازمت کی تاریخ منتخب کریں (اختیاری)۔\nSelect joining date (optional).',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="qualification-input"]',
+    title: '10. تعلیمی قابلیت | Qualification',
+    message: 'اپنی تعلیمی قابلیت درج کریں (اختیاری)۔\nEnter your qualification (optional).',
+    placement: 'bottom',
   },
   {
     target: '[data-guide="submit-button"]',
-    title: 'مرحلہ 4: جمع کرائیں!\nStep 4: Submit!',
-    message: 'تمام ضروری خانے بھریں، پھر اپنا اکاؤنٹ بنانے کے لیے یہاں ٹیپ کریں۔\nFill required fields, then tap here to create your account.',
+    title: '11. جمع کرائیں! | Submit!',
+    message: 'اکاؤنٹ بنانے کے لیے یہاں ٹیپ کریں۔\nTap here to create your account.',
     placement: 'top',
   },
 ];
@@ -262,7 +304,7 @@ export default function Signup() {
               </div>
 
               {/* Password fields - required for all roles */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div data-guide="password-input" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Password * | پاس ورڈ</Label>
                   <Input
@@ -390,7 +432,7 @@ export default function Signup() {
             <div className="space-y-4 pt-4 border-t">
               <h3 className="text-lg font-semibold">Profile Details | پروفائل کی تفصیلات</h3>
 
-              <div>
+              <div data-guide="father-name">
                 <Label>Father Name | والد کا نام</Label>
                 <Input
                   value={formData.fatherName}
@@ -398,7 +440,7 @@ export default function Signup() {
                 />
               </div>
 
-              <div>
+              <div data-guide="email-input">
                 <Label>Email | ای میل</Label>
                 <Input
                   type="email"
@@ -409,7 +451,7 @@ export default function Signup() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div data-guide="cnic-input">
                   <Label>CNIC | شناختی کارڈ نمبر</Label>
                   <Input
                     value={formData.cnic}
@@ -417,7 +459,7 @@ export default function Signup() {
                     placeholder="12345-1234567-1"
                   />
                 </div>
-                <div>
+                <div data-guide="dob-input">
                   <Label>Date of Birth | تاریخ پیدائش</Label>
                   <Input
                     type="date"
@@ -428,7 +470,7 @@ export default function Signup() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div data-guide="doj-input">
                   <Label>Date of Joining | تاریخ شمولیت</Label>
                   <Input
                     type="date"
@@ -436,7 +478,7 @@ export default function Signup() {
                     onChange={(e) => setFormData({ ...formData, dateOfJoining: e.target.value })}
                   />
                 </div>
-                <div>
+                <div data-guide="qualification-input">
                   <Label>Qualification | تعلیمی قابلیت</Label>
                   <Input
                     value={formData.qualification}
