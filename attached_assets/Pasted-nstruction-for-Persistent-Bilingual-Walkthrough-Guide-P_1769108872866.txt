@@ -1,0 +1,27 @@
+nstruction for Persistent, Bilingual Walkthrough Guide:
+
+Please implement an in-app, always-accessible walkthrough/help guide for my app—one that’s much more than a one-time onboarding tour. Here’s what I need:
+
+Persistent Access:
+Add an always-visible “Help” or “Guide” icon/button (e.g., a "?"/lightbulb/floating button) on every screen in the app.
+When the user taps it, show a step-by-step, context-aware guide for that screen or feature (similar to onboarding, but available any time—before or after account creation).
+Feature-by-Feature Tours:
+Each major interface (create account, home, dashboard, each main button, and every unique role) should have its own mini-guide, not just a catch-all tour.
+If the user is on “Create Account,” show guide steps for every field/option.
+On dashboard or after login, highlight all primary buttons/menus, with a short guide for each (e.g., “This is the role selector. Tap here to choose your role.”).
+Persistence:
+Make the guide re-openable anytime; even if dismissed, can be reopened by tapping the help/guide icon.
+Track if the user has never viewed a guide, and auto-prompt at least once—but never force-cover any button/input as before.
+Bilingual:
+Every guide step must offer both default language (English) and one alternative/local language (e.g., Urdu or [specify other language]).
+User should be able to tap a “Language” toggle on the guide itself to instantly see translations and tips in either language.
+Design/Accessibility:
+Bubbles/tooltips/banners should be short, mobile-fit, never cover key features, and scroll or shorten as needed on small screens.
+Show brief, 1–2 line tips, icons, and visual anchors (arrows, highlights) for each feature.
+QA:
+Demo this on both “Create Account” and at least two other key interfaces.
+Send screenshots (mobile and desktop/tablet) showing the guide open/visible and language toggle active for each main feature/button.
+Summary:
+
+I want an in-app guide that’s always there, not just for onboarding. Every feature and role should have context help, accessible in two languages, and never block critical actions.
+Users should always be able to re-open or peek at help from any interface.
