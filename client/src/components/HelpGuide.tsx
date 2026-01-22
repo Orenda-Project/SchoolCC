@@ -215,10 +215,10 @@ const guides: Record<string, ScreenGuide> = {
         position: 'bottom'
       },
       {
-        title: { en: 'Community Album', ur: 'کمیونٹی البم' },
+        title: { en: 'Community Album (Social Feed)', ur: 'کمیونٹی البم (سوشل فیڈ)' },
         description: {
-          en: 'The COMMUNITY ALBUM shows activities from all schools:\n\n• See what teachers are posting from your school\n• View activities from other schools for inspiration\n• You can delete inappropriate posts from your school\n• React and comment to encourage teachers',
-          ur: 'کمیونٹی البم تمام اسکولوں کی سرگرمیاں دکھاتا ہے:\n\n• دیکھیں کہ آپ کے اسکول سے اساتذہ کیا پوسٹ کر رہے ہیں\n• تحریک کے لیے دوسرے اسکولوں کی سرگرمیاں دیکھیں\n• آپ اپنے اسکول کی نامناسب پوسٹس حذف کر سکتے ہیں\n• اساتذہ کی حوصلہ افزائی کے لیے ری ایکٹ کریں اور تبصرہ کریں'
+          en: 'The COMMUNITY ALBUM is a social media-style feed (separate from School Inventory):\n\n• Teachers share classroom activity photos here\n• View posts from ALL schools in the district\n• React with Like, Love, Clap, or Celebrate\n• Comment and encourage fellow teachers\n• You can delete inappropriate posts from your school\n\n📌 Note: This is different from School Inventory which tracks furniture and supplies.',
+          ur: 'کمیونٹی البم ایک سوشل میڈیا سٹائل فیڈ ہے (اسکول انوینٹری سے الگ):\n\n• اساتذہ یہاں کلاس روم سرگرمیوں کی تصاویر شیئر کرتے ہیں\n• ضلع کے تمام اسکولوں کی پوسٹس دیکھیں\n• لائک، لو، تالی یا جشن سے ری ایکٹ کریں\n• ساتھی اساتذہ کو تبصرے کریں اور حوصلہ افزائی کریں\n• آپ اپنے اسکول کی نامناسب پوسٹس حذف کر سکتے ہیں\n\n📌 نوٹ: یہ اسکول انوینٹری سے مختلف ہے جو فرنیچر اور سپلائز کو ٹریک کرتی ہے۔'
         },
         target: '[data-testid="button-community-album"]',
         position: 'bottom'
