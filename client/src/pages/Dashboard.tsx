@@ -385,6 +385,9 @@ export default function Dashboard() {
         );
       
       case 'calendar':
+        // Head Teacher doesn't need this widget - they have the sidebar link
+        if (user.role === 'HEAD_TEACHER') return null;
+        
         // Teaching tips for teachers
         const allTeachingTips = [
           { tip: "Start each class with a quick review of the previous lesson to refresh students' memory.", icon: "🔄", color: "from-blue-500 to-cyan-500" },
