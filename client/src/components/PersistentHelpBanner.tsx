@@ -212,13 +212,13 @@ export default function PersistentHelpBanner({
             variant="outline"
             className="flex-1 h-11 bg-white dark:bg-amber-900 border-amber-300 dark:border-amber-600 hover:bg-amber-50 dark:hover:bg-amber-800 disabled:opacity-30"
           >
-            پچھلا Previous
+            Previous پچھلا
           </Button>
           <Button
             onClick={handleNext}
             className="flex-1 h-11 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold shadow-lg"
           >
-            {currentStep === steps.length - 1 ? 'سمجھ گیا Got it!' : 'اگلا Next'}
+            {currentStep === steps.length - 1 ? 'Got it! سمجھ گیا' : 'Next اگلا'}
           </Button>
         </div>
 
