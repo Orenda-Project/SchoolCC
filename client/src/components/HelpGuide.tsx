@@ -667,6 +667,26 @@ export function HelpGuide() {
     return () => window.removeEventListener('openHelpGuide', handleOpenGuide);
   }, []);
 
+  // Auto-show guide for first-time users
+  useEffect(() => {
+    if (!user?.id) return;
+    
+    const guideSeenKey = `taleemhub_guide_seen_${user.id}`;
+    const hasSeenGuide = localStorage.getItem(guideSeenKey);
+    
+    if (!hasSeenGuide) {
+      // Small delay to let the dashboard render first
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+        setCurrentStep(0);
+        setShowIntro(true);
+        // Mark as seen after opening
+        localStorage.setItem(guideSeenKey, 'true');
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [user?.id]);
+
   const getGuide = useCallback((): ScreenGuide => {
     // Check for role-specific dashboard guides
     if (location === '/dashboard' || location === '/' || location === '') {
