@@ -95,13 +95,15 @@ export default function Dashboard() {
                 'from-amber-500 to-amber-600',
               ];
               const getClickHandler = () => {
+                // For teachers, all stats show "Coming Soon"
+                if (user.role === 'TEACHER') {
+                  return () => toast({
+                    title: "Coming Soon!",
+                    description: "This feature is under development.",
+                  });
+                }
                 if ('taskType' in stat) return () => navigate('/data-requests');
                 if ('teacherType' in stat) return () => openTeacherDialog(stat.teacherType);
-                // Lesson Plans shows "Coming Soon" for teachers
-                if (stat.label === 'Lesson Plans') return () => toast({
-                  title: "Coming Soon!",
-                  description: "Lesson Plans feature is under development.",
-                });
                 return undefined;
               };
               return (
