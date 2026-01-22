@@ -69,12 +69,12 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Leave Calendar', ur: 'چھٹی کیلنڈر' },
         description: {
-          en: 'The LEAVE CALENDAR lets you manage your time off:\n\n• Tap the "Calendar" button to open it\n• Select any date to apply for leave\n• Choose leave type: Casual, Sick, Earned, or Special\n• All leaves are AUTOMATICALLY APPROVED - no waiting!\n\nFind it in the sidebar menu or scroll down.',
-          ur: 'چھٹی کیلنڈر آپ کی چھٹیاں منظم کرنے دیتا ہے:\n\n• کھولنے کے لیے "کیلنڈر" بٹن ٹیپ کریں\n• چھٹی کے لیے کوئی بھی تاریخ منتخب کریں\n• چھٹی کی قسم چنیں: کیژول، بیمار، ارنڈ، یا خصوصی\n• تمام چھٹیاں خودکار منظور - کوئی انتظار نہیں!'
+          en: 'The LEAVE CALENDAR helps you track your time off:\n\n• Tap the "Calendar" button to open it\n• Select any date to add a leave entry\n• Choose leave type: Casual, Sick, Earned, or Special\n• Add your already approved leaves here for visibility\n\nKeep all your leaves recorded in one place!',
+          ur: 'چھٹی کیلنڈر آپ کی چھٹیوں کو ٹریک کرنے میں مدد کرتا ہے:\n\n• کھولنے کے لیے "کیلنڈر" بٹن ٹیپ کریں\n• چھٹی کا اندراج شامل کرنے کے لیے کوئی بھی تاریخ منتخب کریں\n• چھٹی کی قسم چنیں: کیژول، بیمار، ارنڈ، یا خصوصی\n• اپنی پہلے سے منظور شدہ چھٹیاں یہاں نظر آنے کے لیے شامل کریں'
         },
         tip: {
-          en: 'All leaves are auto-approved instantly!',
-          ur: 'تمام چھٹیاں فوری طور پر خودکار منظور!'
+          en: 'Add your approved leaves here for easy tracking!',
+          ur: 'آسان ٹریکنگ کے لیے اپنی منظور شدہ چھٹیاں یہاں شامل کریں!'
         },
         target: '[data-testid="button-view-calendar-mobile"], [data-testid="button-view-calendar"]',
         position: 'bottom'
