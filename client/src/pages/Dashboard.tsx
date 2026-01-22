@@ -8,7 +8,7 @@ import { useMockVisits } from '@/hooks/useMockVisits';
 import { useDashboardWidgets } from '@/hooks/useDashboardWidgets';
 import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
-import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen, HelpCircle } from 'lucide-react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen, HelpCircle, Menu, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import MonitoringVisitForm from '@/pages/MonitoringVisitForm';
 import MentoringVisitForm from '@/pages/MentoringVisitForm';
@@ -33,6 +33,7 @@ export default function Dashboard() {
   const [teacherDialogOpen, setTeacherDialogOpen] = useState(false);
   const [teacherDialogType, setTeacherDialogType] = useState<'total' | 'present' | 'onLeave' | 'absent'>('total');
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 
   const {
     widgets,
@@ -443,7 +444,224 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar - Quick Actions */}
+      {/* Mobile Sidebar Overlay */}
+      {showMobileSidebar && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowMobileSidebar(false)}
+          />
+          <aside className="absolute left-0 top-0 h-full w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border animate-slideInLeft overflow-y-auto"
+            data-testid="mobile-sidebar"
+          >
+            {/* Mobile Sidebar Header */}
+            <div className="p-4 border-b border-border flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
+                <div>
+                  <h1 className="text-lg font-bold gradient-text-gold">TaleemHub</h1>
+                  <p className="text-xs text-muted-foreground">{user.role.replace(/_/g, ' ')}</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowMobileSidebar(false)}
+                data-testid="button-close-menu"
+                className="rounded-full"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Mobile Sidebar Content */}
+            <div className="flex-1 overflow-y-auto py-4 px-3 space-y-2">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Quick Actions</p>
+              
+              {user.role === 'TEACHER' && (
+                <button
+                  onClick={() => { navigate('/leave-calendar'); setShowMobileSidebar(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-cyan-100/80 dark:hover:bg-cyan-900/30 transition-all duration-300 group"
+                  data-testid="mobile-button-leave-calendar"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-500 flex items-center justify-center shadow-md">
+                    <Calendar className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">Leave Calendar</span>
+                </button>
+              )}
+              
+              {user.role === 'HEAD_TEACHER' && (
+                <>
+                  <button
+                    onClick={() => { navigate('/staff-leave-calendar'); setShowMobileSidebar(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-cyan-100/80 dark:hover:bg-cyan-900/30 transition-all duration-300 group"
+                    data-testid="mobile-button-staff-leave"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-500 flex items-center justify-center shadow-md">
+                      <Calendar className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="font-medium text-foreground">Staff Leave Calendar</span>
+                  </button>
+                  <button
+                    onClick={() => { navigate('/collaborative-forms'); setShowMobileSidebar(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-blue-100/80 dark:hover:bg-blue-900/30 transition-all duration-300 group"
+                    data-testid="mobile-button-collab-forms"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center shadow-md">
+                      <Plus className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="font-medium text-foreground">Collaborative Forms</span>
+                  </button>
+                  <button
+                    onClick={() => { navigate('/headteacher-user-management'); setShowMobileSidebar(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group"
+                    data-testid="mobile-button-manage-teachers"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="font-medium text-foreground">Manage Teachers</span>
+                  </button>
+                </>
+              )}
+              
+              {(user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DDEO') && (
+                <button
+                  onClick={() => { navigate('/create-request'); setShowMobileSidebar(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-violet-100/80 dark:hover:bg-violet-900/30 transition-all duration-300 group"
+                  data-testid="mobile-button-create-request"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center shadow-md">
+                    <Plus className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">Create Request</span>
+                </button>
+              )}
+              
+              <div className="pt-4 pb-2">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Navigate</p>
+              </div>
+              
+              <button
+                onClick={() => { navigate('/data-requests'); setShowMobileSidebar(false); }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-amber-100/80 dark:hover:bg-amber-900/30 transition-all duration-300 group"
+                data-testid="mobile-button-data-requests"
+              >
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-md">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-medium text-foreground">Data Requests</span>
+              </button>
+              
+              {user.role === 'TEACHER' || user.role === 'HEAD_TEACHER' ? (
+                <button
+                  onClick={() => { navigate('/community-album'); setShowMobileSidebar(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-pink-100/80 dark:hover:bg-pink-900/30 transition-all duration-300 group"
+                  data-testid="mobile-button-community-album"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-pink-400 to-pink-500 flex items-center justify-center shadow-md">
+                    <BookOpen className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">Community Album</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => { navigate('/school-data'); setShowMobileSidebar(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-teal-100/80 dark:hover:bg-teal-900/30 transition-all duration-300 group"
+                  data-testid="mobile-button-school-inventory"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-teal-400 to-teal-500 flex items-center justify-center shadow-md">
+                    <Building2 className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">School Inventory</span>
+                </button>
+              )}
+              
+              {(user.role === 'AEO' || user.role === 'DDEO') && (
+                <button
+                  onClick={() => { navigate('/school-visits'); setShowMobileSidebar(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-rose-100/80 dark:hover:bg-rose-900/30 transition-all duration-300 group"
+                  data-testid="mobile-button-school-visits"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center shadow-md">
+                    <MapPin className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">School Visits</span>
+                </button>
+              )}
+              
+              {user.role === 'DDEO' && (
+                <button
+                  onClick={() => { navigate('/user-management'); setShowMobileSidebar(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-orange-100/80 dark:hover:bg-orange-900/30 transition-all duration-300 group"
+                  data-testid="mobile-button-user-management"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center shadow-md">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">User Management</span>
+                </button>
+              )}
+              
+              <button
+                onClick={() => { navigate('/queries'); setShowMobileSidebar(false); }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-purple-100/80 dark:hover:bg-purple-900/30 transition-all duration-300 group"
+                data-testid="mobile-button-queries"
+              >
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center shadow-md">
+                  <MessageSquare className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-medium text-foreground">Queries</span>
+              </button>
+              
+              <button
+                onClick={() => { navigate('/user-profile'); setShowMobileSidebar(false); }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 transition-all duration-300 group"
+                data-testid="mobile-button-profile"
+              >
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center shadow-md">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-medium text-foreground">My Profile</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('openHelpGuide'));
+                  setShowMobileSidebar(false);
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-sky-100/80 dark:hover:bg-sky-900/30 transition-all duration-300 group"
+                data-testid="mobile-button-help-guide"
+              >
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-sky-400 to-sky-500 flex items-center justify-center shadow-md">
+                  <HelpCircle className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-medium text-foreground">Help Guide</span>
+              </button>
+            </div>
+
+            {/* Mobile Sidebar Footer */}
+            <div className="p-3 border-t border-border">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full justify-start rounded-xl hover:bg-red-50 dark:hover:bg-red-950/50 hover:text-red-600"
+                onClick={() => {
+                  logout();
+                  navigate('/');
+                }}
+                data-testid="mobile-button-logout"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </Button>
+            </div>
+          </aside>
+        </div>
+      )}
+
+      {/* Desktop Sidebar - Quick Actions */}
       <aside className="hidden lg:flex flex-col w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border fixed left-0 top-0 h-screen z-40 animate-slideInLeft">
         {/* Sidebar Header */}
         <div className="p-6 border-b border-border">
@@ -708,26 +926,26 @@ export default function Dashboard() {
       <div className="flex-1 lg:ml-72">
         {/* Mobile Header */}
         <div className="lg:hidden bg-card/95 dark:bg-card backdrop-blur-xl border-b border-border sticky top-0 z-50">
-          <div className="px-4 py-4 flex items-center justify-between">
+          <div className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-16 h-16" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowMobileSidebar(true)}
+                data-testid="button-open-menu"
+                className="rounded-full"
+              >
+                <Menu className="w-6 h-6" />
+              </Button>
               <div>
-                <h1 className="text-xl font-bold gradient-text-gold">TaleemHub</h1>
-                <p className="text-sm text-muted-foreground">{user.name} • {user.role.replace(/_/g, ' ')}</p>
+                <h1 className="text-lg font-bold gradient-text-gold">TaleemHub</h1>
+                <p className="text-xs text-muted-foreground">{user.name}</p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                logout();
-                navigate('/');
-              }}
-              data-testid="button-logout-mobile"
-              className="rounded-full hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-            >
-              <LogOut className="w-4 h-4" />
-            </Button>
+            <div className="flex items-center gap-1">
+              <ThemeToggle />
+              <NotificationBell />
+            </div>
           </div>
           
           {/* Mobile Quick Actions Scroll */}

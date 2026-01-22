@@ -102,22 +102,23 @@ const guides: Record<string, ScreenGuide> = {
         position: 'bottom'
       },
       {
-        title: { en: 'Quick Actions Bar (Mobile)', ur: 'فوری ایکشن بار (موبائل)' },
+        title: { en: 'Menu Button (Mobile)', ur: 'مینو بٹن (موبائل)' },
         description: {
-          en: 'On mobile, scroll the TOP BAR horizontally to see quick action buttons:\n\n• Requests - View data requests\n• Calendar - Open leave calendar\n• Schools - See school inventory\n• Lesson Plans - Coming soon\n• Help - Open this guide again\n\nSwipe left/right to see all options!',
-          ur: 'موبائل پر، فوری ایکشن بٹن دیکھنے کے لیے اوپری بار کو افقی طور پر سکرول کریں:\n\n• درخواستیں - ڈیٹا کی درخواستیں دیکھیں\n• کیلنڈر - چھٹی کیلنڈر کھولیں\n• اسکول - اسکول انوینٹری دیکھیں\n• سبق کے منصوبے - جلد آ رہے ہیں\n• مدد - یہ گائیڈ دوبارہ کھولیں'
+          en: 'On mobile, tap the ☰ MENU BUTTON (three lines) in the top-left corner to open the sidebar menu:\n\n• Leave Calendar - Track your approved leaves\n• Data Requests - View and respond to requests\n• Community Album - Share and view activities\n• Queries - Get help from seniors\n• My Profile - View and edit your info\n• Help Guide - Open this guide again\n• Logout - Sign out of the app\n\nTap anywhere outside to close the menu!',
+          ur: 'موبائل پر، سائڈبار مینو کھولنے کے لیے اوپر بائیں کونے میں ☰ مینو بٹن (تین لائنیں) ٹیپ کریں:\n\n• چھٹی کیلنڈر - اپنی منظور شدہ چھٹیاں دیکھیں\n• ڈیٹا کی درخواستیں - درخواستیں دیکھیں اور جواب دیں\n• کمیونٹی البم - سرگرمیاں شیئر کریں\n• سوالات - بڑوں سے مدد حاصل کریں\n• میرا پروفائل - اپنی معلومات دیکھیں\n• ہیلپ گائیڈ - یہ گائیڈ دوبارہ کھولیں\n• لاگ آؤٹ - ایپ سے باہر نکلیں'
         },
         tip: {
-          en: 'Swipe the bar to see all options!',
-          ur: 'تمام آپشنز دیکھنے کے لیے بار سوائپ کریں!'
+          en: 'Tap outside the menu or the X button to close it!',
+          ur: 'مینو بند کرنے کے لیے باہر ٹیپ کریں یا X بٹن دبائیں!'
         },
-        position: 'center'
+        target: '[data-testid="button-open-menu"]',
+        position: 'right'
       },
       {
         title: { en: 'Sidebar Menu (Desktop)', ur: 'سائڈبار مینو (ڈیسک ٹاپ)' },
         description: {
-          en: 'On larger screens, the LEFT SIDEBAR gives you quick access to:\n\n• Your profile at the top\n• Quick action buttons\n• Navigation menu with all features\n• Logout button at the bottom\n\nUse the sidebar for easy navigation!',
-          ur: 'بڑی سکرینوں پر، بائیں سائڈبار آپ کو فوری رسائی دیتا ہے:\n\n• اوپر آپ کا پروفائل\n• فوری ایکشن بٹن\n• تمام خصوصیات کے ساتھ نیویگیشن مینو\n• نیچے لاگ آؤٹ بٹن'
+          en: 'On larger screens, the LEFT SIDEBAR is always visible and gives you quick access to:\n\n• Your profile at the top\n• Quick action buttons\n• Navigation menu with all features\n• Logout button at the bottom\n\nUse the sidebar for easy navigation!',
+          ur: 'بڑی سکرینوں پر، بائیں سائڈبار ہمیشہ نظر آتا ہے اور آپ کو فوری رسائی دیتا ہے:\n\n• اوپر آپ کا پروفائل\n• فوری ایکشن بٹن\n• تمام خصوصیات کے ساتھ نیویگیشن مینو\n• نیچے لاگ آؤٹ بٹن'
         },
         position: 'center'
       },
