@@ -288,9 +288,17 @@ export default function CommunityAlbum() {
               <Card key={activity.id} className="overflow-hidden">
                 <div className="p-6 border-b border-border">
                   <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg flex-shrink-0">
-                      <User className="w-6 h-6 text-white" />
-                    </div>
+                    {activity.createdByProfilePicture ? (
+                      <img 
+                        src={activity.createdByProfilePicture} 
+                        alt={activity.createdByName} 
+                        className="w-12 h-12 rounded-full object-cover shadow-lg flex-shrink-0" 
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <User className="w-6 h-6 text-white" />
+                      </div>
+                    )}
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-semibold text-foreground">{activity.createdByName}</span>

@@ -456,9 +456,13 @@ export default function Dashboard() {
             onClick={() => navigate('/profile')}
             className="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl hover-lift cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
-              <User className="w-5 h-5 text-white" />
-            </div>
+            {user.profilePicture ? (
+              <img src={user.profilePicture} alt={user.name} className="w-10 h-10 rounded-full object-cover shadow-lg" />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
+                <User className="w-5 h-5 text-white" />
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-foreground text-sm truncate">{user.name}</p>
               <p className="text-muted-foreground text-xs truncate">{user.role.replace(/_/g, ' ')}</p>

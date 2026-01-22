@@ -38,6 +38,7 @@ export interface Activity {
   createdBy: string;
   createdByName: string;
   createdByRole: string;
+  createdByProfilePicture: string | null;
   isGlobalBroadcast: boolean;
   createdAt: string;
   photos: ActivityPhoto[];

@@ -1217,7 +1217,14 @@ export async function registerRoutes(
           const photos = await storage.getAlbumPhotos(album.id);
           const comments = await storage.getAlbumComments(album.id);
           const reactions = await storage.getAlbumReactions(album.id);
-          return { ...album, photos, comments, reactions };
+          const creator = await storage.getUser(album.createdBy);
+          return { 
+            ...album, 
+            photos, 
+            comments, 
+            reactions,
+            createdByProfilePicture: creator?.profilePicture || null
+          };
         })
       );
       res.json(albumsWithDetails);
