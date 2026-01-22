@@ -8,7 +8,7 @@ import { useMockVisits } from '@/hooks/useMockVisits';
 import { useDashboardWidgets } from '@/hooks/useDashboardWidgets';
 import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
-import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen } from 'lucide-react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen, HelpCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import MonitoringVisitForm from '@/pages/MonitoringVisitForm';
 import MentoringVisitForm from '@/pages/MentoringVisitForm';
@@ -669,6 +669,24 @@ export default function Dashboard() {
               </div>
               <span className="font-medium text-foreground">Lesson Plans</span>
             </button>
+            
+            <div className="pt-4 pb-2">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Support</p>
+            </div>
+            
+            <button
+              onClick={() => {
+                const helpButton = document.querySelector('[data-testid="button-help-guide"]') as HTMLButtonElement;
+                if (helpButton) helpButton.click();
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-blue-100/80 dark:hover:bg-blue-900/30 transition-all duration-300 group press-effect"
+              data-testid="button-help-guide-sidebar"
+            >
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300 animate-pulse">
+                <HelpCircle className="w-5 h-5 text-white" />
+              </div>
+              <span className="font-medium text-foreground">Help Guide</span>
+            </button>
           </nav>
         </div>
 
@@ -781,6 +799,18 @@ export default function Dashboard() {
               >
                 <BookOpen className="w-4 h-4" />
                 Lesson Plans
+              </Button>
+              <Button
+                onClick={() => {
+                  const helpButton = document.querySelector('[data-testid="button-help-guide"]') as HTMLButtonElement;
+                  if (helpButton) helpButton.click();
+                }}
+                size="sm"
+                className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 border-0 animate-pulse"
+                data-testid="button-help-guide-mobile"
+              >
+                <HelpCircle className="w-4 h-4" />
+                Help
               </Button>
             </div>
           </div>
