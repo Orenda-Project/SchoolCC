@@ -179,10 +179,12 @@ export default function SchoolData() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* User's School (if applicable) */}
+        {/* User's School - Full Details (for HEAD_TEACHER and TEACHER) */}
         {userSchool && (user.role === 'HEAD_TEACHER' || user.role === 'TEACHER') && (
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold text-foreground mb-4">Your School Profile</h2>
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-foreground">Your School Profile</h2>
+            
+            {/* Basic Info Card */}
             <Card className="p-6 border-l-4 border-l-primary">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div>
@@ -202,83 +204,125 @@ export default function SchoolData() {
                   <p className="text-2xl font-bold text-primary">{userSchool.compliance}%</p>
                 </div>
               </div>
+            </Card>
 
-              {/* Enrollment & Infrastructure */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-border">
-                <div className="space-y-3">
-                  <h3 className="font-semibold text-foreground flex items-center gap-2">
-                    <Users className="w-4 h-4 text-blue-600" />
-                    Enrollment
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Total Students:</span>
-                      <span className="font-semibold text-foreground">{userSchool.totalStudents}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Boys:</span>
-                      <span className="font-semibold text-foreground">{userSchool.enrollment.boys}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Girls:</span>
-                      <span className="font-semibold text-foreground">{userSchool.enrollment.girls}</span>
-                    </div>
+            {/* Enrollment & Staffing */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="p-6">
+                <h3 className="font-semibold text-foreground flex items-center gap-2 mb-4">
+                  <Users className="w-5 h-5 text-blue-600" />
+                  Enrollment
+                </h3>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-muted/20 p-4 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-primary">{userSchool.totalStudents}</p>
+                    <p className="text-xs text-muted-foreground">Total Students</p>
+                  </div>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-blue-600">{userSchool.enrollment.boys}</p>
+                    <p className="text-xs text-muted-foreground">Boys</p>
+                  </div>
+                  <div className="bg-pink-50 dark:bg-pink-900/20 p-4 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-pink-600">{userSchool.enrollment.girls}</p>
+                    <p className="text-xs text-muted-foreground">Girls</p>
                   </div>
                 </div>
+              </Card>
 
-                <div className="space-y-3">
-                  <h3 className="font-semibold text-foreground flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-amber-600" />
-                    Staffing
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Total Teachers:</span>
-                      <span className="font-semibold text-foreground">{userSchool.totalTeachers}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Student/Teacher:</span>
-                      <span className="font-semibold text-foreground">
-                        {(userSchool.totalStudents / userSchool.totalTeachers).toFixed(1)}
-                      </span>
-                    </div>
+              <Card className="p-6">
+                <h3 className="font-semibold text-foreground flex items-center gap-2 mb-4">
+                  <BookOpen className="w-5 h-5 text-amber-600" />
+                  Staffing
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-amber-600">{userSchool.totalTeachers}</p>
+                    <p className="text-xs text-muted-foreground">Total Teachers</p>
+                  </div>
+                  <div className="bg-muted/20 p-4 rounded-lg text-center">
+                    <p className="text-2xl font-bold text-foreground">1:{(userSchool.totalStudents / userSchool.totalTeachers).toFixed(0)}</p>
+                    <p className="text-xs text-muted-foreground">Student/Teacher Ratio</p>
                   </div>
                 </div>
+              </Card>
+            </div>
 
-                <div className="space-y-3">
-                  <h3 className="font-semibold text-foreground flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4 text-green-600" />
-                    Infrastructure
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Classrooms:</span>
-                      <span className="font-semibold text-foreground">{userSchool.infrastructure.classrooms}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Toilets:</span>
-                      <span className="font-semibold text-foreground">{userSchool.infrastructure.toilets}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">Water:</span>
-                      <span className={userSchool.infrastructure.waterSource ? 'text-green-600' : 'text-red-600'}>
-                        {userSchool.infrastructure.waterSource ? '✓ Available' : '✗ N/A'}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">Electricity:</span>
-                      <span className={userSchool.infrastructure.electricity ? 'text-green-600' : 'text-red-600'}>
-                        {userSchool.infrastructure.electricity ? '✓ Available' : '✗ N/A'}
-                      </span>
-                    </div>
-                  </div>
+            {/* Infrastructure */}
+            <Card className="p-6">
+              <h3 className="font-semibold text-foreground flex items-center gap-2 mb-4">
+                <BarChart3 className="w-5 h-5 text-green-600" />
+                Infrastructure
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="flex items-center gap-3 p-3 bg-muted/20 rounded-lg">
+                  <span className="text-muted-foreground">Classrooms:</span>
+                  <span className="font-bold text-foreground">{userSchool.infrastructure.classrooms}</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-muted/20 rounded-lg">
+                  <span className="text-muted-foreground">Toilets:</span>
+                  <span className="font-bold text-foreground">{userSchool.infrastructure.toilets}</span>
+                </div>
+                <div className={`flex items-center gap-3 p-3 rounded-lg ${userSchool.infrastructure.waterSource ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'}`}>
+                  <Droplet className={`w-5 h-5 ${userSchool.infrastructure.waterSource ? 'text-blue-600' : 'text-gray-400'}`} />
+                  <span className={userSchool.infrastructure.waterSource ? 'text-green-600 font-medium' : 'text-red-600'}>
+                    {userSchool.infrastructure.waterSource ? 'Water Available' : 'No Water'}
+                  </span>
+                </div>
+                <div className={`flex items-center gap-3 p-3 rounded-lg ${userSchool.infrastructure.electricity ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'}`}>
+                  <Zap className={`w-5 h-5 ${userSchool.infrastructure.electricity ? 'text-yellow-600' : 'text-gray-400'}`} />
+                  <span className={userSchool.infrastructure.electricity ? 'text-green-600 font-medium' : 'text-red-600'}>
+                    {userSchool.infrastructure.electricity ? 'Electricity Available' : 'No Electricity'}
+                  </span>
                 </div>
               </div>
             </Card>
+
+            {/* Furniture Inventory */}
+            {userSchool.furniture && (
+              <Card className="p-6">
+                <h3 className="font-semibold text-foreground mb-4">Furniture Inventory</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border">
+                        <th className="text-left py-3 px-4 font-medium">Item</th>
+                        <th className="text-center py-3 px-4 font-medium text-green-600">New</th>
+                        <th className="text-center py-3 px-4 font-medium text-gray-600">Old</th>
+                        <th className="text-center py-3 px-4 font-medium text-blue-600">In Use</th>
+                        <th className="text-center py-3 px-4 font-medium text-red-600">Broken</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(userSchool.furniture).map(([key, value]) => (
+                        <tr key={key} className="border-b border-border/50 hover:bg-muted/20">
+                          <td className="py-3 px-4 capitalize font-medium">{key}</td>
+                          <td className="py-3 px-4 text-center text-green-600">{value.new}</td>
+                          <td className="py-3 px-4 text-center text-gray-600">{value.old}</td>
+                          <td className="py-3 px-4 text-center text-blue-600">{value.inUse}</td>
+                          <td className="py-3 px-4 text-center text-red-600">{value.broken}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            )}
+
+            {/* Download Button */}
+            <div className="flex justify-end">
+              <Button
+                onClick={() => downloadSchoolInventory(userSchool)}
+                className="bg-primary"
+              >
+                <FileSpreadsheet className="w-4 h-4 mr-2" />
+                Download School Inventory (XLSX)
+              </Button>
+            </div>
           </div>
         )}
 
-        {/* All Schools in District */}
+        {/* All Schools in District (hidden for HEAD_TEACHER and TEACHER since they see full details above) */}
+        {user.role !== 'HEAD_TEACHER' && user.role !== 'TEACHER' && (
         <div>
           <h2 className="text-lg font-semibold text-foreground mb-4">
             {user.role === 'CEO' ? 'All Schools' : user.role === 'DEO' || user.role === 'DDEO' ? 'All Schools in District' : user.role === 'AEO' ? 'Schools in Your Area' : 'Your School'}
@@ -367,6 +411,7 @@ export default function SchoolData() {
             ))}
           </div>
         </div>
+        )}
       </div>
 
       {/* School Details Modal */}
