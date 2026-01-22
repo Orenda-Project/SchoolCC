@@ -25,7 +25,7 @@ const LOGIN_HELP_KEY = 'taleemhub_login_help';
 const loginHelpSteps: HelpStep[] = [
   {
     title: 'Welcome to TaleemHub! 🎓',
-    content: 'Your education command center for Rawalpindi District. Let\'s get you started!\n\nٹیلیم ہب میں خوش آمدید! راولپنڈی ضلع کے لیے آپ کا تعلیمی کمانڈ سینٹر۔ آئیں شروع کریں!',
+    content: 'Your education command center for Rawalpindi District. Let\'s get you started!\n\nتعلیم ہب میں خوش آمدید! راولپنڈی ضلع کے لیے آپ کا تعلیمی کمانڈ سینٹر۔ آئیں شروع کریں!',
   },
   {
     title: 'New User? Create Account',
