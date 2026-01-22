@@ -33,7 +33,15 @@ export default function CreateActivity() {
     const files = e.target.files;
     if (!files) return;
 
-    Array.from(files).forEach((file) => {
+    const maxPhotos = 10;
+    const remainingSlots = maxPhotos - photos.length;
+    const filesToAdd = Array.from(files).slice(0, remainingSlots);
+    
+    if (files.length > remainingSlots) {
+      toast.error(`You can only upload up to ${maxPhotos} photos. ${files.length - remainingSlots} file(s) were not added.`);
+    }
+
+    filesToAdd.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const preview = event.target?.result as string;
@@ -158,7 +166,7 @@ export default function CreateActivity() {
               >
                 <div className="flex flex-col items-center gap-2">
                   <Camera className="w-8 h-8 text-muted-foreground" />
-                  <span className="text-muted-foreground">Tap to add photos from gallery</span>
+                  <span className="text-muted-foreground">Tap to add photos (max 10)</span>
                 </div>
               </Button>
 
