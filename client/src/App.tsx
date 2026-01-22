@@ -20,6 +20,7 @@ import SchoolVisits from "@/pages/SchoolVisits";
 import CreateVisit from "@/pages/CreateVisit";
 import ViewVisit from "@/pages/ViewVisit";
 import SchoolAlbum from "@/pages/SchoolAlbum";
+import CommunityAlbum from "@/pages/CommunityAlbum";
 import CreateActivity from "@/pages/CreateActivity";
 import CollaborativeForms from "@/pages/CollaborativeForms";
 import CreateCollaborativeForm from "@/pages/CreateCollaborativeForm";
@@ -77,6 +78,7 @@ function Router() {
         <Route path="/create-visit" component={CreateVisit} />
         <Route path="/visit/:id" component={ViewVisit} />
         <Route path="/album/:schoolId" component={SchoolAlbum} />
+        <Route path="/community-album" component={CommunityAlbum} />
         <Route path="/create-activity/:schoolId" component={CreateActivity} />
         <Route path="/collaborative-forms" component={CollaborativeForms} />
         <Route path="/create-collaborative-form" component={CreateCollaborativeForm} />

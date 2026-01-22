@@ -588,14 +588,14 @@ export default function Dashboard() {
             </button>
             {user.role === 'TEACHER' ? (
               <button
-                onClick={() => navigate(user.schoolId ? `/album/${user.schoolId}` : '/dashboard')}
+                onClick={() => navigate('/community-album')}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-pink-100/80 dark:hover:bg-pink-900/30 transition-all duration-300 group press-effect"
-                data-testid="button-school-album"
+                data-testid="button-community-album"
               >
                 <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-pink-400 to-pink-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
                   <BookOpen className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-medium text-foreground">School Album</span>
+                <span className="font-medium text-foreground">Community Album</span>
               </button>
             ) : (
               <button
