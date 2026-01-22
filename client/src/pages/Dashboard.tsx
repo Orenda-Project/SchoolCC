@@ -180,10 +180,9 @@ export default function Dashboard() {
           { text: "Great teachers empathize with kids and inspire them to learn.", author: "Unknown", gradient: "from-teal-500 to-emerald-500" },
         ];
         
-        // Get a quote based on the current date (changes daily)
-        const today = new Date();
-        const quoteIndex = (today.getDate() + today.getMonth()) % teachingQuotes.length;
-        const dailyQuote = teachingQuotes[quoteIndex];
+        // Shuffle and pick a random quote on each page visit (like tips)
+        const shuffledQuotes = [...teachingQuotes].sort(() => Math.random() - 0.5);
+        const dailyQuote = shuffledQuotes[0];
         
         if (user.role === 'TEACHER') {
           return (
