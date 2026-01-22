@@ -263,55 +263,47 @@ export default function Calendar() {
                 return (
                   <div
                     key={idx}
-                    role={canAddLeave && isCurrentMonth ? "button" : undefined}
-                    tabIndex={canAddLeave && isCurrentMonth ? 0 : undefined}
                     className={`relative p-2 rounded-lg min-h-24 border-2 transition-all ${
                       isCurrentMonth
                         ? isToday
                           ? 'border-primary bg-primary/10'
                           : 'border-border bg-card hover:border-primary/30'
                         : 'border-transparent bg-muted/20 text-muted-foreground'
-                    } ${canAddLeave && isCurrentMonth ? 'cursor-pointer hover:bg-muted/50' : ''}`}
-                    onClick={() => {
-                      if (isCurrentMonth && canAddLeave) {
-                        handleDateClick(day);
-                      }
-                    }}
-                    onTouchEnd={(e) => {
-                      if (isCurrentMonth && canAddLeave) {
-                        e.preventDefault();
-                        handleDateClick(day);
-                      }
-                    }}
+                    }`}
                     data-testid={`calendar-day-${day.getDate()}`}
                   >
-                    <div className="text-sm font-semibold text-foreground text-center">{day.getDate()}</div>
+                    {/* Clickable overlay for adding leave */}
+                    {canAddLeave && isCurrentMonth && (
+                      <button
+                        type="button"
+                        className="absolute inset-0 w-full h-full z-10 bg-transparent hover:bg-muted/30 active:bg-muted/50 rounded-lg touch-manipulation"
+                        onClick={() => handleDateClick(day)}
+                        aria-label={`Add leave for ${day.toDateString()}`}
+                      />
+                    )}
+                    <div className="text-sm font-semibold text-foreground text-center relative z-0">{day.getDate()}</div>
                     {leavesForDay.length > 0 && (
-                      <div className="mt-1 space-y-0.5">
+                      <div className="mt-1 space-y-0.5 relative z-20">
                         {leavesForDay.slice(0, 2).map((leave) => (
-                          <div
+                          <button
+                            type="button"
                             key={leave.id}
-                            className={`text-xs px-1 py-0.5 rounded truncate cursor-pointer hover:opacity-80 border ${leaveTypeColors[leave.leaveType]} ${leave.status === 'pending' ? 'opacity-60' : ''}`}
+                            className={`w-full text-left text-xs px-1 py-0.5 rounded truncate hover:opacity-80 border touch-manipulation ${leaveTypeColors[leave.leaveType]} ${leave.status === 'pending' ? 'opacity-60' : ''}`}
                             title={`${leave.teacherName} - ${leave.reason}${leave.status === 'pending' ? ' (Pending)' : ''}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleViewLeave(leave);
-                            }}
+                            onClick={() => handleViewLeave(leave)}
                           >
                             {isTeacher ? leave.leaveType : leave.teacherName}
                             {leave.status === 'pending' && <span className="ml-1 text-amber-600">⏳</span>}
-                          </div>
+                          </button>
                         ))}
                         {leavesForDay.length > 2 && (
-                          <div 
-                            className="text-xs text-center bg-muted/50 rounded py-0.5 cursor-pointer hover:bg-muted"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleShowMoreLeaves(day, leavesForDay);
-                            }}
+                          <button 
+                            type="button"
+                            className="w-full text-xs text-center bg-muted/50 rounded py-0.5 hover:bg-muted touch-manipulation"
+                            onClick={() => handleShowMoreLeaves(day, leavesForDay)}
                           >
                             +{leavesForDay.length - 2} more
-                          </div>
+                          </button>
                         )}
                       </div>
                     )}
