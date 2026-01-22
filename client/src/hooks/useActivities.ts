@@ -151,6 +151,25 @@ export function useActivities() {
     },
   });
 
+  const deleteActivityMutation = useMutation({
+    mutationFn: async (data: {
+      albumId: string;
+      userId: string;
+      userRole: string;
+      userSchoolId: string;
+    }) => {
+      const response = await apiRequest('DELETE', `/api/albums/${data.albumId}?userId=${data.userId}&userRole=${data.userRole}&userSchoolId=${data.userSchoolId}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete activity');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['community-albums'] });
+    },
+  });
+
   return {
     activities,
     isLoading,
@@ -161,5 +180,7 @@ export function useActivities() {
     addComment: addCommentMutation.mutateAsync,
     addReaction: addReactionMutation.mutateAsync,
     removeReaction: removeReactionMutation.mutateAsync,
+    deleteActivity: deleteActivityMutation.mutateAsync,
+    isDeleting: deleteActivityMutation.isPending,
   };
 }

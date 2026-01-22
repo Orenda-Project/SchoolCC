@@ -1229,6 +1229,22 @@ export async function registerRoutes(
 
   app.delete("/api/albums/:id", async (req, res) => {
     try {
+      const { userId, userRole, userSchoolId } = req.query as any;
+      const album = await storage.getAlbum(req.params.id);
+      
+      if (!album) {
+        return res.status(404).json({ error: "Album not found" });
+      }
+      
+      const canDelete = 
+        album.createdBy === userId ||
+        (userRole === 'HEAD_TEACHER' && album.schoolId === userSchoolId) ||
+        ['AEO', 'DEO', 'DDEO', 'CEO'].includes(userRole);
+      
+      if (!canDelete) {
+        return res.status(403).json({ error: "You don't have permission to delete this post" });
+      }
+      
       await storage.deleteAlbum(req.params.id);
       res.json({ success: true });
     } catch (error) {
@@ -1296,6 +1312,28 @@ export async function registerRoutes(
         ...req.body,
         albumId: req.params.albumId,
       });
+      
+      const album = await storage.getAlbum(req.params.albumId);
+      if (album && album.createdBy !== req.body.userId) {
+        const reactionEmoji = {
+          like: '👍',
+          love: '❤️',
+          clap: '👏',
+          celebrate: '🎉'
+        }[req.body.reactionType] || '👍';
+        
+        await storage.createNotification({
+          userId: album.createdBy,
+          title: 'New Reaction on Your Post',
+          message: `${req.body.userName} reacted ${reactionEmoji} to your post "${album.title}"`,
+          type: 'album',
+          priority: 'low',
+          actionUrl: '/community-album',
+          relatedId: album.id,
+          createdBy: req.body.userId,
+        });
+      }
+      
       res.json(reaction);
     } catch (error) {
       res.status(400).json({ error: "Failed to add reaction" });

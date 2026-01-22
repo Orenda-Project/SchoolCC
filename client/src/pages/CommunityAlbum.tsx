@@ -6,13 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useActivities, Activity } from '@/hooks/useActivities';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Plus, MessageCircle, Download, X, School, User, Images, ChevronRight, Loader2 } from 'lucide-react';
+import { ArrowLeft, Plus, MessageCircle, Download, X, School, User, Images, ChevronRight, Loader2, Trash2, MoreVertical } from 'lucide-react';
 import { analytics } from '@/lib/analytics';
+import { toast } from 'sonner';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function CommunityAlbum() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
-  const { activities, isLoading, addComment, addReaction, removeReaction } = useActivities();
+  const { activities, isLoading, addComment, addReaction, removeReaction, deleteActivity, isDeleting } = useActivities();
   const [expandedActivity, setExpandedActivity] = useState<string | null>(null);
   const [commentText, setCommentText] = useState('');
   const [userReactions, setUserReactions] = useState<Record<string, string>>({});
@@ -93,6 +95,30 @@ export default function CommunityAlbum() {
       }
     } catch (error) {
       console.error('Failed to handle reaction:', error);
+    }
+  };
+
+  const canDeletePost = (activity: Activity) => {
+    if (activity.createdBy === user.id) return true;
+    if (user.role === 'HEAD_TEACHER' && activity.schoolId === user.schoolId) return true;
+    if (['AEO', 'DEO', 'DDEO', 'CEO'].includes(user.role)) return true;
+    return false;
+  };
+
+  const handleDeletePost = async (activity: Activity) => {
+    if (!confirm('Are you sure you want to delete this post? This action cannot be undone.')) return;
+    
+    try {
+      await deleteActivity({
+        albumId: activity.id,
+        userId: user.id,
+        userRole: user.role,
+        userSchoolId: user.schoolId || '',
+      });
+      toast.success('Post deleted successfully');
+    } catch (error: any) {
+      console.error('Failed to delete post:', error);
+      toast.error(error.message || 'Failed to delete post');
     }
   };
 
@@ -282,6 +308,26 @@ export default function CommunityAlbum() {
                         {new Date(activity.createdAt).toLocaleDateString()} at {new Date(activity.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
+                    {canDeletePost(activity) && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8" data-testid={`button-menu-${activity.id}`}>
+                            <MoreVertical className="w-4 h-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            className="text-destructive focus:text-destructive"
+                            onClick={() => handleDeletePost(activity)}
+                            disabled={isDeleting}
+                            data-testid={`button-delete-${activity.id}`}
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete Post
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </div>
                   <h2 className="text-xl font-bold text-foreground mt-4">{activity.title}</h2>
                   {activity.description && <p className="text-foreground mt-2">{activity.description}</p>}
