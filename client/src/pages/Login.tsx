@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card';
 import { AlertCircle, School, Check, Crown, Building2, Users, GraduationCap, UserCheck, BookOpen, Shield, TrendingUp, Eye } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { analytics } from '@/lib/analytics';
-import PersistentHelpBanner, { HelpStep, useHelpBannerStatus } from '@/components/PersistentHelpBanner';
+import PersistentHelpBanner, { HelpStep, useHelpBannerStatus, PersistentHelpButton } from '@/components/PersistentHelpBanner';
 import FloatingHelpButton from '@/components/FloatingHelpButton';
 
 const roles: { value: UserRole; label: string; description: string; icon: any }[] = [
@@ -49,7 +49,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { hasCompletedHelp } = useHelpBannerStatus(LOGIN_HELP_KEY);
+  const { hasCompletedHelp, isViewingGuide, openGuide, closeGuide } = useHelpBannerStatus(LOGIN_HELP_KEY);
   const [showHelp, setShowHelp] = useState(false);
   const [helpMinimized, setHelpMinimized] = useState(false);
 
@@ -71,6 +71,11 @@ export default function Login() {
     const interval = setInterval(checkMinimized, 500);
     return () => clearInterval(interval);
   }, []);
+
+  const handleGuideComplete = () => {
+    setShowHelp(false);
+    closeGuide();
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -311,22 +316,27 @@ export default function Login() {
       {/* Persistent Help Banner - Anchored to bottom */}
       <PersistentHelpBanner
         steps={loginHelpSteps}
-        isOpen={showHelp && !hasCompletedHelp}
-        onComplete={() => setShowHelp(false)}
+        isOpen={(showHelp && !hasCompletedHelp) || isViewingGuide}
+        onComplete={handleGuideComplete}
         storageKey={LOGIN_HELP_KEY}
         position="bottom"
         allowMinimize={true}
       />
 
-      {/* Floating Help Button */}
+      {/* Floating Help Button - shown when minimized */}
       <FloatingHelpButton
-        show={showHelp && !hasCompletedHelp && helpMinimized}
+        show={showHelp && !hasCompletedHelp && helpMinimized && !isViewingGuide}
         onClick={() => {
           localStorage.removeItem(`${LOGIN_HELP_KEY}-minimized`);
           setHelpMinimized(false);
         }}
         position="bottom-right"
       />
+
+      {/* Persistent Help Button - shown after completion */}
+      {hasCompletedHelp && !isViewingGuide && (
+        <PersistentHelpButton onClick={openGuide} position="bottom" />
+      )}
     </div>
   );
 }

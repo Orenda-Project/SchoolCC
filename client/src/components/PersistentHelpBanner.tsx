@@ -238,10 +238,12 @@ export function useHelpBannerStatus(storageKey: string) {
   const [hasCompletedHelp, setHasCompletedHelp] = useState(() => {
     return localStorage.getItem(storageKey) === 'completed';
   });
+  const [isViewingGuide, setIsViewingGuide] = useState(false);
 
   const markComplete = () => {
     localStorage.setItem(storageKey, 'completed');
     setHasCompletedHelp(true);
+    setIsViewingGuide(false);
   };
 
   const resetHelp = () => {
@@ -250,5 +252,36 @@ export function useHelpBannerStatus(storageKey: string) {
     setHasCompletedHelp(false);
   };
 
-  return { hasCompletedHelp, markComplete, resetHelp };
+  const openGuide = () => {
+    setIsViewingGuide(true);
+  };
+
+  const closeGuide = () => {
+    setIsViewingGuide(false);
+  };
+
+  return { hasCompletedHelp, markComplete, resetHelp, isViewingGuide, openGuide, closeGuide };
+}
+
+export function PersistentHelpButton({ 
+  onClick, 
+  position = 'bottom' 
+}: { 
+  onClick: () => void; 
+  position?: 'top' | 'bottom';
+}) {
+  const positionClasses = position === 'top'
+    ? 'top-16 right-4'
+    : 'bottom-4 right-4';
+
+  return (
+    <button
+      onClick={onClick}
+      className={`fixed ${positionClasses} z-[40] flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105`}
+      data-testid="help-guide-button"
+    >
+      <HelpCircle className="w-5 h-5" />
+      <span className="text-sm font-medium">مدد Guide</span>
+    </button>
+  );
 }
