@@ -9,52 +9,31 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import type { UserRole } from '@/contexts/auth';
 import { analytics } from '@/lib/analytics';
-import { OnboardingTour, TourStep, useTourStatus } from '@/components/OnboardingTour';
+import { MobileOnboarding, MobileTourStep, useMobileOnboardingStatus } from '@/components/MobileOnboarding';
 
 const SIGNUP_TOUR_KEY = 'taleemhub_signup_tour';
 
-const getSignupTourSteps = (role: string): TourStep[] => {
-  const baseSteps: TourStep[] = [
-    {
-      target: '[data-testid="select-role"]',
-      title: 'Step 1: Select Your Role',
-      content: 'Choose your role - Teacher or Head Teacher. This determines what information you need to provide.',
-      placement: 'right',
-    },
-  ];
-
-  if (role === 'TEACHER' || role === 'HEAD_TEACHER') {
-    return [
-      ...baseSteps,
-      {
-        target: '[data-testid="input-emis"]',
-        title: 'Step 2: School EMIS Number',
-        content: 'Enter your school\'s EMIS number. Ask your Head Teacher or AEO if you don\'t know it.',
-        placement: 'right',
-      },
-      {
-        target: '[data-testid="input-name"]',
-        title: 'Step 3: Your Full Name',
-        content: 'Enter your full name as it appears in official records.',
-        placement: 'right',
-      },
-      {
-        target: '[data-testid="input-phone"]',
-        title: 'Step 4: Phone Number',
-        content: 'Enter your phone number. You\'ll use this to log in - no password needed!',
-        placement: 'right',
-      },
-      {
-        target: '[data-testid="button-submit"]',
-        title: 'Step 5: Create Account',
-        content: 'Click here to create your account. You can log in immediately after!',
-        placement: 'top',
-      },
-    ];
-  }
-
-  return baseSteps;
-};
+const signupOnboardingSteps: MobileTourStep[] = [
+  {
+    title: 'Welcome to TaleemHub! 👋',
+    content: 'Let\'s set up your account in just a few steps. This will only take a minute.',
+  },
+  {
+    title: 'Step 1: Choose Your Role',
+    content: 'Select your role from the dropdown above. Teachers and Head Teachers can create accounts directly.',
+    action: 'Tap the Role dropdown above to select your role',
+  },
+  {
+    title: 'Step 2: Fill Basic Information',
+    content: 'Enter your name, phone number, and school details. For Teachers: No password needed - just your phone number!',
+    action: 'Scroll up to fill in your details',
+  },
+  {
+    title: 'Step 3: Submit & Start!',
+    content: 'Once all fields are filled, tap "Submit Account Request" to create your account. You can log in immediately!',
+    action: 'Tap Submit when ready',
+  },
+];
 
 // All 16 schools in the district (uppercase)
 const ALL_SCHOOLS = [
@@ -81,10 +60,9 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  
-  const { hasSeenTour } = useTourStatus(SIGNUP_TOUR_KEY);
-  const [showTour, setShowTour] = useState(false);
-  const [tourSteps, setTourSteps] = useState<TourStep[]>([]);
+
+  const { hasSeenOnboarding } = useMobileOnboardingStatus(SIGNUP_TOUR_KEY);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -112,21 +90,13 @@ export default function Signup() {
     assignedSchools: [] as string[],
   });
 
-  // Initialize tour when page loads
+  // Initialize onboarding when page loads
   useEffect(() => {
-    if (!hasSeenTour) {
-      setTourSteps(getSignupTourSteps(''));
-      const timer = setTimeout(() => setShowTour(true), 500);
+    if (!hasSeenOnboarding) {
+      const timer = setTimeout(() => setShowOnboarding(true), 800);
       return () => clearTimeout(timer);
     }
-  }, [hasSeenTour]);
-
-  // Update tour steps when role changes
-  useEffect(() => {
-    if (formData.role && (formData.role === 'TEACHER' || formData.role === 'HEAD_TEACHER')) {
-      setTourSteps(getSignupTourSteps(formData.role));
-    }
-  }, [formData.role]);
+  }, [hasSeenOnboarding]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -497,16 +467,14 @@ export default function Signup() {
         </Card>
       </div>
 
-      {/* Onboarding Tour - Mandatory for new users */}
-      {tourSteps.length > 0 && (
-        <OnboardingTour
-          steps={tourSteps}
-          isOpen={showTour}
-          onComplete={() => setShowTour(false)}
-          storageKey={SIGNUP_TOUR_KEY}
-          mandatory={true}
-        />
-      )}
+      {/* Mobile Onboarding - Bottom sheet, never blocks content */}
+      <MobileOnboarding
+        steps={signupOnboardingSteps}
+        isOpen={showOnboarding}
+        onComplete={() => setShowOnboarding(false)}
+        storageKey={SIGNUP_TOUR_KEY}
+        mandatory={true}
+      />
     </div>
   );
 }

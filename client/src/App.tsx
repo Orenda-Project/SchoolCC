@@ -37,6 +37,7 @@ import NotFound from "@/pages/not-found";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import StickyPWAButton from "@/components/StickyPWAButton";
+import PWAInstallBanner from "@/components/PWAInstallBanner";
 
 function DashboardRoute() {
   const { isAuthenticated, user } = useAuth();
@@ -102,6 +103,7 @@ function App() {
             <VisitSessionProvider>
               <ActivitiesProvider>
                 <Toaster />
+                <PWAInstallBanner />
                 <PWAInstallPrompt />
                 <StickyPWAButton />
                 <Router />
