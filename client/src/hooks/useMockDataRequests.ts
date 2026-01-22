@@ -41,7 +41,7 @@ export interface DataRequest {
   assignees: RequestAssignee[];
   fields: DataField[];
   status: 'draft' | 'active' | 'completed';
-  priority: 'low' | 'medium' | 'high';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
   isArchived: boolean;
 }
 

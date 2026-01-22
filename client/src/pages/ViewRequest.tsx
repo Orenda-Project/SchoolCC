@@ -5,10 +5,13 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useMockDataRequests, DataRequest, RequestAssignee } from '@/hooks/useMockDataRequests';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Mic, Play, Upload, Download, Lock, Square, Trash2, Edit, UserPlus, X, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Mic, Play, Upload, Download, Lock, Square, Trash2, Edit, UserPlus, X, ChevronDown, CalendarIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { analytics } from '@/lib/analytics';
+import { VoiceRecorder } from '@/components/VoiceRecorder';
+
+type Priority = 'low' | 'medium' | 'high' | 'urgent';
 
 export default function ViewRequest() {
   const { id } = useParams();
@@ -21,8 +24,12 @@ export default function ViewRequest() {
   const [recording, setRecording] = useState<string | null>(null);
   const [requestTitle, setRequestTitle] = useState('');
   const [requestDescription, setRequestDescription] = useState('');
-  const [requestPriority, setRequestPriority] = useState<'low' | 'medium' | 'high'>('medium');
+  const [requestPriority, setRequestPriority] = useState<Priority>('medium');
   const [requestDueDate, setRequestDueDate] = useState('');
+
+  const handleVoiceTranscription = (text: string) => {
+    setRequestDescription(prev => prev ? `${prev}\n\n${text}` : text);
+  };
   const [request, setRequest] = useState<DataRequest | null>(null);
   const [showDelegateModal, setShowDelegateModal] = useState(false);
   const [subordinates, setSubordinates] = useState<any[]>([]);
@@ -300,44 +307,58 @@ export default function ViewRequest() {
           {editingRequest ? (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Title</label>
+                <label className="block text-sm font-medium text-foreground mb-2">Title / عنوان</label>
                 <Input
+                  placeholder="e.g., Monthly Attendance Report"
                   value={requestTitle}
                   onChange={(e) => setRequestTitle(e.target.value)}
                   data-testid="input-edit-title"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+                <label className="block text-sm font-medium text-foreground mb-2">Description / تفصیل</label>
                 <textarea
+                  placeholder="Provide context about this request..."
                   value={requestDescription}
                   onChange={(e) => setRequestDescription(e.target.value)}
                   className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-20"
                   data-testid="textarea-edit-description"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+
+              <VoiceRecorder
+                onTranscriptionComplete={handleVoiceTranscription}
+                disabled={false}
+              />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Priority</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Priority / ترجیح</label>
                   <select
                     value={requestPriority}
-                    onChange={(e) => setRequestPriority(e.target.value as 'low' | 'medium' | 'high')}
+                    onChange={(e) => setRequestPriority(e.target.value as Priority)}
                     className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                     data-testid="select-edit-priority"
                   >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+                    <option value="low">Low / کم</option>
+                    <option value="medium">Medium / درمیانی</option>
+                    <option value="high">High / زیادہ</option>
+                    <option value="urgent">Urgent / فوری</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Due Date</label>
-                  <Input
-                    type="date"
-                    value={requestDueDate}
-                    onChange={(e) => setRequestDueDate(e.target.value)}
-                    data-testid="input-edit-duedate"
-                  />
+                  <label className="block text-sm font-medium text-foreground mb-2">Due Date / آخری تاریخ</label>
+                  <div className="relative">
+                    <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <input
+                      type="date"
+                      value={requestDueDate}
+                      onChange={(e) => setRequestDueDate(e.target.value)}
+                      min={new Date().toISOString().split('T')[0]}
+                      className="w-full pl-10 pr-3 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      data-testid="input-edit-duedate"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -345,14 +366,14 @@ export default function ViewRequest() {
                   onClick={handleUpdateRequest}
                   data-testid="button-save-request"
                 >
-                  Save Changes
+                  Save Changes / تبدیلیاں محفوظ کریں
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setEditingRequest(false)}
                   data-testid="button-cancel-request-edit"
                 >
-                  Cancel
+                  Cancel / منسوخ
                 </Button>
               </div>
             </div>
