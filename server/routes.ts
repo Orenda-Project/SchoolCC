@@ -539,6 +539,79 @@ export async function registerRoutes(
     }
   });
 
+  // Staff statistics endpoint - returns counts by role with filtering based on user access
+  app.get("/api/staff-stats", async (req, res) => {
+    try {
+      const { userId } = req.query as { userId?: string };
+      
+      if (!userId) {
+        return res.status(401).json({ error: "User ID is required" });
+      }
+      
+      const requestingUser = await findUserByIdOrPhone(userId);
+      if (!requestingUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      // Get all users (approved ones only)
+      let allUsers = await storage.getUsersByStatus('approved');
+      
+      // Filter based on requesting user's role and access
+      if (requestingUser.role === 'CEO' || requestingUser.role === 'DEO' || requestingUser.role === 'DDEO') {
+        // Can see all staff
+      }
+      else if (requestingUser.role === 'AEO') {
+        // AEO can only see staff in their cluster/schools
+        allUsers = allUsers.filter(u => {
+          if (u.role !== 'HEAD_TEACHER' && u.role !== 'TEACHER') return false;
+          const inCluster = u.clusterId && u.clusterId === requestingUser.clusterId;
+          const inAssignedSchool = u.schoolName && requestingUser.assignedSchools &&
+                                   requestingUser.assignedSchools.includes(u.schoolName);
+          return inCluster || inAssignedSchool;
+        });
+      }
+      else if (requestingUser.role === 'HEAD_TEACHER') {
+        // HEAD_TEACHER can only see teachers in their school
+        allUsers = allUsers.filter(u =>
+          u.role === 'TEACHER' && u.schoolId === requestingUser.schoolId
+        );
+      }
+      else {
+        // Teachers see no staff statistics
+        allUsers = []
+      }
+      
+      // Count by role
+      const aeos = allUsers.filter(u => u.role === 'AEO');
+      const headTeachers = allUsers.filter(u => u.role === 'HEAD_TEACHER');
+      const teachers = allUsers.filter(u => u.role === 'TEACHER');
+      
+      res.json({
+        aeos: {
+          total: aeos.length,
+          present: aeos.length, // For now, all approved users are considered present
+          onLeave: 0,
+          absent: 0,
+        },
+        headTeachers: {
+          total: headTeachers.length,
+          present: headTeachers.length,
+          onLeave: 0,
+          absent: 0,
+        },
+        teachers: {
+          total: teachers.length,
+          present: teachers.length,
+          onLeave: 0,
+          absent: 0,
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching staff stats:', error);
+      res.status(500).json({ error: "Failed to fetch staff statistics" });
+    }
+  });
+
   app.post("/api/admin/users", async (req, res) => {
     try {
       const body = insertUserSchema.parse(req.body);

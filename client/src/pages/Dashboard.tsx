@@ -23,7 +23,7 @@ export default function Dashboard() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
   const { getRequestsForUser } = useMockDataRequests();
-  const { getTeacherStats, getStaffStats, teachers, leaves } = useMockTeacherData(user?.assignedSchools);
+  const { getTeacherStats, teachers, leaves } = useMockTeacherData(user?.assignedSchools);
   const { getVisitsForUser } = useMockVisits();
   const { getAllActivities } = useActivities();
 
@@ -34,6 +34,11 @@ export default function Dashboard() {
   const [teacherDialogType, setTeacherDialogType] = useState<'total' | 'present' | 'onLeave' | 'absent'>('total');
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [staffStats, setStaffStats] = useState({
+    aeos: { total: 0, present: 0, onLeave: 0, absent: 0 },
+    headTeachers: { total: 0, present: 0, onLeave: 0, absent: 0 },
+    teachers: { total: 0, present: 0, onLeave: 0, absent: 0 },
+  });
 
   const {
     widgets,
@@ -75,6 +80,22 @@ export default function Dashboard() {
       });
     }
   }, [user, getRequestsForUser]);
+
+  // Fetch real staff statistics from API
+  useEffect(() => {
+    if (user) {
+      fetch(`/api/staff-stats?userId=${user.id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && !data.error) {
+            setStaffStats(data);
+          }
+        })
+        .catch(err => {
+          console.error('Failed to fetch staff stats:', err);
+        });
+    }
+  }, [user]);
 
   // Return null while redirecting
   if (!user || user.role === 'CEO' || user.role === 'DEO') {
@@ -460,7 +481,6 @@ export default function Dashboard() {
     r.assignees?.some((a: any) => a.userId === user.id && a.status === 'completed')
   ).length;
   const { totalTeachers, presentToday, onLeaveToday, absentToday } = getTeacherStats();
-  const staffStats = getStaffStats();
 
   const openTeacherDialog = (type: 'total' | 'present' | 'onLeave' | 'absent') => {
     setTeacherDialogType(type);
