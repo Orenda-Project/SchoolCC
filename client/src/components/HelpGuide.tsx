@@ -524,6 +524,7 @@ export function HelpGuide() {
   const [currentStep, setCurrentStep] = useState(0);
   const [language, setLanguage] = useState<Language>('en');
   const [showIntro, setShowIntro] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [location] = useLocation();
 
