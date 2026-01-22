@@ -4,33 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useMockTeacherData, SchoolData as SchoolDataType } from '@/hooks/useMockTeacherData';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Download, Users, BookOpen, Droplet, Zap, BarChart3, ImageIcon, FileSpreadsheet, X, Calendar, Clock, Loader2, Camera } from 'lucide-react';
+import { ArrowLeft, Download, Users, BookOpen, Droplet, Zap, BarChart3, FileSpreadsheet, X, Calendar, Clock, Loader2 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { VoiceNotePlayer } from '@/components/VoiceNotePlayer';
-
-interface Album {
-  id: string;
-  schoolId: string;
-  schoolName: string;
-  title: string;
-  description?: string;
-  createdBy: string;
-  createdByName: string;
-  createdByRole: string;
-  isGlobalBroadcast: boolean;
-  createdAt: string;
-  photoCount?: number;
-}
-
-interface AlbumPhoto {
-  id: string;
-  albumId: string;
-  photoUrl: string;
-  photoFileName: string;
-  caption?: string;
-  uploadedAt: string;
-}
 
 export default function SchoolData() {
   const { user } = useAuth();
@@ -38,18 +15,14 @@ export default function SchoolData() {
   const { getSchoolData, getSchoolById } = useMockTeacherData(user?.assignedSchools);
   const [selectedSchool, setSelectedSchool] = useState<SchoolDataType | null>(null);
   const [visitHistory, setVisitHistory] = useState<any[]>([]);
-  const [schoolAlbums, setSchoolAlbums] = useState<Album[]>([]);
-  const [albumPhotos, setAlbumPhotos] = useState<Record<string, AlbumPhoto[]>>({});
   const [loadingHistory, setLoadingHistory] = useState(false);
-  const [loadingAlbums, setLoadingAlbums] = useState(false);
   const [generatingSummary, setGeneratingSummary] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState<string>('');
 
-  // Fetch visit history and albums when school is selected
+  // Fetch visit history when school is selected
   useEffect(() => {
     if (selectedSchool) {
       fetchVisitHistory(selectedSchool.id);
-      fetchSchoolAlbums(selectedSchool.id);
     }
   }, [selectedSchool]);
 
@@ -65,32 +38,6 @@ export default function SchoolData() {
       console.error('Failed to fetch visit history:', error);
     } finally {
       setLoadingHistory(false);
-    }
-  };
-
-  const fetchSchoolAlbums = async (schoolId: string) => {
-    setLoadingAlbums(true);
-    try {
-      const response = await fetch(`/api/albums/school/${schoolId}`);
-      if (response.ok) {
-        const albums = await response.json();
-        setSchoolAlbums(albums);
-        // Fetch photos for each album
-        const photosMap: Record<string, AlbumPhoto[]> = {};
-        await Promise.all(
-          albums.map(async (album: Album) => {
-            const photosRes = await fetch(`/api/albums/${album.id}/photos`);
-            if (photosRes.ok) {
-              photosMap[album.id] = await photosRes.json();
-            }
-          })
-        );
-        setAlbumPhotos(photosMap);
-      }
-    } catch (error) {
-      console.error('Failed to fetch school albums:', error);
-    } finally {
-      setLoadingAlbums(false);
     }
   };
 
@@ -403,15 +350,6 @@ export default function SchoolData() {
                       >
                         View Details
                       </Button>
-                      <Button
-                        onClick={() => navigate(`/album/${school.id}`)}
-                        size="sm"
-                        className="flex-1"
-                        data-testid={`button-album-${school.id}`}
-                      >
-                        <ImageIcon className="w-4 h-4 mr-2" />
-                        Album
-                      </Button>
                     </div>
                     <Button
                       onClick={() => downloadSchoolInventory(school)}
@@ -623,92 +561,8 @@ export default function SchoolData() {
                 )}
               </div>
 
-              {/* Photo Albums */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Camera className="w-5 h-5" />
-                  Photo Albums
-                </h3>
-                {loadingAlbums ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                  </div>
-                ) : schoolAlbums.length === 0 ? (
-                  <p className="text-sm text-muted-foreground py-4">No albums yet.</p>
-                ) : (
-                  <div className="space-y-4">
-                    {schoolAlbums.map((album) => {
-                      const photos = albumPhotos[album.id] || [];
-                      return (
-                        <div
-                          key={album.id}
-                          className="border border-border rounded-lg p-4 bg-muted/10 hover:bg-muted/20 transition-colors cursor-pointer"
-                          onClick={() => {
-                            setSelectedSchool(null);
-                            navigate(`/album/${selectedSchool?.id}?albumId=${album.id}`);
-                          }}
-                          data-testid={`album-card-${album.id}`}
-                        >
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <p className="font-medium text-foreground flex items-center gap-2">
-                                <ImageIcon className="w-4 h-4 text-primary" />
-                                {album.title}
-                              </p>
-                              <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="w-3 h-3" />
-                                  {new Date(album.createdAt).toLocaleDateString()}
-                                </span>
-                                <span className="text-xs">
-                                  by {album.createdByName} ({album.createdByRole})
-                                </span>
-                              </div>
-                            </div>
-                            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                              {photos.length} photo{photos.length !== 1 ? 's' : ''}
-                            </span>
-                          </div>
-                          {album.description && (
-                            <p className="text-sm text-muted-foreground mt-2">{album.description}</p>
-                          )}
-                          {photos.length > 0 && (
-                            <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
-                              {photos.slice(0, 4).map((photo) => (
-                                <img
-                                  key={photo.id}
-                                  src={photo.photoUrl}
-                                  alt={photo.caption || 'Album photo'}
-                                  className="w-16 h-16 object-cover rounded-md flex-shrink-0 border border-border"
-                                />
-                              ))}
-                              {photos.length > 4 && (
-                                <div className="w-16 h-16 bg-muted/50 rounded-md flex items-center justify-center flex-shrink-0 border border-border">
-                                  <span className="text-xs text-muted-foreground">+{photos.length - 4}</span>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
               {/* Actions */}
               <div className="flex gap-3 pt-4 border-t border-border">
-                <Button
-                  onClick={() => {
-                    const schoolId = selectedSchool.id;
-                    setSelectedSchool(null);
-                    navigate(`/album/${schoolId}`);
-                  }}
-                  className="flex-1"
-                >
-                  <ImageIcon className="w-4 h-4 mr-2" />
-                  View Album
-                </Button>
                 <Button
                   variant="secondary"
                   onClick={() => {
