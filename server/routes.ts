@@ -791,9 +791,11 @@ export async function registerRoutes(
       let schoolDistrictId = null;
 
       if (schoolEmis) {
+        console.log('[Signup] Looking up school by EMIS:', schoolEmis);
         const school = await storage.getSchoolByEmis(schoolEmis);
+        console.log('[Signup] School lookup result:', school);
         if (!school) {
-          return res.status(400).json({ error: "Invalid EMIS number" });
+          return res.status(400).json({ error: "Invalid EMIS number", details: `EMIS ${schoolEmis} not found in database` });
         }
         schoolId = school.id;
         schoolName = school.name;
