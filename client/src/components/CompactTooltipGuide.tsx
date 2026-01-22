@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 
 export interface TooltipStep {
   target: string; // CSS selector for element to point to
@@ -243,7 +243,7 @@ export default function CompactTooltipGuide({
         <div {...arrow} />
 
         {/* Tooltip content */}
-        <div className="bg-amber-100 dark:bg-amber-900 rounded-xl shadow-2xl border-2 border-amber-200 dark:border-amber-700 overflow-hidden">
+        <div className="bg-blue-50 dark:bg-blue-900 rounded-xl shadow-2xl border-2 border-blue-200 dark:border-blue-700 overflow-hidden">
           <div className="px-4 py-3">
             {/* Progress dots - compact */}
             <div className="flex items-center justify-between mb-2">
@@ -253,42 +253,55 @@ export default function CompactTooltipGuide({
                     key={idx}
                     className={`h-1 rounded-full transition-all ${
                       idx === currentStep
-                        ? 'w-4 bg-amber-600 dark:bg-amber-400'
+                        ? 'w-4 bg-blue-600 dark:bg-blue-400'
                         : idx < currentStep
-                        ? 'w-2 bg-amber-400 dark:bg-amber-500'
-                        : 'w-2 bg-amber-300 dark:bg-amber-700'
+                        ? 'w-2 bg-blue-400 dark:bg-blue-500'
+                        : 'w-2 bg-blue-300 dark:bg-blue-700'
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-xs font-bold text-amber-700 dark:text-amber-300">
+              <span className="text-xs font-bold text-blue-700 dark:text-blue-300">
                 {currentStep + 1}/{steps.length}
               </span>
             </div>
 
             {/* Title - compact */}
-            <h3 className="text-sm font-bold text-amber-900 dark:text-amber-100 mb-1">
+            <h3 className="text-sm font-bold text-blue-900 dark:text-blue-100 mb-1">
               {step.title}
             </h3>
 
             {/* Message - compact, supports multiline for bilingual text */}
-            <p className="text-xs text-amber-800 dark:text-amber-200 leading-snug mb-3 whitespace-pre-line">
+            <p className="text-xs text-blue-800 dark:text-blue-200 leading-snug mb-3 whitespace-pre-line">
               {step.message}
             </p>
 
-            {/* Next button - compact, no close/skip */}
-            <Button
-              onClick={handleNext}
-              size="sm"
-              className="w-full h-9 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold text-sm shadow-lg"
-            >
-              {currentStep === steps.length - 1 ? 'Got it!' : (
-                <>
-                  Next
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </>
+            {/* Navigation buttons */}
+            <div className="flex gap-2">
+              {currentStep > 0 && (
+                <Button
+                  onClick={() => setCurrentStep(prev => prev - 1)}
+                  size="sm"
+                  variant="outline"
+                  className="h-9 border-blue-300 text-blue-700 hover:bg-blue-100 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-800"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Back
+                </Button>
               )}
-            </Button>
+              <Button
+                onClick={handleNext}
+                size="sm"
+                className={`${currentStep > 0 ? 'flex-1' : 'w-full'} h-9 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-sm shadow-lg`}
+              >
+                {currentStep === steps.length - 1 ? 'Got it!' : (
+                  <>
+                    Next
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
