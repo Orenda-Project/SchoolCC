@@ -8,7 +8,7 @@ import { useMockVisits } from '@/hooks/useMockVisits';
 import { useDashboardWidgets } from '@/hooks/useDashboardWidgets';
 import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
-import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen, HelpCircle, Menu, X } from 'lucide-react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen, HelpCircle, Menu, X, FileSpreadsheet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import MonitoringVisitForm from '@/pages/MonitoringVisitForm';
 import MentoringVisitForm from '@/pages/MentoringVisitForm';
@@ -654,6 +654,17 @@ export default function Dashboard() {
                   <span className="font-medium text-foreground">User Management</span>
                 </button>
               )}
+              
+              <button
+                onClick={() => { navigate('/data-export'); setShowMobileSidebar(false); }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 transition-all duration-300 group"
+                data-testid="mobile-button-data-export"
+              >
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center shadow-md">
+                  <FileSpreadsheet className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-medium text-foreground">Data Export</span>
+              </button>
               
               <button
                 onClick={() => { navigate('/queries'); setShowMobileSidebar(false); }}

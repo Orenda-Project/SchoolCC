@@ -36,6 +36,7 @@ import UserManagement from "@/pages/UserManagement";
 import AEOUserManagement from "@/pages/AEOUserManagement";
 import HeadTeacherUserManagement from "@/pages/HeadTeacherUserManagement";
 import SchoolManagement from "@/pages/SchoolManagement";
+import DataExport from "@/pages/DataExport";
 import NotFound from "@/pages/not-found";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
@@ -94,6 +95,7 @@ function Router() {
         <Route path="/aeo-user-management" component={AEOUserManagement} />
         <Route path="/headteacher-user-management" component={HeadTeacherUserManagement} />
         <Route path="/school-management" component={SchoolManagement} />
+        <Route path="/data-export" component={DataExport} />
         {/* Fallback to 404 */}
         <Route component={NotFound} />
       </Switch>

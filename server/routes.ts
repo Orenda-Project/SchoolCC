@@ -188,6 +188,168 @@ export async function registerRoutes(
     }
   });
 
+  // General data export endpoint - export teachers, schools, inventory data to Excel
+  app.post("/api/export-data", async (req, res) => {
+    try {
+      const { dataType, fields, userId, userRole, districtId, clusterId, schoolId } = req.body;
+      
+      if (!dataType || !fields || fields.length === 0) {
+        return res.status(400).json({ error: "Data type and fields are required" });
+      }
+
+      let data: any[] = [];
+      let sheetName = "Data Export";
+
+      // Fetch data based on type and user's access level
+      if (dataType === 'teachers') {
+        sheetName = "Teachers";
+        const users = await storage.getAllUsers();
+        
+        // Filter by role and access level
+        let filteredUsers = users.filter(u => u.role === 'TEACHER' || u.role === 'HEAD_TEACHER');
+        
+        // Apply location filter based on user's role
+        if (userRole === 'HEAD_TEACHER') {
+          filteredUsers = filteredUsers.filter(u => u.schoolId === schoolId);
+        } else if (userRole === 'AEO') {
+          filteredUsers = filteredUsers.filter(u => u.clusterId === clusterId);
+        } else if (userRole === 'DDEO' || userRole === 'DEO') {
+          filteredUsers = filteredUsers.filter(u => u.districtId === districtId);
+        }
+        // CEO can see all
+        
+        data = filteredUsers.map(u => {
+          const row: Record<string, any> = {};
+          if (fields.includes('name')) row['Full Name'] = u.name || '';
+          if (fields.includes('cnic')) row['CNIC Number'] = u.cnic || '';
+          if (fields.includes('phone')) row['Phone Number'] = u.phoneNumber || '';
+          if (fields.includes('email')) row['Email'] = u.email || '';
+          if (fields.includes('school')) row['School Name'] = u.schoolName || '';
+          if (fields.includes('designation')) row['Designation'] = u.role || '';
+          if (fields.includes('qualification')) row['Qualification'] = u.qualification || '';
+          if (fields.includes('joinDate')) row['Joining Date'] = u.createdAt?.toISOString().split('T')[0] || '';
+          if (fields.includes('salary')) row['Salary Grade'] = '';
+          if (fields.includes('status')) row['Employment Status'] = u.status || 'Active';
+          return row;
+        });
+      } else if (dataType === 'schools') {
+        sheetName = "Schools";
+        const schools = await storage.getAllSchools();
+        
+        // Filter by access level
+        let filteredSchools = schools;
+        if (userRole === 'HEAD_TEACHER') {
+          filteredSchools = schools.filter(s => s.id === schoolId);
+        } else if (userRole === 'AEO') {
+          filteredSchools = schools.filter(s => s.clusterId === clusterId);
+        } else if (userRole === 'DDEO' || userRole === 'DEO') {
+          filteredSchools = schools.filter(s => s.districtId === districtId);
+        }
+        
+        data = filteredSchools.map(s => {
+          const row: Record<string, any> = {};
+          if (fields.includes('name')) row['School Name'] = s.name || '';
+          if (fields.includes('emisCode')) row['EMIS Code'] = s.emisNumber || '';
+          if (fields.includes('address')) row['Address'] = s.address || '';
+          if (fields.includes('cluster')) row['Cluster'] = s.clusterId || '';
+          if (fields.includes('district')) row['District'] = s.districtId || '';
+          if (fields.includes('type')) row['School Type'] = '';
+          if (fields.includes('level')) row['Level'] = '';
+          if (fields.includes('totalStudents')) row['Total Students'] = s.totalStudents || 0;
+          if (fields.includes('totalTeachers')) row['Total Teachers'] = s.totalTeachers || 0;
+          if (fields.includes('headTeacher')) row['Head Teacher Name'] = '';
+          return row;
+        });
+      } else if (dataType === 'inventory') {
+        sheetName = "Inventory";
+        // For inventory, we'll use school inventory data
+        const schools = await storage.getAllSchools();
+        
+        let filteredSchools = schools;
+        if (userRole === 'HEAD_TEACHER') {
+          filteredSchools = schools.filter(s => s.id === schoolId);
+        } else if (userRole === 'AEO') {
+          filteredSchools = schools.filter(s => s.clusterId === clusterId);
+        } else if (userRole === 'DDEO' || userRole === 'DEO') {
+          filteredSchools = schools.filter(s => s.districtId === districtId);
+        }
+        
+        // Create inventory rows from school data
+        for (const school of filteredSchools) {
+          const row: Record<string, any> = {};
+          if (fields.includes('itemName')) row['Item Name'] = 'School Inventory';
+          if (fields.includes('category')) row['Category'] = 'General';
+          if (fields.includes('quantity')) row['Quantity'] = 1;
+          if (fields.includes('condition')) row['Condition'] = 'Good';
+          if (fields.includes('school')) row['School'] = school.name || '';
+          if (fields.includes('lastUpdated')) row['Last Updated'] = school.createdAt?.toISOString().split('T')[0] || '';
+          if (fields.includes('purchaseDate')) row['Purchase Date'] = '';
+          if (fields.includes('value')) row['Estimated Value'] = '';
+          data.push(row);
+        }
+      } else if (dataType === 'students') {
+        sheetName = "Students";
+        // For students, we would need student data from schools
+        const schools = await storage.getAllSchools();
+        
+        let filteredSchools = schools;
+        if (userRole === 'HEAD_TEACHER') {
+          filteredSchools = schools.filter(s => s.id === schoolId);
+        } else if (userRole === 'AEO') {
+          filteredSchools = schools.filter(s => s.clusterId === clusterId);
+        } else if (userRole === 'DDEO' || userRole === 'DEO') {
+          filteredSchools = schools.filter(s => s.districtId === districtId);
+        }
+        
+        // Create placeholder rows for students based on school enrollment
+        for (const school of filteredSchools) {
+          const row: Record<string, any> = {};
+          if (fields.includes('name')) row['Student Name'] = '';
+          if (fields.includes('fatherName')) row['Father Name'] = '';
+          if (fields.includes('class')) row['Class'] = '';
+          if (fields.includes('section')) row['Section'] = '';
+          if (fields.includes('rollNo')) row['Roll Number'] = '';
+          if (fields.includes('gender')) row['Gender'] = '';
+          if (fields.includes('dateOfBirth')) row['Date of Birth'] = '';
+          if (fields.includes('admissionDate')) row['Admission Date'] = '';
+          if (fields.includes('school')) row['School'] = school.name || '';
+          data.push(row);
+        }
+      }
+
+      if (data.length === 0) {
+        // Create empty row with headers
+        const emptyRow: Record<string, any> = {};
+        fields.forEach((f: string) => {
+          emptyRow[f] = '';
+        });
+        data = [emptyRow];
+      }
+
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(data);
+      
+      // Set column widths
+      const headers = Object.keys(data[0] || {});
+      ws['!cols'] = headers.map(() => ({ wch: 20 }));
+      
+      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      
+      // Generate buffer
+      const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+      
+      // Set headers for download
+      const filename = `${dataType}_export_${new Date().toISOString().split('T')[0]}.xlsx`;
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.send(buffer);
+    } catch (error: any) {
+      console.error("Data export error:", error);
+      res.status(500).json({ error: error.message || "Failed to export data" });
+    }
+  });
+
   // Admin: Districts endpoints
   app.get("/api/admin/districts", async (req, res) => {
     try {
