@@ -392,70 +392,80 @@ export default function Signup() {
               )}
             </div>
 
-            {/* Additional Profile Information */}
-            <div className="space-y-4 pt-4 border-t">
-              <h3 className="text-lg font-semibold">Additional Information (Optional)</h3>
+            {/* Additional Profile Information - All fields are optional */}
+            <div className="space-y-4 pt-4 border-t border-dashed border-gray-300">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-gray-600">Additional Information</h3>
+                <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">Optional - Skip if you want</span>
+              </div>
 
               <div>
-                <Label>Father Name</Label>
+                <Label className="text-gray-500">Father Name <span className="text-xs">(اختیاری)</span></Label>
                 <Input
                   value={formData.fatherName}
                   onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })}
+                  className="border-gray-200"
                 />
               </div>
 
               <div>
-                <Label>Email</Label>
+                <Label className="text-gray-500">Email <span className="text-xs">(اختیاری)</span></Label>
                 <Input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="email@example.com"
+                  className="border-gray-200"
                 />
               </div>
 
               <div>
-                <Label>Residential Address</Label>
+                <Label className="text-gray-500">Residential Address <span className="text-xs">(اختیاری)</span></Label>
                 <Input
                   value={formData.residentialAddress}
                   onChange={(e) => setFormData({ ...formData, residentialAddress: e.target.value })}
+                  className="border-gray-200"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>CNIC</Label>
+                  <Label className="text-gray-500">CNIC <span className="text-xs">(اختیاری)</span></Label>
                   <Input
                     value={formData.cnic}
                     onChange={(e) => setFormData({ ...formData, cnic: e.target.value })}
                     placeholder="12345-1234567-1"
+                    className="border-gray-200"
                   />
                 </div>
                 <div>
-                  <Label>Date of Birth</Label>
+                  <Label className="text-gray-500">Date of Birth <span className="text-xs">(اختیاری)</span></Label>
                   <Input
                     type="date"
                     value={formData.dateOfBirth}
                     onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+                    className="border-gray-200"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Date of Joining</Label>
+                  <Label className="text-gray-500">Date of Joining <span className="text-xs">(اختیاری)</span></Label>
                   <Input
                     type="date"
                     value={formData.dateOfJoining}
                     onChange={(e) => setFormData({ ...formData, dateOfJoining: e.target.value })}
+                    className="border-gray-200"
                   />
                 </div>
                 <div>
-                  <Label>Qualification</Label>
+                  <Label className="text-gray-500">Qualification <span className="text-xs">(اختیاری)</span></Label>
                   <Input
                     value={formData.qualification}
                     onChange={(e) => setFormData({ ...formData, qualification: e.target.value })}
                     placeholder="e.g., B.Ed, M.A"
+                    className="border-gray-200"
                   />
                 </div>
               </div>
