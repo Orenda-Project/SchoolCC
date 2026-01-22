@@ -296,8 +296,12 @@ export default function Signup() {
                 <Input
                   type="tel"
                   value={formData.phoneNumber}
-                  onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 11);
+                    setFormData({ ...formData, phoneNumber: value });
+                  }}
                   placeholder="03001234567"
+                  maxLength={11}
                   required
                   data-testid="input-phone"
                 />
