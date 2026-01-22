@@ -74,7 +74,7 @@ function Router() {
         <Route path="/request/:id" component={ViewRequest} />
         <Route path="/calendar" component={Calendar} />
         <Route path="/school-data" component={SchoolData} />
-        <Route path="/edit-school-data" component={EditSchoolData} />
+        <Route path="/edit-school-data" component={EditSchool} />
         <Route path="/school-visits" component={SchoolVisits} />
         <Route path="/create-visit" component={CreateVisit} />
         <Route path="/visit/:id" component={ViewVisit} />
