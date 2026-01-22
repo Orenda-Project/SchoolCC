@@ -497,14 +497,14 @@ export default function Signup() {
         </Card>
       </div>
 
-      {/* Onboarding Tour */}
+      {/* Onboarding Tour - Mandatory for new users */}
       {tourSteps.length > 0 && (
         <OnboardingTour
           steps={tourSteps}
           isOpen={showTour}
           onComplete={() => setShowTour(false)}
-          onSkip={() => setShowTour(false)}
           storageKey={SIGNUP_TOUR_KEY}
+          mandatory={true}
         />
       )}
     </div>

@@ -286,13 +286,14 @@ export default function Login() {
 
       </div>
 
-      {/* Onboarding Tour */}
+      {/* Onboarding Tour - Optional for login page */}
       <OnboardingTour
         steps={loginTourSteps}
         isOpen={showTour}
         onComplete={() => setShowTour(false)}
         onSkip={() => setShowTour(false)}
         storageKey={LOGIN_TOUR_KEY}
+        mandatory={false}
       />
     </div>
   );

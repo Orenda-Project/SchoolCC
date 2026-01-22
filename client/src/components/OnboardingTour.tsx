@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 
 export interface TourStep {
   target: string;
@@ -8,17 +8,19 @@ export interface TourStep {
   content: string;
   placement?: 'top' | 'bottom' | 'left' | 'right';
   onBeforeStep?: () => void;
+  allowSkip?: boolean; // New: allow skipping specific steps
 }
 
 interface OnboardingTourProps {
   steps: TourStep[];
   isOpen: boolean;
   onComplete: () => void;
-  onSkip: () => void;
+  onSkip?: () => void; // Made optional - not all tours are skippable
   storageKey?: string;
+  mandatory?: boolean; // New: makes tour mandatory (no skip/close)
 }
 
-export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }: OnboardingTourProps) {
+export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey, mandatory = false }: OnboardingTourProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -27,14 +29,15 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
 
   const updateTargetPosition = useCallback(() => {
     if (!step?.target) return;
-    
+
     const element = document.querySelector(step.target);
     if (element) {
       const rect = element.getBoundingClientRect();
       setTargetRect(rect);
       setIsVisible(true);
-      
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Scroll element into view without blocking it
+      element.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
     }
   }, [step?.target]);
 
@@ -42,12 +45,12 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
     if (!isOpen || !step) return;
 
     step.onBeforeStep?.();
-    
+
     const timer = setTimeout(updateTargetPosition, 100);
-    
+
     window.addEventListener('resize', updateTargetPosition);
     window.addEventListener('scroll', updateTargetPosition);
-    
+
     return () => {
       clearTimeout(timer);
       window.removeEventListener('resize', updateTargetPosition);
@@ -55,9 +58,11 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
     };
   }, [isOpen, step, updateTargetPosition]);
 
+  // Don't prevent scrolling - let users interact naturally
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      // Allow scrolling but prevent body from shifting
+      document.body.style.overflow = 'auto';
     } else {
       document.body.style.overflow = '';
     }
@@ -90,29 +95,33 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
   };
 
   const handleSkip = () => {
+    if (mandatory) return; // Can't skip mandatory tours
+
     if (storageKey) {
       localStorage.setItem(storageKey, 'skipped');
     }
-    onSkip();
+    onSkip?.();
   };
 
   if (!isOpen || !step || !targetRect) return null;
 
   const getTooltipPosition = () => {
     const preferredPlacement = step.placement || 'bottom';
-    const padding = 20;
-    const arrowOffset = 24; // Increased offset to avoid overlapping
-    
-    const tooltipWidth = 320;
-    const tooltipHeight = 220;
-    
+    const padding = 16;
+    const arrowOffset = 16;
+
+    // Responsive tooltip sizing
+    const isMobile = window.innerWidth < 640;
+    const tooltipWidth = isMobile ? Math.min(window.innerWidth - 32, 280) : 320;
+    const maxTooltipHeight = isMobile ? 180 : 220;
+
     const calculatePosition = (placement: string) => {
       let top = 0;
       let left = 0;
-      
+
       switch (placement) {
         case 'top':
-          top = targetRect.top - tooltipHeight - arrowOffset;
+          top = targetRect.top - maxTooltipHeight - arrowOffset;
           left = targetRect.left + (targetRect.width / 2) - (tooltipWidth / 2);
           break;
         case 'bottom':
@@ -120,20 +129,21 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
           left = targetRect.left + (targetRect.width / 2) - (tooltipWidth / 2);
           break;
         case 'left':
-          top = targetRect.top + (targetRect.height / 2) - (tooltipHeight / 2);
+          top = targetRect.top + (targetRect.height / 2) - (maxTooltipHeight / 2);
           left = targetRect.left - tooltipWidth - arrowOffset;
           break;
         case 'right':
-          top = targetRect.top + (targetRect.height / 2) - (tooltipHeight / 2);
+          top = targetRect.top + (targetRect.height / 2) - (maxTooltipHeight / 2);
           left = targetRect.right + arrowOffset;
           break;
       }
-      
+
       return { top, left, placement };
     };
-    
+
     let result = calculatePosition(preferredPlacement);
-    
+
+    // Smart repositioning to avoid covering target or going off-screen
     if (result.left < padding) {
       if (preferredPlacement === 'left') {
         result = calculatePosition('right');
@@ -148,21 +158,21 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
         result.left = window.innerWidth - tooltipWidth - padding;
       }
     }
-    if (result.top < padding) {
+    if (result.top < padding + 60) { // Extra padding at top for status bar
       if (preferredPlacement === 'top') {
         result = calculatePosition('bottom');
       } else {
-        result.top = padding;
+        result.top = padding + 60;
       }
     }
-    if (result.top + tooltipHeight > window.innerHeight - padding) {
+    if (result.top + maxTooltipHeight > window.innerHeight - padding - 100) { // Extra padding at bottom for nav/buttons
       if (preferredPlacement === 'bottom') {
         result = calculatePosition('top');
       } else {
-        result.top = window.innerHeight - tooltipHeight - padding;
+        result.top = window.innerHeight - maxTooltipHeight - padding - 100;
       }
     }
-    
+
     return result;
   };
 
@@ -173,7 +183,7 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
       height: 0,
       borderStyle: 'solid',
     };
-    
+
     switch (actualPlacement) {
       case 'top':
         return {
@@ -217,7 +227,8 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
   const tooltipPos = getTooltipPosition();
 
   return (
-    <div className="fixed inset-0 z-[9999]" data-testid="onboarding-tour">
+    <div className="fixed inset-0 z-[35]" data-testid="onboarding-tour">
+      {/* Semi-transparent overlay with spotlight - lower z-index than PWA button (z-40) */}
       <svg
         className="absolute inset-0 w-full h-full"
         style={{ pointerEvents: 'none' }}
@@ -240,29 +251,32 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
           y="0"
           width="100%"
           height="100%"
-          fill="rgba(0, 0, 0, 0.75)"
+          fill="rgba(0, 0, 0, 0.6)"
           mask="url(#spotlight-mask)"
         />
       </svg>
 
-      {/* Clickable area over the highlighted element - allows users to tap the button */}
+      {/* Clickable area over the highlighted element - allows users to interact */}
       <div
-        className="absolute cursor-pointer"
+        className="absolute"
         style={{
           top: targetRect.top - 8,
           left: targetRect.left - 8,
           width: targetRect.width + 16,
           height: targetRect.height + 16,
-          zIndex: 10001,
+          zIndex: 36,
+          pointerEvents: 'auto',
         }}
-        onClick={() => {
+        onClick={(e) => {
+          // Allow click-through to the actual element
           const targetElement = document.querySelector(step.target) as HTMLElement;
-          if (targetElement) {
-            targetElement.click();
+          if (targetElement && targetElement.contains(e.target as Node)) {
+            // Let the natural click propagate
+            return;
           }
         }}
       />
-      
+
       {/* Visual highlight ring around the target */}
       <div
         className="absolute rounded-2xl ring-4 ring-amber-400 ring-offset-2 pointer-events-none transition-all duration-300"
@@ -272,37 +286,36 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
           width: targetRect.width + 16,
           height: targetRect.height + 16,
           opacity: isVisible ? 1 : 0,
+          zIndex: 36,
           boxShadow: '0 0 0 4px rgba(251, 191, 36, 0.3), 0 0 30px rgba(251, 191, 36, 0.4)',
         }}
       />
 
+      {/* Tooltip - positioned to not cover important content */}
       <div
-        className={`absolute bg-white dark:bg-slate-800 rounded-md shadow-2xl p-5 w-80 transition-all duration-300 ${
+        className={`absolute bg-white dark:bg-slate-800 rounded-lg shadow-2xl p-4 transition-all duration-300 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         style={{
           top: tooltipPos.top,
           left: tooltipPos.left,
-          zIndex: 10000,
+          maxWidth: 'calc(100vw - 2rem)',
+          width: window.innerWidth < 640 ? 'calc(100vw - 2rem)' : '320px',
+          zIndex: 36,
         }}
       >
         <div style={getArrowStyle(tooltipPos.placement)} />
-        
-        <button
-          onClick={handleSkip}
-          className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-          data-testid="tour-skip-button"
-        >
-          <X className="w-4 h-4 text-gray-500" />
-        </button>
 
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="mb-3">
+          <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-amber-600 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded-full">
               Step {currentStep + 1} of {steps.length}
             </span>
+            {!mandatory && (
+              <span className="text-xs text-gray-400">Tap any step to skip</span>
+            )}
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+          <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">
             {step.title}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -313,26 +326,33 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
         <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-slate-700">
           <div className="flex gap-1.5">
             {steps.map((_, idx) => (
-              <div
+              <button
                 key={idx}
+                onClick={() => {
+                  if (!mandatory) {
+                    setIsVisible(false);
+                    setTimeout(() => setCurrentStep(idx), 150);
+                  }
+                }}
                 className={`w-2 h-2 rounded-full transition-all ${
                   idx === currentStep
                     ? 'bg-amber-500 w-6'
                     : idx < currentStep
                     ? 'bg-amber-300'
                     : 'bg-gray-200 dark:bg-slate-600'
-                }`}
+                } ${!mandatory ? 'cursor-pointer hover:scale-125' : ''}`}
+                disabled={mandatory}
               />
             ))}
           </div>
-          
+
           <div className="flex gap-2">
             {currentStep > 0 && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handlePrev}
-                className="h-8"
+                className="h-9 min-w-[44px]"
                 data-testid="tour-prev-button"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -341,10 +361,10 @@ export function OnboardingTour({ steps, isOpen, onComplete, onSkip, storageKey }
             <Button
               size="sm"
               onClick={handleNext}
-              className="h-8 bg-amber-500 hover:bg-amber-600 text-white"
+              className="h-9 min-w-[44px] bg-amber-500 hover:bg-amber-600 text-white"
               data-testid="tour-next-button"
             >
-              {currentStep === steps.length - 1 ? 'Got it!' : 'Next'}
+              {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
               {currentStep < steps.length - 1 && <ChevronRight className="w-4 h-4 ml-1" />}
             </Button>
           </div>
