@@ -7,22 +7,6 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-// Global storage for the install prompt (survives component re-renders)
-declare global {
-  interface Window {
-    deferredPWAPrompt?: BeforeInstallPromptEvent | null;
-  }
-}
-
-// Capture the event as early as possible (before React loads)
-if (typeof window !== 'undefined' && !window.deferredPWAPrompt) {
-  window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('[PWA Global] beforeinstallprompt captured early!');
-    e.preventDefault();
-    window.deferredPWAPrompt = e as BeforeInstallPromptEvent;
-  });
-}
-
 /**
  * Prominent PWA install banner that shows at the top after onboarding
  * Highly visible and easy to find
@@ -50,20 +34,11 @@ export default function PWAInstallBanner() {
       return;
     }
 
-    // Check if we already have a captured prompt from the global handler
-    if (window.deferredPWAPrompt) {
-      console.log('[PWA Banner] Using globally captured prompt');
-      setDeferredPrompt(window.deferredPWAPrompt);
-      setTimeout(() => setShowBanner(true), 2000);
-    }
-
     // Listen for beforeinstallprompt event (Android/Desktop Chrome)
     const handler = (e: Event) => {
       console.log('[PWA Banner] beforeinstallprompt event fired!');
       e.preventDefault();
-      const promptEvent = e as BeforeInstallPromptEvent;
-      window.deferredPWAPrompt = promptEvent;
-      setDeferredPrompt(promptEvent);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
 
       // Show banner after 2 seconds
       setTimeout(() => {
@@ -75,13 +50,6 @@ export default function PWAInstallBanner() {
     window.addEventListener("beforeinstallprompt", handler);
     console.log('[PWA Banner] Listening for beforeinstallprompt event...');
 
-    // Also show banner for browsers that don't support beforeinstallprompt (like iOS)
-    // but only if not dismissed
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (isIOS && dismissed !== "session") {
-      setTimeout(() => setShowBanner(true), 3000);
-    }
-
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
     };
@@ -89,48 +57,18 @@ export default function PWAInstallBanner() {
 
   const handleInstallClick = async () => {
     console.log('[PWA Banner] Install button clicked');
-    
-    // Try to use the global prompt first
-    const promptToUse = deferredPrompt || window.deferredPWAPrompt;
-    
-    if (!promptToUse) {
+    if (!deferredPrompt) {
       console.log('[PWA Banner] No deferred prompt available');
-      // Detect iOS
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      
-      if (isIOS) {
-        // iOS-specific instructions
-        alert(
-          'TaleemHub انسٹال کرنے کے لیے:\n\n' +
-          '1. نیچے Share بٹن (⎙) پر ٹیپ کریں\n' +
-          '2. "Add to Home Screen" منتخب کریں\n' +
-          '3. "Add" پر ٹیپ کریں\n\n' +
-          'To install TaleemHub:\n\n' +
-          '1. Tap Share button (⎙) at bottom\n' +
-          '2. Select "Add to Home Screen"\n' +
-          '3. Tap "Add"'
-        );
-      } else {
-        // Android/Chrome instructions
-        alert(
-          'TaleemHub انسٹال کرنے کے لیے:\n\n' +
-          '1. براؤزر مینو (⋮) پر ٹیپ کریں\n' +
-          '2. "Install app" یا "Add to Home screen" منتخب کریں\n' +
-          '3. "Install" پر ٹیپ کریں\n\n' +
-          'To install TaleemHub:\n\n' +
-          '1. Tap browser menu (⋮)\n' +
-          '2. Select "Install app" or "Add to Home screen"\n' +
-          '3. Tap "Install"'
-        );
-      }
+      // Fallback: guide users to install manually
+      alert('To install: tap your browser menu (⋮) and select "Add to Home Screen" or "Install App"');
       return;
     }
 
     try {
       console.log('[PWA Banner] Showing native install prompt');
-      await promptToUse.prompt();
+      await deferredPrompt.prompt();
 
-      const { outcome } = await promptToUse.userChoice;
+      const { outcome } = await deferredPrompt.userChoice;
       console.log('[PWA Banner] User choice:', outcome);
 
       if (outcome === "accepted") {
@@ -139,8 +77,6 @@ export default function PWAInstallBanner() {
         localStorage.setItem("pwa-banner-dismissed", "permanent");
       }
 
-      // Clear the prompt after use
-      window.deferredPWAPrompt = null;
       setDeferredPrompt(null);
     } catch (error) {
       console.error('[PWA Banner] Error during installation:', error);

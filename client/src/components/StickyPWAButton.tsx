@@ -8,13 +8,6 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-// Use the global prompt from PWAInstallBanner
-declare global {
-  interface Window {
-    deferredPWAPrompt?: BeforeInstallPromptEvent | null;
-  }
-}
-
 export default function StickyPWAButton() {
   const [location] = useLocation();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
@@ -42,11 +35,6 @@ export default function StickyPWAButton() {
       return;
     }
 
-    // Check if we have a global prompt
-    if (window.deferredPWAPrompt) {
-      setDeferredPrompt(window.deferredPWAPrompt);
-    }
-
     // Always show button after 3 seconds (don't wait for beforeinstallprompt)
     setTimeout(() => {
       setShowButton(true);
@@ -57,9 +45,7 @@ export default function StickyPWAButton() {
     const handler = (e: Event) => {
       console.log('[Sticky PWA] beforeinstallprompt event fired!');
       e.preventDefault();
-      const promptEvent = e as BeforeInstallPromptEvent;
-      window.deferredPWAPrompt = promptEvent;
-      setDeferredPrompt(promptEvent);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
@@ -72,46 +58,18 @@ export default function StickyPWAButton() {
 
   const handleInstallClick = async () => {
     console.log('[Sticky PWA] Install button clicked');
-    
-    // Try global prompt first
-    const promptToUse = deferredPrompt || window.deferredPWAPrompt;
-    
-    if (!promptToUse) {
+    if (!deferredPrompt) {
       console.log('[Sticky PWA] No deferred prompt available');
-      // Detect iOS
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      
-      if (isIOS) {
-        alert(
-          'TaleemHub انسٹال کرنے کے لیے:\n\n' +
-          '1. نیچے Share بٹن (⎙) پر ٹیپ کریں\n' +
-          '2. "Add to Home Screen" منتخب کریں\n' +
-          '3. "Add" پر ٹیپ کریں\n\n' +
-          'To install TaleemHub:\n\n' +
-          '1. Tap Share button (⎙) at bottom\n' +
-          '2. Select "Add to Home Screen"\n' +
-          '3. Tap "Add"'
-        );
-      } else {
-        alert(
-          'TaleemHub انسٹال کرنے کے لیے:\n\n' +
-          '1. براؤزر مینو (⋮) پر ٹیپ کریں\n' +
-          '2. "Install app" یا "Add to Home screen" منتخب کریں\n' +
-          '3. "Install" پر ٹیپ کریں\n\n' +
-          'To install TaleemHub:\n\n' +
-          '1. Tap browser menu (⋮)\n' +
-          '2. Select "Install app" or "Add to Home screen"\n' +
-          '3. Tap "Install"'
-        );
-      }
+      // Fallback: guide users to install manually
+      alert('To install: tap your browser menu (⋮) and select "Add to Home screen" or "Install app"');
       return;
     }
 
     try {
       console.log('[Sticky PWA] Showing native install prompt');
-      await promptToUse.prompt();
+      await deferredPrompt.prompt();
 
-      const { outcome } = await promptToUse.userChoice;
+      const { outcome } = await deferredPrompt.userChoice;
       console.log('[Sticky PWA] User choice:', outcome);
 
       if (outcome === "accepted") {
@@ -120,7 +78,6 @@ export default function StickyPWAButton() {
         localStorage.setItem("pwa-sticky-dismissed", "permanent");
       }
 
-      window.deferredPWAPrompt = null;
       setDeferredPrompt(null);
     } catch (error) {
       console.error('[Sticky PWA] Error during installation:', error);
