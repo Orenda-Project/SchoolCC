@@ -191,15 +191,38 @@ export default function PersistentHelpBanner({
           <h3 className="text-lg font-bold text-gray-900 dark:text-white">
             {step.title}
           </h3>
-          <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed whitespace-pre-line">
-            {step.content}
-          </p>
+          {/* Split content into English (LTR) and Urdu (RTL) */}
+          {step.content.includes('\n\n') ? (
+            <div className="space-y-2">
+              <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed text-left" dir="ltr">
+                {step.content.split('\n\n')[0]}
+              </p>
+              <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed text-right" dir="rtl">
+                {step.content.split('\n\n')[1]}
+              </p>
+            </div>
+          ) : (
+            <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">
+              {step.content}
+            </p>
+          )}
           {step.action && (
             <div className="flex items-start gap-2 p-3 bg-amber-100 dark:bg-amber-800/50 rounded-lg border border-amber-200 dark:border-amber-700">
               <div className="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400 mt-1.5 flex-shrink-0" />
-              <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
-                {step.action}
-              </p>
+              {step.action.includes('|') ? (
+                <div className="flex-1 space-y-1">
+                  <p className="text-sm font-medium text-amber-900 dark:text-amber-100 text-left" dir="ltr">
+                    {step.action.split('|')[0].trim()}
+                  </p>
+                  <p className="text-sm font-medium text-amber-900 dark:text-amber-100 text-right" dir="rtl">
+                    {step.action.split('|')[1].trim()}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
+                  {step.action}
+                </p>
+              )}
             </div>
           )}
         </div>
