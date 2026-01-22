@@ -186,16 +186,14 @@ export default function Calendar() {
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">
-                {isTeacher ? 'My Leave Calendar' : 'Staff Leave Calendar'}
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                {isTeacher 
-                  ? 'Click on any date to request a leave. View your leave history below.'
-                  : user.role === 'HEAD_TEACHER' 
+              <h1 className="text-2xl font-bold text-foreground">Leave Calendar</h1>
+              {!isTeacher && (
+                <p className="text-sm text-muted-foreground">
+                  {user.role === 'HEAD_TEACHER' 
                     ? 'Click on any date to add a leave. Click on teacher name to view details.'
                     : 'Track and manage teacher leave requests'}
-              </p>
+                </p>
+              )}
             </div>
           </div>
           
@@ -274,10 +272,14 @@ export default function Calendar() {
                           : 'border-border bg-card hover:border-primary/30'
                         : 'border-transparent bg-muted/20 text-muted-foreground'
                     } ${canAddLeave && isCurrentMonth ? 'cursor-pointer hover:bg-muted/50' : ''}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      console.log('Day clicked:', day.toDateString(), 'isCurrentMonth:', isCurrentMonth, 'canAddLeave:', canAddLeave);
+                    onClick={() => {
                       if (isCurrentMonth && canAddLeave) {
+                        handleDateClick(day);
+                      }
+                    }}
+                    onTouchEnd={(e) => {
+                      if (isCurrentMonth && canAddLeave) {
+                        e.preventDefault();
                         handleDateClick(day);
                       }
                     }}
