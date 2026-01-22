@@ -414,14 +414,6 @@ export default function Signup() {
                 />
               </div>
 
-              <div>
-                <Label>Residential Address | رہائشی پتہ</Label>
-                <Input
-                  value={formData.residentialAddress}
-                  onChange={(e) => setFormData({ ...formData, residentialAddress: e.target.value })}
-                />
-              </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label>CNIC | شناختی کارڈ نمبر</Label>
