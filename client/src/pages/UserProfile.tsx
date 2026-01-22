@@ -34,7 +34,7 @@ interface UserProfile {
 }
 
 export default function UserProfile() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { toast } = useToast();
   const [, navigate] = useLocation();
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -172,6 +172,20 @@ export default function UserProfile() {
 
       const updatedProfile = await response.json();
       setProfile(updatedProfile);
+      
+      // Sync profile picture and other fields to auth context so they appear everywhere
+      updateUser({
+        profilePicture: updatedProfile.profilePicture,
+        name: updatedProfile.name,
+        fatherName: updatedProfile.fatherName,
+        email: updatedProfile.email,
+        residentialAddress: updatedProfile.residentialAddress,
+        cnic: updatedProfile.cnic,
+        dateOfBirth: updatedProfile.dateOfBirth,
+        dateOfJoining: updatedProfile.dateOfJoining,
+        qualification: updatedProfile.qualification,
+      });
+      
       setEditMode(false);
       toast({
         title: "Success",
