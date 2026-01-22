@@ -88,25 +88,28 @@ const signupGuideSteps: TooltipStep[] = [
   },
 ];
 
-// All 16 schools in the district (uppercase)
+// All 16 schools in the district with their EMIS numbers
 const ALL_SCHOOLS = [
-  "GBPS DHOKE ZIARAT",
-  "GES JAWA",
-  "GGES ANWAR UL ISLAM KAMALABAD",
-  "GGES KOTHA KALLAN",
-  "GGES PIND HABTAL",
-  "GGPS ARAZI SOHAL",
-  "GGPS CARRIAGE FACTORY",
-  "GGPS CHAKRA",
-  "GGPS DHOK MUNSHI",
-  "GGPS RAIKA MAIRA",
-  "GGPS WESTRIDGE 1",
-  "GMPS KHABBA BARALA",
-  "GPS CHAK DENAL",
-  "GPS DHAMIAL",
-  "GPS MILLAT ISLAMIA",
-  "GPS REHMATABAD"
+  { name: "GBPS DHOKE ZIARAT", emis: "37330209" },
+  { name: "GES JAWA", emis: "37330130" },
+  { name: "GGES ANWAR UL ISLAM KAMALABAD", emis: "37330151" },
+  { name: "GGES KOTHA KALLAN", emis: "37330561" },
+  { name: "GGES PIND HABTAL", emis: "37330612" },
+  { name: "GGPS ARAZI SOHAL", emis: "37330172-A" },
+  { name: "GGPS CARRIAGE FACTORY", emis: "37330433" },
+  { name: "GGPS CHAKRA", emis: "37330227" },
+  { name: "GGPS DHOK MUNSHI", emis: "37330322" },
+  { name: "GGPS RAIKA MAIRA", emis: "37330627" },
+  { name: "GGPS WESTRIDGE 1", emis: "37330598" },
+  { name: "GMPS KHABBA BARALA", emis: "37330410" },
+  { name: "GPS CHAK DENAL", emis: "37330312" },
+  { name: "GPS DHAMIAL", emis: "37330317" },
+  { name: "GPS MILLAT ISLAMIA", emis: "37330172" },
+  { name: "GPS REHMATABAD", emis: "37330383" }
 ];
+
+// School names only for AEO selection
+const SCHOOL_NAMES = ALL_SCHOOLS.map(s => s.name);
 
 export default function Signup() {
   const [, navigate] = useLocation();
@@ -234,26 +237,57 @@ export default function Signup() {
   };
 
   if (success) {
-    // Determine if account needs approval
-    const needsApproval = successMessage.includes('Awaiting approval') || successMessage.includes('approval from');
-    console.log('[Signup Success Screen] successMessage:', successMessage, 'needsApproval:', needsApproval);
+    // All accounts need approval
+    const getApproverInfo = () => {
+      if (formData.role === 'TEACHER') {
+        return {
+          en: 'Head Teacher or AEO',
+          ur: 'ہیڈ ٹیچر یا AEO'
+        };
+      } else if (formData.role === 'HEAD_TEACHER') {
+        return {
+          en: 'AEO',
+          ur: 'AEO'
+        };
+      } else if (formData.role === 'AEO') {
+        return {
+          en: 'DEO/DDEO',
+          ur: 'DEO/DDEO'
+        };
+      }
+      return { en: 'Administrator', ur: 'ایڈمنسٹریٹر' };
+    };
+    
+    const approver = getApproverInfo();
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
         <Card className="p-8 max-w-md w-full text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-2 text-foreground">
-            {needsApproval ? 'Account Request Submitted!' : 'Account Created Successfully!'}
+            Account Request Submitted!
           </h2>
-          <p className="text-muted-foreground mb-6">
-            {successMessage || 'No message received from server'}
-          </p>
-          {needsApproval && (
-            <p className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg mb-6">
-              Your account will be activated once approved. You'll be notified when you can log in.
+          <h3 className="text-lg font-medium mb-4 text-muted-foreground" dir="rtl">
+            اکاؤنٹ کی درخواست جمع ہو گئی!
+          </h3>
+          
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-6">
+            <p className="text-amber-700 dark:text-amber-400 font-medium mb-2">
+              Awaiting approval from: {approver.en}
             </p>
-          )}
-          <Button onClick={() => navigate('/')} className="w-full">Go to Login</Button>
+            <p className="text-amber-700 dark:text-amber-400 font-medium" dir="rtl">
+              منظوری کا انتظار: {approver.ur}
+            </p>
+          </div>
+          
+          <div className="text-sm text-muted-foreground space-y-2 mb-6">
+            <p>You cannot login until your account is approved.</p>
+            <p dir="rtl">آپ اپنے اکاؤنٹ کی منظوری تک لاگ ان نہیں کر سکتے۔</p>
+          </div>
+          
+          <Button onClick={() => navigate('/')} className="w-full">
+            Go to Login | لاگ ان پر جائیں
+          </Button>
         </Card>
       </div>
     );
@@ -387,7 +421,7 @@ export default function Signup() {
                     <Label>Select Schools to Oversee *</Label>
                     <p className="text-sm text-muted-foreground mb-2">Choose the schools you will be monitoring</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-64 overflow-y-auto border rounded-lg p-3 bg-muted/30">
-                      {ALL_SCHOOLS.map((school) => (
+                      {SCHOOL_NAMES.map((school) => (
                         <div key={school} className="flex items-center space-x-2">
                           <Checkbox
                             id={school}
@@ -426,14 +460,25 @@ export default function Signup() {
 
               {(formData.role === 'HEAD_TEACHER' || formData.role === 'TEACHER') && (
                 <div>
-                  <Label>School EMIS Number *</Label>
-                  <Input
+                  <Label>Select Your School * | اپنا اسکول منتخب کریں</Label>
+                  <Select
                     value={formData.schoolEmis}
-                    onChange={(e) => setFormData({ ...formData, schoolEmis: e.target.value })}
-                    placeholder="e.g., 37330227"
-                    required
-                    data-testid="input-emis"
-                  />
+                    onValueChange={(value) => setFormData({ ...formData, schoolEmis: value })}
+                  >
+                    <SelectTrigger data-testid="select-school">
+                      <SelectValue placeholder="Select school | اسکول منتخب کریں" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ALL_SCHOOLS.map((school) => (
+                        <SelectItem key={school.emis} value={school.emis}>
+                          {school.name} ({school.emis})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Choose the school where you work
+                  </p>
                 </div>
               )}
 
