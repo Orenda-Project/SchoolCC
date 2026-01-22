@@ -391,6 +391,15 @@ export default function CEODashboard() {
           <Button
             variant="ghost"
             className="w-full justify-start gap-3"
+            onClick={() => navigate('/user-management')}
+            data-testid="button-user-management"
+          >
+            <Users className="w-5 h-5" />
+            {sidebarOpen && <span>User Management</span>}
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-3"
             onClick={() => toast({ title: "Coming Soon", description: "Analytics feature is under development" })}
           >
             <BarChart3 className="w-5 h-5" />

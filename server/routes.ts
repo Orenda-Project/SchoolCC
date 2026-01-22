@@ -252,12 +252,51 @@ export async function registerRoutes(
   // Admin: Users endpoints
   app.get("/api/admin/users", async (req, res) => {
     try {
-      const { role } = req.query;
-      const users = role 
+      const { role, userId } = req.query;
+
+      // Get requesting user for hierarchical filtering
+      let requestingUser = null;
+      if (userId) {
+        requestingUser = await findUserByIdOrPhone(userId as string);
+      }
+
+      // Get all users or filter by role
+      let users = role
         ? await storage.getUsersByRole(role as string)
         : await storage.getAllUsers();
+
+      // Apply hierarchical filtering based on requesting user's role
+      if (requestingUser) {
+        if (requestingUser.role === 'CEO' || requestingUser.role === 'DEO' || requestingUser.role === 'DDEO') {
+          // CEO/DEO/DDEO can see all users - no filtering
+        }
+        else if (requestingUser.role === 'AEO') {
+          // AEO can only see HEAD_TEACHER and TEACHER in their cluster/schools
+          users = users.filter(u => {
+            if (u.role !== 'HEAD_TEACHER' && u.role !== 'TEACHER') return false;
+
+            const inCluster = u.clusterId && u.clusterId === requestingUser.clusterId;
+            const inAssignedSchool = u.schoolName && requestingUser.assignedSchools &&
+                                     requestingUser.assignedSchools.includes(u.schoolName);
+
+            return inCluster || inAssignedSchool;
+          });
+        }
+        else if (requestingUser.role === 'HEAD_TEACHER') {
+          // HEAD_TEACHER can only see TEACHER in their school
+          users = users.filter(u =>
+            u.role === 'TEACHER' && u.schoolId === requestingUser.schoolId
+          );
+        }
+        else {
+          // Teachers and others cannot view users
+          return res.status(403).json({ error: "Access denied. Insufficient permissions." });
+        }
+      }
+
       res.json(users.map(u => ({ ...u, password: undefined })));
     } catch (error) {
+      console.error('Error fetching users:', error);
       res.status(500).json({ error: "Failed to fetch users" });
     }
   });
@@ -420,13 +459,30 @@ export async function registerRoutes(
         schoolDistrictId = school.districtId;
       }
 
-      // Create active user
+      // Determine approver role based on user role
+      let approverRole = null;
+      let accountStatus = 'pending'; // Default to pending, requires approval
+
+      if (role === 'AEO') {
+        approverRole = 'DEO'; // AEO accounts approved by DEO or DDEO
+      } else if (role === 'HEAD_TEACHER') {
+        approverRole = 'AEO'; // Head Teacher accounts approved by AEO
+      } else if (role === 'TEACHER') {
+        approverRole = 'HEAD_TEACHER'; // Teacher accounts approved by Head Teacher
+      } else {
+        // CEO, DEO, DDEO, TRAINING_MANAGER should not be created via signup
+        // But if they are, require DEO approval
+        approverRole = 'DEO';
+      }
+
+      // Create pending user (awaiting approval)
       const newUser = await storage.createUser({
         name,
         phoneNumber,
         password: finalPassword,
         role,
-        status: 'active',
+        status: accountStatus,
+        approverRole,
         fatherName,
         email,
         residentialAddress,
@@ -442,9 +498,19 @@ export async function registerRoutes(
         markaz: markazName || null,
       });
 
+      // Return appropriate message based on approver
+      let approverMessage = '';
+      if (role === 'AEO') {
+        approverMessage = 'DEO/DDEO';
+      } else if (role === 'HEAD_TEACHER') {
+        approverMessage = 'AEO';
+      } else if (role === 'TEACHER') {
+        approverMessage = 'Head Teacher';
+      }
+
       res.json({
         success: true,
-        message: "Account created successfully! You can now log in."
+        message: `Account request submitted! Awaiting approval from ${approverMessage}.`
       });
     } catch (error: any) {
       console.error('Signup error:', error);
@@ -455,20 +521,54 @@ export async function registerRoutes(
     }
   });
 
-  // DEO User Management endpoints
+  // Hierarchical User Management endpoints
   app.get("/api/admin/pending-users", async (req, res) => {
     try {
       const { userId } = req.query;
 
-      // Verify DEO or DDEO permission (supports both ID and phone number lookup)
+      // Get the requesting user (supports both ID and phone number lookup)
       const user = await findUserByIdOrPhone(userId as string);
-      if (!user || (user.role !== 'DEO' && user.role !== 'DDEO')) {
-        return res.status(403).json({ error: "Access denied. DEO or DDEO role required." });
+      if (!user) {
+        return res.status(403).json({ error: "Access denied. User not found." });
       }
 
-      const pendingUsers = await storage.getUsersByStatus('pending');
-      res.json(pendingUsers.map(u => ({ ...u, password: undefined })));
+      // Get all pending users
+      const allPendingUsers = await storage.getUsersByStatus('pending');
+
+      // Filter based on role hierarchy
+      let filteredUsers = [];
+
+      if (user.role === 'DEO' || user.role === 'DDEO' || user.role === 'CEO') {
+        // DEO/DDEO/CEO can see all pending users in the district
+        filteredUsers = allPendingUsers;
+      }
+      else if (user.role === 'AEO') {
+        // AEO can see pending HEAD_TEACHER and TEACHER in their cluster/schools
+        filteredUsers = allPendingUsers.filter(u => {
+          if (u.role !== 'HEAD_TEACHER' && u.role !== 'TEACHER') return false;
+
+          // Check if user is in AEO's cluster or assigned schools
+          const inCluster = u.clusterId && u.clusterId === user.clusterId;
+          const inAssignedSchool = u.schoolName && user.assignedSchools &&
+                                   user.assignedSchools.includes(u.schoolName);
+
+          return inCluster || inAssignedSchool;
+        });
+      }
+      else if (user.role === 'HEAD_TEACHER') {
+        // HEAD_TEACHER can see pending TEACHER in their school only
+        filteredUsers = allPendingUsers.filter(u =>
+          u.role === 'TEACHER' && u.schoolId === user.schoolId
+        );
+      }
+      else {
+        // Teachers and others cannot manage users
+        return res.status(403).json({ error: "Access denied. Insufficient permissions." });
+      }
+
+      res.json(filteredUsers.map(u => ({ ...u, password: undefined })));
     } catch (error) {
+      console.error('Error fetching pending users:', error);
       res.status(500).json({ error: "Failed to fetch pending users" });
     }
   });
@@ -477,15 +577,95 @@ export async function registerRoutes(
     try {
       const { approverId } = req.body;
 
-      // Verify DEO or DDEO permission (supports both ID and phone number lookup)
+      // Get approver user (supports both ID and phone number lookup)
       const approver = await findUserByIdOrPhone(approverId);
-      if (!approver || (approver.role !== 'DEO' && approver.role !== 'DDEO')) {
-        return res.status(403).json({ error: "Access denied. DEO or DDEO role required." });
+      if (!approver) {
+        return res.status(403).json({ error: "Access denied. Approver not found." });
       }
 
-      const user = await storage.updateUser(req.params.id, { status: 'active' });
-      res.json({ ...user, password: undefined });
+      // Get user to be approved
+      const userToApprove = await storage.getUser(req.params.id);
+      if (!userToApprove) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Validate hierarchical approval permissions
+      if (userToApprove.role === 'AEO') {
+        // Only DEO or DDEO can approve AEO accounts
+        if (approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only DEO/DDEO can approve AEO accounts."
+          });
+        }
+      }
+      else if (userToApprove.role === 'HEAD_TEACHER') {
+        // Only AEO (in same cluster) can approve HEAD_TEACHER accounts
+        if (approver.role !== 'AEO' && approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only AEO can approve Head Teacher accounts."
+          });
+        }
+
+        // If approver is AEO, verify Head Teacher is in their cluster/schools
+        if (approver.role === 'AEO') {
+          const inCluster = userToApprove.clusterId && userToApprove.clusterId === approver.clusterId;
+          const inAssignedSchool = userToApprove.schoolName && approver.assignedSchools &&
+                                   approver.assignedSchools.includes(userToApprove.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot approve user outside your cluster or assigned schools."
+            });
+          }
+        }
+      }
+      else if (userToApprove.role === 'TEACHER') {
+        // HEAD_TEACHER (same school) or AEO (same cluster) can approve TEACHER accounts
+        if (approver.role === 'HEAD_TEACHER') {
+          // Verify Teacher is in Head Teacher's school
+          if (userToApprove.schoolId !== approver.schoolId) {
+            return res.status(403).json({
+              error: "Cannot approve teacher outside your school."
+            });
+          }
+        }
+        else if (approver.role === 'AEO') {
+          // Verify Teacher is in AEO's cluster/schools
+          const inCluster = userToApprove.clusterId && userToApprove.clusterId === approver.clusterId;
+          const inAssignedSchool = userToApprove.schoolName && approver.assignedSchools &&
+                                   approver.assignedSchools.includes(userToApprove.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot approve user outside your cluster or assigned schools."
+            });
+          }
+        }
+        else if (approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only Head Teacher, AEO, or DEO/DDEO can approve Teacher accounts."
+          });
+        }
+      }
+      else {
+        // For other roles (CEO, DEO, DDEO, TRAINING_MANAGER), only DEO/DDEO/CEO can approve
+        if (approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Insufficient permissions to approve this account."
+          });
+        }
+      }
+
+      // Approve user - update status, set approver ID and timestamp
+      const updatedUser = await storage.updateUser(req.params.id, {
+        status: 'active',
+        approverId: approver.id,
+        approvedAt: new Date()
+      });
+
+      res.json({ ...updatedUser, password: undefined });
     } catch (error) {
+      console.error('Error approving user:', error);
       res.status(500).json({ error: "Failed to approve user" });
     }
   });
@@ -494,15 +674,83 @@ export async function registerRoutes(
     try {
       const { approverId } = req.body;
 
-      // Verify DEO or DDEO permission (supports both ID and phone number lookup)
+      // Get approver user (supports both ID and phone number lookup)
       const approver = await findUserByIdOrPhone(approverId);
-      if (!approver || (approver.role !== 'DEO' && approver.role !== 'DDEO')) {
-        return res.status(403).json({ error: "Access denied. DEO or DDEO role required." });
+      if (!approver) {
+        return res.status(403).json({ error: "Access denied. Approver not found." });
       }
 
+      // Get user to be rejected
+      const userToReject = await storage.getUser(req.params.id);
+      if (!userToReject) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Validate hierarchical rejection permissions (same as approval)
+      if (userToReject.role === 'AEO') {
+        if (approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only DEO/DDEO can reject AEO accounts."
+          });
+        }
+      }
+      else if (userToReject.role === 'HEAD_TEACHER') {
+        if (approver.role !== 'AEO' && approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only AEO can reject Head Teacher accounts."
+          });
+        }
+
+        if (approver.role === 'AEO') {
+          const inCluster = userToReject.clusterId && userToReject.clusterId === approver.clusterId;
+          const inAssignedSchool = userToReject.schoolName && approver.assignedSchools &&
+                                   approver.assignedSchools.includes(userToReject.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot reject user outside your cluster or assigned schools."
+            });
+          }
+        }
+      }
+      else if (userToReject.role === 'TEACHER') {
+        if (approver.role === 'HEAD_TEACHER') {
+          if (userToReject.schoolId !== approver.schoolId) {
+            return res.status(403).json({
+              error: "Cannot reject teacher outside your school."
+            });
+          }
+        }
+        else if (approver.role === 'AEO') {
+          const inCluster = userToReject.clusterId && userToReject.clusterId === approver.clusterId;
+          const inAssignedSchool = userToReject.schoolName && approver.assignedSchools &&
+                                   approver.assignedSchools.includes(userToReject.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot reject user outside your cluster or assigned schools."
+            });
+          }
+        }
+        else if (approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only Head Teacher, AEO, or DEO/DDEO can reject Teacher accounts."
+          });
+        }
+      }
+      else {
+        if (approver.role !== 'DEO' && approver.role !== 'DDEO' && approver.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Insufficient permissions to reject this account."
+          });
+        }
+      }
+
+      // Delete the rejected user
       await storage.deleteUser(req.params.id);
       res.json({ success: true });
     } catch (error) {
+      console.error('Error rejecting user:', error);
       res.status(500).json({ error: "Failed to reject user" });
     }
   });
@@ -511,15 +759,83 @@ export async function registerRoutes(
     try {
       const { adminId } = req.body;
 
-      // Verify DEO or DDEO permission (supports both ID and phone number lookup)
+      // Get admin user (supports both ID and phone number lookup)
       const admin = await findUserByIdOrPhone(adminId);
-      if (!admin || (admin.role !== 'DEO' && admin.role !== 'DDEO')) {
-        return res.status(403).json({ error: "Access denied. DEO or DDEO role required." });
+      if (!admin) {
+        return res.status(403).json({ error: "Access denied. Admin not found." });
+      }
+
+      // Get user to be restricted
+      const userToRestrict = await storage.getUser(req.params.id);
+      if (!userToRestrict) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Validate hierarchical restriction permissions
+      // Users can only restrict subordinates in their hierarchy
+      if (userToRestrict.role === 'AEO') {
+        if (admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only DEO/DDEO can restrict AEO accounts."
+          });
+        }
+      }
+      else if (userToRestrict.role === 'HEAD_TEACHER') {
+        if (admin.role !== 'AEO' && admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only AEO can restrict Head Teacher accounts."
+          });
+        }
+
+        if (admin.role === 'AEO') {
+          const inCluster = userToRestrict.clusterId && userToRestrict.clusterId === admin.clusterId;
+          const inAssignedSchool = userToRestrict.schoolName && admin.assignedSchools &&
+                                   admin.assignedSchools.includes(userToRestrict.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot restrict user outside your cluster or assigned schools."
+            });
+          }
+        }
+      }
+      else if (userToRestrict.role === 'TEACHER') {
+        if (admin.role === 'HEAD_TEACHER') {
+          if (userToRestrict.schoolId !== admin.schoolId) {
+            return res.status(403).json({
+              error: "Cannot restrict teacher outside your school."
+            });
+          }
+        }
+        else if (admin.role === 'AEO') {
+          const inCluster = userToRestrict.clusterId && userToRestrict.clusterId === admin.clusterId;
+          const inAssignedSchool = userToRestrict.schoolName && admin.assignedSchools &&
+                                   admin.assignedSchools.includes(userToRestrict.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot restrict user outside your cluster or assigned schools."
+            });
+          }
+        }
+        else if (admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only Head Teacher, AEO, or DEO/DDEO can restrict Teacher accounts."
+          });
+        }
+      }
+      else {
+        if (admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Insufficient permissions to restrict this account."
+          });
+        }
       }
 
       const user = await storage.updateUser(req.params.id, { status: 'restricted' });
       res.json({ ...user, password: undefined });
     } catch (error) {
+      console.error('Error restricting user:', error);
       res.status(500).json({ error: "Failed to restrict user" });
     }
   });
@@ -528,15 +844,82 @@ export async function registerRoutes(
     try {
       const { adminId } = req.body;
 
-      // Verify DEO or DDEO permission (supports both ID and phone number lookup)
+      // Get admin user (supports both ID and phone number lookup)
       const admin = await findUserByIdOrPhone(adminId);
-      if (!admin || (admin.role !== 'DEO' && admin.role !== 'DDEO')) {
-        return res.status(403).json({ error: "Access denied. DEO or DDEO role required." });
+      if (!admin) {
+        return res.status(403).json({ error: "Access denied. Admin not found." });
+      }
+
+      // Get user to be unrestricted
+      const userToUnrestrict = await storage.getUser(req.params.id);
+      if (!userToUnrestrict) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Validate hierarchical unrestriction permissions (same as restriction)
+      if (userToUnrestrict.role === 'AEO') {
+        if (admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only DEO/DDEO can unrestrict AEO accounts."
+          });
+        }
+      }
+      else if (userToUnrestrict.role === 'HEAD_TEACHER') {
+        if (admin.role !== 'AEO' && admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only AEO can unrestrict Head Teacher accounts."
+          });
+        }
+
+        if (admin.role === 'AEO') {
+          const inCluster = userToUnrestrict.clusterId && userToUnrestrict.clusterId === admin.clusterId;
+          const inAssignedSchool = userToUnrestrict.schoolName && admin.assignedSchools &&
+                                   admin.assignedSchools.includes(userToUnrestrict.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot unrestrict user outside your cluster or assigned schools."
+            });
+          }
+        }
+      }
+      else if (userToUnrestrict.role === 'TEACHER') {
+        if (admin.role === 'HEAD_TEACHER') {
+          if (userToUnrestrict.schoolId !== admin.schoolId) {
+            return res.status(403).json({
+              error: "Cannot unrestrict teacher outside your school."
+            });
+          }
+        }
+        else if (admin.role === 'AEO') {
+          const inCluster = userToUnrestrict.clusterId && userToUnrestrict.clusterId === admin.clusterId;
+          const inAssignedSchool = userToUnrestrict.schoolName && admin.assignedSchools &&
+                                   admin.assignedSchools.includes(userToUnrestrict.schoolName);
+
+          if (!inCluster && !inAssignedSchool) {
+            return res.status(403).json({
+              error: "Cannot unrestrict user outside your cluster or assigned schools."
+            });
+          }
+        }
+        else if (admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Only Head Teacher, AEO, or DEO/DDEO can unrestrict Teacher accounts."
+          });
+        }
+      }
+      else {
+        if (admin.role !== 'DEO' && admin.role !== 'DDEO' && admin.role !== 'CEO') {
+          return res.status(403).json({
+            error: "Access denied. Insufficient permissions to unrestrict this account."
+          });
+        }
       }
 
       const user = await storage.updateUser(req.params.id, { status: 'active' });
       res.json({ ...user, password: undefined });
     } catch (error) {
+      console.error('Error unrestricting user:', error);
       res.status(500).json({ error: "Failed to unrestrict user" });
     }
   });

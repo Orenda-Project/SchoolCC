@@ -416,6 +416,16 @@ export default function Dashboard() {
                   </div>
                   <span className="font-medium text-foreground">Log Activity</span>
                 </button>
+                <button
+                  onClick={() => navigate('/aeo-user-management')}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
+                  data-testid="button-manage-staff"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">Manage Staff</span>
+                </button>
               </>
             )}
             {user.role === 'HEAD_TEACHER' && (
@@ -449,6 +459,16 @@ export default function Dashboard() {
                     <Plus className="w-5 h-5 text-white" />
                   </div>
                   <span className="font-medium text-foreground">Collaborative Forms</span>
+                </button>
+                <button
+                  onClick={() => navigate('/headteacher-user-management')}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
+                  data-testid="button-manage-teachers"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">Manage Teachers</span>
                 </button>
               </>
             )}

@@ -88,6 +88,10 @@ export const users = pgTable("users", {
   assignedSchools: json("assigned_schools").$type<string[]>().default([]),
   // AEO markaz name
   markaz: text("markaz"),
+  // Approval workflow fields
+  approverRole: text("approver_role"), // Role that should approve this account (DEO, DDEO, AEO, HEAD_TEACHER)
+  approverId: varchar("approver_id"), // ID of user who approved this account
+  approvedAt: timestamp("approved_at"), // When the account was approved
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

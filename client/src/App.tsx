@@ -32,6 +32,8 @@ import ViewQuery from "@/pages/ViewQuery";
 import UserProfile from "@/pages/UserProfile";
 import Signup from "@/pages/Signup";
 import UserManagement from "@/pages/UserManagement";
+import AEOUserManagement from "@/pages/AEOUserManagement";
+import HeadTeacherUserManagement from "@/pages/HeadTeacherUserManagement";
 import SchoolManagement from "@/pages/SchoolManagement";
 import NotFound from "@/pages/not-found";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
@@ -85,6 +87,8 @@ function Router() {
         <Route path="/profile" component={UserProfile} />
         <Route path="/signup" component={Signup} />
         <Route path="/user-management" component={UserManagement} />
+        <Route path="/aeo-user-management" component={AEOUserManagement} />
+        <Route path="/headteacher-user-management" component={HeadTeacherUserManagement} />
         <Route path="/school-management" component={SchoolManagement} />
         {/* Fallback to 404 */}
         <Route component={NotFound} />
