@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -8,9 +9,13 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function StickyPWAButton() {
+  const [location] = useLocation();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showButton, setShowButton] = useState(false);
   const [isPermanentlyDismissed, setIsPermanentlyDismissed] = useState(false);
+  
+  // Hide on login page since it has its own inline install banner
+  const isLoginPage = location === "/" || location === "/login";
 
   useEffect(() => {
     console.log('[Sticky PWA] Initializing...');
@@ -79,7 +84,7 @@ export default function StickyPWAButton() {
     }
   };
 
-  if (!showButton || isPermanentlyDismissed) {
+  if (!showButton || isPermanentlyDismissed || isLoginPage) {
     return null;
   }
 
