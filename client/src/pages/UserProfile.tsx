@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Edit, Save, X, User, ArrowLeft, School } from "lucide-react";
+import { Loader2, Edit, Save, X, User, ArrowLeft, School, Camera } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { analytics } from '@/lib/analytics';
+import { ProfilePictureEditor } from "@/components/ProfilePictureEditor";
 
 interface UserProfile {
   id: string;
@@ -42,6 +43,7 @@ export default function UserProfile() {
   const [saving, setSaving] = useState(false);
   const [editedProfile, setEditedProfile] = useState<Partial<UserProfile>>({});
   const [availableSchools, setAvailableSchools] = useState<Array<{ id: string; name: string }>>([]);
+  const [showPictureEditor, setShowPictureEditor] = useState(false);
 
   useEffect(() => {
     if (!user?.id) {
@@ -237,20 +239,37 @@ export default function UserProfile() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                {profile.profilePicture ? (
+              <div 
+                className={`relative h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center ${editMode ? 'cursor-pointer group' : ''}`}
+                onClick={() => editMode && setShowPictureEditor(true)}
+                data-testid="button-change-profile-picture"
+              >
+                {(editedProfile.profilePicture || profile.profilePicture) ? (
                   <img
-                    src={profile.profilePicture}
+                    src={editedProfile.profilePicture || profile.profilePicture}
                     alt={profile.name}
                     className="h-16 w-16 rounded-full object-cover"
                   />
                 ) : (
                   <User className="h-8 w-8 text-primary" />
                 )}
+                {editMode && (
+                  <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Camera className="h-6 w-6 text-white" />
+                  </div>
+                )}
               </div>
               <div>
                 <CardTitle className="text-2xl">{profile.name}</CardTitle>
                 <p className="text-sm text-muted-foreground">{profile.role}</p>
+                {editMode && (
+                  <button 
+                    onClick={() => setShowPictureEditor(true)}
+                    className="text-xs text-primary hover:underline mt-1"
+                  >
+                    Change photo
+                  </button>
+                )}
               </div>
             </div>
             {!editMode ? (
@@ -502,6 +521,20 @@ export default function UserProfile() {
           )}
         </CardContent>
       </Card>
+
+      <ProfilePictureEditor
+        open={showPictureEditor}
+        currentImage={editedProfile.profilePicture || profile.profilePicture}
+        onSave={(imageDataUrl) => {
+          setEditedProfile(prev => ({ ...prev, profilePicture: imageDataUrl }));
+          setShowPictureEditor(false);
+          toast({
+            title: "Photo updated",
+            description: "Click Save to apply your changes",
+          });
+        }}
+        onCancel={() => setShowPictureEditor(false)}
+      />
     </div>
   );
 }
