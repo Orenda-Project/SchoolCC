@@ -7,7 +7,8 @@ import { Card } from '@/components/ui/card';
 import { AlertCircle, School, Check, Crown, Building2, Users, GraduationCap, UserCheck, BookOpen, Shield, TrendingUp, Eye } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { analytics } from '@/lib/analytics';
-import { OnboardingTour, TourStep, useTourStatus } from '@/components/OnboardingTour';
+import PersistentHelpBanner, { HelpStep, useHelpBannerStatus } from '@/components/PersistentHelpBanner';
+import FloatingHelpButton from '@/components/FloatingHelpButton';
 
 const roles: { value: UserRole; label: string; description: string; icon: any }[] = [
   { value: 'CEO', label: 'CEO', description: 'System oversight, all data', icon: Crown },
@@ -19,14 +20,22 @@ const roles: { value: UserRole; label: string; description: string; icon: any }[
   { value: 'TRAINING_MANAGER', label: 'Training Manager', description: 'Read-only monitoring', icon: Eye },
 ];
 
-const LOGIN_TOUR_KEY = 'taleemhub_login_tour';
+const LOGIN_HELP_KEY = 'taleemhub_login_help';
 
-const loginTourSteps: TourStep[] = [
+const loginHelpSteps: HelpStep[] = [
   {
-    target: '[data-testid="button-create-account"]',
-    title: 'Welcome to TaleemHub!',
-    content: 'New here? Click "Create Account" to register as a Teacher or Head Teacher. You\'ll need your school\'s EMIS number.',
-    placement: 'top',
+    title: 'Welcome to TaleemHub! 🎓',
+    content: 'Your education command center for Rawalpindi District. Let\'s get you started!',
+  },
+  {
+    title: 'New User? Create Account',
+    content: 'Teachers and Head Teachers can create accounts instantly. Just tap "Create Account" at the bottom of the login form.',
+    action: 'Look for "Don\'t have an account? Create Account" link',
+  },
+  {
+    title: 'Login Methods',
+    content: 'Admin roles (CEO, DEO, etc.) use phone + password. School staff (Teachers, Head Teachers) use phone number only.',
+    action: 'Switch between tabs: "Admin Login" or "School Staff Login"',
   },
 ];
 
@@ -40,15 +49,28 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { hasSeenTour } = useTourStatus(LOGIN_TOUR_KEY);
-  const [showTour, setShowTour] = useState(false);
+  const { hasCompletedHelp } = useHelpBannerStatus(LOGIN_HELP_KEY);
+  const [showHelp, setShowHelp] = useState(false);
+  const [helpMinimized, setHelpMinimized] = useState(false);
 
   useEffect(() => {
-    if (!hasSeenTour) {
-      const timer = setTimeout(() => setShowTour(true), 800);
+    if (!hasCompletedHelp) {
+      const timer = setTimeout(() => setShowHelp(true), 1000);
       return () => clearTimeout(timer);
     }
-  }, [hasSeenTour]);
+  }, [hasCompletedHelp]);
+
+  // Track help banner minimize state
+  useEffect(() => {
+    const checkMinimized = () => {
+      const isMinimized = localStorage.getItem(`${LOGIN_HELP_KEY}-minimized`) === 'true';
+      setHelpMinimized(isMinimized);
+    };
+
+    checkMinimized();
+    const interval = setInterval(checkMinimized, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -286,14 +308,24 @@ export default function Login() {
 
       </div>
 
-      {/* Onboarding Tour - Optional for login page */}
-      <OnboardingTour
-        steps={loginTourSteps}
-        isOpen={showTour}
-        onComplete={() => setShowTour(false)}
-        onSkip={() => setShowTour(false)}
-        storageKey={LOGIN_TOUR_KEY}
-        mandatory={false}
+      {/* Persistent Help Banner - Anchored to bottom */}
+      <PersistentHelpBanner
+        steps={loginHelpSteps}
+        isOpen={showHelp && !hasCompletedHelp}
+        onComplete={() => setShowHelp(false)}
+        storageKey={LOGIN_HELP_KEY}
+        position="bottom"
+        allowMinimize={true}
+      />
+
+      {/* Floating Help Button */}
+      <FloatingHelpButton
+        show={showHelp && !hasCompletedHelp && helpMinimized}
+        onClick={() => {
+          localStorage.removeItem(`${LOGIN_HELP_KEY}-minimized`);
+          setHelpMinimized(false);
+        }}
+        position="bottom-right"
       />
     </div>
   );

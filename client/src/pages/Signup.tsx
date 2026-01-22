@@ -9,29 +9,35 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import type { UserRole } from '@/contexts/auth';
 import { analytics } from '@/lib/analytics';
-import { MobileOnboarding, MobileTourStep, useMobileOnboardingStatus } from '@/components/MobileOnboarding';
+import PersistentHelpBanner, { HelpStep, useHelpBannerStatus } from '@/components/PersistentHelpBanner';
+import FloatingHelpButton from '@/components/FloatingHelpButton';
 
 const SIGNUP_TOUR_KEY = 'taleemhub_signup_tour';
 
-const signupOnboardingSteps: MobileTourStep[] = [
+const signupHelpSteps: HelpStep[] = [
   {
     title: 'Welcome to TaleemHub! 👋',
-    content: 'Let\'s set up your account in just a few steps. This will only take a minute.',
+    content: 'Let\'s set up your account in just a few steps. This will only take a minute. You can minimize this help at any time and reopen it by tapping the help button.',
   },
   {
     title: 'Step 1: Choose Your Role',
-    content: 'Select your role from the dropdown above. Teachers and Head Teachers can create accounts directly.',
-    action: 'Tap the Role dropdown above to select your role',
+    content: 'Select your role from the dropdown. Teachers and Head Teachers can create accounts directly and log in with just their phone number.',
+    action: 'Look above - find and tap the "Role" dropdown',
   },
   {
     title: 'Step 2: Fill Basic Information',
-    content: 'Enter your name, phone number, and school details. For Teachers: No password needed - just your phone number!',
-    action: 'Scroll up to fill in your details',
+    content: 'Enter your name and phone number (required). Add other details if you want - they\'re optional but help complete your profile.',
+    action: 'Scroll up to see all form fields',
   },
   {
-    title: 'Step 3: Submit & Start!',
-    content: 'Once all fields are filled, tap "Submit Account Request" to create your account. You can log in immediately!',
-    action: 'Tap Submit when ready',
+    title: 'Step 3: Enter School Details',
+    content: 'For Teachers/Head Teachers: Enter your school\'s EMIS number. For other roles: Fill in the relevant organizational information.',
+    action: 'Find your school EMIS or role-specific fields',
+  },
+  {
+    title: 'Step 4: Submit & Start!',
+    content: 'Once required fields are filled, tap "Submit Account Request". You can log in immediately after!',
+    action: 'Tap the Submit button when ready',
   },
 ];
 
@@ -61,8 +67,9 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const { hasSeenOnboarding } = useMobileOnboardingStatus(SIGNUP_TOUR_KEY);
-  const [showOnboarding, setShowOnboarding] = useState(false);
+  const { hasCompletedHelp } = useHelpBannerStatus(SIGNUP_TOUR_KEY);
+  const [showHelp, setShowHelp] = useState(false);
+  const [helpMinimized, setHelpMinimized] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -90,13 +97,26 @@ export default function Signup() {
     assignedSchools: [] as string[],
   });
 
-  // Initialize onboarding when page loads
+  // Initialize help banner when page loads
   useEffect(() => {
-    if (!hasSeenOnboarding) {
-      const timer = setTimeout(() => setShowOnboarding(true), 800);
+    if (!hasCompletedHelp) {
+      const timer = setTimeout(() => setShowHelp(true), 800);
       return () => clearTimeout(timer);
     }
-  }, [hasSeenOnboarding]);
+  }, [hasCompletedHelp]);
+
+  // Track help banner minimize state
+  useEffect(() => {
+    const checkMinimized = () => {
+      const isMinimized = localStorage.getItem(`${SIGNUP_TOUR_KEY}-minimized`) === 'true';
+      setHelpMinimized(isMinimized);
+    };
+
+    checkMinimized();
+    // Check periodically in case user minimizes/expands
+    const interval = setInterval(checkMinimized, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -467,13 +487,25 @@ export default function Signup() {
         </Card>
       </div>
 
-      {/* Mobile Onboarding - Bottom sheet, never blocks content */}
-      <MobileOnboarding
-        steps={signupOnboardingSteps}
-        isOpen={showOnboarding}
-        onComplete={() => setShowOnboarding(false)}
+      {/* Persistent Help Banner - Anchored to bottom, never blocks content */}
+      <PersistentHelpBanner
+        steps={signupHelpSteps}
+        isOpen={showHelp && !hasCompletedHelp}
+        onComplete={() => setShowHelp(false)}
         storageKey={SIGNUP_TOUR_KEY}
-        mandatory={true}
+        position="bottom"
+        allowMinimize={true}
+      />
+
+      {/* Floating Help Button - Shows when help is minimized */}
+      <FloatingHelpButton
+        show={showHelp && !hasCompletedHelp && helpMinimized}
+        onClick={() => {
+          // Expand the help banner
+          localStorage.removeItem(`${SIGNUP_TOUR_KEY}-minimized`);
+          setHelpMinimized(false);
+        }}
+        position="bottom-right"
       />
     </div>
   );
