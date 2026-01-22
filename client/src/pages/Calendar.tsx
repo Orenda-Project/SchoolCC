@@ -380,7 +380,7 @@ export default function Calendar() {
             </Card>
 
             <Card className="p-6">
-              <h3 className="font-semibold text-foreground mb-4">Legend</h3>
+              <h3 className="font-semibold text-foreground mb-4">Guide</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 bg-red-100 rounded border border-red-200" />
