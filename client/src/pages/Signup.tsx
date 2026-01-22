@@ -246,30 +246,30 @@ export default function Signup() {
               </div>
 
               {/* Password fields - required for all roles */}
-              {formData.role && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>Password * | پاس ورڈ</Label>
-                    <Input
-                      type="password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      placeholder="Min 6 characters"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label>Confirm Password * | پاس ورڈ دوبارہ</Label>
-                    <Input
-                      type="password"
-                      value={formData.confirmPassword}
-                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                      placeholder="Confirm password"
-                      required
-                    />
-                  </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label>Password * | پاس ورڈ</Label>
+                  <Input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    placeholder="Min 6 characters"
+                    required
+                    data-testid="input-password"
+                  />
                 </div>
-              )}
+                <div>
+                  <Label>Confirm Password * | پاس ورڈ دوبارہ</Label>
+                  <Input
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    placeholder="Confirm password"
+                    required
+                    data-testid="input-confirm-password"
+                  />
+                </div>
+              </div>
 
               <div data-guide="role-select">
                 <Label>Role *</Label>
