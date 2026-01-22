@@ -34,11 +34,32 @@ export default function PWAInstallBanner() {
       return;
     }
 
+    // Check if prompt was captured early (before React loaded)
+    if ((window as any).deferredPrompt) {
+      console.log('[PWA Banner] Found early-captured prompt!');
+      setDeferredPrompt((window as any).deferredPrompt);
+      setTimeout(() => {
+        setShowBanner(true);
+        console.log('[PWA Banner] Showing install banner from early capture');
+      }, 2000);
+    }
+
+    // Listen for custom event from early capture script
+    const earlyHandler = () => {
+      console.log('[PWA Banner] Received pwa-prompt-ready event');
+      if ((window as any).deferredPrompt) {
+        setDeferredPrompt((window as any).deferredPrompt);
+        setTimeout(() => setShowBanner(true), 2000);
+      }
+    };
+    window.addEventListener("pwa-prompt-ready", earlyHandler);
+
     // Listen for beforeinstallprompt event (Android/Desktop Chrome)
     const handler = (e: Event) => {
       console.log('[PWA Banner] beforeinstallprompt event fired!');
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
+      (window as any).deferredPrompt = e;
 
       // Show banner after 2 seconds
       setTimeout(() => {
@@ -52,6 +73,7 @@ export default function PWAInstallBanner() {
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
+      window.removeEventListener("pwa-prompt-ready", earlyHandler);
     };
   }, []);
 

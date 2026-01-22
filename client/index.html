@@ -32,6 +32,18 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Early PWA Install Prompt Capture - runs before React -->
+    <script>
+      (function() {
+        window.deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', function(e) {
+          e.preventDefault();
+          window.deferredPrompt = e;
+          console.log('[PWA Early] Install prompt captured before React!');
+          window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
+        });
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
