@@ -1009,11 +1009,12 @@ export async function registerRoutes(
           });
         }
 
-        // If approver is AEO, verify Head Teacher is in their cluster/schools
+        // If approver is AEO, verify Head Teacher is in their cluster/schools (case-insensitive)
         if (approver.role === 'AEO') {
           const inCluster = userToApprove.clusterId && userToApprove.clusterId === approver.clusterId;
-          const inAssignedSchool = userToApprove.schoolName && approver.assignedSchools &&
-                                   approver.assignedSchools.includes(userToApprove.schoolName);
+          const userSchoolLower = userToApprove.schoolName?.toLowerCase() || '';
+          const inAssignedSchool = userSchoolLower && approver.assignedSchools &&
+                                   approver.assignedSchools.some((s: string) => s.toLowerCase() === userSchoolLower);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
@@ -1033,10 +1034,11 @@ export async function registerRoutes(
           }
         }
         else if (approver.role === 'AEO') {
-          // Verify Teacher is in AEO's cluster/schools
+          // Verify Teacher is in AEO's cluster/schools (case-insensitive)
           const inCluster = userToApprove.clusterId && userToApprove.clusterId === approver.clusterId;
-          const inAssignedSchool = userToApprove.schoolName && approver.assignedSchools &&
-                                   approver.assignedSchools.includes(userToApprove.schoolName);
+          const userSchoolLower = userToApprove.schoolName?.toLowerCase() || '';
+          const inAssignedSchool = userSchoolLower && approver.assignedSchools &&
+                                   approver.assignedSchools.some((s: string) => s.toLowerCase() === userSchoolLower);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
@@ -1106,8 +1108,9 @@ export async function registerRoutes(
 
         if (approver.role === 'AEO') {
           const inCluster = userToReject.clusterId && userToReject.clusterId === approver.clusterId;
-          const inAssignedSchool = userToReject.schoolName && approver.assignedSchools &&
-                                   approver.assignedSchools.includes(userToReject.schoolName);
+          const userSchoolLower = userToReject.schoolName?.toLowerCase() || '';
+          const inAssignedSchool = userSchoolLower && approver.assignedSchools &&
+                                   approver.assignedSchools.some((s: string) => s.toLowerCase() === userSchoolLower);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
@@ -1126,8 +1129,9 @@ export async function registerRoutes(
         }
         else if (approver.role === 'AEO') {
           const inCluster = userToReject.clusterId && userToReject.clusterId === approver.clusterId;
-          const inAssignedSchool = userToReject.schoolName && approver.assignedSchools &&
-                                   approver.assignedSchools.includes(userToReject.schoolName);
+          const userSchoolLower = userToReject.schoolName?.toLowerCase() || '';
+          const inAssignedSchool = userSchoolLower && approver.assignedSchools &&
+                                   approver.assignedSchools.some((s: string) => s.toLowerCase() === userSchoolLower);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
