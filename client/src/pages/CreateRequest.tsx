@@ -159,6 +159,7 @@ export default function CreateRequest() {
     
     // Use ref for synchronous check to prevent rapid double-clicks
     if (isSubmittingRef.current) {
+      console.log('[CreateRequest] Blocked duplicate submission - ref already true');
       return;
     }
     
@@ -169,6 +170,7 @@ export default function CreateRequest() {
     // Set ref immediately (synchronous) to block subsequent clicks
     isSubmittingRef.current = true;
     setIsSubmitting(true);
+    console.log('[CreateRequest] Starting submission, ref set to true');
     try {
       // Get description voice note data if it exists
       const descriptionVoice = recordedVoiceNotes['description'] && hasRecording('description');
@@ -543,6 +545,7 @@ export default function CreateRequest() {
               type="submit"
               disabled={!title.trim() || fields.length === 0 || selectedAssignees.length === 0 || isSubmitting}
               data-testid="button-create"
+              style={isSubmitting ? { pointerEvents: 'none' } : undefined}
             >
               {isSubmitting ? 'Creating...' : 'Create Request'}
             </Button>
