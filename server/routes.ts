@@ -10,10 +10,68 @@ import multer from "multer";
 import { transcribeAudio, generateVisitSummary } from "./lib/claude";
 import * as XLSX from "xlsx";
 
+// All 16 schools in the district with their EMIS numbers
+const REQUIRED_SCHOOLS = [
+  { name: "GBPS Dhoke Ziarat", emis: "37330209", code: "GBPS-DZ" },
+  { name: "GES Jawa", emis: "37330130", code: "GES-JAWA" },
+  { name: "GGES Anwar ul Islam Kamalabad", emis: "37330151", code: "GGES-AIK" },
+  { name: "GGES Kotha Kallan", emis: "37330561", code: "GGES-KK" },
+  { name: "GGES Pind Habtal", emis: "37330612", code: "GGES-PH" },
+  { name: "GGPS Arazi Sohal", emis: "37330172-A", code: "GGPS-AS" },
+  { name: "GGPS Carriage Factory", emis: "37330433", code: "GGPS-CF" },
+  { name: "GGPS Chakra", emis: "37330227", code: "GGPS-CHA" },
+  { name: "GGPS Dhok Munshi", emis: "37330322", code: "GGPS-DM" },
+  { name: "GGPS Raika Maira", emis: "37330627", code: "GGPS-RM" },
+  { name: "GGPS Westridge 1", emis: "37330598", code: "GGPS-W1" },
+  { name: "GMPS Khabba Barala", emis: "37330410", code: "GMPS-KB" },
+  { name: "GPS Chak Denal", emis: "37330312", code: "GPS-CD" },
+  { name: "GPS Dhamial", emis: "37330317", code: "GPS-DHA" },
+  { name: "GPS Millat Islamia", emis: "37330172", code: "GPS-MI" },
+  { name: "GPS Rehmatabad", emis: "37330383", code: "GPS-REH" }
+];
+
+// Seed schools on startup
+async function seedSchoolsIfNeeded() {
+  console.log('[Seed] Checking if schools need to be seeded...');
+  
+  // First ensure district and cluster exist
+  let district = await storage.getDistrictByName("Rawalpindi");
+  if (!district) {
+    console.log('[Seed] Creating Rawalpindi district...');
+    district = await storage.createDistrict({ name: "Rawalpindi", code: "RWP" });
+  }
+  
+  let cluster = await storage.getClusterByName("Rawalpindi Cluster");
+  if (!cluster) {
+    console.log('[Seed] Creating Rawalpindi Cluster...');
+    cluster = await storage.createCluster({ name: "Rawalpindi Cluster", code: "RWP-C", districtId: district.id });
+  }
+  
+  // Seed each school if it doesn't exist
+  for (const school of REQUIRED_SCHOOLS) {
+    const existing = await storage.getSchoolByEmis(school.emis);
+    if (!existing) {
+      console.log(`[Seed] Creating school: ${school.name} (${school.emis})`);
+      await storage.createSchool({
+        name: school.name,
+        code: school.code,
+        emisNumber: school.emis,
+        clusterId: cluster.id,
+        districtId: district.id,
+        address: "Rawalpindi, Pakistan"
+      });
+    }
+  }
+  console.log('[Seed] School seeding complete!');
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  // Seed schools on startup
+  await seedSchoolsIfNeeded();
+
   // Helper function to find user by ID or phone number (for session compatibility)
   async function findUserByIdOrPhone(idOrPhone: string) {
     let user = await storage.getUser(idOrPhone);

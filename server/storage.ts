@@ -17,6 +17,7 @@ export interface IStorage {
   // District operations
   getAllDistricts(): Promise<District[]>;
   getDistrict(id: string): Promise<District | undefined>;
+  getDistrictByName(name: string): Promise<District | undefined>;
   createDistrict(district: InsertDistrict): Promise<District>;
   updateDistrict(id: string, updates: Partial<District>): Promise<District>;
   deleteDistrict(id: string): Promise<void>;
@@ -25,6 +26,7 @@ export interface IStorage {
   getAllClusters(): Promise<Cluster[]>;
   getClustersByDistrict(districtId: string): Promise<Cluster[]>;
   getCluster(id: string): Promise<Cluster | undefined>;
+  getClusterByName(name: string): Promise<Cluster | undefined>;
   createCluster(cluster: InsertCluster): Promise<Cluster>;
   updateCluster(id: string, updates: Partial<Cluster>): Promise<Cluster>;
   deleteCluster(id: string): Promise<void>;
@@ -167,6 +169,11 @@ export class DBStorage implements IStorage {
     return result[0];
   }
 
+  async getDistrictByName(name: string): Promise<District | undefined> {
+    const result = await db.select().from(districts).where(eq(districts.name, name)).limit(1);
+    return result[0];
+  }
+
   async createDistrict(district: InsertDistrict): Promise<District> {
     const result = await db.insert(districts).values(district).returning();
     return result[0];
@@ -192,6 +199,11 @@ export class DBStorage implements IStorage {
 
   async getCluster(id: string): Promise<Cluster | undefined> {
     const result = await db.select().from(clusters).where(eq(clusters.id, id)).limit(1);
+    return result[0];
+  }
+
+  async getClusterByName(name: string): Promise<Cluster | undefined> {
+    const result = await db.select().from(clusters).where(eq(clusters.name, name)).limit(1);
     return result[0];
   }
 
