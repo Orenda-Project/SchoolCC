@@ -158,6 +158,22 @@ export default function MentoringVisitForm({ onClose }: Props) {
 
   const startRecording = async (fieldId: string) => {
     try {
+      // Clean up any existing voice note for this field before recording new one
+      if (voiceNotes[fieldId]) {
+        if (voiceNotes[fieldId].url) {
+          URL.revokeObjectURL(voiceNotes[fieldId].url);
+        }
+        if (audioElementsRef.current[fieldId]) {
+          audioElementsRef.current[fieldId].pause();
+          delete audioElementsRef.current[fieldId];
+        }
+        setVoiceNotes(prev => {
+          const updated = { ...prev };
+          delete updated[fieldId];
+          return updated;
+        });
+      }
+      
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
