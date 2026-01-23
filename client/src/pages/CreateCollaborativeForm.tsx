@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,6 +21,7 @@ export default function CreateCollaborativeForm() {
   const [fields, setFields] = useState<Array<{ id: string; name: string; type: string; required: boolean }>>([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   if (!user) return null;
 
@@ -46,17 +47,22 @@ export default function CreateCollaborativeForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (isSubmitting) return;
     if (!title.trim() || fields.length === 0) return;
 
     setLoading(true);
     setIsSubmitting(true);
+    isSubmittingRef.current = true;
     try {
       setTimeout(() => {
         createForm(userSchool.id, userSchool.name, title, description, fields as any, user.id, user.name);
         navigate('/collaborative-forms');
       }, 500);
     } finally {
+      isSubmittingRef.current = false;
       setLoading(false);
       setIsSubmitting(false);
     }

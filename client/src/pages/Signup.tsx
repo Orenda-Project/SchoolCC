@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -115,6 +115,7 @@ export default function Signup() {
   const [, navigate] = useLocation();
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -158,6 +159,9 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (isSubmitting) return;
     setError('');
     setLoading(true);
@@ -204,6 +208,7 @@ export default function Signup() {
 
     try {
       setIsSubmitting(true);
+      isSubmittingRef.current = true;
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -235,6 +240,7 @@ export default function Signup() {
       setError(err.message || 'Failed to create account');
       analytics.error.formValidationError('signup', ['submission']);
     } finally {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
       setLoading(false);
     }

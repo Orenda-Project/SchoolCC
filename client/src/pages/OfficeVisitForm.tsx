@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -49,6 +49,7 @@ export default function OfficeVisitForm({ onClose }: Props) {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -117,9 +118,13 @@ export default function OfficeVisitForm({ onClose }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (isSubmitting) return;
     setLoading(true);
     setIsSubmitting(true);
+    isSubmittingRef.current = true;
     try {
       const { id: _, ...dataWithoutId } = formData;
       const evidence = uploadedFiles.map((f) => ({
@@ -150,6 +155,7 @@ export default function OfficeVisitForm({ onClose }: Props) {
     } catch (error) {
       console.error('Error submitting office visit:', error);
     } finally {
+      isSubmittingRef.current = false;
       setLoading(false);
       setIsSubmitting(false);
     }

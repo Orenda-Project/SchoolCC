@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -43,6 +43,7 @@ export default function OtherActivityForm({ onClose }: Props) {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
   const [voiceNoteTranscription, setVoiceNoteTranscription] = useState<string>('');
   const [voiceNoteBlob, setVoiceNoteBlob] = useState<Blob | null>(null);
 
@@ -112,9 +113,13 @@ export default function OtherActivityForm({ onClose }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (isSubmitting) return;
     setLoading(true);
     setIsSubmitting(true);
+    isSubmittingRef.current = true;
     try {
       const { id: _, ...dataWithoutId } = formData;
       const evidence = uploadedFiles.map((f) => ({
@@ -146,6 +151,7 @@ export default function OtherActivityForm({ onClose }: Props) {
       console.error('Error submitting activity:', error);
       toast.error('Failed to submit activity');
     } finally {
+      isSubmittingRef.current = false;
       setLoading(false);
       setIsSubmitting(false);
     }

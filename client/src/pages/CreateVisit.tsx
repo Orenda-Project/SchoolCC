@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,6 +25,7 @@ export default function CreateVisit() {
   const [currentClass, setCurrentClass] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   if (!user) return null;
 
@@ -47,10 +48,14 @@ export default function CreateVisit() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (!selectedSchool || !objectives.trim() || isSubmitting) return;
 
     setLoading(true);
     setIsSubmitting(true);
+    isSubmittingRef.current = true;
     setTimeout(() => {
       try {
         const school = SCHOOLS.find((s) => s.id === selectedSchool);
@@ -68,6 +73,7 @@ export default function CreateVisit() {
           navigate(`/visit/${newVisit.id}`);
         }
       } finally {
+        isSubmittingRef.current = false;
         setIsSubmitting(false);
       }
     }, 500);

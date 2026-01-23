@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -70,6 +70,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
   const [recordingField, setRecordingField] = useState<string | null>(null);
   const [recordedVoiceNotes, setRecordedVoiceNotes] = useState<Record<string, string>>({});
 
@@ -161,10 +162,14 @@ export default function MentoringVisitForm({ onClose }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (isSubmitting) return;
     setLoading(true);
     try {
       setIsSubmitting(true);
+      isSubmittingRef.current = true;
       const evidence = uploadedFiles.map((f) => ({
         id: f.id,
         name: f.name,
@@ -202,6 +207,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
     } catch (error) {
       console.error('Error submitting mentoring visit:', error);
     } finally {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
       setLoading(false);
     }

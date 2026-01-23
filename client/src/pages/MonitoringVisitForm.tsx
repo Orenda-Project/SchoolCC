@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -80,6 +80,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
   const [voiceNoteTranscription, setVoiceNoteTranscription] = useState<string>('');
   const [voiceNoteBlob, setVoiceNoteBlob] = useState<Blob | null>(null);
 
@@ -151,10 +152,14 @@ export default function MonitoringVisitForm({ onClose }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (isSubmitting) return;
     setLoading(true);
     try {
       setIsSubmitting(true);
+      isSubmittingRef.current = true;
       const { id: _, ...dataWithoutId } = formData;
       const evidence = uploadedFiles.map((f) => ({
         id: f.id,
@@ -188,6 +193,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
     } catch (error) {
       console.error('Error submitting monitoring visit:', error);
     } finally {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
       setLoading(false);
     }

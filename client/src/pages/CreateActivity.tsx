@@ -24,6 +24,7 @@ export default function CreateActivity() {
   const [title, setTitle] = useState('');
   const [photos, setPhotos] = useState<{ id: string; url: string; fileName: string; caption: string; preview: string }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   if (!user) return null;
 
@@ -71,10 +72,14 @@ export default function CreateActivity() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingRef.current) {
+      return;
+    }
     if (isSubmitting) return;
     if (!userSchoolId || !title.trim() || photos.length === 0) return;
 
     setIsSubmitting(true);
+    isSubmittingRef.current = true;
     try {
       const photosForActivity = photos.map((p) => ({
         url: p.preview,
@@ -99,6 +104,7 @@ export default function CreateActivity() {
       console.error('Error creating activity:', error);
       toast.error('Failed to create activity');
     } finally {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
     }
   };

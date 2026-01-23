@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth, VALID_ASSIGNEES, type UserRole } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,6 +46,7 @@ export default function CreateRequest() {
   const [allUsers, setAllUsers] = useState<UserOption[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   // Fetch all users from the database
   useEffect(() => {
@@ -155,10 +156,18 @@ export default function CreateRequest() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || fields.length === 0 || selectedAssignees.length === 0 || isSubmitting) {
+    
+    // Use ref for synchronous check to prevent rapid double-clicks
+    if (isSubmittingRef.current) {
+      return;
+    }
+    
+    if (!title.trim() || fields.length === 0 || selectedAssignees.length === 0) {
       return;
     }
 
+    // Set ref immediately (synchronous) to block subsequent clicks
+    isSubmittingRef.current = true;
     setIsSubmitting(true);
     try {
       // Get description voice note data if it exists
@@ -231,6 +240,7 @@ export default function CreateRequest() {
     } catch (error) {
       console.error('Error creating request:', error);
     } finally {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
     }
   };
