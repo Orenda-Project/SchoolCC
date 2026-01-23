@@ -658,9 +658,11 @@ export default function MonitoringVisitForm({ onClose }: Props) {
     </Card>
   );
 
-  const handleVoiceNoteComplete = (transcription: string, audioBlob: Blob) => {
+  const handleVoiceNoteComplete = (transcription: string, audioBlob?: Blob) => {
     setVoiceNoteTranscription(transcription);
-    setVoiceNoteBlob(audioBlob);
+    if (audioBlob) {
+      setVoiceNoteBlob(audioBlob);
+    }
     handleInputChange('voiceNotes', transcription);
   };
 
