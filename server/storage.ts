@@ -316,12 +316,32 @@ export class DBStorage implements IStorage {
     const userAssignments = await db.select().from(requestAssignees).where(eq(requestAssignees.userId, userId));
     const assignedRequestIds = new Set(userAssignments.map(a => a.requestId));
     
+    // For HEAD_TEACHER and TEACHER roles, also get requests assigned to their school
+    let schoolAssignedRequestIds = new Set<string>();
+    if ((userRole === 'HEAD_TEACHER' || userRole === 'TEACHER') && userSchoolId) {
+      // Get the user's school name
+      const user = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+      if (user.length > 0 && user[0].schoolName) {
+        const userSchoolName = user[0].schoolName.toUpperCase();
+        // Get all assignees with matching school name
+        const allAssignees = await db.select().from(requestAssignees);
+        for (const assignee of allAssignees) {
+          if (assignee.schoolName && assignee.schoolName.toUpperCase() === userSchoolName) {
+            schoolAssignedRequestIds.add(assignee.requestId);
+          }
+        }
+      }
+    }
+    
     return allRequests.filter((request: DataRequest) => {
       // Creator always sees their requests
       if (request.createdBy === userId) return true;
       
       // Assignee always sees requests assigned to them
       if (assignedRequestIds.has(request.id)) return true;
+      
+      // School-based visibility: requests assigned to user's school
+      if (schoolAssignedRequestIds.has(request.id)) return true;
       
       // Hierarchy visibility: superiors see all requests in their jurisdiction
       const hierarchyLevels: Record<string, number> = {
