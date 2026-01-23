@@ -345,9 +345,9 @@ export default function CreateRequest() {
                   </div>
                 </div>
                 {recordingField === 'description' && (
-                  <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 rounded w-fit text-xs">
+                  <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 dark:bg-red-900/50 rounded w-fit text-xs">
                     <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-                    <span className="text-red-700 font-medium">Recording...</span>
+                    <span className="text-red-700 dark:text-red-400 font-medium">Recording...</span>
                   </div>
                 )}
                 {recordedVoiceNotes['description'] && recordingField !== 'description' && (
@@ -475,9 +475,9 @@ export default function CreateRequest() {
 
                             {/* Recording status */}
                             {recordingField === field.id && (
-                              <div className="flex items-center gap-1 ml-2 px-2 py-1 bg-red-100 rounded animate-pulse">
+                              <div className="flex items-center gap-1 ml-2 px-2 py-1 bg-red-100 dark:bg-red-900/50 rounded animate-pulse">
                                 <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                                <span className="text-xs text-red-700 font-medium">Recording...</span>
+                                <span className="text-xs text-red-700 dark:text-red-400 font-medium">Recording...</span>
                               </div>
                             )}
 

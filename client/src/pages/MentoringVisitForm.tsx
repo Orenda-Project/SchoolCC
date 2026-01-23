@@ -223,13 +223,13 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const getRatingColor = (rating: string | null) => {
     switch (rating) {
       case 'emerging':
-        return 'bg-red-100 border-red-300';
+        return 'bg-red-100 dark:bg-red-900/40 border-red-300 dark:border-red-700';
       case 'developing':
-        return 'bg-yellow-100 border-yellow-300';
+        return 'bg-yellow-100 dark:bg-yellow-900/40 border-yellow-300 dark:border-yellow-700';
       case 'proficient':
-        return 'bg-green-100 border-green-300';
+        return 'bg-green-100 dark:bg-green-900/40 border-green-300 dark:border-green-700';
       default:
-        return 'bg-slate-100 border-slate-300';
+        return 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600';
     }
   };
 
@@ -525,9 +525,9 @@ export default function MentoringVisitForm({ onClose }: Props) {
             </div>
           </div>
           {recordingField === 'strengths' && (
-            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 rounded w-fit text-xs">
+            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 dark:bg-red-900/50 rounded w-fit text-xs">
               <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-              <span className="text-red-700 font-medium">Recording...</span>
+              <span className="text-red-700 dark:text-red-400 font-medium">Recording...</span>
             </div>
           )}
           {recordedVoiceNotes['strengths'] && recordingField !== 'strengths' && (
@@ -591,9 +591,9 @@ export default function MentoringVisitForm({ onClose }: Props) {
             </div>
           </div>
           {recordingField === 'improvements' && (
-            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 rounded w-fit text-xs">
+            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 dark:bg-red-900/50 rounded w-fit text-xs">
               <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-              <span className="text-red-700 font-medium">Recording...</span>
+              <span className="text-red-700 dark:text-red-400 font-medium">Recording...</span>
             </div>
           )}
           {recordedVoiceNotes['improvements'] && recordingField !== 'improvements' && (
@@ -657,9 +657,9 @@ export default function MentoringVisitForm({ onClose }: Props) {
             </div>
           </div>
           {recordingField === 'actions' && (
-            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 rounded w-fit text-xs">
+            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 dark:bg-red-900/50 rounded w-fit text-xs">
               <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-              <span className="text-red-700 font-medium">Recording...</span>
+              <span className="text-red-700 dark:text-red-400 font-medium">Recording...</span>
             </div>
           )}
           {recordedVoiceNotes['actions'] && recordingField !== 'actions' && (
@@ -723,9 +723,9 @@ export default function MentoringVisitForm({ onClose }: Props) {
             </div>
           </div>
           {recordingField === 'feedback' && (
-            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 rounded w-fit text-xs">
+            <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-red-100 dark:bg-red-900/50 rounded w-fit text-xs">
               <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-              <span className="text-red-700 font-medium">Recording...</span>
+              <span className="text-red-700 dark:text-red-400 font-medium">Recording...</span>
             </div>
           )}
           {recordedVoiceNotes['feedback'] && recordingField !== 'feedback' && (
