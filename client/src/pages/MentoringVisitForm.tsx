@@ -160,6 +160,9 @@ export default function MentoringVisitForm({ onClose }: Props) {
   useEffect(() => {
     return () => {
       if (recognitionRef.current) {
+        if ((recognitionRef as any).stopContinuous) {
+          (recognitionRef as any).stopContinuous();
+        }
         try { recognitionRef.current.abort(); } catch (e) {}
         recognitionRef.current = null;
       }
@@ -176,6 +179,9 @@ export default function MentoringVisitForm({ onClose }: Props) {
     try {
       // Stop any existing speech recognition first
       if (recognitionRef.current) {
+        if ((recognitionRef as any).stopContinuous) {
+          (recognitionRef as any).stopContinuous();
+        }
         try { recognitionRef.current.abort(); } catch (e) {}
         recognitionRef.current = null;
       }
@@ -248,33 +254,77 @@ export default function MentoringVisitForm({ onClose }: Props) {
       // Start speech recognition to transcribe while recording
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
-        const recognition = new SpeechRecognition();
-        recognitionRef.current = recognition;
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = 'en-US';
         
-        let allTranscripts: string[] = [];
+        // Track if we should keep restarting (only while recording)
+        let shouldContinue = true;
+        // Accumulate all transcribed text across recognition sessions
+        let accumulatedText = '';
         
-        recognition.onresult = (event: any) => {
-          // Rebuild the full transcript from all results
-          allTranscripts = [];
-          for (let i = 0; i < event.results.length; i++) {
-            allTranscripts.push(event.results[i][0].transcript);
+        const startRecognitionSession = () => {
+          if (!shouldContinue) return;
+          
+          const recognition = new SpeechRecognition();
+          recognitionRef.current = recognition;
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.lang = 'en-US';
+          
+          // Track current session's final results
+          let sessionFinalText = '';
+          
+          recognition.onresult = (event: any) => {
+            let currentSessionText = '';
+            for (let i = 0; i < event.results.length; i++) {
+              if (event.results[i].isFinal) {
+                // Final results won't change, add to session final
+                sessionFinalText = '';
+                for (let j = 0; j <= i; j++) {
+                  if (event.results[j].isFinal) {
+                    sessionFinalText += event.results[j][0].transcript + ' ';
+                  }
+                }
+              }
+              currentSessionText += event.results[i][0].transcript + ' ';
+            }
+            // Update transcript with accumulated + current session text
+            transcriptRef.current = (accumulatedText + currentSessionText).trim();
+          };
+          
+          recognition.onerror = (event: any) => {
+            // Don't log 'aborted' errors as they're expected when stopping
+            if (event.error !== 'aborted') {
+              console.error('Speech recognition error:', event.error);
+            }
+          };
+          
+          recognition.onend = () => {
+            // Save final text from this session before restarting
+            if (sessionFinalText) {
+              accumulatedText += sessionFinalText;
+            }
+            
+            // Only restart if we should continue (still recording)
+            if (shouldContinue && recognitionRef.current) {
+              // Restart immediately to not miss any speech
+              startRecognitionSession();
+            } else {
+              recognitionRef.current = null;
+            }
+          };
+          
+          try {
+            recognition.start();
+          } catch (e) {
+            console.error('Failed to start recognition:', e);
           }
-          transcriptRef.current = allTranscripts.join(' ');
         };
         
-        recognition.onerror = (event: any) => {
-          console.error('Speech recognition error:', event.error);
+        // Store the stop function so stopRecording can prevent restarts
+        (recognitionRef as any).stopContinuous = () => {
+          shouldContinue = false;
         };
         
-        recognition.onend = () => {
-          // Don't restart - let it end when recording stops
-          recognitionRef.current = null;
-        };
-        
-        recognition.start();
+        startRecognitionSession();
       }
       
       toast.success('Recording started - speak now');
@@ -285,8 +335,12 @@ export default function MentoringVisitForm({ onClose }: Props) {
   };
 
   const stopRecording = () => {
-    // Stop speech recognition first and forcefully
+    // Stop speech recognition first - prevent restarts then abort
     if (recognitionRef.current) {
+      // First prevent auto-restart
+      if ((recognitionRef as any).stopContinuous) {
+        (recognitionRef as any).stopContinuous();
+      }
       try { 
         recognitionRef.current.abort(); // Use abort() for immediate stop
       } catch (e) {}
