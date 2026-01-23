@@ -209,22 +209,33 @@ export default function MentoringVisitForm({ onClose }: Props) {
         }
       };
       
+      // Store the fieldId for use in onstop callback
+      const currentFieldId = fieldId;
+      
       mediaRecorder.onstop = () => {
         const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         const url = URL.createObjectURL(blob);
         
+        // Get the final transcription captured during recording
+        const finalTranscription = transcriptRef.current.trim() || undefined;
+        
         setVoiceNotes(prev => ({
           ...prev,
-          [fieldId]: {
+          [currentFieldId]: {
             blob,
             url,
             duration: recordingTime,
-            transcription: transcriptRef.current || undefined,
+            transcription: finalTranscription,
           }
         }));
         
         stream.getTracks().forEach(track => track.stop());
-        toast.success('Voice note recorded');
+        
+        if (finalTranscription) {
+          toast.success('Voice note recorded with transcription');
+        } else {
+          toast.success('Voice note recorded (no speech detected for transcription)');
+        }
       };
       
       mediaRecorder.start();
@@ -234,24 +245,24 @@ export default function MentoringVisitForm({ onClose }: Props) {
         setRecordingTime(prev => prev + 1);
       }, 1000);
       
+      // Start speech recognition to transcribe while recording
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
         const recognition = new SpeechRecognition();
         recognitionRef.current = recognition;
         recognition.continuous = true;
-        recognition.interimResults = false;
+        recognition.interimResults = true;
         recognition.lang = 'en-US';
         
+        let allTranscripts: string[] = [];
+        
         recognition.onresult = (event: any) => {
-          let finalTranscript = '';
+          // Rebuild the full transcript from all results
+          allTranscripts = [];
           for (let i = 0; i < event.results.length; i++) {
-            if (event.results[i].isFinal) {
-              finalTranscript += event.results[i][0].transcript + ' ';
-            }
+            allTranscripts.push(event.results[i][0].transcript);
           }
-          if (finalTranscript) {
-            transcriptRef.current = finalTranscript.trim();
-          }
+          transcriptRef.current = allTranscripts.join(' ');
         };
         
         recognition.onerror = (event: any) => {
@@ -259,6 +270,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
         };
         
         recognition.onend = () => {
+          // Don't restart - let it end when recording stops
           recognitionRef.current = null;
         };
         
@@ -329,57 +341,16 @@ export default function MentoringVisitForm({ onClose }: Props) {
 
   const transcribeVoiceNote = async (fieldId: string) => {
     const voiceNote = voiceNotes[fieldId];
-    if (!voiceNote || voiceNote.transcription) return;
+    if (!voiceNote) return;
     
-    setIsTranscribing(fieldId);
-    
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      toast.info('Transcription was captured during recording. Playing audio to re-transcribe...');
-      
-      const audioContext = new AudioContext();
-      const arrayBuffer = await voiceNote.blob.arrayBuffer();
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      
-      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
-      
-      let transcript = '';
-      recognition.onresult = (event: any) => {
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          if (event.results[i].isFinal) {
-            transcript += event.results[i][0].transcript + ' ';
-          }
-        }
-      };
-      
-      recognition.onend = () => {
-        setVoiceNotes(prev => ({
-          ...prev,
-          [fieldId]: { ...prev[fieldId], transcription: transcript.trim() || 'Could not transcribe audio' }
-        }));
-        setIsTranscribing(null);
-        if (transcript.trim()) {
-          toast.success('Transcription complete');
-        }
-      };
-      
-      recognition.onerror = () => {
-        setIsTranscribing(null);
-        toast.error('Transcription failed');
-      };
-      
-      setTimeout(() => {
-        recognition.stop();
-      }, (audioBuffer.duration * 1000) + 2000);
-      
-      recognition.start();
-    } else {
-      setIsTranscribing(null);
-      toast.error('Speech recognition not supported in this browser. Use Chrome or Edge.');
+    // If transcription was captured during recording, just use it
+    if (voiceNote.transcription) {
+      toast.info('Transcription already available from recording');
+      return;
     }
+    
+    // No transcription available - inform user they need to re-record
+    toast.error('No transcription available. Please record again - the transcription is captured while you speak during recording.');
   };
 
   const useTranscription = (fieldId: string, targetField: string) => {
@@ -811,21 +782,8 @@ export default function MentoringVisitForm({ onClose }: Props) {
             <div className="mt-2 p-3 bg-muted/50 rounded-lg border border-border">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-green-600 font-medium">✓ Voice note recorded ({formatTime(voiceNotes['strengths'].duration)})</span>
-                {!voiceNotes['strengths'].transcription && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => transcribeVoiceNote('strengths')}
-                    disabled={isTranscribing === 'strengths'}
-                    className="text-xs h-7"
-                  >
-                    {isTranscribing === 'strengths' ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : null}
-                    Transcribe
-                  </Button>
-                )}
               </div>
-              {voiceNotes['strengths'].transcription && (
+              {voiceNotes['strengths'].transcription ? (
                 <div className="space-y-2">
                   <p className="text-sm text-foreground bg-background p-2 rounded border">{voiceNotes['strengths'].transcription}</p>
                   <Button
@@ -837,6 +795,8 @@ export default function MentoringVisitForm({ onClose }: Props) {
                     Use in Text Field
                   </Button>
                 </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">No speech was detected. Re-record if you need transcription.</p>
               )}
             </div>
           )}
@@ -907,17 +867,14 @@ export default function MentoringVisitForm({ onClose }: Props) {
             <div className="mt-2 p-3 bg-muted/50 rounded-lg border border-border">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-green-600 font-medium">✓ Voice note recorded ({formatTime(voiceNotes['improvements'].duration)})</span>
-                {!voiceNotes['improvements'].transcription && (
-                  <Button type="button" variant="outline" size="sm" onClick={() => transcribeVoiceNote('improvements')} disabled={isTranscribing === 'improvements'} className="text-xs h-7">
-                    {isTranscribing === 'improvements' ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : null}Transcribe
-                  </Button>
-                )}
               </div>
-              {voiceNotes['improvements'].transcription && (
+              {voiceNotes['improvements'].transcription ? (
                 <div className="space-y-2">
                   <p className="text-sm text-foreground bg-background p-2 rounded border">{voiceNotes['improvements'].transcription}</p>
                   <Button type="button" size="sm" onClick={() => useTranscription('improvements', 'areasForImprovement')} className="text-xs h-7">Use in Text Field</Button>
                 </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">No speech was detected. Re-record if you need transcription.</p>
               )}
             </div>
           )}
@@ -988,17 +945,14 @@ export default function MentoringVisitForm({ onClose }: Props) {
             <div className="mt-2 p-3 bg-muted/50 rounded-lg border border-border">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-green-600 font-medium">✓ Voice note recorded ({formatTime(voiceNotes['actions'].duration)})</span>
-                {!voiceNotes['actions'].transcription && (
-                  <Button type="button" variant="outline" size="sm" onClick={() => transcribeVoiceNote('actions')} disabled={isTranscribing === 'actions'} className="text-xs h-7">
-                    {isTranscribing === 'actions' ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : null}Transcribe
-                  </Button>
-                )}
               </div>
-              {voiceNotes['actions'].transcription && (
+              {voiceNotes['actions'].transcription ? (
                 <div className="space-y-2">
                   <p className="text-sm text-foreground bg-background p-2 rounded border">{voiceNotes['actions'].transcription}</p>
                   <Button type="button" size="sm" onClick={() => useTranscription('actions', 'actionItems')} className="text-xs h-7">Use in Text Field</Button>
                 </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">No speech was detected. Re-record if you need transcription.</p>
               )}
             </div>
           )}
@@ -1069,17 +1023,14 @@ export default function MentoringVisitForm({ onClose }: Props) {
             <div className="mt-2 p-3 bg-muted/50 rounded-lg border border-border">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-green-600 font-medium">✓ Voice note recorded ({formatTime(voiceNotes['feedback'].duration)})</span>
-                {!voiceNotes['feedback'].transcription && (
-                  <Button type="button" variant="outline" size="sm" onClick={() => transcribeVoiceNote('feedback')} disabled={isTranscribing === 'feedback'} className="text-xs h-7">
-                    {isTranscribing === 'feedback' ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : null}Transcribe
-                  </Button>
-                )}
               </div>
-              {voiceNotes['feedback'].transcription && (
+              {voiceNotes['feedback'].transcription ? (
                 <div className="space-y-2">
                   <p className="text-sm text-foreground bg-background p-2 rounded border">{voiceNotes['feedback'].transcription}</p>
                   <Button type="button" size="sm" onClick={() => useTranscription('feedback', 'generalFeedback')} className="text-xs h-7">Use in Text Field</Button>
                 </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">No speech was detected. Re-record if you need transcription.</p>
               )}
             </div>
           )}
