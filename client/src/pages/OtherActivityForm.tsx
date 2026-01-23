@@ -260,36 +260,42 @@ export default function OtherActivityForm({ onClose }: Props) {
           <label className="block text-sm font-medium text-muted-foreground mb-2">
             Activity Date <span className="text-red-500">*</span>
           </label>
-          <Input
-            type="date"
-            value={formData.activityDate || ''}
-            onChange={(e) => handleInputChange('activityDate', e.target.value)}
-            required
-            data-testid="input-activity-date"
-            className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-          />
+          <div className="relative">
+            <Input
+              type="date"
+              value={formData.activityDate || ''}
+              onChange={(e) => handleInputChange('activityDate', e.target.value)}
+              required
+              data-testid="input-activity-date"
+              className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+            />
+          </div>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-2">Duration - From</label>
-          <Input
-            type="time"
-            value={formData.startTime || ''}
-            onChange={(e) => handleInputChange('startTime', e.target.value)}
-            data-testid="input-start-time"
-            className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-          />
+          <div className="relative">
+            <Input
+              type="time"
+              value={formData.startTime || ''}
+              onChange={(e) => handleInputChange('startTime', e.target.value)}
+              data-testid="input-start-time"
+              className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+            />
+          </div>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-2">Duration - To</label>
-          <Input
-            type="time"
-            value={formData.endTime || ''}
-            onChange={(e) => handleInputChange('endTime', e.target.value)}
-            data-testid="input-end-time"
-            className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-          />
+          <div className="relative">
+            <Input
+              type="time"
+              value={formData.endTime || ''}
+              onChange={(e) => handleInputChange('endTime', e.target.value)}
+              data-testid="input-end-time"
+              className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+            />
+          </div>
         </div>
       </div>
     </Card>

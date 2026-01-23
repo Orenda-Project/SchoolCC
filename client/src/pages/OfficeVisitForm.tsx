@@ -236,33 +236,39 @@ export default function OfficeVisitForm({ onClose }: Props) {
           <label className="block text-sm font-medium text-muted-foreground mb-2">
             Visit Date <span className="text-red-500">*</span>
           </label>
-          <Input
-            type="date"
-            value={formData.visitDate || ''}
-            onChange={(e) => handleInputChange('visitDate', e.target.value)}
-            data-testid="input-visit-date"
-            className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-          />
+          <div className="relative">
+            <Input
+              type="date"
+              value={formData.visitDate || ''}
+              onChange={(e) => handleInputChange('visitDate', e.target.value)}
+              data-testid="input-visit-date"
+              className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+            />
+          </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-2">Arrival Time</label>
-          <Input
-            type="time"
-            value={formData.arrivalTime || ''}
-            onChange={(e) => handleInputChange('arrivalTime', e.target.value)}
-            data-testid="input-arrival-time"
-            className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-          />
+          <div className="relative">
+            <Input
+              type="time"
+              value={formData.arrivalTime || ''}
+              onChange={(e) => handleInputChange('arrivalTime', e.target.value)}
+              data-testid="input-arrival-time"
+              className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+            />
+          </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-2">Departure Time</label>
-          <Input
-            type="time"
-            value={formData.departureTime || ''}
-            onChange={(e) => handleInputChange('departureTime', e.target.value)}
-            data-testid="input-departure-time"
-            className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-          />
+          <div className="relative">
+            <Input
+              type="time"
+              value={formData.departureTime || ''}
+              onChange={(e) => handleInputChange('departureTime', e.target.value)}
+              data-testid="input-departure-time"
+              className="cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+            />
+          </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-muted-foreground mb-2">Purpose</label>
