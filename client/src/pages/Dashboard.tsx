@@ -112,7 +112,7 @@ export default function Dashboard() {
       case 'stats':
         if (!stats) return null;
         return (
-          <div key="stats" className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 stagger-children" data-testid="widget-stats">
+          <div key="stats" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 stagger-children" data-testid="widget-stats">
             {stats.map((stat, idx) => {
               const gradients = [
                 'from-blue-500 to-blue-600',
@@ -151,8 +151,8 @@ export default function Dashboard() {
         if (user.role !== 'AEO' || !activities) return null;
         return (
           <div key="activities" data-testid="widget-activities">
-            <h2 className="text-2xl font-bold gradient-text mb-6">Your Activities</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Your Activities</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 stagger-children">
               <MetricCard
                 value={activities.monitoring.length}
                 label="Monitoring"
@@ -235,8 +235,8 @@ export default function Dashboard() {
         if (user.role === 'HEAD_TEACHER') {
           return (
             <div key="requests" data-testid="widget-coaching-tips">
-              <h2 className="text-2xl font-bold gradient-text mb-6">Quick Coaching Tips</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Quick Coaching Tips</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                 {randomCoachingTips.map((tip, idx) => (
                   <Card key={idx} className="p-5 bg-white dark:bg-card border border-border shadow-md hover:shadow-lg transition-all duration-300">
                     <div className={`inline-block px-2 py-1 rounded-full text-xs font-semibold mb-3 bg-gradient-to-r ${tip.gradient} text-white`}>
@@ -255,11 +255,11 @@ export default function Dashboard() {
         if (user.role === 'TEACHER') {
           return (
             <div key="requests" data-testid="widget-quote">
-              <h2 className="text-2xl font-bold gradient-text mb-6">Today's Inspiration</h2>
-              <Card className="p-8 bg-white dark:bg-card border border-border shadow-xl overflow-hidden relative">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Today's Inspiration</h2>
+              <Card className="p-4 sm:p-6 lg:p-8 bg-white dark:bg-card border border-border shadow-xl overflow-hidden relative">
                 <div className="relative">
-                  <div className={`text-5xl mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>"</div>
-                  <p className={`text-xl md:text-2xl font-medium leading-relaxed mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>
+                  <div className={`text-3xl sm:text-4xl lg:text-5xl mb-2 sm:mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>"</div>
+                  <p className={`text-base sm:text-lg lg:text-2xl font-medium leading-relaxed mb-2 sm:mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>
                     {dailyQuote.text}
                   </p>
                   <p className={`text-sm font-medium bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>— {dailyQuote.author}</p>
@@ -271,7 +271,7 @@ export default function Dashboard() {
         
         return (
           <div key="requests" data-testid="widget-requests">
-            <h2 className="text-2xl font-bold gradient-text mb-6">Recent Activity</h2>
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Recent Activity</h2>
             {userRequests.length === 0 ? (
               <Card className="p-12 text-center bg-card border border-border">
                 <p className="text-lg text-muted-foreground">No requests yet</p>
@@ -324,8 +324,8 @@ export default function Dashboard() {
         if (user.role === 'HEAD_TEACHER') {
           return (
             <div key="staff" data-testid="widget-staff">
-              <h2 className="text-2xl font-bold gradient-text mb-6">My School Staff</h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 stagger-children">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">My School Staff</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6 stagger-children">
                 <div 
                   onClick={() => setShowTeacherExportDialog(true)}
                   className="cursor-pointer"
@@ -350,8 +350,8 @@ export default function Dashboard() {
         }
         return (
           <div key="staff" data-testid="widget-staff">
-            <h2 className="text-2xl font-bold gradient-text mb-6">Staff Overview</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 stagger-children">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Staff Overview</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 stagger-children">
               <MetricCard
                 value={staffStats.aeos.total}
                 label="AEOs"
@@ -396,9 +396,9 @@ export default function Dashboard() {
         if (user.role === 'TEACHER' || user.role === 'HEAD_TEACHER') return null;
         return (
           <div key="visits" data-testid="widget-visits">
-            <h2 className="text-2xl font-bold gradient-text mb-6">Recent Visits</h2>
-            <Card className="p-6 bg-card border border-border">
-              <div className="text-center py-8">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Recent Visits</h2>
+            <Card className="p-4 sm:p-6 bg-card border border-border">
+              <div className="text-center py-6 sm:py-8">
                 <MapPin className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <p className="text-muted-foreground">View your school visits</p>
                 <Button
@@ -441,13 +441,13 @@ export default function Dashboard() {
         if (user.role === 'TEACHER') {
           return (
             <div key="calendar" data-testid="widget-tips">
-              <h2 className="text-2xl font-bold gradient-text mb-6">Teaching Tips</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Teaching Tips</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                 {randomTips.map((item, idx) => (
-                  <Card key={idx} className="p-5 bg-white dark:bg-card border border-border shadow-md hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-3">
-                      <div className="text-3xl">{item.icon}</div>
-                      <p className={`text-sm font-medium bg-gradient-to-r ${item.color} bg-clip-text text-transparent leading-relaxed`}>
+                  <Card key={idx} className="p-4 sm:p-5 bg-white dark:bg-card border border-border shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className="text-2xl sm:text-3xl">{item.icon}</div>
+                      <p className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${item.color} bg-clip-text text-transparent leading-relaxed`}>
                         {item.tip}
                       </p>
                     </div>
@@ -460,9 +460,9 @@ export default function Dashboard() {
         
         return (
           <div key="calendar" data-testid="widget-calendar">
-            <h2 className="text-2xl font-bold gradient-text mb-6">Leave Calendar</h2>
-            <Card className="p-6 bg-card border border-border">
-              <div className="text-center py-8">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Leave Calendar</h2>
+            <Card className="p-4 sm:p-6 bg-card border border-border">
+              <div className="text-center py-6 sm:py-8">
                 <Calendar className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <p className="text-muted-foreground">Manage leaves and attendance</p>
                 <Button
@@ -1143,10 +1143,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="px-4 lg:px-8 py-6 lg:py-8">
-          {/* Customizable Widgets Container - renders in user-defined order */}
-          <div className="space-y-8">
+        {/* Main Content - Mobile-optimized layout */}
+        <div className="px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+          {/* Customizable Widgets Container - tighter spacing on mobile */}
+          <div className="space-y-4 sm:space-y-6 lg:space-y-8">
             {visibleWidgets.map(widget => renderWidget(widget.id))}
           </div>
 
