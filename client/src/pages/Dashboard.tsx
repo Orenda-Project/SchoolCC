@@ -36,6 +36,7 @@ export default function Dashboard() {
   const [teacherDialogType, setTeacherDialogType] = useState<'total' | 'present' | 'onLeave' | 'absent'>('total');
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [showDesktopSidebar, setShowDesktopSidebar] = useState(false);
   const [showTeacherExportDialog, setShowTeacherExportDialog] = useState(false);
   const [staffStats, setStaffStats] = useState({
     aeos: { total: 0, present: 0, onLeave: 0, absent: 0 },
@@ -782,9 +783,17 @@ export default function Dashboard() {
       )}
 
       {/* Desktop Sidebar - Quick Actions */}
-      <aside className="hidden lg:flex flex-col w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border fixed left-0 top-0 h-screen z-40 animate-slideInLeft">
+      {/* Desktop Sidebar Overlay */}
+      {showDesktopSidebar && (
+        <div 
+          className="hidden lg:block fixed inset-0 bg-black/50 z-40"
+          onClick={() => setShowDesktopSidebar(false)}
+        />
+      )}
+      
+      <aside className={`hidden lg:flex flex-col w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border fixed left-0 top-0 h-screen z-50 transition-transform duration-300 ${showDesktopSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
         {/* Sidebar Header - matches main header height */}
-        <div className="px-6 py-6 border-b border-border h-[88px] flex items-center">
+        <div className="px-6 py-6 border-b border-border h-[88px] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
             <div>
@@ -792,6 +801,15 @@ export default function Dashboard() {
               <p className="text-xs text-muted-foreground">{user.role.replace(/_/g, ' ')}</p>
             </div>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowDesktopSidebar(false)}
+            data-testid="button-close-desktop-sidebar"
+            className="rounded-full"
+          >
+            <X className="w-5 h-5" />
+          </Button>
         </div>
         
         {/* Menu Items */}
@@ -944,11 +962,6 @@ export default function Dashboard() {
               </div>
               <span className="font-medium text-foreground">Lesson Plans</span>
             </button>
-            
-            <div className="pt-4 pb-2">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Support</p>
-            </div>
-            
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('openHelpGuide'))}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-blue-100/80 dark:hover:bg-blue-900/30 transition-all duration-300 group press-effect"
@@ -980,7 +993,7 @@ export default function Dashboard() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 lg:ml-72">
+      <div className="flex-1">
         {/* Mobile Header */}
         <div className="lg:hidden bg-card/95 dark:bg-card backdrop-blur-xl border-b border-border sticky top-0 z-50">
           <div className="px-4 py-3 flex items-center justify-between">
@@ -1098,9 +1111,20 @@ export default function Dashboard() {
         {/* Desktop Header - matches sidebar header height */}
         <div className="hidden lg:block bg-card/95 dark:bg-card backdrop-blur-xl border-b border-border sticky top-0 z-30 h-[88px]">
           <div className="px-8 h-full flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold gradient-text">Welcome back, {user.name}</h1>
-              <p className="text-base text-muted-foreground mt-1">Here's your dashboard overview</p>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowDesktopSidebar(true)}
+                data-testid="button-open-desktop-menu"
+                className="rounded-full"
+              >
+                <Menu className="w-6 h-6" />
+              </Button>
+              <div>
+                <h1 className="text-2xl font-bold gradient-text">Welcome back, {user.name}</h1>
+                <p className="text-base text-muted-foreground mt-1">Here's your dashboard overview</p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
