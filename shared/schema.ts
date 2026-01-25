@@ -97,6 +97,7 @@ export const users = pgTable("users", {
   markazId: varchar("markaz_id"),
   markazName: text("markaz_name"),
   // Profile fields
+  gender: text("gender"), // Male, Female
   fatherName: text("father_name"),
   spouseName: text("spouse_name"),
   email: text("email"),

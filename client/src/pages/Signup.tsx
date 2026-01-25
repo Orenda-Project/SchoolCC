@@ -374,6 +374,7 @@ export default function Signup() {
     role: '' as UserRole | '',
 
     // Profile info
+    gender: '',
     fatherName: '',
     email: '',
     residentialAddress: '',
@@ -505,6 +506,13 @@ export default function Signup() {
     // Password validation for all roles
     if (!formData.password) {
       setError('Password is required');
+      setLoading(false);
+      return;
+    }
+
+    // Gender validation for all roles
+    if (!formData.gender) {
+      setError('Please select your gender | براہ کرم صنف منتخب کریں');
       setLoading(false);
       return;
     }
@@ -976,6 +984,22 @@ export default function Signup() {
             {/* Profile Details */}
             <div className="space-y-4 pt-4 border-t">
               <h3 className="text-lg font-semibold">Profile Details | پروفائل کی تفصیلات</h3>
+
+              <div data-guide="gender-select">
+                <Label>Gender * | صنف</Label>
+                <Select
+                  value={formData.gender}
+                  onValueChange={(value) => setFormData({ ...formData, gender: value })}
+                >
+                  <SelectTrigger data-testid="select-gender">
+                    <SelectValue placeholder="Select gender | صنف منتخب کریں" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Male">Male | مرد</SelectItem>
+                    <SelectItem value="Female">Female | عورت</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
               <div data-guide="father-name">
                 <Label>Father Name | والد کا نام</Label>
