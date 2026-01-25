@@ -234,17 +234,44 @@ export default function LessonPlansPreview() {
           </div>
         </Card>
 
-        <div className="text-center py-6">
-          <p className="text-sm text-muted-foreground mb-2">
-            Check back soon for updates!
-          </p>
-          <p className="text-sm text-muted-foreground" dir="rtl">
-            اپ ڈیٹس کے لیے جلد واپس آئیں!
-          </p>
+        <Card className="p-6 border-2 border-dashed border-amber-300 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-950/20">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+              <Bell className="w-8 h-8 text-amber-600" />
+            </div>
+            <h3 className="font-bold text-lg mb-2">Get Notified When Ready</h3>
+            <p className="text-muted-foreground text-sm mb-1">
+              We'll let you know as soon as this feature is available.
+            </p>
+            <p className="text-muted-foreground text-sm mb-4" dir="rtl">
+              جب یہ فیچر دستیاب ہوگا تو ہم آپ کو بتائیں گے۔
+            </p>
+            <Button 
+              onClick={handleNotifyMe}
+              disabled={notifyMe}
+              className={notifyMe ? 'bg-green-600 hover:bg-green-600' : 'bg-amber-600 hover:bg-amber-700'}
+              data-testid="button-notify-me-bottom"
+            >
+              {notifyMe ? (
+                <>
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  You'll be notified!
+                </>
+              ) : (
+                <>
+                  <Bell className="w-4 h-4 mr-2" />
+                  Notify Me
+                </>
+              )}
+            </Button>
+          </div>
+        </Card>
+
+        <div className="pb-8">
           <Button
             variant="outline"
+            className="w-full"
             onClick={() => navigate('/dashboard')}
-            className="mt-4"
             data-testid="button-back-to-dashboard"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
