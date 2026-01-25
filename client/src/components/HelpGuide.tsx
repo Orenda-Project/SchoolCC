@@ -698,11 +698,18 @@ export function HelpGuide() {
     }
 
     // Open or close menu based on current step's openMenu property
-    if (currentStepData?.openMenu) {
-      window.dispatchEvent(new CustomEvent('openSidebarForGuide'));
-    } else {
-      window.dispatchEvent(new CustomEvent('closeSidebarForGuide'));
-    }
+    // Add a small delay to ensure Dashboard component is ready
+    const timer = setTimeout(() => {
+      if (currentStepData?.openMenu) {
+        console.log('[HelpGuide] Opening sidebar for step:', currentStep, currentStepData?.title?.en);
+        window.dispatchEvent(new CustomEvent('openSidebarForGuide'));
+      } else {
+        console.log('[HelpGuide] Closing sidebar for step:', currentStep, currentStepData?.title?.en);
+        window.dispatchEvent(new CustomEvent('closeSidebarForGuide'));
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
   }, [isOpen, showIntro, currentStep, currentStepData?.openMenu]);
 
   useEffect(() => {
