@@ -200,16 +200,18 @@ export default function Dashboard() {
       case 'requests':
         // Teaching quotes for teachers
         const teachingQuotes = [
-          { text: "A teacher affects eternity; they can never tell where their influence stops.", author: "Henry Adams", gradient: "from-purple-500 to-pink-500" },
-          { text: "The art of teaching is the art of assisting discovery.", author: "Mark Van Doren", gradient: "from-blue-500 to-cyan-500" },
-          { text: "Education is not the filling of a pail, but the lighting of a fire.", author: "W.B. Yeats", gradient: "from-orange-500 to-red-500" },
-          { text: "Teaching is the greatest act of optimism.", author: "Colleen Wilcox", gradient: "from-emerald-500 to-teal-500" },
-          { text: "The best teachers teach from the heart, not from the book.", author: "Unknown", gradient: "from-rose-500 to-pink-500" },
-          { text: "Teachers plant seeds of knowledge that grow forever.", author: "Unknown", gradient: "from-violet-500 to-purple-500" },
-          { text: "A good teacher can inspire hope and ignite the imagination.", author: "Brad Henry", gradient: "from-amber-500 to-orange-500" },
-          { text: "Teaching kids to count is fine, but teaching them what counts is best.", author: "Bob Talbert", gradient: "from-indigo-500 to-blue-500" },
-          { text: "The influence of a good teacher can never be erased.", author: "Unknown", gradient: "from-pink-500 to-rose-500" },
-          { text: "Great teachers empathize with kids and inspire them to learn.", author: "Unknown", gradient: "from-teal-500 to-emerald-500" },
+          { text: "A teacher affects eternity; they can never tell where their influence stops.", textUr: "استاد ابدیت پر اثر ڈالتا ہے؛ وہ کبھی نہیں بتا سکتا کہ اس کا اثر کہاں رکتا ہے۔", author: "Henry Adams", gradient: "from-purple-500 to-pink-500", lang: "en" },
+          { text: "علم ایک ایسا خزانہ ہے جو چوری نہیں ہو سکتا۔", textUr: "علم ایک ایسا خزانہ ہے جو چوری نہیں ہو سکتا۔", author: "پاکستانی کہاوت", gradient: "from-emerald-500 to-teal-500", lang: "ur" },
+          { text: "The art of teaching is the art of assisting discovery.", textUr: "تدریس کا فن دریافت میں مدد کرنے کا فن ہے۔", author: "Mark Van Doren", gradient: "from-blue-500 to-cyan-500", lang: "en" },
+          { text: "استاد قوم کا معمار ہوتا ہے۔", textUr: "استاد قوم کا معمار ہوتا ہے۔", author: "علامہ اقبال", gradient: "from-violet-500 to-purple-500", lang: "ur" },
+          { text: "Education is not the filling of a pail, but the lighting of a fire.", textUr: "تعلیم برتن بھرنا نہیں بلکہ آگ روشن کرنا ہے۔", author: "W.B. Yeats", gradient: "from-orange-500 to-red-500", lang: "en" },
+          { text: "پڑھو گے لکھو گے بنو گے نواب، کھیلو گے کودو گے بنو گے خراب۔", textUr: "پڑھو گے لکھو گے بنو گے نواب، کھیلو گے کودو گے بنو گے خراب۔", author: "پرانی کہاوت", gradient: "from-amber-500 to-orange-500", lang: "ur" },
+          { text: "Teaching is the greatest act of optimism.", textUr: "تدریس امید پرستی کا سب سے بڑا عمل ہے۔", author: "Colleen Wilcox", gradient: "from-emerald-500 to-teal-500", lang: "en" },
+          { text: "علم حاصل کرو چاہے چین جانا پڑے۔", textUr: "علم حاصل کرو چاہے چین جانا پڑے۔", author: "حدیث مبارکہ", gradient: "from-teal-500 to-cyan-500", lang: "ur" },
+          { text: "The best teachers teach from the heart, not from the book.", textUr: "بہترین اساتذہ دل سے پڑھاتے ہیں، کتاب سے نہیں۔", author: "Unknown", gradient: "from-rose-500 to-pink-500", lang: "en" },
+          { text: "جو علم سکھائے وہ استاد نہیں، جو سوچنا سکھائے وہ استاد ہے۔", textUr: "جو علم سکھائے وہ استاد نہیں، جو سوچنا سکھائے وہ استاد ہے۔", author: "نامعلوم", gradient: "from-indigo-500 to-blue-500", lang: "ur" },
+          { text: "Teachers plant seeds of knowledge that grow forever.", textUr: "اساتذہ علم کے بیج بوتے ہیں جو ہمیشہ پھلتے پھولتے ہیں۔", author: "Unknown", gradient: "from-violet-500 to-purple-500", lang: "en" },
+          { text: "ایک اچھا استاد موم بتی کی طرح ہے جو خود جل کر دوسروں کو روشنی دیتا ہے۔", textUr: "ایک اچھا استاد موم بتی کی طرح ہے جو خود جل کر دوسروں کو روشنی دیتا ہے۔", author: "نامعلوم", gradient: "from-pink-500 to-rose-500", lang: "ur" },
         ];
         
         // Coaching tips for Head Teachers to enhance learning gains
@@ -255,14 +257,21 @@ export default function Dashboard() {
         if (user.role === 'TEACHER') {
           return (
             <div key="requests" data-testid="widget-quote">
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Today's Inspiration</h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">
+                Today's Inspiration <span className="text-muted-foreground font-normal text-base">/ آج کی تحریک</span>
+              </h2>
               <Card className="p-4 sm:p-6 lg:p-8 bg-white dark:bg-card border border-border shadow-xl overflow-hidden relative">
                 <div className="relative">
                   <div className={`text-3xl sm:text-4xl lg:text-5xl mb-2 sm:mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>"</div>
-                  <p className={`text-base sm:text-lg lg:text-2xl font-medium leading-relaxed mb-2 sm:mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>
+                  <p className={`text-base sm:text-lg lg:text-2xl font-medium leading-relaxed mb-2 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`} dir={dailyQuote.lang === 'ur' ? 'rtl' : 'ltr'}>
                     {dailyQuote.text}
                   </p>
-                  <p className={`text-sm font-medium bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>— {dailyQuote.author}</p>
+                  {dailyQuote.lang === 'en' && dailyQuote.textUr && (
+                    <p className={`text-sm sm:text-base font-medium leading-relaxed mb-3 text-muted-foreground`} dir="rtl">
+                      {dailyQuote.textUr}
+                    </p>
+                  )}
+                  <p className={`text-sm font-medium bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`} dir={dailyQuote.lang === 'ur' ? 'rtl' : 'ltr'}>— {dailyQuote.author}</p>
                 </div>
               </Card>
             </div>
@@ -420,18 +429,18 @@ export default function Dashboard() {
         
         // Teaching tips for teachers
         const allTeachingTips = [
-          { tip: "Start each class with a quick review of the previous lesson to refresh students' memory.", icon: "🔄", color: "from-blue-500 to-cyan-500" },
-          { tip: "Use visual aids like charts and diagrams to explain complex concepts.", icon: "📊", color: "from-purple-500 to-pink-500" },
-          { tip: "Encourage students to ask questions - there are no silly questions!", icon: "❓", color: "from-emerald-500 to-teal-500" },
-          { tip: "Give positive feedback to boost student confidence and motivation.", icon: "⭐", color: "from-amber-500 to-orange-500" },
-          { tip: "Break down large tasks into smaller, manageable steps for students.", icon: "📝", color: "from-rose-500 to-red-500" },
-          { tip: "Use real-life examples to make lessons more relatable and engaging.", icon: "🌍", color: "from-indigo-500 to-blue-500" },
-          { tip: "Create a safe learning environment where mistakes are seen as opportunities.", icon: "🛡️", color: "from-teal-500 to-emerald-500" },
-          { tip: "Include group activities to develop teamwork and communication skills.", icon: "👥", color: "from-violet-500 to-purple-500" },
-          { tip: "Take short breaks during long lessons to maintain student attention.", icon: "⏸️", color: "from-pink-500 to-rose-500" },
-          { tip: "End each lesson with a summary of key points learned today.", icon: "📌", color: "from-cyan-500 to-blue-500" },
-          { tip: "Celebrate small achievements to keep students motivated.", icon: "🎉", color: "from-orange-500 to-amber-500" },
-          { tip: "Use storytelling to make lessons memorable and interesting.", icon: "📖", color: "from-red-500 to-rose-500" },
+          { tip: "Start each class with a quick review of the previous lesson to refresh students' memory.", tipUr: "ہر کلاس کا آغاز پچھلے سبق کے مختصر جائزے سے کریں۔", icon: "🔄", color: "from-blue-500 to-cyan-500", lang: "en" },
+          { tip: "بچوں کو مشکل موضوعات سمجھانے کے لیے تصویریں اور نقشے استعمال کریں۔", tipUr: "بچوں کو مشکل موضوعات سمجھانے کے لیے تصویریں اور نقشے استعمال کریں۔", icon: "📊", color: "from-purple-500 to-pink-500", lang: "ur" },
+          { tip: "Encourage students to ask questions - there are no silly questions!", tipUr: "طلباء کو سوالات پوچھنے کی ترغیب دیں - کوئی سوال احمقانہ نہیں ہوتا!", icon: "❓", color: "from-emerald-500 to-teal-500", lang: "en" },
+          { tip: "بچوں کی حوصلہ افزائی کریں تاکہ ان کا اعتماد بڑھے۔", tipUr: "بچوں کی حوصلہ افزائی کریں تاکہ ان کا اعتماد بڑھے۔", icon: "⭐", color: "from-amber-500 to-orange-500", lang: "ur" },
+          { tip: "Break down large tasks into smaller, manageable steps for students.", tipUr: "بڑے کاموں کو چھوٹے آسان حصوں میں تقسیم کریں۔", icon: "📝", color: "from-rose-500 to-red-500", lang: "en" },
+          { tip: "روزمرہ زندگی کی مثالیں دے کر سبق دلچسپ بنائیں۔", tipUr: "روزمرہ زندگی کی مثالیں دے کر سبق دلچسپ بنائیں۔", icon: "🌍", color: "from-indigo-500 to-blue-500", lang: "ur" },
+          { tip: "Create a safe learning environment where mistakes are seen as opportunities.", tipUr: "ایسا ماحول بنائیں جہاں غلطیاں سیکھنے کا موقع ہوں۔", icon: "🛡️", color: "from-teal-500 to-emerald-500", lang: "en" },
+          { tip: "گروپ سرگرمیوں سے ٹیم ورک اور بات چیت کی مہارت بڑھائیں۔", tipUr: "گروپ سرگرمیوں سے ٹیم ورک اور بات چیت کی مہارت بڑھائیں۔", icon: "👥", color: "from-violet-500 to-purple-500", lang: "ur" },
+          { tip: "Take short breaks during long lessons to maintain student attention.", tipUr: "لمبے اسباق میں چھوٹے وقفے لیں تاکہ بچوں کی توجہ قائم رہے۔", icon: "⏸️", color: "from-pink-500 to-rose-500", lang: "en" },
+          { tip: "ہر سبق کے آخر میں اہم نکات کا خلاصہ بیان کریں۔", tipUr: "ہر سبق کے آخر میں اہم نکات کا خلاصہ بیان کریں۔", icon: "📌", color: "from-cyan-500 to-blue-500", lang: "ur" },
+          { tip: "Celebrate small achievements to keep students motivated.", tipUr: "چھوٹی کامیابیوں کو بھی مناکر بچوں کی حوصلہ افزائی کریں۔", icon: "🎉", color: "from-orange-500 to-amber-500", lang: "en" },
+          { tip: "کہانی سنا کر سبق یادگار اور دلچسپ بنائیں۔", tipUr: "کہانی سنا کر سبق یادگار اور دلچسپ بنائیں۔", icon: "📖", color: "from-red-500 to-rose-500", lang: "ur" },
         ];
         
         // Shuffle and pick 3 random tips on each render
@@ -441,15 +450,24 @@ export default function Dashboard() {
         if (user.role === 'TEACHER') {
           return (
             <div key="calendar" data-testid="widget-tips">
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Teaching Tips</h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">
+                Teaching Tips <span className="text-muted-foreground font-normal text-base">/ تدریسی مشورے</span>
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                 {randomTips.map((item, idx) => (
                   <Card key={idx} className="p-4 sm:p-5 bg-white dark:bg-card border border-border shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]">
                     <div className="flex items-start gap-2 sm:gap-3">
                       <div className="text-2xl sm:text-3xl">{item.icon}</div>
-                      <p className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${item.color} bg-clip-text text-transparent leading-relaxed`}>
-                        {item.tip}
-                      </p>
+                      <div className="flex-1">
+                        <p className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${item.color} bg-clip-text text-transparent leading-relaxed`} dir={item.lang === 'ur' ? 'rtl' : 'ltr'}>
+                          {item.tip}
+                        </p>
+                        {item.lang === 'en' && item.tipUr && (
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed" dir="rtl">
+                            {item.tipUr}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </Card>
                 ))}
