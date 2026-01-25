@@ -529,6 +529,24 @@ export async function registerRoutes(
     }
   });
 
+  // Public: Get all schools for signup/registration
+  app.get("/api/schools", async (req, res) => {
+    try {
+      const schools = await storage.getAllSchools();
+      // Return simplified list for dropdown
+      res.json(schools.map(s => ({ 
+        id: s.id, 
+        name: s.name, 
+        emis: s.emisNumber,
+        clusterId: s.clusterId,
+        districtId: s.districtId
+      })));
+    } catch (error) {
+      console.error('[Schools API] Error fetching schools:', error);
+      res.status(500).json({ error: "Failed to fetch schools" });
+    }
+  });
+
   // Admin: Schools endpoints
   app.get("/api/admin/schools", async (req, res) => {
     try {
@@ -820,6 +838,8 @@ export async function registerRoutes(
         districtId,
         markazName,
         assignedSchools,
+        aeoSchools,
+        teacherSchools,
       } = req.body;
 
       // Validation
@@ -844,33 +864,90 @@ export async function registerRoutes(
       if (role === 'AEO' && !markazName && !clusterId) {
         return res.status(400).json({ error: "Markaz name required for AEO" });
       }
-      if (role === 'AEO' && (!assignedSchools || assignedSchools.length === 0)) {
+      if (role === 'AEO' && (!aeoSchools || aeoSchools.length === 0)) {
         return res.status(400).json({ error: "School selection required for AEO" });
       }
-      if ((role === 'HEAD_TEACHER' || role === 'TEACHER') && !schoolEmis) {
-        return res.status(400).json({ error: "School EMIS number required" });
+      if ((role === 'HEAD_TEACHER' || role === 'TEACHER') && (!teacherSchools || teacherSchools.length === 0)) {
+        return res.status(400).json({ error: "School selection required" });
       }
       if (role === 'DDEO' && !districtId) {
         return res.status(400).json({ error: "District selection required for DDEO" });
       }
 
-      // For school staff, lookup school details by EMIS
+      // Helper function to save new schools to database
+      const saveNewSchools = async (schools: Array<{ name: string; emis: string }>) => {
+        const savedSchoolNames: string[] = [];
+        for (const school of schools) {
+          // Check if school already exists by EMIS
+          const existingSchool = await storage.getSchoolByEmis(school.emis);
+          if (existingSchool) {
+            savedSchoolNames.push(existingSchool.name);
+          } else {
+            // Create new school in database
+            try {
+              const newSchool = await storage.createSchool({
+                name: school.name,
+                code: school.emis || `CUSTOM-${Date.now()}`,
+                emisNumber: school.emis || `CUSTOM-${Date.now()}`,
+                clusterId: markazName || clusterId || 'DEFAULT',
+                districtId: districtId || 'Rawalpindi',
+              });
+              savedSchoolNames.push(newSchool.name);
+              console.log('[Signup] Created new school:', newSchool.name, newSchool.emisNumber);
+            } catch (err) {
+              console.log('[Signup] School may already exist, using name:', school.name);
+              savedSchoolNames.push(school.name);
+            }
+          }
+        }
+        return savedSchoolNames;
+      };
+
+      // For school staff, handle schools from new format
       let schoolId = null;
       let schoolName = null;
       let schoolClusterId = null;
       let schoolDistrictId = null;
+      let finalAssignedSchools: string[] = assignedSchools || [];
 
-      if (schoolEmis) {
+      // Handle Teacher/Head Teacher schools
+      if ((role === 'HEAD_TEACHER' || role === 'TEACHER') && teacherSchools && teacherSchools.length > 0) {
+        // Save new schools and get first school as primary
+        const savedSchoolNames = await saveNewSchools(teacherSchools);
+        const firstSchool = teacherSchools[0];
+        
+        // Look up or use the first school
+        const existingSchool = await storage.getSchoolByEmis(firstSchool.emis);
+        if (existingSchool) {
+          schoolId = existingSchool.id;
+          schoolName = existingSchool.name;
+          schoolClusterId = existingSchool.clusterId;
+          schoolDistrictId = existingSchool.districtId;
+        } else {
+          schoolName = firstSchool.name;
+        }
+        
+        // Store all school names for reference
+        finalAssignedSchools = savedSchoolNames;
+      }
+
+      // Handle AEO schools
+      if (role === 'AEO' && aeoSchools && aeoSchools.length > 0) {
+        const savedSchoolNames = await saveNewSchools(aeoSchools);
+        finalAssignedSchools = savedSchoolNames;
+      }
+
+      // Legacy support for schoolEmis (if still used)
+      if (schoolEmis && !schoolId) {
         console.log('[Signup] Looking up school by EMIS:', schoolEmis);
         const school = await storage.getSchoolByEmis(schoolEmis);
         console.log('[Signup] School lookup result:', school);
-        if (!school) {
-          return res.status(400).json({ error: "Invalid EMIS number", details: `EMIS ${schoolEmis} not found in database` });
+        if (school) {
+          schoolId = school.id;
+          schoolName = school.name;
+          schoolClusterId = school.clusterId;
+          schoolDistrictId = school.districtId;
         }
-        schoolId = school.id;
-        schoolName = school.name;
-        schoolClusterId = school.clusterId;
-        schoolDistrictId = school.districtId;
       }
 
       // Determine approver role based on user role
@@ -908,7 +985,7 @@ export async function registerRoutes(
         districtId: districtId || schoolDistrictId || 'Rawalpindi',
         schoolId,
         schoolName,
-        assignedSchools: assignedSchools || [],
+        assignedSchools: finalAssignedSchools,
         markaz: markazName || null,
       });
 

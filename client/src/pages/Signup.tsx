@@ -144,9 +144,26 @@ function SchoolSelector({
   const [showManualEntry, setShowManualEntry] = useState(false);
   const [manualName, setManualName] = useState('');
   const [manualEmis, setManualEmis] = useState('');
+  const [allSchools, setAllSchools] = useState<Array<{ name: string; emis: string }>>(ALL_SCHOOLS);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const filteredSchools = ALL_SCHOOLS.filter(school =>
+  // Fetch schools from API on mount
+  useEffect(() => {
+    const fetchSchools = async () => {
+      try {
+        const response = await fetch('/api/schools');
+        if (response.ok) {
+          const data = await response.json();
+          setAllSchools(data);
+        }
+      } catch (error) {
+        console.log('Using fallback schools list');
+      }
+    };
+    fetchSchools();
+  }, []);
+
+  const filteredSchools = allSchools.filter(school =>
     school.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     school.emis.includes(searchQuery)
   );
@@ -418,8 +435,17 @@ export default function Signup() {
         setLoading(false);
         return;
       }
-      if (formData.assignedSchools.length === 0) {
+      if (!formData.aeoSchools || formData.aeoSchools.length === 0) {
         setError('Please select at least one school to oversee');
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Teacher/Head Teacher validation
+    if ((formData.role === 'HEAD_TEACHER' || formData.role === 'TEACHER')) {
+      if (!formData.teacherSchools || formData.teacherSchools.length === 0) {
+        setError('Please select or add your school');
         setLoading(false);
         return;
       }
