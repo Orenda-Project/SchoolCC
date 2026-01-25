@@ -797,27 +797,6 @@ export default function Dashboard() {
           </div>
         </div>
         
-        {/* User Profile */}
-        <div className="p-4 border-b border-white/20">
-          <div
-            onClick={() => navigate('/profile')}
-            className="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl hover-lift cursor-pointer"
-            data-testid="user-profile-section"
-          >
-            {user.profilePicture ? (
-              <img src={user.profilePicture} alt={user.name} className="w-10 h-10 rounded-full object-cover shadow-lg" />
-            ) : (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
-                <User className="w-5 h-5 text-white" />
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-foreground text-sm truncate">{user.name}</p>
-              <p className="text-muted-foreground text-xs truncate">{user.role.replace(/_/g, ' ')}</p>
-            </div>
-          </div>
-        </div>
-
         {/* Quick Actions */}
         <div className="flex-1 overflow-y-auto p-4">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Quick Actions</p>
@@ -1031,9 +1010,22 @@ export default function Dashboard() {
                 <p className="text-xs text-muted-foreground">{user.name}</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <ThemeToggle />
               <NotificationBell />
+              <div
+                onClick={() => navigate('/profile')}
+                className="cursor-pointer"
+                data-testid="mobile-profile-button"
+              >
+                {user.profilePicture ? (
+                  <img src={user.profilePicture} alt={user.name} className="w-9 h-9 rounded-full object-cover shadow-md ring-2 ring-primary/20" />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md ring-2 ring-primary/20">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           
@@ -1124,9 +1116,26 @@ export default function Dashboard() {
               <h1 className="text-2xl font-bold gradient-text">Welcome back, {user.name}</h1>
               <p className="text-base text-muted-foreground mt-1">Here's your dashboard overview</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <ThemeToggle />
               <NotificationBell />
+              <div
+                onClick={() => navigate('/profile')}
+                className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-muted/50 cursor-pointer transition-all duration-200"
+                data-testid="header-profile-button"
+              >
+                {user.profilePicture ? (
+                  <img src={user.profilePicture} alt={user.name} className="w-10 h-10 rounded-full object-cover shadow-md ring-2 ring-primary/20" />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md ring-2 ring-primary/20">
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+                )}
+                <div className="hidden xl:block">
+                  <p className="font-semibold text-foreground text-sm">{user.name}</p>
+                  <p className="text-muted-foreground text-xs">{user.role.replace(/_/g, ' ')}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
