@@ -6,12 +6,15 @@ import { Input } from '@/components/ui/input';
 import { useActivities } from '@/contexts/activities';
 import { useVisitSession } from '@/contexts/visit-session';
 import { useLocation } from 'wouter';
-import { ArrowLeft, MapPin, CheckCircle, Clock, Eye, Search, X, Navigation, Plus } from 'lucide-react';
+import { ArrowLeft, MapPin, CheckCircle, Clock, Eye, Search, X, Navigation, Plus, ClipboardList, Users2, Building2, FileText } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { StartVisitModal } from '@/components/StartVisitModal';
 import { ActiveVisitBanner } from '@/components/ActiveVisitBanner';
 import MonitoringVisitForm from './MonitoringVisitForm';
 import MentoringVisitForm from './MentoringVisitForm';
+import OfficeVisitForm from './OfficeVisitForm';
+import OtherActivityForm from './OtherActivityForm';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { analytics } from '@/lib/analytics';
 
 interface NormalizedVisit {
@@ -37,7 +40,8 @@ export default function SchoolVisits() {
   const { activeSession, endVisit } = useVisitSession();
   const [searchQuery, setSearchQuery] = useState('');
   const [showStartVisitModal, setShowStartVisitModal] = useState(false);
-  const [showFormType, setShowFormType] = useState<'monitoring' | 'mentoring' | null>(null);
+  const [showFormType, setShowFormType] = useState<'monitoring' | 'mentoring' | 'office' | 'other' | null>(null);
+  const [showNewVisitModal, setShowNewVisitModal] = useState(false);
 
   // Track page view
   useEffect(() => {
@@ -48,12 +52,18 @@ export default function SchoolVisits() {
 
   if (!user) return null;
   
-  // Show embedded form if there's an active session and a form type was selected
-  if (activeSession && showFormType === 'monitoring') {
+  // Show embedded form based on selected type
+  if (showFormType === 'monitoring') {
     return <MonitoringVisitForm />;
   }
-  if (activeSession && showFormType === 'mentoring') {
+  if (showFormType === 'mentoring') {
     return <MentoringVisitForm />;
+  }
+  if (showFormType === 'office') {
+    return <OfficeVisitForm />;
+  }
+  if (showFormType === 'other') {
+    return <OtherActivityForm />;
   }
 
   // Combine and normalize all visits from the activities context
@@ -182,15 +192,15 @@ export default function SchoolVisits() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {/* Start Visit Button for AEOs without active session */}
-            {user.role === 'AEO' && !activeSession && (
+            {/* New Visit Button for AEOs */}
+            {user.role === 'AEO' && (
               <Button
-                onClick={() => setShowStartVisitModal(true)}
-                className="gap-2"
-                data-testid="button-start-visit"
+                onClick={() => setShowNewVisitModal(true)}
+                className="gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+                data-testid="button-new-visit"
               >
-                <Navigation className="w-4 h-4" />
-                Start Visit
+                <Plus className="w-4 h-4" />
+                New Visit
               </Button>
             )}
             <div className="flex items-center gap-2">
@@ -335,11 +345,94 @@ export default function SchoolVisits() {
           </div>
         )}
       </div>
-      
-      {/* Start Visit Modal */}
+
+      {/* New Visit Type Selection Modal */}
+      <Dialog open={showNewVisitModal} onOpenChange={setShowNewVisitModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Choose Visit Type</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-3 py-4">
+            <Button
+              onClick={() => {
+                setShowNewVisitModal(false);
+                setShowStartVisitModal(true);
+                setShowFormType('monitoring');
+              }}
+              className="justify-start gap-3 h-auto py-4 bg-purple-50 hover:bg-purple-100 dark:bg-purple-900/20 dark:hover:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800"
+              variant="outline"
+            >
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                <ClipboardList className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left flex-1">
+                <div className="font-semibold">Monitoring Visit</div>
+                <div className="text-xs text-muted-foreground">Comprehensive school inspection with GPS tracking</div>
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => {
+                setShowNewVisitModal(false);
+                setShowStartVisitModal(true);
+                setShowFormType('mentoring');
+              }}
+              className="justify-start gap-3 h-auto py-4 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+              variant="outline"
+            >
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                <Users2 className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left flex-1">
+                <div className="font-semibold">Mentoring Visit</div>
+                <div className="text-xs text-muted-foreground">Teacher support and guidance with GPS tracking</div>
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => {
+                setShowNewVisitModal(false);
+                setShowFormType('office');
+              }}
+              className="justify-start gap-3 h-auto py-4 bg-amber-50 hover:bg-amber-100 dark:bg-amber-900/20 dark:hover:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800"
+              variant="outline"
+            >
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                <Building2 className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left flex-1">
+                <div className="font-semibold">Office Visit</div>
+                <div className="text-xs text-muted-foreground">Administrative meetings and office work</div>
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => {
+                setShowNewVisitModal(false);
+                setShowFormType('other');
+              }}
+              className="justify-start gap-3 h-auto py-4 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:hover:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+              variant="outline"
+            >
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center">
+                <FileText className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left flex-1">
+                <div className="font-semibold">Log Other Activity</div>
+                <div className="text-xs text-muted-foreground">Record meetings, training, or other activities</div>
+              </div>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Start Visit Modal (for GPS-based visits) */}
       <StartVisitModal
         open={showStartVisitModal}
         onOpenChange={setShowStartVisitModal}
+        onVisitStarted={() => {
+          setShowStartVisitModal(false);
+        }}
       />
     </div>
   );

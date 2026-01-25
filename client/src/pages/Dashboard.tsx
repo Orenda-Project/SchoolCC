@@ -607,33 +607,15 @@ export default function Dashboard() {
                     {expandedMenus.fieldActivities && (
                       <div className="ml-4 pl-4 border-l-2 border-amber-200 dark:border-amber-800 space-y-1">
                         {user.role === 'AEO' && (
-                          <>
-                            <button
-                              onClick={() => { setActiveActivityForm('visit-selector'); setShowSidebar(false); }}
-                              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-amber-100/60 dark:hover:bg-amber-900/20 transition-all duration-200"
-                              data-testid="mobile-button-plan-visit"
-                            >
-                              <ClipboardList className="w-4 h-4 text-amber-600" />
-                              <span className="text-sm text-foreground">Plan a Visit</span>
-                            </button>
-                            <button
-                              onClick={() => { setActiveActivityForm('other-activity'); setShowSidebar(false); }}
-                              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-emerald-100/60 dark:hover:bg-emerald-900/20 transition-all duration-200"
-                              data-testid="mobile-button-log-activity"
-                            >
-                              <CheckSquare className="w-4 h-4 text-emerald-600" />
-                              <span className="text-sm text-foreground">Log Activity</span>
-                            </button>
-                          </>
+                          <button
+                            onClick={() => { navigate('/school-visits'); setShowSidebar(false); }}
+                            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-indigo-100/60 dark:hover:bg-indigo-900/20 transition-all duration-200"
+                            data-testid="mobile-button-school-visits"
+                          >
+                            <MapPin className="w-4 h-4 text-indigo-600" />
+                            <span className="text-sm text-foreground">School Visits</span>
+                          </button>
                         )}
-                        <button
-                          onClick={() => { navigate('/school-visits'); setShowSidebar(false); }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-rose-100/60 dark:hover:bg-rose-900/20 transition-all duration-200"
-                          data-testid="mobile-button-school-visits"
-                        >
-                          <MapPin className="w-4 h-4 text-rose-600" />
-                          <span className="text-sm text-foreground">School Visits</span>
-                        </button>
                       </div>
                     )}
                   </div>
@@ -855,33 +837,15 @@ export default function Dashboard() {
                 {expandedMenus.fieldActivities && (
                   <div className="ml-4 pl-4 border-l-2 border-amber-200 dark:border-amber-800 space-y-1">
                     {user.role === 'AEO' && (
-                      <>
-                        <button
-                          onClick={() => setActiveActivityForm('visit-selector')}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-amber-100/60 dark:hover:bg-amber-900/20 transition-all duration-200"
-                          data-testid="button-plan-visit"
-                        >
-                          <ClipboardList className="w-4 h-4 text-amber-600" />
-                          <span className="text-sm text-foreground">Plan a Visit</span>
-                        </button>
-                        <button
-                          onClick={() => setActiveActivityForm('other-activity')}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-emerald-100/60 dark:hover:bg-emerald-900/20 transition-all duration-200"
-                          data-testid="button-log-activity"
-                        >
-                          <CheckSquare className="w-4 h-4 text-emerald-600" />
-                          <span className="text-sm text-foreground">Log Activity</span>
-                        </button>
-                      </>
+                      <button
+                        onClick={() => navigate('/school-visits')}
+                        className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-indigo-100/60 dark:hover:bg-indigo-900/20 transition-all duration-200"
+                        data-testid="button-school-visits"
+                      >
+                        <MapPin className="w-4 h-4 text-indigo-600" />
+                        <span className="text-sm text-foreground">School Visits</span>
+                      </button>
                     )}
-                    <button
-                      onClick={() => navigate('/school-visits')}
-                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-rose-100/60 dark:hover:bg-rose-900/20 transition-all duration-200"
-                      data-testid="button-view-visits"
-                    >
-                      <MapPin className="w-4 h-4 text-rose-600" />
-                      <span className="text-sm text-foreground">School Visits</span>
-                    </button>
                   </div>
                 )}
               </div>
