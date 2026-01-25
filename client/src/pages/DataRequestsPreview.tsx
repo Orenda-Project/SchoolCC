@@ -206,7 +206,7 @@ export default function DataRequestsPreview() {
               </div>
               <div>
                 <p className="font-medium text-foreground">Track status</p>
-                <p className="text-sm text-muted-foreground">حیثیت ٹریک کریں</p>
+                <p className="text-sm text-muted-foreground">پیش رفت دیکھیں</p>
               </div>
             </div>
           </div>
