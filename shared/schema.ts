@@ -4,10 +4,26 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // Organization hierarchy tables
+// Hierarchy: District → Tehsil (DDEO) → Markaz (AEO) → School
 export const districts = pgTable("districts", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   code: text("code").notNull().unique(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const tehsils = pgTable("tehsils", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  districtId: varchar("district_id").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const markazes = pgTable("markazes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  tehsilId: varchar("tehsil_id").notNull(),
+  districtId: varchar("district_id").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -26,6 +42,8 @@ export const schools = pgTable("schools", {
   emisNumber: text("emis_number").notNull().unique(),
   clusterId: varchar("cluster_id").notNull(),
   districtId: varchar("district_id").notNull(),
+  tehsilId: varchar("tehsil_id"),
+  markazId: varchar("markaz_id"),
   address: text("address"),
   // Attendance tracking
   totalStudents: integer("total_students").default(0),
@@ -74,6 +92,10 @@ export const users = pgTable("users", {
   schoolName: text("school_name"),
   clusterId: varchar("cluster_id"),
   districtId: varchar("district_id"),
+  tehsilId: varchar("tehsil_id"),
+  tehsilName: text("tehsil_name"),
+  markazId: varchar("markaz_id"),
+  markazName: text("markaz_name"),
   // Profile fields
   fatherName: text("father_name"),
   spouseName: text("spouse_name"),
@@ -86,7 +108,7 @@ export const users = pgTable("users", {
   profilePicture: text("profile_picture"),
   // AEO assigned schools (array of school IDs)
   assignedSchools: json("assigned_schools").$type<string[]>().default([]),
-  // AEO markaz name
+  // AEO markaz name (legacy - use markazName instead)
   markaz: text("markaz"),
   // Approval workflow fields
   approverRole: text("approver_role"), // Role that should approve this account (DEO, DDEO, AEO, HEAD_TEACHER)
@@ -440,6 +462,16 @@ export const insertDistrictSchema = createInsertSchema(districts).omit({
   createdAt: true,
 });
 
+export const insertTehsilSchema = createInsertSchema(tehsils).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertMarkazSchema = createInsertSchema(markazes).omit({
+  id: true,
+  createdAt: true,
+});
+
 export const insertClusterSchema = createInsertSchema(clusters).omit({
   id: true,
   createdAt: true,
@@ -546,6 +578,10 @@ export const insertVisitSessionSchema = createInsertSchema(visitSessions).omit({
 // Organization types
 export type InsertDistrict = z.infer<typeof insertDistrictSchema>;
 export type District = typeof districts.$inferSelect;
+export type InsertTehsil = z.infer<typeof insertTehsilSchema>;
+export type Tehsil = typeof tehsils.$inferSelect;
+export type InsertMarkaz = z.infer<typeof insertMarkazSchema>;
+export type Markaz = typeof markazes.$inferSelect;
 export type InsertCluster = z.infer<typeof insertClusterSchema>;
 export type Cluster = typeof clusters.$inferSelect;
 export type InsertSchool = z.infer<typeof insertSchoolSchema>;
