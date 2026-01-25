@@ -139,7 +139,7 @@ export default function PWAInstallPrompt() {
   // iOS Install Instructions
   if (isIOS) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 sm:bottom-4 sm:left-auto sm:right-4 sm:w-96">
+      <div className="fixed bottom-0 left-0 right-0 z-[100] sm:bottom-4 sm:left-auto sm:right-4 sm:w-96">
         <Card className="shadow-lg border-2 sm:rounded-lg rounded-t-lg rounded-b-none">
           <CardContent className="p-4">
             <div className="flex items-start gap-3">
@@ -189,7 +189,7 @@ export default function PWAInstallPrompt() {
 
   // Android/Desktop Install Button
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 sm:left-auto sm:right-4 sm:w-96">
+    <div className="fixed bottom-4 left-4 right-4 z-[100] sm:left-auto sm:right-4 sm:w-96">
       <Card className="shadow-lg border-2">
         <CardContent className="p-4">
           <div className="flex items-start gap-3">

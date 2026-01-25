@@ -89,7 +89,7 @@ export default function StickyPWAButton() {
   }
 
   return (
-    <div className="fixed top-2 left-4 right-4 z-[50] sm:top-auto sm:bottom-20 sm:left-auto sm:right-4 sm:w-auto animate-in slide-in-from-top-5 sm:slide-in-from-bottom-5 duration-500">
+    <div className="fixed top-2 left-4 right-4 z-[100] sm:top-auto sm:bottom-20 sm:left-auto sm:right-4 sm:w-auto animate-in slide-in-from-top-5 sm:slide-in-from-bottom-5 duration-500">
       <div className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-2xl px-4 py-3 sm:px-5 sm:py-3">
         <div className="flex-shrink-0">
           <div className="rounded-full bg-white/20 p-2">
