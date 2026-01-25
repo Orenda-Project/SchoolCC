@@ -57,17 +57,10 @@ export default function Dashboard() {
 
   // Listen for guide sidebar events
   useEffect(() => {
-    const handleOpenSidebar = () => {
-      console.log('[Dashboard] Received openSidebarForGuide event, setting showSidebar to true');
-      setShowSidebar(true);
-    };
-    const handleCloseSidebar = () => {
-      console.log('[Dashboard] Received closeSidebarForGuide event, setting showSidebar to false');
-      setShowSidebar(false);
-    };
+    const handleOpenSidebar = () => setShowSidebar(true);
+    const handleCloseSidebar = () => setShowSidebar(false);
     window.addEventListener('openSidebarForGuide', handleOpenSidebar);
     window.addEventListener('closeSidebarForGuide', handleCloseSidebar);
-    console.log('[Dashboard] Added event listeners for sidebar guide events');
     return () => {
       window.removeEventListener('openSidebarForGuide', handleOpenSidebar);
       window.removeEventListener('closeSidebarForGuide', handleCloseSidebar);
