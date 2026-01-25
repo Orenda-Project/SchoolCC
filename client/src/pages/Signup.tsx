@@ -405,13 +405,14 @@ export default function Signup() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="AEO">Assistant Education Officer</SelectItem>
+                    <SelectItem value="DDEO">Deputy District Education Officer</SelectItem>
                     <SelectItem value="HEAD_TEACHER">Head Teacher</SelectItem>
                     <SelectItem value="TEACHER">Teacher</SelectItem>
                     <SelectItem value="TRAINING_MANAGER">Training Manager</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Note: DEO/DDEO accounts can only be created by system administrators
+                  Note: DEO accounts can only be created by system administrators
                 </p>
               </div>
 
