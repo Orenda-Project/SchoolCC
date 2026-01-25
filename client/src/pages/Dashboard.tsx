@@ -200,18 +200,16 @@ export default function Dashboard() {
       case 'requests':
         // Teaching quotes for teachers
         const teachingQuotes = [
-          { text: "A teacher affects eternity; they can never tell where their influence stops.", textUr: "استاد ابدیت پر اثر ڈالتا ہے؛ وہ کبھی نہیں بتا سکتا کہ اس کا اثر کہاں رکتا ہے۔", author: "Henry Adams", gradient: "from-purple-500 to-pink-500", lang: "en" },
-          { text: "علم ایک ایسا خزانہ ہے جو چوری نہیں ہو سکتا۔", textUr: "علم ایک ایسا خزانہ ہے جو چوری نہیں ہو سکتا۔", author: "پاکستانی کہاوت", gradient: "from-emerald-500 to-teal-500", lang: "ur" },
-          { text: "The art of teaching is the art of assisting discovery.", textUr: "تدریس کا فن دریافت میں مدد کرنے کا فن ہے۔", author: "Mark Van Doren", gradient: "from-blue-500 to-cyan-500", lang: "en" },
-          { text: "استاد قوم کا معمار ہوتا ہے۔", textUr: "استاد قوم کا معمار ہوتا ہے۔", author: "علامہ اقبال", gradient: "from-violet-500 to-purple-500", lang: "ur" },
-          { text: "Education is not the filling of a pail, but the lighting of a fire.", textUr: "تعلیم برتن بھرنا نہیں بلکہ آگ روشن کرنا ہے۔", author: "W.B. Yeats", gradient: "from-orange-500 to-red-500", lang: "en" },
-          { text: "پڑھو گے لکھو گے بنو گے نواب، کھیلو گے کودو گے بنو گے خراب۔", textUr: "پڑھو گے لکھو گے بنو گے نواب، کھیلو گے کودو گے بنو گے خراب۔", author: "پرانی کہاوت", gradient: "from-amber-500 to-orange-500", lang: "ur" },
-          { text: "Teaching is the greatest act of optimism.", textUr: "تدریس امید پرستی کا سب سے بڑا عمل ہے۔", author: "Colleen Wilcox", gradient: "from-emerald-500 to-teal-500", lang: "en" },
-          { text: "علم حاصل کرو چاہے چین جانا پڑے۔", textUr: "علم حاصل کرو چاہے چین جانا پڑے۔", author: "حدیث مبارکہ", gradient: "from-teal-500 to-cyan-500", lang: "ur" },
-          { text: "The best teachers teach from the heart, not from the book.", textUr: "بہترین اساتذہ دل سے پڑھاتے ہیں، کتاب سے نہیں۔", author: "Unknown", gradient: "from-rose-500 to-pink-500", lang: "en" },
-          { text: "جو علم سکھائے وہ استاد نہیں، جو سوچنا سکھائے وہ استاد ہے۔", textUr: "جو علم سکھائے وہ استاد نہیں، جو سوچنا سکھائے وہ استاد ہے۔", author: "نامعلوم", gradient: "from-indigo-500 to-blue-500", lang: "ur" },
-          { text: "Teachers plant seeds of knowledge that grow forever.", textUr: "اساتذہ علم کے بیج بوتے ہیں جو ہمیشہ پھلتے پھولتے ہیں۔", author: "Unknown", gradient: "from-violet-500 to-purple-500", lang: "en" },
-          { text: "ایک اچھا استاد موم بتی کی طرح ہے جو خود جل کر دوسروں کو روشنی دیتا ہے۔", textUr: "ایک اچھا استاد موم بتی کی طرح ہے جو خود جل کر دوسروں کو روشنی دیتا ہے۔", author: "نامعلوم", gradient: "from-pink-500 to-rose-500", lang: "ur" },
+          { text: "A teacher affects eternity; they can never tell where their influence stops.", author: "Henry Adams", gradient: "from-purple-500 to-pink-500" },
+          { text: "The art of teaching is the art of assisting discovery.", author: "Mark Van Doren", gradient: "from-blue-500 to-cyan-500" },
+          { text: "Education is not the filling of a pail, but the lighting of a fire.", author: "W.B. Yeats", gradient: "from-orange-500 to-red-500" },
+          { text: "Teaching is the greatest act of optimism.", author: "Colleen Wilcox", gradient: "from-emerald-500 to-teal-500" },
+          { text: "The best teachers teach from the heart, not from the book.", author: "Unknown", gradient: "from-rose-500 to-pink-500" },
+          { text: "Teachers plant seeds of knowledge that grow forever.", author: "Unknown", gradient: "from-violet-500 to-purple-500" },
+          { text: "A good teacher can inspire hope and ignite the imagination.", author: "Brad Henry", gradient: "from-amber-500 to-orange-500" },
+          { text: "Teaching kids to count is fine, but teaching them what counts is best.", author: "Bob Talbert", gradient: "from-indigo-500 to-blue-500" },
+          { text: "The influence of a good teacher can never be erased.", author: "Unknown", gradient: "from-pink-500 to-rose-500" },
+          { text: "Great teachers empathize with kids and inspire them to learn.", author: "Unknown", gradient: "from-teal-500 to-emerald-500" },
         ];
         
         // Coaching tips for Head Teachers to enhance learning gains
@@ -257,21 +255,14 @@ export default function Dashboard() {
         if (user.role === 'TEACHER') {
           return (
             <div key="requests" data-testid="widget-quote">
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">
-                Today's Inspiration <span className="text-muted-foreground font-normal text-base">/ آج کی تحریک</span>
-              </h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold gradient-text mb-3 sm:mb-4 lg:mb-6">Today's Inspiration</h2>
               <Card className="p-4 sm:p-6 lg:p-8 bg-white dark:bg-card border border-border shadow-xl overflow-hidden relative">
                 <div className="relative">
                   <div className={`text-3xl sm:text-4xl lg:text-5xl mb-2 sm:mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>"</div>
-                  <p className={`text-base sm:text-lg lg:text-2xl font-medium leading-relaxed mb-2 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`} dir={dailyQuote.lang === 'ur' ? 'rtl' : 'ltr'}>
+                  <p className={`text-base sm:text-lg lg:text-2xl font-medium leading-relaxed mb-2 sm:mb-4 bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>
                     {dailyQuote.text}
                   </p>
-                  {dailyQuote.lang === 'en' && dailyQuote.textUr && (
-                    <p className={`text-sm sm:text-base font-medium leading-relaxed mb-3 text-muted-foreground`} dir="rtl">
-                      {dailyQuote.textUr}
-                    </p>
-                  )}
-                  <p className={`text-sm font-medium bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`} dir={dailyQuote.lang === 'ur' ? 'rtl' : 'ltr'}>— {dailyQuote.author}</p>
+                  <p className={`text-sm font-medium bg-gradient-to-r ${dailyQuote.gradient} bg-clip-text text-transparent`}>— {dailyQuote.author}</p>
                 </div>
               </Card>
             </div>
@@ -648,6 +639,18 @@ export default function Dashboard() {
                     onClick={() => { navigate('/data-requests'); setShowSidebar(false); }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-violet-100/80 dark:hover:bg-violet-900/30 transition-all duration-300 group press-effect"
                     data-testid="mobile-button-data-requests"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                      <FileText className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="font-medium text-foreground">Data Requests</span>
+                  </button>
+                )}
+                {user.role === 'TEACHER' && (
+                  <button
+                    onClick={() => { navigate('/data-requests-preview'); setShowSidebar(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-violet-100/80 dark:hover:bg-violet-900/30 transition-all duration-300 group press-effect"
+                    data-testid="mobile-button-data-requests-preview"
                   >
                     <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
                       <FileText className="w-5 h-5 text-white" />
