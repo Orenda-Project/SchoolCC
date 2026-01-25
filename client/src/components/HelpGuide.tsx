@@ -66,16 +66,6 @@ const guides: Record<string, ScreenGuide> = {
         position: 'left'
       },
       {
-        title: { en: 'Menu Opened', ur: 'مینو کھل گیا' },
-        description: {
-          en: 'Menu is open! Now I\'ll explain each feature.',
-          ur: 'مینو کھل گیا! اب ہر خصوصیت سمجھاتا ہوں۔'
-        },
-        target: '[data-testid="button-toggle-menu"]',
-        position: 'left',
-        openMenu: true
-      },
-      {
         title: { en: 'Data Requests', ur: 'ڈیٹا درخواستیں' },
         description: {
           en: 'View and respond to data requests from supervisors.',
@@ -188,16 +178,6 @@ const guides: Record<string, ScreenGuide> = {
         },
         target: '[data-testid="button-toggle-menu"]',
         position: 'left'
-      },
-      {
-        title: { en: 'Menu Opened', ur: 'مینو کھل گیا' },
-        description: {
-          en: 'Menu is open! Now I\'ll explain each feature.',
-          ur: 'مینو کھل گیا! اب ہر خصوصیت سمجھاتا ہوں۔'
-        },
-        target: '[data-testid="button-toggle-menu"]',
-        position: 'left',
-        openMenu: true
       },
       {
         title: { en: 'School Management', ur: 'اسکول انتظام' },
