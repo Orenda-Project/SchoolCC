@@ -124,41 +124,41 @@ export default function PersistentHelpBanner({
     );
   }
 
-  // Expanded state - full help content
+  // Expanded state - full help content (compact)
   return (
     <div
       className={`fixed left-0 right-0 ${positionClasses} z-[45] bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/95 dark:to-indigo-900/95 shadow-2xl transition-transform duration-500 ease-out ${transformClass}`}
       style={{
-        maxHeight: position === 'bottom' ? '45vh' : '40vh',
+        maxHeight: position === 'bottom' ? '30vh' : '28vh',
       }}
     >
       {/* Handle bar for visual affordance */}
       {position === 'bottom' && (
-        <div className="flex justify-center pt-3 pb-2">
-          <div className="w-12 h-1.5 bg-blue-300 dark:bg-blue-600 rounded-full" />
+        <div className="flex justify-center pt-2 pb-1">
+          <div className="w-10 h-1 bg-blue-300 dark:bg-blue-600 rounded-full" />
         </div>
       )}
 
-      <div className="px-4 pb-4 overflow-y-auto" style={{ maxHeight: position === 'bottom' ? 'calc(45vh - 60px)' : 'calc(40vh - 60px)' }}>
+      <div className="px-3 pb-3 overflow-y-auto" style={{ maxHeight: position === 'bottom' ? 'calc(30vh - 40px)' : 'calc(28vh - 40px)' }}>
         {/* Header with minimize/close */}
-        <div className="flex items-center justify-between mb-3 pt-2">
+        <div className="flex items-center justify-between mb-2 pt-1">
           <div className="flex items-center gap-2">
-            <HelpCircle className="w-5 h-5 text-blue-700 dark:text-blue-300" />
-            <span className="text-sm font-bold text-blue-900 dark:text-blue-100">
+            <HelpCircle className="w-4 h-4 text-blue-700 dark:text-blue-300" />
+            <span className="text-xs font-bold text-blue-900 dark:text-blue-100">
               فوری رہنما | Quick Start Guide
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {allowMinimize && (
               <button
                 onClick={handleMinimize}
-                className="p-2 hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center"
+                className="p-1.5 hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center"
                 aria-label="Minimize help"
               >
                 {position === 'bottom' ? (
-                  <ChevronDown className="w-5 h-5 text-blue-700 dark:text-blue-300" />
+                  <ChevronDown className="w-4 h-4 text-blue-700 dark:text-blue-300" />
                 ) : (
-                  <ChevronUp className="w-5 h-5 text-blue-700 dark:text-blue-300" />
+                  <ChevronUp className="w-4 h-4 text-blue-700 dark:text-blue-300" />
                 )}
               </button>
             )}
@@ -166,7 +166,7 @@ export default function PersistentHelpBanner({
         </div>
 
         {/* Progress indicator */}
-        <div className="flex items-center justify-between mb-4 px-1">
+        <div className="flex items-center justify-between mb-2 px-1">
           <div className="flex gap-2 flex-1">
             {steps.map((_, idx) => (
               <div
@@ -187,39 +187,39 @@ export default function PersistentHelpBanner({
         </div>
 
         {/* Step content */}
-        <div className="space-y-3">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+        <div className="space-y-1.5">
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
             {step.title}
           </h3>
           {/* Split content into English (LTR) and Urdu (RTL) */}
           {step.content.includes('\n\n') ? (
-            <div className="space-y-2">
-              <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed text-left" dir="ltr">
+            <div className="space-y-1">
+              <p className="text-xs text-gray-700 dark:text-gray-200 leading-relaxed text-left" dir="ltr">
                 {step.content.split('\n\n')[0]}
               </p>
-              <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed text-right" dir="rtl">
+              <p className="text-xs text-gray-700 dark:text-gray-200 leading-relaxed text-right" dir="rtl">
                 {step.content.split('\n\n')[1]}
               </p>
             </div>
           ) : (
-            <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">
+            <p className="text-xs text-gray-700 dark:text-gray-200 leading-relaxed">
               {step.content}
             </p>
           )}
           {step.action && (
-            <div className="flex items-start gap-2 p-3 bg-blue-100 dark:bg-blue-800/50 rounded-lg border border-blue-200 dark:border-blue-700">
-              <div className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 mt-1.5 flex-shrink-0" />
+            <div className="flex items-start gap-1.5 p-2 bg-blue-100 dark:bg-blue-800/50 rounded-md border border-blue-200 dark:border-blue-700">
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 mt-1 flex-shrink-0" />
               {step.action.includes('|') ? (
-                <div className="flex-1 space-y-1">
-                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100 text-left" dir="ltr">
+                <div className="flex-1 space-y-0.5">
+                  <p className="text-xs font-medium text-blue-900 dark:text-blue-100 text-left" dir="ltr">
                     {step.action.split('|')[0].trim()}
                   </p>
-                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100 text-right" dir="rtl">
+                  <p className="text-xs font-medium text-blue-900 dark:text-blue-100 text-right" dir="rtl">
                     {step.action.split('|')[1].trim()}
                   </p>
                 </div>
               ) : (
-                <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                <p className="text-xs font-medium text-blue-900 dark:text-blue-100">
                   {step.action}
                 </p>
               )}
@@ -228,18 +228,20 @@ export default function PersistentHelpBanner({
         </div>
 
         {/* Navigation buttons */}
-        <div className="flex items-center gap-3 mt-5 pt-4 border-t border-blue-200 dark:border-blue-700">
+        <div className="flex items-center gap-2 mt-3 pt-2 border-t border-blue-200 dark:border-blue-700">
           <Button
             onClick={handlePrev}
             disabled={currentStep === 0}
             variant="outline"
-            className="flex-1 h-11 bg-white dark:bg-blue-900 border-blue-300 dark:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-800 disabled:opacity-30"
+            size="sm"
+            className="flex-1 h-8 text-xs bg-white dark:bg-blue-900 border-blue-300 dark:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-800 disabled:opacity-30"
           >
             Previous پچھلا
           </Button>
           <Button
             onClick={handleNext}
-            className="flex-1 h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg"
+            size="sm"
+            className="flex-1 h-8 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-md"
           >
             {currentStep === steps.length - 1 ? 'Got it! سمجھ گیا' : 'Next اگلا'}
           </Button>
@@ -249,8 +251,8 @@ export default function PersistentHelpBanner({
 
       {/* Handle bar at bottom if top position */}
       {position === 'top' && (
-        <div className="flex justify-center py-2">
-          <div className="w-12 h-1.5 bg-blue-300 dark:bg-blue-600 rounded-full" />
+        <div className="flex justify-center py-1">
+          <div className="w-10 h-1 bg-blue-300 dark:bg-blue-600 rounded-full" />
         </div>
       )}
     </div>
