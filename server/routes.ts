@@ -615,9 +615,9 @@ export async function registerRoutes(
           // CEO/DEO/DDEO can see all users - no filtering
         }
         else if (requestingUser.role === 'AEO') {
-          // AEO can only see HEAD_TEACHER and TEACHER in their cluster/schools
+          // AEO can only see HEAD_TEACHER in their cluster/assigned schools (not teachers)
           users = users.filter(u => {
-            if (u.role !== 'HEAD_TEACHER' && u.role !== 'TEACHER') return false;
+            if (u.role !== 'HEAD_TEACHER') return false;
 
             const inCluster = u.clusterId && u.clusterId === requestingUser.clusterId;
             const inAssignedSchool = u.schoolName && requestingUser.assignedSchools &&

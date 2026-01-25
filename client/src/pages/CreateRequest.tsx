@@ -48,12 +48,14 @@ export default function CreateRequest() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isSubmittingRef = useRef(false);
 
-  // Fetch all users from the database
+  // Fetch users from the database with proper filtering based on current user
   useEffect(() => {
     const fetchUsers = async () => {
+      if (!user) return;
       try {
         setLoadingUsers(true);
-        const response = await fetch('/api/admin/users');
+        // Pass current user's ID so backend can filter based on hierarchy
+        const response = await fetch(`/api/admin/users?userId=${user.id}`);
         if (!response.ok) throw new Error('Failed to fetch users');
 
         const users = await response.json();
@@ -73,7 +75,7 @@ export default function CreateRequest() {
     };
 
     fetchUsers();
-  }, []);
+  }, [user]);
 
   if (!user) return null;
 
