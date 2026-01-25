@@ -41,19 +41,37 @@ export default function CompactTooltipGuide({
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   // Filter steps to only include those whose target elements exist in DOM
+  // Uses MutationObserver to detect when form fields appear/disappear (e.g., after role selection)
   useEffect(() => {
     if (isOpen) {
-      const checkVisibleSteps = () => {
+      const checkVisibleSteps = (resetStep = true) => {
         const existing = steps.filter(step => {
           const element = document.querySelector(step.target);
           return element !== null;
         });
         setVisibleSteps(existing);
-        setCurrentStep(0);
+        if (resetStep) {
+          setCurrentStep(0);
+        }
       };
-      // Small delay to ensure DOM is updated after role selection
-      const timer = setTimeout(checkVisibleSteps, 100);
-      return () => clearTimeout(timer);
+      
+      // Initial check with delay
+      const timer = setTimeout(() => checkVisibleSteps(true), 100);
+      
+      // Watch for DOM changes to detect when role-specific fields appear
+      const observer = new MutationObserver(() => {
+        checkVisibleSteps(false);
+      });
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+      
+      return () => {
+        clearTimeout(timer);
+        observer.disconnect();
+      };
     }
   }, [isOpen, steps]);
 
