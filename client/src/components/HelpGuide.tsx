@@ -842,11 +842,11 @@ export function HelpGuide() {
             />
           )}
 
-          {/* Guide panel - compact, semi-transparent, positioned at bottom */}
+          {/* Guide panel - compact, positioned at TOP to never hide content */}
           <div
-            className="fixed z-[70] w-[calc(100%-16px)] max-w-sm bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200"
+            className="fixed z-[70] w-[calc(100%-16px)] max-w-sm bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
             style={{ 
-              bottom: '8px',
+              top: '8px',
               left: '50%', 
               transform: 'translateX(-50%)'
             }}
