@@ -628,14 +628,24 @@ export default function OfficeVisitForm({ onClose }: Props) {
     );
   };
 
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else if (isEditMode) {
+      navigate('/aeo-activity/logs');
+    }
+  };
+
   return (
     <div className="bg-card rounded-lg p-6 max-h-[90vh] overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Office Visit Form</h1>
+        <h1 className="text-2xl font-bold text-foreground">
+          {isEditMode ? 'Edit Office Visit' : 'Office Visit Form'}
+        </h1>
         <Button
           variant="ghost"
           size="icon"
-          onClick={onClose}
+          onClick={handleClose}
           data-testid="button-back"
         >
           ✕

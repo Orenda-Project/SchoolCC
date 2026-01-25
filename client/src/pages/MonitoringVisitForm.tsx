@@ -87,14 +87,23 @@ export default function MonitoringVisitForm({ onClose }: Props) {
   // Fetch existing visit data when in edit mode
   useEffect(() => {
     if (isEditMode && visitId) {
+      console.log('[MonitoringVisitForm] Edit mode detected, fetching visit:', visitId);
       const fetchVisitData = async () => {
         try {
           setLoading(true);
-          const response = await fetch(`/api/activities/monitoring/${visitId}`);
+          const url = `/api/activities/monitoring/${visitId}`;
+          console.log('[MonitoringVisitForm] Fetching from:', url);
+          const response = await fetch(url);
+          console.log('[MonitoringVisitForm] Response status:', response.status);
+
           if (!response.ok) {
-            throw new Error('Failed to fetch visit data');
+            const errorText = await response.text();
+            console.error('[MonitoringVisitForm] Fetch failed:', errorText);
+            throw new Error(`Failed to fetch visit data: ${response.status}`);
           }
+
           const visit = await response.json();
+          console.log('[MonitoringVisitForm] Visit data loaded:', visit);
 
           // Pre-fill form with existing data
           setFormData({
@@ -108,7 +117,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
           }
 
         } catch (error) {
-          console.error('Error fetching visit:', error);
+          console.error('[MonitoringVisitForm] Error fetching visit:', error);
           toast.error('Failed to load visit data');
           navigate('/aeo-activity/logs');
         } finally {
@@ -117,8 +126,10 @@ export default function MonitoringVisitForm({ onClose }: Props) {
       };
 
       fetchVisitData();
+    } else {
+      console.log('[MonitoringVisitForm] Not in edit mode or no visitId:', { isEditMode, visitId, location });
     }
-  }, [isEditMode, visitId, navigate]);
+  }, [isEditMode, visitId, navigate, location]);
 
   // Start GPS tracking when form opens (silent tracking for AEO)
   useEffect(() => {
@@ -969,14 +980,24 @@ export default function MonitoringVisitForm({ onClose }: Props) {
     );
   };
 
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else if (isEditMode) {
+      navigate('/aeo-activity/logs');
+    }
+  };
+
   return (
     <div className="bg-card rounded-lg p-6 max-h-[90vh] overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Monitoring Visit Form</h1>
+        <h1 className="text-2xl font-bold text-foreground">
+          {isEditMode ? 'Edit Monitoring Visit' : 'Monitoring Visit Form'}
+        </h1>
         <Button
           variant="ghost"
           size="icon"
-          onClick={onClose}
+          onClick={handleClose}
           data-testid="button-close"
         >
           <X className="w-5 h-5" />
