@@ -51,6 +51,24 @@ export default function Login() {
   const { hasCompletedHelp, isViewingGuide, openGuide, closeGuide } = useHelpBannerStatus(LOGIN_HELP_KEY);
   const [showHelp, setShowHelp] = useState(false);
   const [helpMinimized, setHelpMinimized] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+
+  // Check if app is running in standalone/installed mode
+  useEffect(() => {
+    const checkStandalone = () => {
+      const standalone = window.matchMedia("(display-mode: standalone)").matches || 
+                        (window.navigator as any).standalone === true;
+      setIsStandalone(standalone);
+    };
+    
+    checkStandalone();
+    
+    // Listen for display mode changes
+    const mediaQuery = window.matchMedia("(display-mode: standalone)");
+    mediaQuery.addEventListener("change", checkStandalone);
+    
+    return () => mediaQuery.removeEventListener("change", checkStandalone);
+  }, []);
 
   useEffect(() => {
     if (!hasCompletedHelp) {
@@ -153,35 +171,37 @@ export default function Login() {
 
         {/* Right Panel - Login Form */}
         <Card className="p-8 lg:p-10 shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-0">
-          {/* Inline PWA Install Banner */}
-          <div className="mb-6 flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl px-4 py-3">
-            <div className="flex-shrink-0">
-              <div className="rounded-full bg-white/20 p-2">
-                <Download className="h-5 w-5" />
+          {/* Inline PWA Install Banner - Hidden when app is installed */}
+          {!isStandalone && (
+            <div className="mb-6 flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl px-4 py-3">
+              <div className="flex-shrink-0">
+                <div className="rounded-full bg-white/20 p-2">
+                  <Download className="h-5 w-5" />
+                </div>
               </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-left">Install TaleemHub</p>
+                <p className="text-xs opacity-90 text-right" dir="rtl">تعلیم ہب انسٹال کریں</p>
+              </div>
+              <Button
+                onClick={() => {
+                  const event = (window as any).deferredPrompt;
+                  if (event) {
+                    event.prompt();
+                    event.userChoice.then(() => {
+                      (window as any).deferredPrompt = null;
+                    });
+                  } else {
+                    alert('To install: tap your browser menu and select "Add to Home Screen" or "Install App"');
+                  }
+                }}
+                size="sm"
+                className="bg-white text-blue-600 hover:bg-white/90 font-semibold px-3 py-2 h-auto text-xs"
+              >
+                Install انسٹال
+              </Button>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-left">Install TaleemHub</p>
-              <p className="text-xs opacity-90 text-right" dir="rtl">تعلیم ہب انسٹال کریں</p>
-            </div>
-            <Button
-              onClick={() => {
-                const event = (window as any).deferredPrompt;
-                if (event) {
-                  event.prompt();
-                  event.userChoice.then(() => {
-                    (window as any).deferredPrompt = null;
-                  });
-                } else {
-                  alert('To install: tap your browser menu and select "Add to Home Screen" or "Install App"');
-                }
-              }}
-              size="sm"
-              className="bg-white text-blue-600 hover:bg-white/90 font-semibold px-3 py-2 h-auto text-xs"
-            >
-              Install انسٹال
-            </Button>
-          </div>
+          )}
 
           {/* Mobile Logo - Only shown on small screens */}
           <div className="lg:hidden flex flex-col items-center mb-6">
