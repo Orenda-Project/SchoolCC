@@ -114,7 +114,7 @@ export default function Dashboard() {
   }, [user]);
 
   // Return null while redirecting
-  if (!user || user.role === 'CEO' || user.role === 'DEO') {
+  if (!user || user.role === 'CEO' || user.role === 'DEO' || user.role === 'DDEO') {
     return null;
   }
   
