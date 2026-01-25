@@ -30,37 +30,37 @@ const guides: Record<string, ScreenGuide> = {
     },
     steps: [
       {
-        title: { en: 'Task Cards', ur: 'کام کارڈز' },
+        title: { en: 'Your Dashboard', ur: 'آپ کا ڈیش بورڈ' },
         description: {
-          en: 'See pending tasks, completed work, and lesson plans.',
-          ur: 'زیر التوا کام، مکمل شدہ اور سبق کے منصوبے دیکھیں۔'
+          en: 'This shows your pending work. Tap any card to see details.',
+          ur: 'یہ آپ کا زیر التوا کام دکھاتا ہے۔ تفصیلات کے لیے کارڈ ٹیپ کریں۔'
         },
         target: '[data-testid="widget-stats"]',
         position: 'bottom'
       },
       {
-        title: { en: 'Inspiration Quote', ur: 'حوصلہ افزا اقتباس' },
+        title: { en: 'Daily Inspiration', ur: 'روزانہ حوصلہ' },
         description: {
-          en: 'A new quote appears each visit.',
-          ur: 'ہر بار نیا اقتباس۔'
+          en: 'Read this quote daily for motivation!',
+          ur: 'حوصلے کے لیے روزانہ یہ اقتباس پڑھیں!'
         },
         target: '[data-testid="widget-quote"]',
         position: 'top'
       },
       {
-        title: { en: 'Teaching Tips', ur: 'تدریسی تجاویز' },
+        title: { en: 'Teaching Tips', ur: 'تدریسی مشورے' },
         description: {
-          en: '3 tips to improve your teaching.',
-          ur: 'تدریس بہتر کرنے کی 3 تجاویز۔'
+          en: 'Try these tips in your classroom today.',
+          ur: 'آج کلاس میں یہ مشورے آزمائیں۔'
         },
         target: '[data-testid="widget-tips"]',
         position: 'top'
       },
       {
-        title: { en: 'Menu Button', ur: 'مینو بٹن' },
+        title: { en: 'Menu ☰', ur: 'مینو ☰' },
         description: {
-          en: 'This is the menu button (☰). Tap Next to open it.',
-          ur: 'یہ مینو بٹن (☰) ہے۔ کھولنے کے لیے اگلا دبائیں۔'
+          en: 'Tap Next to open the menu and see all features.',
+          ur: 'مینو کھولنے کے لیے اگلا ٹیپ کریں۔'
         },
         target: '[data-testid="button-toggle-menu"]',
         position: 'left'
@@ -68,8 +68,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Data Requests', ur: 'ڈیٹا درخواستیں' },
         description: {
-          en: 'View and respond to data requests from supervisors.',
-          ur: 'سپروائزرز کی ڈیٹا درخواستیں دیکھیں اور جواب دیں۔'
+          en: 'Your supervisor sends requests here. Check and respond daily!',
+          ur: 'سپروائزر کی درخواستیں یہاں آتی ہیں۔ روزانہ چیک کریں!'
         },
         target: '[data-testid="mobile-button-data-requests-preview"], [data-testid="button-data-requests-preview"]',
         position: 'right',
@@ -78,8 +78,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Leave Calendar', ur: 'چھٹی کیلنڈر' },
         description: {
-          en: 'Track all your approved leaves.',
-          ur: 'اپنی تمام منظور شدہ چھٹیاں ٹریک کریں۔'
+          en: 'Apply for leave and track your leave history here.',
+          ur: 'چھٹی کی درخواست دیں اور اپنی چھٹیوں کا ریکارڈ دیکھیں۔'
         },
         target: '[data-testid="mobile-button-leave-calendar"], [data-testid="button-view-calendar"]',
         position: 'right',
@@ -88,8 +88,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Community Album', ur: 'کمیونٹی البم' },
         description: {
-          en: 'Share and view photos from all schools.',
-          ur: 'تمام اسکولوں کی تصاویر دیکھیں اور شیئر کریں۔'
+          en: 'Upload classroom photos to share with other teachers.',
+          ur: 'کلاس روم کی تصاویر اپلوڈ کریں اور دوسروں سے شیئر کریں۔'
         },
         target: '[data-testid="mobile-button-community-album"], [data-testid="button-community-album"]',
         position: 'right',
@@ -98,8 +98,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Queries', ur: 'سوالات' },
         description: {
-          en: 'Ask questions and get help.',
-          ur: 'سوالات پوچھیں اور مدد لیں۔'
+          en: 'Have a question? Ask your supervisor here and get answers.',
+          ur: 'کوئی سوال ہے؟ یہاں پوچھیں اور جواب حاصل کریں۔'
         },
         target: '[data-testid="mobile-button-queries"], [data-testid="button-view-queries"]',
         position: 'right',
@@ -108,18 +108,18 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Lesson Plans', ur: 'سبق کے منصوبے' },
         description: {
-          en: 'Create and manage lesson plans.',
-          ur: 'سبق کے منصوبے بنائیں اور منظم کریں۔'
+          en: 'Create your daily lesson plans and track completion.',
+          ur: 'اپنے روزانہ سبق کے منصوبے بنائیں اور مکمل کریں۔'
         },
         target: '[data-testid="mobile-button-lesson-plans"], [data-testid="button-lesson-plans"]',
         position: 'right',
         openMenu: true
       },
       {
-        title: { en: 'Help Guide', ur: 'ہیلپ گائیڈ' },
+        title: { en: 'Help Guide', ur: 'مدد گائیڈ' },
         description: {
-          en: 'Tap here anytime to learn how to use any feature. This guide will walk you through everything!',
-          ur: 'کسی بھی خصوصیت کا استعمال سیکھنے کے لیے یہاں ٹیپ کریں۔ یہ گائیڈ آپ کو سب کچھ سکھائے گا!'
+          en: 'Confused? Tap here anytime to learn how to use the app.',
+          ur: 'سمجھ نہیں آئی؟ کسی بھی وقت یہاں ٹیپ کریں۔'
         },
         target: '[data-testid="mobile-button-help-guide"], [data-testid="button-help-guide-sidebar"]',
         position: 'right',
@@ -128,18 +128,18 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Logout', ur: 'لاگ آؤٹ' },
         description: {
-          en: 'Sign out of your account when done.',
-          ur: 'کام ختم ہونے پر اپنے اکاؤنٹ سے سائن آؤٹ کریں۔'
+          en: 'Done for the day? Tap here to sign out safely.',
+          ur: 'کام ہو گیا؟ محفوظ طریقے سے سائن آؤٹ کریں۔'
         },
         target: '[data-testid="mobile-button-logout"], [data-testid="button-logout"]',
         position: 'right',
         openMenu: true
       },
       {
-        title: { en: 'All Done!', ur: 'مکمل!' },
+        title: { en: 'You\'re Ready!', ur: 'آپ تیار ہیں!' },
         description: {
-          en: 'You know all features now! Tap Help anytime.',
-          ur: 'آپ سب خصوصیات جان گئے! کسی بھی وقت Help ٹیپ کریں۔'
+          en: 'Great job! You now know all features. Start using the app!',
+          ur: 'شاباش! آپ سب سیکھ گئے۔ ایپ استعمال شروع کریں!'
         },
         position: 'center'
       },
@@ -148,33 +148,33 @@ const guides: Record<string, ScreenGuide> = {
   '/dashboard-head-teacher': {
     screenName: { en: 'Head Teacher Guide', ur: 'ہیڈ ٹیچر گائیڈ' },
     introduction: {
-      en: 'Welcome! Let me show you all features of your dashboard.',
-      ur: 'خوش آمدید! آئیں آپ کی تمام خصوصیات دیکھتے ہیں۔'
+      en: 'Welcome! Let me show you how to manage your school.',
+      ur: 'خوش آمدید! آئیں اسکول انتظام سیکھتے ہیں۔'
     },
     steps: [
       {
-        title: { en: 'Task Cards', ur: 'کام کارڈز' },
+        title: { en: 'Your Dashboard', ur: 'آپ کا ڈیش بورڈ' },
         description: {
-          en: 'See pending tasks, completed work, and lesson plans.',
-          ur: 'زیر التوا کام، مکمل شدہ اور سبق کے منصوبے دیکھیں۔'
+          en: 'Quick view of tasks. Red means urgent - complete those first!',
+          ur: 'فوری جائزہ۔ سرخ کام فوری ہیں - پہلے مکمل کریں!'
         },
         target: '[data-testid="widget-stats"]',
         position: 'bottom'
       },
       {
-        title: { en: 'Staff Overview', ur: 'عملے کا جائزہ' },
+        title: { en: 'Staff Status', ur: 'عملے کی حاضری' },
         description: {
-          en: 'See total, present, and absent teachers.',
-          ur: 'کل، موجود اور غیر حاضر اساتذہ دیکھیں۔'
+          en: 'See who is present today. Tap to view full attendance.',
+          ur: 'آج کون موجود ہے دیکھیں۔ مکمل حاضری کے لیے ٹیپ کریں۔'
         },
         target: '[data-testid="widget-staff"]',
         position: 'bottom'
       },
       {
-        title: { en: 'Menu Button', ur: 'مینو بٹن' },
+        title: { en: 'Menu ☰', ur: 'مینو ☰' },
         description: {
-          en: 'This is the menu button (☰). Tap Next to open it.',
-          ur: 'یہ مینو بٹن (☰) ہے۔ کھولنے کے لیے اگلا دبائیں۔'
+          en: 'Tap Next to open the menu and see all features.',
+          ur: 'مینو کھولنے کے لیے اگلا ٹیپ کریں۔'
         },
         target: '[data-testid="button-toggle-menu"]',
         position: 'left'
@@ -182,8 +182,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'School Management', ur: 'اسکول انتظام' },
         description: {
-          en: 'Update attendance, infrastructure, inventory.',
-          ur: 'حاضری، انفراسٹرکچر، انوینٹری اپ ڈیٹ کریں۔'
+          en: 'Update daily attendance, school inventory, and infrastructure.',
+          ur: 'روزانہ حاضری، سامان اور عمارت کی معلومات اپ ڈیٹ کریں۔'
         },
         target: '[data-testid="mobile-button-school-management"]',
         position: 'right',
@@ -192,8 +192,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Manage Teachers', ur: 'اساتذہ انتظام' },
         description: {
-          en: 'View and approve teacher registrations.',
-          ur: 'اساتذہ کی رجسٹریشن دیکھیں اور منظور کریں۔'
+          en: 'Approve new teachers and manage their profiles.',
+          ur: 'نئے اساتذہ کو منظور کریں اور ان کی معلومات دیکھیں۔'
         },
         target: '[data-testid="mobile-button-manage-teachers"]',
         position: 'right',
@@ -202,8 +202,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Data Requests', ur: 'ڈیٹا درخواستیں' },
         description: {
-          en: 'Create and track data requests.',
-          ur: 'ڈیٹا درخواستیں بنائیں اور ٹریک کریں۔'
+          en: 'Send data requests to teachers and track responses.',
+          ur: 'اساتذہ کو درخواستیں بھیجیں اور جوابات ٹریک کریں۔'
         },
         target: '[data-testid="mobile-button-data-requests"], [data-testid="button-data-requests"]',
         position: 'right',
@@ -212,8 +212,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Leave Calendar', ur: 'چھٹی کیلنڈر' },
         description: {
-          en: 'Manage staff leave calendar.',
-          ur: 'عملے کی چھٹی کیلنڈر منظم کریں۔'
+          en: 'View and approve staff leave applications.',
+          ur: 'عملے کی چھٹی کی درخواستیں دیکھیں اور منظور کریں۔'
         },
         target: '[data-testid="mobile-button-leave-calendar"], [data-testid="button-view-calendar"]',
         position: 'right',
@@ -222,8 +222,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Community Album', ur: 'کمیونٹی البم' },
         description: {
-          en: 'View and share school photos.',
-          ur: 'اسکول کی تصاویر دیکھیں اور شیئر کریں۔'
+          en: 'Share school activities and see photos from other schools.',
+          ur: 'اسکول کی سرگرمیاں شیئر کریں اور دوسرے اسکولوں کی تصاویر دیکھیں۔'
         },
         target: '[data-testid="mobile-button-community-album"], [data-testid="button-community-album"]',
         position: 'right',
@@ -232,8 +232,8 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Queries', ur: 'سوالات' },
         description: {
-          en: 'Handle staff queries.',
-          ur: 'عملے کے سوالات کا جواب دیں۔'
+          en: 'Teachers ask questions here. Reply quickly to help them!',
+          ur: 'اساتذہ یہاں سوال پوچھتے ہیں۔ جلدی جواب دیں!'
         },
         target: '[data-testid="mobile-button-queries"], [data-testid="button-view-queries"]',
         position: 'right',
@@ -242,18 +242,18 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Lesson Plans', ur: 'سبق کے منصوبے' },
         description: {
-          en: 'Review teacher lesson plans.',
-          ur: 'اساتذہ کے سبق کے منصوبے دیکھیں۔'
+          en: 'Review and approve teacher lesson plans weekly.',
+          ur: 'اساتذہ کے سبق کے منصوبے ہفتہ وار چیک کریں۔'
         },
         target: '[data-testid="mobile-button-lesson-plans"], [data-testid="button-lesson-plans"]',
         position: 'right',
         openMenu: true
       },
       {
-        title: { en: 'Help Guide', ur: 'ہیلپ گائیڈ' },
+        title: { en: 'Help Guide', ur: 'مدد گائیڈ' },
         description: {
-          en: 'Tap here anytime to learn how to use any feature. This guide will walk you through everything!',
-          ur: 'کسی بھی خصوصیت کا استعمال سیکھنے کے لیے یہاں ٹیپ کریں۔ یہ گائیڈ آپ کو سب کچھ سکھائے گا!'
+          en: 'Confused? Tap here anytime to learn how to use the app.',
+          ur: 'سمجھ نہیں آئی؟ کسی بھی وقت یہاں ٹیپ کریں۔'
         },
         target: '[data-testid="mobile-button-help-guide"], [data-testid="button-help-guide-sidebar"]',
         position: 'right',
@@ -262,18 +262,18 @@ const guides: Record<string, ScreenGuide> = {
       {
         title: { en: 'Logout', ur: 'لاگ آؤٹ' },
         description: {
-          en: 'Sign out of your account when done.',
-          ur: 'کام ختم ہونے پر اپنے اکاؤنٹ سے سائن آؤٹ کریں۔'
+          en: 'Done for the day? Tap here to sign out safely.',
+          ur: 'کام ہو گیا؟ محفوظ طریقے سے سائن آؤٹ کریں۔'
         },
         target: '[data-testid="mobile-button-logout"], [data-testid="button-logout"]',
         position: 'right',
         openMenu: true
       },
       {
-        title: { en: 'All Done!', ur: 'مکمل!' },
+        title: { en: 'You\'re Ready!', ur: 'آپ تیار ہیں!' },
         description: {
-          en: 'You know all features now! Tap Help anytime.',
-          ur: 'آپ سب خصوصیات جان گئے! کسی بھی وقت Help ٹیپ کریں۔'
+          en: 'Great job! You now know all features. Start managing your school!',
+          ur: 'شاباش! آپ سب سیکھ گئے۔ اسکول انتظام شروع کریں!'
         },
         position: 'center'
       },
