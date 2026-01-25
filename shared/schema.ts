@@ -640,3 +640,24 @@ export const pushSubscriptions = pgTable("push_subscriptions", {
 export const insertPushSubscriptionSchema = createInsertSchema(pushSubscriptions).omit({ id: true, createdAt: true });
 export type InsertPushSubscription = z.infer<typeof insertPushSubscriptionSchema>;
 export type PushSubscription = typeof pushSubscriptions.$inferSelect;
+
+// GPS tracking points for offline-capable location tracking
+export const gpsTrackingPoints = pgTable("gps_tracking_points", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  entityId: varchar("entity_id").notNull(), // visitId, sessionId, or other trackable entity
+  entityType: text("entity_type").notNull(), // 'monitoring_visit', 'mentoring_visit', 'session', etc.
+  userId: varchar("user_id").notNull(), // who was being tracked
+  latitude: text("latitude").notNull(),
+  longitude: text("longitude").notNull(),
+  accuracy: text("accuracy"), // GPS accuracy in meters
+  altitude: text("altitude"), // altitude if available
+  speed: text("speed"), // speed if available
+  heading: text("heading"), // heading/bearing if available
+  timestamp: timestamp("timestamp").notNull(), // when this point was captured
+  synced: boolean("synced").default(false).notNull(), // whether synced to server
+  createdAt: timestamp("created_at").notNull().defaultNow(), // when record was created in DB
+});
+
+export const insertGpsTrackingPointSchema = createInsertSchema(gpsTrackingPoints).omit({ id: true, createdAt: true });
+export type InsertGpsTrackingPoint = z.infer<typeof insertGpsTrackingPointSchema>;
+export type GpsTrackingPoint = typeof gpsTrackingPoints.$inferSelect;

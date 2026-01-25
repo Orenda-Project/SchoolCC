@@ -2637,5 +2637,143 @@ export async function registerRoutes(
     }
   });
 
+  // GPS Tracking endpoints
+  app.post("/api/gps-tracking/bulk", async (req, res) => {
+    try {
+      const { points } = req.body;
+
+      if (!points || !Array.isArray(points)) {
+        return res.status(400).json({ error: "Invalid points data" });
+      }
+
+      // Store all GPS points
+      let syncedCount = 0;
+      for (const point of points) {
+        try {
+          await storage.createGpsTrackingPoint({
+            entityId: point.entityId,
+            entityType: point.entityType,
+            userId: point.userId,
+            latitude: point.latitude,
+            longitude: point.longitude,
+            accuracy: point.accuracy,
+            altitude: point.altitude,
+            speed: point.speed,
+            heading: point.heading,
+            timestamp: new Date(point.timestamp),
+            synced: true // Mark as synced since we received it
+          });
+          syncedCount++;
+        } catch (error) {
+          console.error("Failed to store GPS point:", error);
+        }
+      }
+
+      console.log(`Synced ${syncedCount}/${points.length} GPS points`);
+      res.json({
+        success: true,
+        syncedCount,
+        totalReceived: points.length
+      });
+    } catch (error: any) {
+      console.error("GPS bulk upload error:", error);
+      res.status(500).json({ error: "Failed to sync GPS points" });
+    }
+  });
+
+  app.get("/api/gps-trail/:entityId", async (req, res) => {
+    try {
+      const { entityId } = req.params;
+      const { startTime, endTime } = req.query;
+
+      const points = await storage.getGpsTrackingPoints(
+        entityId,
+        startTime ? new Date(startTime as string) : undefined,
+        endTime ? new Date(endTime as string) : undefined
+      );
+
+      // Return points sorted by timestamp
+      const sortedPoints = points.sort((a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      );
+
+      res.json({
+        entityId,
+        pointCount: sortedPoints.length,
+        points: sortedPoints
+      });
+    } catch (error: any) {
+      console.error("GPS trail fetch error:", error);
+      res.status(500).json({ error: "Failed to fetch GPS trail" });
+    }
+  });
+
+  app.get("/api/gps-tracking/stats/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { days = 7 } = req.query;
+
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - Number(days));
+
+      // Get all points for user since cutoff
+      const allPoints = await storage.getGpsTrackingPointsByUser(userId);
+      const recentPoints = allPoints.filter(p =>
+        new Date(p.timestamp) >= cutoffDate
+      );
+
+      // Group by entity
+      const byEntity: Record<string, number> = {};
+      recentPoints.forEach(point => {
+        byEntity[point.entityId] = (byEntity[point.entityId] || 0) + 1;
+      });
+
+      res.json({
+        userId,
+        totalPoints: recentPoints.length,
+        entities: Object.keys(byEntity).length,
+        byEntity,
+        oldestPoint: recentPoints.length > 0
+          ? recentPoints[0].timestamp
+          : null,
+        newestPoint: recentPoints.length > 0
+          ? recentPoints[recentPoints.length - 1].timestamp
+          : null
+      });
+    } catch (error: any) {
+      console.error("GPS stats error:", error);
+      res.status(500).json({ error: "Failed to fetch GPS stats" });
+    }
+  });
+
+  // Link GPS points from session to visit (update entityId and entityType)
+  app.patch("/api/gps-tracking/link-to-visit", async (req, res) => {
+    try {
+      const { sessionId, visitId, visitType } = req.body;
+
+      if (!sessionId || !visitId || !visitType) {
+        return res.status(400).json({ error: "Missing required fields: sessionId, visitId, visitType" });
+      }
+
+      // Update GPS points from session to visit
+      const updatedCount = await storage.updateGpsPointsEntity(
+        sessionId,
+        visitId,
+        visitType
+      );
+
+      console.log(`Linked ${updatedCount} GPS points from session ${sessionId} to visit ${visitId}`);
+      res.json({
+        success: true,
+        updatedCount,
+        sessionId,
+        visitId
+      });
+    } catch (error: any) {
+      console.error("GPS link error:", error);
+      res.status(500).json({ error: "Failed to link GPS points to visit" });
+    }
+  });
+
   return httpServer;
 }

@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { users, dataRequests, requestAssignees, voiceRecordings, districts, clusters, schools, tehsils, markazes, notifications, queries, queryResponses, visitLogs, schoolAlbums, albumPhotos, albumComments, albumReactions, announcements, monitoringVisits, mentoringVisits, officeVisits, otherActivities, visitSessions, pushSubscriptions } from "@shared/schema";
+import { users, dataRequests, requestAssignees, voiceRecordings, districts, clusters, schools, tehsils, markazes, notifications, queries, queryResponses, visitLogs, schoolAlbums, albumPhotos, albumComments, albumReactions, announcements, monitoringVisits, mentoringVisits, officeVisits, otherActivities, visitSessions, pushSubscriptions, gpsTrackingPoints } from "@shared/schema";
 import type {
   InsertUser, User, InsertDataRequest, DataRequest, InsertRequestAssignee, RequestAssignee,
   InsertVoiceRecording, VoiceRecording,
@@ -10,9 +10,10 @@ import type {
   InsertAlbumComment, AlbumComment, InsertAlbumReaction, AlbumReaction, InsertAnnouncement, Announcement,
   InsertMonitoringVisit, MonitoringVisit, InsertMentoringVisit, MentoringVisit,
   InsertOfficeVisit, OfficeVisit, InsertOtherActivity, OtherActivity,
-  InsertVisitSession, VisitSession, InsertPushSubscription, PushSubscription
+  InsertVisitSession, VisitSession, InsertPushSubscription, PushSubscription,
+  InsertGpsTrackingPoint, GpsTrackingPoint
 } from "@shared/schema";
-import { eq, and, or, inArray, desc } from "drizzle-orm";
+import { eq, and, or, inArray, desc, sql } from "drizzle-orm";
 
 export interface IStorage {
   // District operations
@@ -1044,6 +1045,72 @@ export class DBStorage implements IStorage {
 
   async deletePushSubscription(id: string): Promise<void> {
     await db.delete(pushSubscriptions).where(eq(pushSubscriptions.id, id));
+  }
+
+  // GPS Tracking methods
+  async createGpsTrackingPoint(point: InsertGpsTrackingPoint): Promise<GpsTrackingPoint> {
+    const result = await db.insert(gpsTrackingPoints).values(point).returning();
+    return result[0];
+  }
+
+  async getGpsTrackingPoints(
+    entityId: string,
+    startTime?: Date,
+    endTime?: Date
+  ): Promise<GpsTrackingPoint[]> {
+    let query = db.select().from(gpsTrackingPoints).where(eq(gpsTrackingPoints.entityId, entityId));
+
+    if (startTime || endTime) {
+      const conditions = [eq(gpsTrackingPoints.entityId, entityId)];
+
+      if (startTime) {
+        conditions.push(sql`${gpsTrackingPoints.timestamp} >= ${startTime}`);
+      }
+
+      if (endTime) {
+        conditions.push(sql`${gpsTrackingPoints.timestamp} <= ${endTime}`);
+      }
+
+      return db.select().from(gpsTrackingPoints).where(and(...conditions));
+    }
+
+    return query;
+  }
+
+  async getGpsTrackingPointsByUser(userId: string): Promise<GpsTrackingPoint[]> {
+    return db.select().from(gpsTrackingPoints).where(eq(gpsTrackingPoints.userId, userId));
+  }
+
+  async getGpsTrackingPointsByEntity(entityId: string, entityType: string): Promise<GpsTrackingPoint[]> {
+    return db.select()
+      .from(gpsTrackingPoints)
+      .where(
+        and(
+          eq(gpsTrackingPoints.entityId, entityId),
+          eq(gpsTrackingPoints.entityType, entityType)
+        )
+      );
+  }
+
+  async deleteGpsTrackingPoints(entityId: string): Promise<void> {
+    await db.delete(gpsTrackingPoints).where(eq(gpsTrackingPoints.entityId, entityId));
+  }
+
+  async updateGpsPointsEntity(
+    oldEntityId: string,
+    newEntityId: string,
+    newEntityType: string
+  ): Promise<number> {
+    const result = await db
+      .update(gpsTrackingPoints)
+      .set({
+        entityId: newEntityId,
+        entityType: newEntityType
+      })
+      .where(eq(gpsTrackingPoints.entityId, oldEntityId))
+      .returning();
+
+    return result.length;
   }
 }
 

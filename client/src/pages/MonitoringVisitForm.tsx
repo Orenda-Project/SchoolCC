@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { realSchools } from '@/data/realData';
 import { VoiceRecorder } from '@/components/VoiceRecorder';
 import { analytics } from '@/lib/analytics';
+import { gpsTracker } from '@/lib/gps-tracking';
 
 const getAllSchools = () => realSchools.map(school => `${school.name.toUpperCase()} (${school.emisNumber})`);
 
@@ -77,12 +78,43 @@ export default function MonitoringVisitForm({ onClose }: Props) {
     }
   }, [user]);
 
+  // Start GPS tracking when form opens (silent tracking for AEO)
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const startTracking = async () => {
+      try {
+        await gpsTracker.startTracking(
+          sessionIdRef.current,
+          'visit_session',
+          user.id
+        );
+        console.log('[MonitoringVisitForm] GPS tracking started silently');
+      } catch (error) {
+        // Silently fail - don't show error to AEO
+        console.error('[MonitoringVisitForm] GPS tracking failed to start:', error);
+      }
+    };
+
+    startTracking();
+
+    // Cleanup: stop tracking when form is closed
+    return () => {
+      gpsTracker.stopTracking().catch(error => {
+        console.error('[MonitoringVisitForm] GPS tracking failed to stop:', error);
+      });
+    };
+  }, [user?.id]);
+
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isSubmittingRef = useRef(false);
   const [voiceNoteTranscription, setVoiceNoteTranscription] = useState<string>('');
   const [voiceNoteBlob, setVoiceNoteBlob] = useState<Blob | null>(null);
+
+  // GPS tracking session ID - generated once when form opens
+  const sessionIdRef = useRef<string>(`session-mon-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -193,8 +225,33 @@ export default function MonitoringVisitForm({ onClose }: Props) {
         status: 'submitted',
         submittedAt: new Date(),
       };
-      await addMonitoringVisit(visit);
-      analytics.visit.submitted(visit.id, 'monitoring', visit.schoolName || '');
+      const savedVisit = await addMonitoringVisit(visit);
+
+      // Link GPS points from session to the submitted visit
+      try {
+        const linkResponse = await fetch('/api/gps-tracking/link-to-visit', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: sessionIdRef.current,
+            visitId: savedVisit.id,
+            visitType: 'monitoring_visit'
+          })
+        });
+
+        if (linkResponse.ok) {
+          const linkResult = await linkResponse.json();
+          console.log(`[MonitoringVisitForm] Linked ${linkResult.updatedCount} GPS points to visit`);
+        }
+      } catch (error) {
+        // Silently fail - GPS linking is not critical
+        console.error('[MonitoringVisitForm] Failed to link GPS points:', error);
+      }
+
+      // Stop GPS tracking after successful submission
+      await gpsTracker.stopTracking();
+
+      analytics.visit.submitted(savedVisit.id, 'monitoring', visit.schoolName || '');
       toast.success('Monitoring visit submitted successfully!');
       onClose?.();
     } catch (error) {

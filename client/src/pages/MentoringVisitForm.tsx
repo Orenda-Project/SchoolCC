@@ -8,6 +8,7 @@ import { useActivities, MentoringVisitData, MENTORING_AREAS } from '@/contexts/a
 import { toast } from 'sonner';
 import { realSchools } from '@/data/realData';
 import { analytics } from '@/lib/analytics';
+import { gpsTracker } from '@/lib/gps-tracking';
 
 interface VoiceNoteData {
   blob: Blob;
@@ -83,13 +84,16 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const [playingField, setPlayingField] = useState<string | null>(null);
   const [isTranscribing, setIsTranscribing] = useState<string | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
-  
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioElementsRef = useRef<Record<string, HTMLAudioElement>>({});
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const recognitionRef = useRef<any>(null);
   const transcriptRef = useRef<string>('');
+
+  // GPS tracking session ID - generated once when form opens
+  const sessionIdRef = useRef<string>(`session-ment-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
 
   useEffect(() => {
     return () => {
@@ -102,6 +106,34 @@ export default function MentoringVisitForm({ onClose }: Props) {
       });
     };
   }, []);
+
+  // Start GPS tracking when form opens (silent tracking for AEO)
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const startTracking = async () => {
+      try {
+        await gpsTracker.startTracking(
+          sessionIdRef.current,
+          'visit_session',
+          user.id
+        );
+        console.log('[MentoringVisitForm] GPS tracking started silently');
+      } catch (error) {
+        // Silently fail - don't show error to AEO
+        console.error('[MentoringVisitForm] GPS tracking failed to start:', error);
+      }
+    };
+
+    startTracking();
+
+    // Cleanup: stop tracking when form is closed
+    return () => {
+      gpsTracker.stopTracking().catch(error => {
+        console.error('[MentoringVisitForm] GPS tracking failed to stop:', error);
+      });
+    };
+  }, [user?.id]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -500,8 +532,33 @@ export default function MentoringVisitForm({ onClose }: Props) {
         status: 'submitted',
         submittedAt: new Date(),
       };
-      await addMentoringVisit(visit);
-      analytics.visit.submitted(visit.id, 'mentoring', visit.schoolName || '');
+      const savedVisit = await addMentoringVisit(visit);
+
+      // Link GPS points from session to the submitted visit
+      try {
+        const linkResponse = await fetch('/api/gps-tracking/link-to-visit', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: sessionIdRef.current,
+            visitId: savedVisit.id,
+            visitType: 'mentoring_visit'
+          })
+        });
+
+        if (linkResponse.ok) {
+          const linkResult = await linkResponse.json();
+          console.log(`[MentoringVisitForm] Linked ${linkResult.updatedCount} GPS points to visit`);
+        }
+      } catch (error) {
+        // Silently fail - GPS linking is not critical
+        console.error('[MentoringVisitForm] Failed to link GPS points:', error);
+      }
+
+      // Stop GPS tracking after successful submission
+      await gpsTracker.stopTracking();
+
+      analytics.visit.submitted(savedVisit.id, 'mentoring', visit.schoolName || '');
       toast.success('Mentoring visit submitted successfully!');
       onClose?.();
     } catch (error) {

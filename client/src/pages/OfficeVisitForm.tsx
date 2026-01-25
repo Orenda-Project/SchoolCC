@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Check, CheckCircle2, Upload, X } from 'lucide-react';
 import { useActivities, OfficeVisitData } from '@/contexts/activities';
 import { toast } from 'sonner';
 import { analytics } from '@/lib/analytics';
+import { gpsTracker } from '@/lib/gps-tracking';
 
 const STEPS = ['Visit Details', 'Activities Completed', 'Comments', 'Evidence (Optional)'];
 
@@ -50,6 +51,37 @@ export default function OfficeVisitForm({ onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isSubmittingRef = useRef(false);
+
+  // GPS tracking session ID - generated once when form opens
+  const sessionIdRef = useRef<string>(`session-office-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+
+  // Start GPS tracking when form opens (silent tracking for AEO)
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const startTracking = async () => {
+      try {
+        await gpsTracker.startTracking(
+          sessionIdRef.current,
+          'visit_session',
+          user.id
+        );
+        console.log('[OfficeVisitForm] GPS tracking started silently');
+      } catch (error) {
+        // Silently fail - don't show error to AEO
+        console.error('[OfficeVisitForm] GPS tracking failed to start:', error);
+      }
+    };
+
+    startTracking();
+
+    // Cleanup: stop tracking when form is closed
+    return () => {
+      gpsTracker.stopTracking().catch(error => {
+        console.error('[OfficeVisitForm] GPS tracking failed to stop:', error);
+      });
+    };
+  }, [user?.id]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -155,8 +187,33 @@ export default function OfficeVisitForm({ onClose }: Props) {
         status: 'submitted',
         submittedAt: new Date(),
       };
-      await addOfficeVisit(visit);
-      analytics.visit.submitted(visit.id, 'office', 'District Office');
+      const savedVisit = await addOfficeVisit(visit);
+
+      // Link GPS points from session to the submitted visit
+      try {
+        const linkResponse = await fetch('/api/gps-tracking/link-to-visit', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: sessionIdRef.current,
+            visitId: savedVisit.id,
+            visitType: 'office_visit'
+          })
+        });
+
+        if (linkResponse.ok) {
+          const linkResult = await linkResponse.json();
+          console.log(`[OfficeVisitForm] Linked ${linkResult.updatedCount} GPS points to visit`);
+        }
+      } catch (error) {
+        // Silently fail - GPS linking is not critical
+        console.error('[OfficeVisitForm] Failed to link GPS points:', error);
+      }
+
+      // Stop GPS tracking after successful submission
+      await gpsTracker.stopTracking();
+
+      analytics.visit.submitted(savedVisit.id, 'office', 'District Office');
       toast.success('Office visit submitted successfully!');
       onClose?.();
     } catch (error) {
