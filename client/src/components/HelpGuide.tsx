@@ -842,145 +842,81 @@ export function HelpGuide() {
             />
           )}
 
-          {/* Guide panel - positioned at top when menu is open to not block sidebar items */}
+          {/* Guide panel - compact, semi-transparent, positioned at bottom */}
           <div
-            className={`fixed z-[70] w-[calc(100%-32px)] max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in duration-300 ${
-              currentStepData?.openMenu 
-                ? 'slide-in-from-top-4' 
-                : 'slide-in-from-bottom-4'
-            }`}
+            className="fixed z-[70] w-[calc(100%-16px)] max-w-sm bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200"
             style={{ 
+              bottom: '8px',
               left: '50%', 
-              transform: 'translateX(-50%)',
-              ...(currentStepData?.openMenu 
-                ? { top: '16px' } 
-                : { bottom: '16px' })
+              transform: 'translateX(-50%)'
             }}
             dir={language === 'ur' ? 'rtl' : 'ltr'}
           >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3">
+            {/* Compact Header */}
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-2">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  <span className="font-semibold text-sm">
-                    {currentGuide.screenName[language]}
-                  </span>
-                </div>
+                <span className="font-medium text-xs">
+                  {currentStep + 1}/{steps.length}
+                </span>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={toggleLanguage}
-                    className="flex items-center gap-1 px-2 py-1 rounded-full bg-white/20 hover:bg-white/30 text-xs font-medium transition-colors"
+                    className="px-2 py-0.5 rounded-full bg-white/20 hover:bg-white/30 text-xs transition-colors"
                     data-testid="button-toggle-language"
                   >
-                    <Languages className="w-3 h-3" />
                     {language === 'en' ? 'اردو' : 'EN'}
                   </button>
                   {!isFirstTimeUser && (
                     <button
                       onClick={handleClose}
-                      className="p-1 rounded-full hover:bg-white/20 transition-colors"
+                      className="p-0.5 rounded-full hover:bg-white/20 transition-colors"
                       aria-label="Close"
                       data-testid="button-close-help"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Content */}
-            <div className="p-4">
+            {/* Content - compact */}
+            <div className="px-3 py-2">
               {showIntro ? (
-                <div className="text-center py-2">
-                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
-                    <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">
-                    {language === 'en' ? 'Welcome!' : 'خوش آمدید!'}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                <div className="text-center py-1">
+                  <p className="text-xs text-muted-foreground mb-2">
                     {currentGuide.introduction[language]}
                   </p>
-                  {isFirstTimeUser && (
-                    <div className="mb-4 p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-                      <p className="text-xs text-amber-700 dark:text-amber-300">
-                        {language === 'en' 
-                          ? '⚠️ Please complete this quick tour to learn how to use the app. It only takes a minute!'
-                          : '⚠️ براہ کرم ایپ استعمال کرنا سیکھنے کے لیے یہ فوری ٹور مکمل کریں۔ صرف ایک منٹ لگے گا!'}
-                      </p>
-                    </div>
-                  )}
                   <Button
                     onClick={startGuide}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 h-8 text-xs"
                     size="sm"
                   >
-                    {language === 'en' ? `Start Tour (${steps.length} steps)` : `ٹور شروع کریں (${steps.length} مراحل)`}
+                    {language === 'en' ? `Start (${steps.length} steps)` : `شروع (${steps.length})`}
                   </Button>
                 </div>
               ) : (
                 <>
-                  {/* Arrow indicator */}
-                  {targetRect && (
-                    <div className="flex justify-center text-blue-500 mb-2">
-                      <ArrowIcon />
-                    </div>
-                  )}
-
-                  <div className="mb-3">
-                    <div className="flex items-start gap-2 mb-2">
-                      <span className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
-                        {currentStep + 1}
-                      </span>
-                      <h3 className="font-bold text-sm text-foreground leading-tight">
-                        {currentStepData?.title[language]}
-                      </h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed pl-8">
+                  {/* Title and description - compact */}
+                  <div className="mb-2">
+                    <h3 className="font-semibold text-sm text-foreground">
+                      {currentStepData?.title[language]}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       {currentStepData?.description[language]}
                     </p>
-                    {currentStepData?.tip && (
-                      <div className="ml-8 mt-2 p-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-                        <p className="text-xs text-amber-700 dark:text-amber-300">
-                          <span className="font-semibold">💡 </span>
-                          {currentStepData.tip[language]}
-                        </p>
-                      </div>
-                    )}
                   </div>
 
-                  {/* Progress dots */}
-                  <div className="flex gap-1 mb-3">
-                    {steps.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentStep(idx)}
-                        className={`h-1.5 flex-1 rounded-full transition-all ${
-                          idx === currentStep 
-                            ? 'bg-gradient-to-r from-blue-500 to-purple-600' 
-                            : idx < currentStep 
-                              ? 'bg-blue-300 dark:bg-blue-700' 
-                              : 'bg-gray-200 dark:bg-gray-700'
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Navigation */}
+                  {/* Navigation - compact */}
                   <div className="flex items-center justify-between">
-                    <Button variant="outline" size="sm" onClick={prevStep} className="gap-1 text-xs h-8">
+                    <Button variant="ghost" size="sm" onClick={prevStep} className="h-7 px-2 text-xs">
                       <ChevronLeft className="w-3 h-3" />
                       {language === 'en' ? 'Back' : 'واپس'}
                     </Button>
-                    <span className="text-xs text-muted-foreground">
-                      {currentStep + 1}/{steps.length}
-                    </span>
                     <Button
                       size="sm"
                       onClick={nextStep}
-                      className="gap-1 text-xs h-8 bg-gradient-to-r from-blue-500 to-purple-600"
+                      className="h-7 px-3 text-xs bg-gradient-to-r from-blue-500 to-purple-600"
                     >
                       {currentStep === steps.length - 1 
                         ? (language === 'en' ? 'Done' : 'مکمل') 
