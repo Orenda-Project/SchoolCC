@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 
@@ -23,6 +23,7 @@ interface CompactTooltipGuideProps {
  * - NO dismiss/close buttons - must complete flow
  * - Auto-repositions to avoid PWA banner and other UI
  * - Mobile-optimized sizing (max 280px width, compact height)
+ * - Automatically skips steps whose target elements don't exist
  */
 export default function CompactTooltipGuide({
   steps,
@@ -31,6 +32,7 @@ export default function CompactTooltipGuide({
   storageKey
 }: CompactTooltipGuideProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [visibleSteps, setVisibleSteps] = useState<TooltipStep[]>([]);
   const [tooltipPosition, setTooltipPosition] = useState<{
     top: number;
     left: number;
@@ -38,12 +40,22 @@ export default function CompactTooltipGuide({
   } | null>(null);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
-  // Reset to step 1 when guide is opened
+  // Filter steps to only include those whose target elements exist in DOM
   useEffect(() => {
     if (isOpen) {
-      setCurrentStep(0);
+      const checkVisibleSteps = () => {
+        const existing = steps.filter(step => {
+          const element = document.querySelector(step.target);
+          return element !== null;
+        });
+        setVisibleSteps(existing);
+        setCurrentStep(0);
+      };
+      // Small delay to ensure DOM is updated after role selection
+      const timer = setTimeout(checkVisibleSteps, 100);
+      return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, steps]);
 
   // Detect keyboard visibility on mobile
   useEffect(() => {
@@ -62,7 +74,7 @@ export default function CompactTooltipGuide({
     };
   }, []);
 
-  const step = steps[currentStep];
+  const step = visibleSteps[currentStep];
 
   const calculatePosition = useCallback(() => {
     if (!step?.target) return;
@@ -178,7 +190,7 @@ export default function CompactTooltipGuide({
   }, [isOpen, step, calculatePosition]);
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
+    if (currentStep < visibleSteps.length - 1) {
       setTooltipPosition(null); // Clear position during transition
       setTimeout(() => setCurrentStep(prev => prev + 1), 150);
     } else {
@@ -192,7 +204,7 @@ export default function CompactTooltipGuide({
     setTimeout(onComplete, 200);
   };
 
-  if (!isOpen || !step || !tooltipPosition) return null;
+  if (!isOpen || !step || !tooltipPosition || visibleSteps.length === 0) return null;
 
   const getArrowStyle = () => {
     const arrowSize = 6;
@@ -276,7 +288,7 @@ export default function CompactTooltipGuide({
             {/* Progress dots - compact */}
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex gap-0.5">
-                {steps.map((_, idx) => (
+                {visibleSteps.map((_, idx) => (
                   <div
                     key={idx}
                     className={`h-0.5 rounded-full transition-all ${
@@ -290,7 +302,7 @@ export default function CompactTooltipGuide({
                 ))}
               </div>
               <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300">
-                {currentStep + 1}/{steps.length}
+                {currentStep + 1}/{visibleSteps.length}
               </span>
             </div>
 
@@ -322,7 +334,7 @@ export default function CompactTooltipGuide({
                 size="sm"
                 className={`${currentStep > 0 ? 'flex-1' : 'w-full'} h-7 px-2 text-[10px] bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-md`}
               >
-                {currentStep === steps.length - 1 ? 'Got it!' : (
+                {currentStep === visibleSteps.length - 1 ? 'Got it!' : (
                   <>
                     Next
                     <ChevronRight className="w-3 h-3 ml-0.5" />
