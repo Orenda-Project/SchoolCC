@@ -367,7 +367,7 @@ export default function SchoolVisits() {
               </div>
               <div className="text-left flex-1">
                 <div className="font-semibold">Monitoring Visit</div>
-                <div className="text-xs text-muted-foreground">Comprehensive school inspection with GPS tracking</div>
+                <div className="text-xs text-muted-foreground">Comprehensive school inspection and evaluation</div>
               </div>
             </Button>
 
@@ -385,7 +385,7 @@ export default function SchoolVisits() {
               </div>
               <div className="text-left flex-1">
                 <div className="font-semibold">Mentoring Visit</div>
-                <div className="text-xs text-muted-foreground">Teacher support and guidance with GPS tracking</div>
+                <div className="text-xs text-muted-foreground">Teacher support and professional guidance</div>
               </div>
             </Button>
 

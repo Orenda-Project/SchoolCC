@@ -587,38 +587,17 @@ export default function Dashboard() {
             {/* Mobile Sidebar Content */}
             <div className="flex-1 overflow-y-auto p-4 min-h-0">
               <nav className="space-y-2">
-                {(user.role === 'AEO' || user.role === 'DDEO') && (
-                  <div className="space-y-1">
-                    <button
-                      onClick={() => setExpandedMenus(prev => ({ ...prev, fieldActivities: !prev.fieldActivities }))}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-amber-100/80 dark:hover:bg-amber-900/30 transition-all duration-300 group press-effect"
-                      data-testid="mobile-button-field-activities"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                        <MapPin className="w-5 h-5 text-white" />
-                      </div>
-                      <span className="font-medium text-foreground flex-1">Field Activities</span>
-                      {expandedMenus.fieldActivities ? (
-                        <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                      )}
-                    </button>
-                    {expandedMenus.fieldActivities && (
-                      <div className="ml-4 pl-4 border-l-2 border-amber-200 dark:border-amber-800 space-y-1">
-                        {user.role === 'AEO' && (
-                          <button
-                            onClick={() => { navigate('/school-visits'); setShowSidebar(false); }}
-                            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-indigo-100/60 dark:hover:bg-indigo-900/20 transition-all duration-200"
-                            data-testid="mobile-button-school-visits"
-                          >
-                            <MapPin className="w-4 h-4 text-indigo-600" />
-                            <span className="text-sm text-foreground">School Visits</span>
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                {user.role === 'AEO' && (
+                  <button
+                    onClick={() => { navigate('/school-visits'); setShowSidebar(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
+                    data-testid="mobile-button-school-visits"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                      <MapPin className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="font-medium text-foreground">School Visits</span>
+                  </button>
                 )}
                 {user.role === 'AEO' && (
                   <button
@@ -817,38 +796,17 @@ export default function Dashboard() {
         {/* Menu Items */}
         <div className="flex-1 overflow-y-auto p-4">
           <nav className="space-y-2 stagger-children">
-            {(user.role === 'AEO' || user.role === 'DDEO') && (
-              <div className="space-y-1">
-                <button
-                  onClick={() => setExpandedMenus(prev => ({ ...prev, fieldActivities: !prev.fieldActivities }))}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-amber-100/80 dark:hover:bg-amber-900/30 transition-all duration-300 group press-effect"
-                  data-testid="button-field-activities"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                    <MapPin className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="font-medium text-foreground flex-1">Field Activities</span>
-                  {expandedMenus.fieldActivities ? (
-                    <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4 text-muted-foreground transition-transform" />
-                  )}
-                </button>
-                {expandedMenus.fieldActivities && (
-                  <div className="ml-4 pl-4 border-l-2 border-amber-200 dark:border-amber-800 space-y-1">
-                    {user.role === 'AEO' && (
-                      <button
-                        onClick={() => navigate('/school-visits')}
-                        className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-indigo-100/60 dark:hover:bg-indigo-900/20 transition-all duration-200"
-                        data-testid="button-school-visits"
-                      >
-                        <MapPin className="w-4 h-4 text-indigo-600" />
-                        <span className="text-sm text-foreground">School Visits</span>
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+            {user.role === 'AEO' && (
+              <button
+                onClick={() => navigate('/school-visits')}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
+                data-testid="button-school-visits"
+              >
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                  <MapPin className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-medium text-foreground">School Visits</span>
+              </button>
             )}
             {user.role === 'AEO' && (
               <button
