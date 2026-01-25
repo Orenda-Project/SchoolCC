@@ -842,19 +842,24 @@ export function HelpGuide() {
             />
           )}
 
-          {/* Guide panel - floats: TOP when target is below center, BOTTOM when target is above center */}
+          {/* Guide panel - positioned to the RIGHT when menu is open, otherwise floats top/bottom */}
           <div
-            className={`fixed z-[70] w-[calc(100%-16px)] max-w-sm bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in duration-200 ${
-              !targetRect || targetRect.top > window.innerHeight * 0.4 
-                ? 'slide-in-from-top-2' 
-                : 'slide-in-from-bottom-2'
+            className={`fixed z-[70] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in duration-200 ${
+              currentStepData?.openMenu 
+                ? 'w-48 slide-in-from-right-2' 
+                : 'w-[calc(100%-16px)] max-w-sm ' + (!targetRect || targetRect.top > window.innerHeight * 0.4 ? 'slide-in-from-top-2' : 'slide-in-from-bottom-2')
             }`}
             style={{ 
-              left: '50%', 
-              transform: 'translateX(-50%)',
-              ...(!targetRect || targetRect.top > window.innerHeight * 0.4 
-                ? { top: '8px' } 
-                : { bottom: '8px' })
+              ...(currentStepData?.openMenu 
+                ? { right: '8px', top: '50%', transform: 'translateY(-50%)' }
+                : { 
+                    left: '50%', 
+                    transform: 'translateX(-50%)',
+                    ...(!targetRect || targetRect.top > window.innerHeight * 0.4 
+                      ? { top: '8px' } 
+                      : { bottom: '8px' })
+                  }
+              )
             }}
             dir={language === 'ur' ? 'rtl' : 'ltr'}
           >
