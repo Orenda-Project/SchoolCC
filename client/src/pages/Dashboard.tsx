@@ -8,7 +8,7 @@ import { useMockVisits } from '@/hooks/useMockVisits';
 import { useDashboardWidgets } from '@/hooks/useDashboardWidgets';
 import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
-import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, User, MessageSquare, Edit, School, Settings2, BookOpen, HelpCircle, Menu, X, FileSpreadsheet } from 'lucide-react';
+import { LogOut, Plus, FileText, TrendingUp, Users, Calendar, Building2, MapPin, ClipboardList, CheckSquare, Award, ChevronRight, ChevronDown, User, MessageSquare, Edit, School, Settings2, BookOpen, HelpCircle, Menu, X, FileSpreadsheet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import MonitoringVisitForm from '@/pages/MonitoringVisitForm';
 import MentoringVisitForm from '@/pages/MentoringVisitForm';
@@ -37,6 +37,7 @@ export default function Dashboard() {
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showTeacherExportDialog, setShowTeacherExportDialog] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({ fieldActivities: false });
   const [staffStats, setStaffStats] = useState({
     aeos: { total: 0, present: 0, onLeave: 0, absent: 0 },
     headTeachers: { total: 0, present: 0, onLeave: 0, absent: 0 },
@@ -586,39 +587,68 @@ export default function Dashboard() {
             {/* Mobile Sidebar Content */}
             <div className="flex-1 overflow-y-auto p-4 min-h-0">
               <nav className="space-y-2">
-                {user.role === 'AEO' && (
-                  <>
+                {(user.role === 'AEO' || user.role === 'DDEO') && (
+                  <div className="space-y-1">
                     <button
-                      onClick={() => { setActiveActivityForm('visit-selector'); setShowSidebar(false); }}
+                      onClick={() => setExpandedMenus(prev => ({ ...prev, fieldActivities: !prev.fieldActivities }))}
                       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-amber-100/80 dark:hover:bg-amber-900/30 transition-all duration-300 group press-effect"
-                      data-testid="mobile-button-plan-visit"
+                      data-testid="mobile-button-field-activities"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                        <ClipboardList className="w-5 h-5 text-white" />
+                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                        <MapPin className="w-5 h-5 text-white" />
                       </div>
-                      <span className="font-medium text-foreground">Plan a Visit</span>
+                      <span className="font-medium text-foreground flex-1">Field Activities</span>
+                      {expandedMenus.fieldActivities ? (
+                        <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      )}
                     </button>
-                    <button
-                      onClick={() => { setActiveActivityForm('other-activity'); setShowSidebar(false); }}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 transition-all duration-300 group press-effect"
-                      data-testid="mobile-button-log-activity"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                        <CheckSquare className="w-5 h-5 text-white" />
+                    {expandedMenus.fieldActivities && (
+                      <div className="ml-4 pl-4 border-l-2 border-amber-200 dark:border-amber-800 space-y-1">
+                        {user.role === 'AEO' && (
+                          <>
+                            <button
+                              onClick={() => { setActiveActivityForm('visit-selector'); setShowSidebar(false); }}
+                              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-amber-100/60 dark:hover:bg-amber-900/20 transition-all duration-200"
+                              data-testid="mobile-button-plan-visit"
+                            >
+                              <ClipboardList className="w-4 h-4 text-amber-600" />
+                              <span className="text-sm text-foreground">Plan a Visit</span>
+                            </button>
+                            <button
+                              onClick={() => { setActiveActivityForm('other-activity'); setShowSidebar(false); }}
+                              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-emerald-100/60 dark:hover:bg-emerald-900/20 transition-all duration-200"
+                              data-testid="mobile-button-log-activity"
+                            >
+                              <CheckSquare className="w-4 h-4 text-emerald-600" />
+                              <span className="text-sm text-foreground">Log Activity</span>
+                            </button>
+                          </>
+                        )}
+                        <button
+                          onClick={() => { navigate('/school-visits'); setShowSidebar(false); }}
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-rose-100/60 dark:hover:bg-rose-900/20 transition-all duration-200"
+                          data-testid="mobile-button-school-visits"
+                        >
+                          <MapPin className="w-4 h-4 text-rose-600" />
+                          <span className="text-sm text-foreground">School Visits</span>
+                        </button>
                       </div>
-                      <span className="font-medium text-foreground">Log Activity</span>
-                    </button>
-                    <button
-                      onClick={() => { navigate('/aeo-user-management'); setShowSidebar(false); }}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
-                      data-testid="mobile-button-manage-staff"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                        <Users className="w-5 h-5 text-white" />
-                      </div>
-                      <span className="font-medium text-foreground">Manage Staff</span>
-                    </button>
-                  </>
+                    )}
+                  </div>
+                )}
+                {user.role === 'AEO' && (
+                  <button
+                    onClick={() => { navigate('/aeo-user-management'); setShowSidebar(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
+                    data-testid="mobile-button-manage-staff"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                      <Users className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="font-medium text-foreground">Manage Staff</span>
+                  </button>
                 )}
                 {user.role === 'HEAD_TEACHER' && (
                   <>
@@ -699,18 +729,6 @@ export default function Dashboard() {
                       <Building2 className="w-5 h-5 text-white" />
                     </div>
                     <span className="font-medium text-foreground">School Inventory</span>
-                  </button>
-                )}
-                {(user.role === 'AEO' || user.role === 'DDEO') && (
-                  <button
-                    onClick={() => { navigate('/school-visits'); setShowSidebar(false); }}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-rose-100/80 dark:hover:bg-rose-900/30 transition-all duration-300 group press-effect"
-                    data-testid="mobile-button-school-visits"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                      <MapPin className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="font-medium text-foreground">School Visits</span>
                   </button>
                 )}
                 {user.role === 'DDEO' && (
@@ -817,39 +835,68 @@ export default function Dashboard() {
         {/* Menu Items */}
         <div className="flex-1 overflow-y-auto p-4">
           <nav className="space-y-2 stagger-children">
-            {user.role === 'AEO' && (
-              <>
+            {(user.role === 'AEO' || user.role === 'DDEO') && (
+              <div className="space-y-1">
                 <button
-                  onClick={() => setActiveActivityForm('visit-selector')}
+                  onClick={() => setExpandedMenus(prev => ({ ...prev, fieldActivities: !prev.fieldActivities }))}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-amber-100/80 dark:hover:bg-amber-900/30 transition-all duration-300 group press-effect"
-                  data-testid="button-plan-visit"
+                  data-testid="button-field-activities"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                    <ClipboardList className="w-5 h-5 text-white" />
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                    <MapPin className="w-5 h-5 text-white" />
                   </div>
-                  <span className="font-medium text-foreground">Plan a Visit</span>
+                  <span className="font-medium text-foreground flex-1">Field Activities</span>
+                  {expandedMenus.fieldActivities ? (
+                    <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 text-muted-foreground transition-transform" />
+                  )}
                 </button>
-                <button
-                  onClick={() => setActiveActivityForm('other-activity')}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 transition-all duration-300 group press-effect"
-                  data-testid="button-log-activity"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                    <CheckSquare className="w-5 h-5 text-white" />
+                {expandedMenus.fieldActivities && (
+                  <div className="ml-4 pl-4 border-l-2 border-amber-200 dark:border-amber-800 space-y-1">
+                    {user.role === 'AEO' && (
+                      <>
+                        <button
+                          onClick={() => setActiveActivityForm('visit-selector')}
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-amber-100/60 dark:hover:bg-amber-900/20 transition-all duration-200"
+                          data-testid="button-plan-visit"
+                        >
+                          <ClipboardList className="w-4 h-4 text-amber-600" />
+                          <span className="text-sm text-foreground">Plan a Visit</span>
+                        </button>
+                        <button
+                          onClick={() => setActiveActivityForm('other-activity')}
+                          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-emerald-100/60 dark:hover:bg-emerald-900/20 transition-all duration-200"
+                          data-testid="button-log-activity"
+                        >
+                          <CheckSquare className="w-4 h-4 text-emerald-600" />
+                          <span className="text-sm text-foreground">Log Activity</span>
+                        </button>
+                      </>
+                    )}
+                    <button
+                      onClick={() => navigate('/school-visits')}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-rose-100/60 dark:hover:bg-rose-900/20 transition-all duration-200"
+                      data-testid="button-view-visits"
+                    >
+                      <MapPin className="w-4 h-4 text-rose-600" />
+                      <span className="text-sm text-foreground">School Visits</span>
+                    </button>
                   </div>
-                  <span className="font-medium text-foreground">Log Activity</span>
-                </button>
-                <button
-                  onClick={() => navigate('/aeo-user-management')}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
-                  data-testid="button-manage-staff"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                    <Users className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="font-medium text-foreground">Manage Staff</span>
-                </button>
-              </>
+                )}
+              </div>
+            )}
+            {user.role === 'AEO' && (
+              <button
+                onClick={() => navigate('/aeo-user-management')}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
+                data-testid="button-manage-staff"
+              >
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-medium text-foreground">Manage Staff</span>
+              </button>
             )}
             {user.role === 'HEAD_TEACHER' && (
               <>
@@ -930,18 +977,6 @@ export default function Dashboard() {
                   <Building2 className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-medium text-foreground">School Inventory</span>
-              </button>
-            )}
-            {(user.role === 'AEO' || user.role === 'DDEO') && (
-              <button
-                onClick={() => navigate('/school-visits')}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-rose-100/80 dark:hover:bg-rose-900/30 transition-all duration-300 group press-effect"
-                data-testid="button-view-visits"
-              >
-                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                  <MapPin className="w-5 h-5 text-white" />
-                </div>
-                <span className="font-medium text-foreground">School Visits</span>
               </button>
             )}
             {user.role === 'DDEO' && (
