@@ -794,9 +794,8 @@ export default function Dashboard() {
           </div>
         </div>
         
-        {/* Quick Actions */}
+        {/* Menu Items */}
         <div className="flex-1 overflow-y-auto p-4">
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Quick Actions</p>
           <nav className="space-y-2 stagger-children">
             {user.role === 'AEO' && (
               <>
@@ -868,10 +867,6 @@ export default function Dashboard() {
                 <span className="font-medium text-foreground">Data Requests</span>
               </button>
             )}
-            
-            <div className="pt-4 pb-2">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Navigate</p>
-            </div>
             
             <button
               onClick={() => navigate('/calendar')}
