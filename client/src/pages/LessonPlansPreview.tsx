@@ -33,9 +33,6 @@ const subjects = [
 
 const upcomingFeatures = [
   { icon: FileText, label: 'Ready-made lesson plans', labelUr: 'تیار شدہ سبق کے منصوبے' },
-  { icon: Video, label: 'Video tutorials', labelUr: 'ویڈیو ٹیوٹوریلز' },
-  { icon: Lightbulb, label: 'Teaching activities', labelUr: 'تدریسی سرگرمیاں' },
-  { icon: CheckCircle2, label: 'Assessment tools', labelUr: 'جانچ کے اوزار' },
 ];
 
 export default function LessonPlansPreview() {
