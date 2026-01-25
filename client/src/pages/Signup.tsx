@@ -10,7 +10,7 @@ import type { UserRole } from '@/contexts/auth';
 import { analytics } from '@/lib/analytics';
 import CompactTooltipGuide, { TooltipStep, useTooltipGuideStatus } from '@/components/CompactTooltipGuide';
 
-const SIGNUP_GUIDE_KEY = 'taleemhub_signup_guide_v2';
+const SIGNUP_GUIDE_KEY = 'taleemhub_signup_guide_v3';
 
 const signupGuideSteps: TooltipStep[] = [
   {
@@ -44,62 +44,74 @@ const signupGuideSteps: TooltipStep[] = [
     placement: 'bottom',
   },
   {
+    target: '[data-guide="tehsil-select"]',
+    title: '5. تحصیل | Tehsil',
+    message: 'اپنی تحصیل منتخب کریں یا نئی شامل کریں۔\nSelect your tehsil or add a new one.',
+    placement: 'bottom',
+  },
+  {
     target: '[data-guide="markaz-input"]',
-    title: '4a. مرکز کا نام | Markaz Name',
-    message: 'اگر آپ AEO ہیں تو اپنے مرکز کا نام درج کریں۔\nIf you are AEO, enter your Markaz name.',
+    title: '6. مرکز | Markaz',
+    message: 'اپنا مرکز منتخب کریں یا نیا شامل کریں (AEO کے لیے)۔\nSelect your markaz or add new (for AEO).',
     placement: 'bottom',
   },
   {
     target: '[data-guide="schools-select"]',
-    title: '4b. اسکولز | Schools',
+    title: '7. اسکولز | Schools',
     message: 'اسکول تلاش کریں یا دستی طور پر شامل کریں۔\nSearch for schools or add manually.',
     placement: 'bottom',
   },
   {
     target: '[data-guide="school-select"]',
-    title: '4c. اسکول منتخب کریں | Select School',
+    title: '7. اسکول منتخب کریں | Select School',
     message: 'اپنا اسکول تلاش کریں یا دستی طور پر شامل کریں۔\nSearch for your school or add manually.',
     placement: 'bottom',
   },
   {
+    target: '[data-guide="gender-select"]',
+    title: '8. صنف | Gender',
+    message: 'اپنی صنف منتخب کریں۔\nSelect your gender.',
+    placement: 'bottom',
+  },
+  {
     target: '[data-guide="father-name"]',
-    title: '5. والد کا نام | Father Name',
+    title: '9. والد کا نام | Father Name',
     message: 'والد کا نام درج کریں (اختیاری)۔\nEnter father name (optional).',
     placement: 'bottom',
   },
   {
     target: '[data-guide="email-input"]',
-    title: '6. ای میل | Email',
+    title: '10. ای میل | Email',
     message: 'اپنا ای میل درج کریں (اختیاری)۔\nEnter your email (optional).',
     placement: 'bottom',
   },
   {
     target: '[data-guide="cnic-input"]',
-    title: '7. شناختی کارڈ | CNIC',
+    title: '11. شناختی کارڈ | CNIC',
     message: 'اپنا شناختی کارڈ نمبر درج کریں (اختیاری)۔\nEnter CNIC number (optional).',
     placement: 'bottom',
   },
   {
     target: '[data-guide="dob-input"]',
-    title: '8. تاریخ پیدائش | Date of Birth',
+    title: '12. تاریخ پیدائش | Date of Birth',
     message: 'اپنی تاریخ پیدائش منتخب کریں (اختیاری)۔\nSelect your date of birth (optional).',
     placement: 'bottom',
   },
   {
     target: '[data-guide="doj-input"]',
-    title: '9. تاریخ شمولیت | Date of Joining',
+    title: '13. تاریخ شمولیت | Date of Joining',
     message: 'ملازمت کی تاریخ منتخب کریں (اختیاری)۔\nSelect joining date (optional).',
     placement: 'bottom',
   },
   {
     target: '[data-guide="qualification-input"]',
-    title: '10. تعلیمی قابلیت | Qualification',
+    title: '14. تعلیمی قابلیت | Qualification',
     message: 'اپنی تعلیمی قابلیت درج کریں (اختیاری)۔\nEnter your qualification (optional).',
     placement: 'bottom',
   },
   {
     target: '[data-guide="submit-button"]',
-    title: '11. جمع کرائیں! | Submit!',
+    title: '15. جمع کرائیں! | Submit!',
     message: 'اکاؤنٹ بنانے کے لیے یہاں ٹیپ کریں۔\nTap here to create your account.',
     placement: 'top',
   },
