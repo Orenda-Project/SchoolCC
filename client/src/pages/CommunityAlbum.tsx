@@ -195,50 +195,56 @@ export default function CommunityAlbum() {
   return (
     <div className="min-h-screen bg-background">
       <div className="bg-background border-b border-border sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate('/dashboard')}
-              data-testid="button-back"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div className="ml-4">
-              <h1 className="text-2xl font-bold text-foreground">Community Album</h1>
-              <p className="text-sm text-muted-foreground">See activities from all schools</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <div className="flex bg-muted rounded-lg p-1">
+        <div className="max-w-4xl mx-auto px-4 py-3">
+          {/* Header row */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
               <Button
-                variant={viewMode === 'feed' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('feed')}
-                data-testid="button-view-feed"
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate('/dashboard')}
+                data-testid="button-back"
               >
-                Feed
+                <ArrowLeft className="w-4 h-4" />
               </Button>
-              <Button
-                variant={viewMode === 'albums' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('albums')}
-                data-testid="button-view-albums"
-              >
-                <Images className="w-4 h-4 mr-1" />
-                Mini Albums
-              </Button>
+              <div className="ml-2">
+                <h1 className="text-lg sm:text-2xl font-bold text-foreground">Community Album</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">See activities from all schools</p>
+              </div>
             </div>
             {(user.role === 'TEACHER' || user.role === 'HEAD_TEACHER') && user.schoolId && (
               <Button
+                size="sm"
                 onClick={() => navigate(`/create-activity/${user.schoolId}`)}
                 data-testid="button-create-activity"
+                className="shrink-0"
               >
-                <Plus className="w-4 h-4 mr-2" />
-                New Post
+                <Plus className="w-4 h-4" />
+                <span className="ml-1">Post</span>
               </Button>
             )}
+          </div>
+          {/* Tabs row */}
+          <div className="flex bg-muted rounded-lg p-1 w-full">
+            <Button
+              variant={viewMode === 'feed' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-1"
+              onClick={() => setViewMode('feed')}
+              data-testid="button-view-feed"
+            >
+              Feed
+            </Button>
+            <Button
+              variant={viewMode === 'albums' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-1"
+              onClick={() => setViewMode('albums')}
+              data-testid="button-view-albums"
+            >
+              <Images className="w-4 h-4 mr-1" />
+              Albums
+            </Button>
           </div>
         </div>
       </div>
