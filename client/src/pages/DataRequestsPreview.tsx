@@ -13,8 +13,10 @@ import {
   Send,
   ClipboardList,
   Users,
-  Calendar
+  Calendar,
+  Loader2
 } from 'lucide-react';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 
 const sampleRequest = {
   title: 'Monthly Enrollment Data',
@@ -30,12 +32,13 @@ export default function DataRequestsPreview() {
   const [, navigate] = useLocation();
   const [sampleInput, setSampleInput] = useState('');
   const [notifyMe, setNotifyMe] = useState(false);
+  const { subscribe, isLoading } = usePushNotifications();
 
-  const handleNotifyMe = () => {
-    setNotifyMe(true);
-    setTimeout(() => {
-      setNotifyMe(false);
-    }, 3000);
+  const handleNotifyMe = async () => {
+    const success = await subscribe('data_requests');
+    if (success) {
+      setNotifyMe(true);
+    }
   };
 
   return (
@@ -223,11 +226,16 @@ export default function DataRequestsPreview() {
             </p>
             <Button 
               onClick={handleNotifyMe}
-              disabled={notifyMe}
+              disabled={notifyMe || isLoading}
               className={notifyMe ? 'bg-green-600 hover:bg-green-600' : 'bg-amber-600 hover:bg-amber-700'}
               data-testid="button-notify-me"
             >
-              {notifyMe ? (
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Subscribing...
+                </>
+              ) : notifyMe ? (
                 <>
                   <CheckCircle2 className="w-4 h-4 mr-2" />
                   You'll be notified!

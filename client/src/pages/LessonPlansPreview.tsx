@@ -13,8 +13,10 @@ import {
   FileText,
   Video,
   Lightbulb,
-  Star
+  Star,
+  Loader2
 } from 'lucide-react';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 
 const grades = [
   { id: 'prep', label: 'Prep', labelUr: 'پریپ' },
@@ -40,12 +42,13 @@ export default function LessonPlansPreview() {
   const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [notifyMe, setNotifyMe] = useState(false);
+  const { subscribe, isLoading } = usePushNotifications();
 
-  const handleNotifyMe = () => {
-    setNotifyMe(true);
-    setTimeout(() => {
-      setNotifyMe(false);
-    }, 3000);
+  const handleNotifyMe = async () => {
+    const success = await subscribe('lesson_plans');
+    if (success) {
+      setNotifyMe(true);
+    }
   };
 
   return (
@@ -190,11 +193,16 @@ export default function LessonPlansPreview() {
               
               <Button
                 onClick={handleNotifyMe}
-                disabled={notifyMe}
+                disabled={notifyMe || isLoading}
                 className={`gap-2 ${notifyMe ? 'bg-green-500 hover:bg-green-500' : 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700'}`}
                 data-testid="button-notify-me"
               >
-                {notifyMe ? (
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Subscribing...
+                  </>
+                ) : notifyMe ? (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
                     You'll be notified!
@@ -248,11 +256,16 @@ export default function LessonPlansPreview() {
             </p>
             <Button 
               onClick={handleNotifyMe}
-              disabled={notifyMe}
+              disabled={notifyMe || isLoading}
               className={notifyMe ? 'bg-green-600 hover:bg-green-600' : 'bg-amber-600 hover:bg-amber-700'}
               data-testid="button-notify-me-bottom"
             >
-              {notifyMe ? (
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Subscribing...
+                </>
+              ) : notifyMe ? (
                 <>
                   <CheckCircle2 className="w-4 h-4 mr-2" />
                   You'll be notified!
