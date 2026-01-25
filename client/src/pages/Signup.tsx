@@ -57,6 +57,18 @@ const signupGuideSteps: TooltipStep[] = [
     placement: 'bottom',
   },
   {
+    target: '[data-guide="school-name-input"]',
+    title: '4c. اسکول کا نام | School Name',
+    message: 'اپنے اسکول کا نام درج کریں۔\nEnter your school name.',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-guide="school-emis-input"]',
+    title: '4d. ای ایم آئی ایس | EMIS Number',
+    message: 'اپنے اسکول کا ای ایم آئی ایس نمبر درج کریں۔\nEnter your school EMIS number.',
+    placement: 'bottom',
+  },
+  {
     target: '[data-guide="father-name"]',
     title: '5. والد کا نام | Father Name',
     message: 'والد کا نام درج کریں (اختیاری)۔\nEnter father name (optional).',
@@ -155,6 +167,7 @@ export default function Signup() {
 
     // Role-specific
     clusterId: '',
+    schoolName: '',
     schoolEmis: '',
     districtId: 'Rawalpindi',
     markazName: '',
@@ -482,26 +495,30 @@ export default function Signup() {
               )}
 
               {(formData.role === 'HEAD_TEACHER' || formData.role === 'TEACHER') && (
-                <div>
-                  <Label>Select Your School * | اپنا اسکول منتخب کریں</Label>
-                  <Select
-                    value={formData.schoolEmis}
-                    onValueChange={(value) => setFormData({ ...formData, schoolEmis: value })}
-                  >
-                    <SelectTrigger data-testid="select-school">
-                      <SelectValue placeholder="Select school | اسکول منتخب کریں" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ALL_SCHOOLS.map((school) => (
-                        <SelectItem key={school.emis} value={school.emis}>
-                          {school.name} ({school.emis})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Choose the school where you work
-                  </p>
+                <div className="space-y-4">
+                  <div data-guide="school-name-input">
+                    <Label>School Name * | اسکول کا نام</Label>
+                    <Input
+                      value={formData.schoolName || ''}
+                      onChange={(e) => setFormData({ ...formData, schoolName: e.target.value })}
+                      placeholder="Enter your school name | اپنے اسکول کا نام درج کریں"
+                      required
+                      data-testid="input-school-name"
+                    />
+                  </div>
+                  <div data-guide="school-emis-input">
+                    <Label>EMIS Number * | ای ایم آئی ایس نمبر</Label>
+                    <Input
+                      value={formData.schoolEmis}
+                      onChange={(e) => setFormData({ ...formData, schoolEmis: e.target.value })}
+                      placeholder="Enter EMIS number | ای ایم آئی ایس نمبر درج کریں"
+                      required
+                      data-testid="input-school-emis"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Enter the EMIS code of your school | اپنے اسکول کا ای ایم آئی ایس کوڈ درج کریں
+                    </p>
+                  </div>
                 </div>
               )}
 
