@@ -35,8 +35,7 @@ export default function Dashboard() {
   const [teacherDialogOpen, setTeacherDialogOpen] = useState(false);
   const [teacherDialogType, setTeacherDialogType] = useState<'total' | 'present' | 'onLeave' | 'absent'>('total');
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
-  const [showDesktopSidebar, setShowDesktopSidebar] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const [showTeacherExportDialog, setShowTeacherExportDialog] = useState(false);
   const [staffStats, setStaffStats] = useState({
     aeos: { total: 0, present: 0, onLeave: 0, absent: 0 },
@@ -536,11 +535,11 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Mobile Sidebar Overlay */}
-      {showMobileSidebar && (
+      {showSidebar && (
         <div className="lg:hidden fixed inset-0 z-50">
           <div 
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setShowMobileSidebar(false)}
+            onClick={() => setShowSidebar(false)}
           />
           <aside className="absolute left-0 top-0 h-full w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border animate-slideInLeft overflow-y-auto"
             data-testid="mobile-sidebar"
@@ -557,7 +556,7 @@ export default function Dashboard() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setShowMobileSidebar(false)}
+                onClick={() => setShowSidebar(false)}
                 data-testid="button-close-menu"
                 className="rounded-full"
               >
@@ -585,12 +584,11 @@ export default function Dashboard() {
 
             {/* Mobile Sidebar Content */}
             <div className="flex-1 overflow-y-auto p-4">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Quick Actions</p>
               <nav className="space-y-2">
                 {user.role === 'AEO' && (
                   <>
                     <button
-                      onClick={() => { setActiveActivityForm('visit-selector'); setShowMobileSidebar(false); }}
+                      onClick={() => { setActiveActivityForm('visit-selector'); setShowSidebar(false); }}
                       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-amber-100/80 dark:hover:bg-amber-900/30 transition-all duration-300 group press-effect"
                       data-testid="mobile-button-plan-visit"
                     >
@@ -600,7 +598,7 @@ export default function Dashboard() {
                       <span className="font-medium text-foreground">Plan a Visit</span>
                     </button>
                     <button
-                      onClick={() => { setActiveActivityForm('other-activity'); setShowMobileSidebar(false); }}
+                      onClick={() => { setActiveActivityForm('other-activity'); setShowSidebar(false); }}
                       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 transition-all duration-300 group press-effect"
                       data-testid="mobile-button-log-activity"
                     >
@@ -610,7 +608,7 @@ export default function Dashboard() {
                       <span className="font-medium text-foreground">Log Activity</span>
                     </button>
                     <button
-                      onClick={() => { navigate('/aeo-user-management'); setShowMobileSidebar(false); }}
+                      onClick={() => { navigate('/aeo-user-management'); setShowSidebar(false); }}
                       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
                       data-testid="mobile-button-manage-staff"
                     >
@@ -624,7 +622,7 @@ export default function Dashboard() {
                 {user.role === 'HEAD_TEACHER' && (
                   <>
                     <button
-                      onClick={() => { navigate('/school-data'); setShowMobileSidebar(false); }}
+                      onClick={() => { navigate('/school-data'); setShowSidebar(false); }}
                       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-teal-100/80 dark:hover:bg-teal-900/30 transition-all duration-300 group press-effect"
                       data-testid="mobile-button-school-management"
                     >
@@ -634,7 +632,7 @@ export default function Dashboard() {
                       <span className="font-medium text-foreground">School Management</span>
                     </button>
                     <button
-                      onClick={() => { navigate('/headteacher-user-management'); setShowMobileSidebar(false); }}
+                      onClick={() => { navigate('/headteacher-user-management'); setShowSidebar(false); }}
                       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
                       data-testid="mobile-button-manage-teachers"
                     >
@@ -647,7 +645,7 @@ export default function Dashboard() {
                 )}
                 {(user.role === 'AEO' || user.role === 'HEAD_TEACHER' || user.role === 'DDEO' || user.role === 'DEO') && (
                   <button
-                    onClick={() => { navigate('/data-requests'); setShowMobileSidebar(false); }}
+                    onClick={() => { navigate('/data-requests'); setShowSidebar(false); }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-violet-100/80 dark:hover:bg-violet-900/30 transition-all duration-300 group press-effect"
                     data-testid="mobile-button-data-requests"
                   >
@@ -658,12 +656,8 @@ export default function Dashboard() {
                   </button>
                 )}
                 
-                <div className="pt-4 pb-2">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Navigate</p>
-                </div>
-                
                 <button
-                  onClick={() => { navigate('/calendar'); setShowMobileSidebar(false); }}
+                  onClick={() => { navigate('/calendar'); setShowSidebar(false); }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-blue-100/80 dark:hover:bg-blue-900/30 transition-all duration-300 group press-effect"
                   data-testid="mobile-button-leave-calendar"
                 >
@@ -673,7 +667,7 @@ export default function Dashboard() {
                   <span className="font-medium text-foreground">Leave Calendar</span>
                 </button>
                 <button
-                  onClick={() => { navigate('/community-album'); setShowMobileSidebar(false); }}
+                  onClick={() => { navigate('/community-album'); setShowSidebar(false); }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-pink-100/80 dark:hover:bg-pink-900/30 transition-all duration-300 group press-effect"
                   data-testid="mobile-button-community-album"
                 >
@@ -684,7 +678,7 @@ export default function Dashboard() {
                 </button>
                 {user.role !== 'TEACHER' && user.role !== 'HEAD_TEACHER' && (
                   <button
-                    onClick={() => { navigate('/school-data'); setShowMobileSidebar(false); }}
+                    onClick={() => { navigate('/school-data'); setShowSidebar(false); }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-teal-100/80 dark:hover:bg-teal-900/30 transition-all duration-300 group press-effect"
                     data-testid="mobile-button-school-inventory"
                   >
@@ -696,7 +690,7 @@ export default function Dashboard() {
                 )}
                 {(user.role === 'AEO' || user.role === 'DDEO') && (
                   <button
-                    onClick={() => { navigate('/school-visits'); setShowMobileSidebar(false); }}
+                    onClick={() => { navigate('/school-visits'); setShowSidebar(false); }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-rose-100/80 dark:hover:bg-rose-900/30 transition-all duration-300 group press-effect"
                     data-testid="mobile-button-school-visits"
                   >
@@ -708,7 +702,7 @@ export default function Dashboard() {
                 )}
                 {user.role === 'DDEO' && (
                   <button
-                    onClick={() => { navigate('/user-management'); setShowMobileSidebar(false); }}
+                    onClick={() => { navigate('/user-management'); setShowSidebar(false); }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-orange-100/80 dark:hover:bg-orange-900/30 transition-all duration-300 group press-effect"
                     data-testid="mobile-button-user-management"
                   >
@@ -719,7 +713,7 @@ export default function Dashboard() {
                   </button>
                 )}
                 <button
-                  onClick={() => { navigate('/queries'); setShowMobileSidebar(false); }}
+                  onClick={() => { navigate('/queries'); setShowSidebar(false); }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-purple-100/80 dark:hover:bg-purple-900/30 transition-all duration-300 group press-effect"
                   data-testid="mobile-button-queries"
                 >
@@ -731,7 +725,7 @@ export default function Dashboard() {
                 <button
                   onClick={() => {
                     navigate('/lesson-plans');
-                    setShowMobileSidebar(false);
+                    setShowSidebar(false);
                   }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-indigo-100/80 dark:hover:bg-indigo-900/30 transition-all duration-300 group press-effect"
                   data-testid="mobile-button-lesson-plans"
@@ -742,14 +736,10 @@ export default function Dashboard() {
                   <span className="font-medium text-foreground">Lesson Plans</span>
                 </button>
                 
-                <div className="pt-4 pb-2">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">Support</p>
-                </div>
-                
                 <button
                   onClick={() => {
                     window.dispatchEvent(new CustomEvent('openHelpGuide'));
-                    setShowMobileSidebar(false);
+                    setShowSidebar(false);
                   }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left hover:bg-blue-100/80 dark:hover:bg-blue-900/30 transition-all duration-300 group press-effect"
                   data-testid="mobile-button-help-guide"
@@ -784,14 +774,14 @@ export default function Dashboard() {
 
       {/* Desktop Sidebar - Quick Actions */}
       {/* Desktop Sidebar Overlay */}
-      {showDesktopSidebar && (
+      {showSidebar && (
         <div 
           className="hidden lg:block fixed inset-0 bg-black/50 z-40"
-          onClick={() => setShowDesktopSidebar(false)}
+          onClick={() => setShowSidebar(false)}
         />
       )}
       
-      <aside className={`hidden lg:flex flex-col w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border fixed left-0 top-0 h-screen z-50 transition-transform duration-300 ${showDesktopSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`hidden lg:flex flex-col w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border fixed left-0 top-0 h-screen z-50 transition-transform duration-300 ${showSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
         {/* Sidebar Header - matches main header height */}
         <div className="px-6 py-6 border-b border-border h-[88px] flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -804,7 +794,7 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setShowDesktopSidebar(false)}
+            onClick={() => setShowSidebar(false)}
             data-testid="button-close-desktop-sidebar"
             className="rounded-full"
           >
@@ -1001,8 +991,8 @@ export default function Dashboard() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setShowMobileSidebar(true)}
-                data-testid="button-open-menu"
+                onClick={() => setShowSidebar(!showSidebar)}
+                data-testid="button-toggle-menu"
                 className="rounded-full"
               >
                 <Menu className="w-6 h-6" />
@@ -1115,8 +1105,8 @@ export default function Dashboard() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setShowDesktopSidebar(true)}
-                data-testid="button-open-desktop-menu"
+                onClick={() => setShowSidebar(!showSidebar)}
+                data-testid="button-toggle-menu"
                 className="rounded-full"
               >
                 <Menu className="w-6 h-6" />
