@@ -260,7 +260,10 @@ export default function DataRequests() {
               <p className="text-sm text-muted-foreground">ڈیٹا درخواستیں</p>
             </div>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <span className="text-sm text-muted-foreground hidden lg:inline">Theme</span>
+          </div>
         </div>
 
         {canCreateRequest && (

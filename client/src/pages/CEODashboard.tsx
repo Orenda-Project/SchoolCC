@@ -621,32 +621,38 @@ export default function CEODashboard() {
                 <p className="text-xs text-muted-foreground">{user.name}</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <ThemeToggle />
               <NotificationBell />
             </div>
           </div>
         </div>
 
-        {/* Desktop Header */}
-        <div className="hidden lg:block sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-gray-700">
-          <div className="px-8 py-6 flex items-center justify-between">
+        {/* Desktop Header - 88px height to match sidebar */}
+        <div className="hidden lg:block sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-gray-700 h-[88px]">
+          <div className="px-8 h-full flex items-center justify-between">
             <div className="flex items-center gap-4">
               <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
               <div>
-                <h1 className="text-3xl font-bold text-foreground">Mission Control</h1>
-                <p className="text-sm text-muted-foreground mt-1">
+                <h1 className="text-2xl font-bold text-foreground">Mission Control</h1>
+                <p className="text-sm text-muted-foreground">
                   Welcome back, <span className="font-semibold text-primary cursor-pointer hover:underline" onClick={() => navigate('/profile')}>{user.name}</span>
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <Button variant="outline" size="sm" onClick={() => navigate('/create-request')}>
                 <Plus className="w-4 h-4 mr-2" />
                 Create Request
               </Button>
-              <ThemeToggle />
-              <NotificationBell />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <span className="text-sm text-muted-foreground hidden xl:inline">Theme</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <NotificationBell />
+                <span className="text-sm text-muted-foreground hidden xl:inline">Alerts</span>
+              </div>
             </div>
           </div>
         </div>

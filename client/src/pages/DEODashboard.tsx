@@ -519,8 +519,14 @@ export default function DEODashboard() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <NotificationBell />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <span className="text-sm text-muted-foreground hidden xl:inline">Theme</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <NotificationBell />
+                <span className="text-sm text-muted-foreground hidden xl:inline">Alerts</span>
+              </div>
             </div>
           </div>
         </div>

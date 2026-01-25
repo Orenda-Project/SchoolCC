@@ -193,7 +193,10 @@ export default function SchoolVisits() {
                 Start Visit
               </Button>
             )}
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <span className="text-sm text-muted-foreground hidden lg:inline">Theme</span>
+            </div>
           </div>
         </div>
       </div>

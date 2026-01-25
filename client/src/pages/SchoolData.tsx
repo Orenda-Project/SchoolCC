@@ -172,8 +172,11 @@ export default function SchoolData() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <span className="text-sm text-muted-foreground hidden lg:inline">Theme</span>
+            </div>
             <Button variant="outline" data-testid="button-export-schools">
               <Download className="w-4 h-4 mr-2" />
               Export
