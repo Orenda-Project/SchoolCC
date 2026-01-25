@@ -786,13 +786,13 @@ export default function Dashboard() {
 
       {/* Desktop Sidebar - Quick Actions */}
       <aside className="hidden lg:flex flex-col w-72 bg-card/95 dark:bg-card backdrop-blur-xl border-r border-border fixed left-0 top-0 h-screen z-40 animate-slideInLeft">
-        {/* Sidebar Header */}
-        <div className="p-6 border-b border-border">
-          <div className="flex items-center gap-4 mb-2">
-            <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-20 h-20" />
+        {/* Sidebar Header - matches main header height */}
+        <div className="px-6 py-6 border-b border-border h-[88px] flex items-center">
+          <div className="flex items-center gap-3">
+            <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
             <div>
-              <h1 className="text-2xl font-bold gradient-text-gold">TaleemHub</h1>
-              <p className="text-sm text-muted-foreground mt-1">{user.role.replace(/_/g, ' ')}</p>
+              <h1 className="text-xl font-bold gradient-text-gold">TaleemHub</h1>
+              <p className="text-xs text-muted-foreground">{user.role.replace(/_/g, ' ')}</p>
             </div>
           </div>
         </div>
@@ -1109,9 +1109,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Desktop Header */}
-        <div className="hidden lg:block bg-card/95 dark:bg-card backdrop-blur-xl border-b border-border sticky top-0 z-30">
-          <div className="px-8 py-6 flex items-center justify-between">
+        {/* Desktop Header - matches sidebar header height */}
+        <div className="hidden lg:block bg-card/95 dark:bg-card backdrop-blur-xl border-b border-border sticky top-0 z-30 h-[88px]">
+          <div className="px-8 h-full flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold gradient-text">Welcome back, {user.name}</h1>
               <p className="text-base text-muted-foreground mt-1">Here's your dashboard overview</p>
