@@ -842,13 +842,19 @@ export function HelpGuide() {
             />
           )}
 
-          {/* Guide panel - always at TOP to never hide content */}
+          {/* Guide panel - floats up or down based on where highlighted element is */}
           <div
-            className="fixed z-[70] w-[calc(100%-16px)] max-w-sm bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+            className={`fixed z-[70] w-[calc(100%-16px)] max-w-sm bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in duration-200 ${
+              targetRect && targetRect.top > window.innerHeight / 2 
+                ? 'slide-in-from-top-2' 
+                : 'slide-in-from-bottom-2'
+            }`}
             style={{ 
-              top: '8px',
               left: '50%', 
-              transform: 'translateX(-50%)'
+              transform: 'translateX(-50%)',
+              ...(targetRect && targetRect.top > window.innerHeight / 2 
+                ? { top: '8px' } 
+                : { bottom: '8px' })
             }}
             dir={language === 'ur' ? 'rtl' : 'ltr'}
           >
