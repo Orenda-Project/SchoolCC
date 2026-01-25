@@ -842,17 +842,17 @@ export function HelpGuide() {
             />
           )}
 
-          {/* Guide panel - floats up or down based on where highlighted element is */}
+          {/* Guide panel - floats: TOP when target is below center, BOTTOM when target is above center */}
           <div
             className={`fixed z-[70] w-[calc(100%-16px)] max-w-sm bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg overflow-hidden animate-in fade-in duration-200 ${
-              targetRect && targetRect.top > window.innerHeight / 2 
+              !targetRect || targetRect.top > window.innerHeight * 0.4 
                 ? 'slide-in-from-top-2' 
                 : 'slide-in-from-bottom-2'
             }`}
             style={{ 
               left: '50%', 
               transform: 'translateX(-50%)',
-              ...(targetRect && targetRect.top > window.innerHeight / 2 
+              ...(!targetRect || targetRect.top > window.innerHeight * 0.4 
                 ? { top: '8px' } 
                 : { bottom: '8px' })
             }}
