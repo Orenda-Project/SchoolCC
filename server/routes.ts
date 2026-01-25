@@ -2296,6 +2296,22 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/activities/monitoring/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const visit = await storage.getMonitoringVisitById(id);
+
+      if (!visit) {
+        return res.status(404).json({ error: "Monitoring visit not found" });
+      }
+
+      res.json(visit);
+    } catch (error: any) {
+      console.error("Error fetching monitoring visit:", error);
+      res.status(500).json({ error: "Failed to fetch monitoring visit" });
+    }
+  });
+
   app.put("/api/activities/monitoring/:id", async (req, res) => {
     try {
       const { id } = req.params;
@@ -2341,6 +2357,22 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/activities/mentoring/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const visit = await storage.getMentoringVisitById(id);
+
+      if (!visit) {
+        return res.status(404).json({ error: "Mentoring visit not found" });
+      }
+
+      res.json(visit);
+    } catch (error: any) {
+      console.error("Error fetching mentoring visit:", error);
+      res.status(500).json({ error: "Failed to fetch mentoring visit" });
+    }
+  });
+
   app.put("/api/activities/mentoring/:id", async (req, res) => {
     try {
       const { id } = req.params;
@@ -2383,6 +2415,22 @@ export async function registerRoutes(
       res.json(visits);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch office visits" });
+    }
+  });
+
+  app.get("/api/activities/office/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const visit = await storage.getOfficeVisitById(id);
+
+      if (!visit) {
+        return res.status(404).json({ error: "Office visit not found" });
+      }
+
+      res.json(visit);
+    } catch (error: any) {
+      console.error("Error fetching office visit:", error);
+      res.status(500).json({ error: "Failed to fetch office visit" });
     }
   });
 
