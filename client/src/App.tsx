@@ -129,6 +129,9 @@ function Router() {
         <Route path="/aeo-activity/mentoring" component={MentoringVisitForm} />
         <Route path="/aeo-activity/office" component={OfficeVisitForm} />
         <Route path="/aeo-activity/other-activity" component={OtherActivityForm} />
+        <Route path="/edit-monitoring-visit/:id" component={MonitoringVisitForm} />
+        <Route path="/edit-mentoring-visit/:id" component={MentoringVisitForm} />
+        <Route path="/edit-office-visit/:id" component={OfficeVisitForm} />
         <Route path="/lesson-plans" component={LessonPlansPreview} />
         <Route path="/data-requests-preview" component={DataRequestsPreview} />
         {/* Fallback to 404 */}

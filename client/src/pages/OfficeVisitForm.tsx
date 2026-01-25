@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/contexts/auth';
+import { useRoute, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -27,6 +28,10 @@ interface Props {
 export default function OfficeVisitForm({ onClose }: Props) {
   const { user } = useAuth();
   const { addOfficeVisit } = useActivities();
+  const [, params] = useRoute('/edit-office-visit/:id');
+  const [, navigate] = useLocation();
+  const visitId = params?.id;
+  const isEditMode = !!visitId;
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<OfficeVisitData>>({
@@ -55,9 +60,9 @@ export default function OfficeVisitForm({ onClose }: Props) {
   // GPS tracking session ID - generated once when form opens
   const sessionIdRef = useRef<string>(`session-office-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
 
-  // Start GPS tracking when form opens (silent tracking for AEO)
+  // Start GPS tracking when form opens (silent tracking for AEO) - skip in edit mode
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user?.id || isEditMode) return;
 
     const startTracking = async () => {
       try {
@@ -81,7 +86,48 @@ export default function OfficeVisitForm({ onClose }: Props) {
         console.error('[OfficeVisitForm] GPS tracking failed to stop:', error);
       });
     };
-  }, [user?.id]);
+  }, [user?.id, isEditMode]);
+
+  // Fetch existing visit data when in edit mode
+  useEffect(() => {
+    if (isEditMode && visitId) {
+      const fetchVisitData = async () => {
+        try {
+          setLoading(true);
+          const response = await fetch(`/api/activities/office/${visitId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch visit data');
+          }
+          const visit = await response.json();
+
+          // Pre-fill form with existing data
+          setFormData({
+            ...visit,
+            visitDate: visit.visitDate || new Date().toISOString().split('T')[0],
+            activitiesCompleted: visit.activitiesCompleted || {
+              admin: false,
+              reporting: false,
+              meeting: false,
+              coordination: false,
+              oversight: false,
+              audit: false,
+              exams: false,
+              other: false,
+            },
+          });
+
+        } catch (error) {
+          console.error('Error fetching visit:', error);
+          toast.error('Failed to load visit data');
+          navigate('/aeo-activity/logs');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchVisitData();
+    }
+  }, [isEditMode, visitId, navigate]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -158,12 +204,12 @@ export default function OfficeVisitForm({ onClose }: Props) {
       console.log('[OfficeVisitForm] Blocked duplicate submission - state already true');
       return;
     }
-    
+
     // Set ref FIRST (synchronous) to block subsequent clicks before any async operation
     isSubmittingRef.current = true;
     setIsSubmitting(true);
     setLoading(true);
-    
+
     try {
       const { id: _, ...dataWithoutId } = formData;
       const evidence = uploadedFiles.map((f) => ({
@@ -175,51 +221,76 @@ export default function OfficeVisitForm({ onClose }: Props) {
 
       const now = new Date();
       const currentTime = now.toTimeString().slice(0, 5);
-      const visit: OfficeVisitData = {
-        ...(dataWithoutId as OfficeVisitData),
-        id: `off-${Date.now()}`,
-        aeoId: formData.aeoId || user?.id || '',
-        aeoName: formData.aeoName || user?.name || '',
-        markaz: user?.markaz || '',
-        tehsil: user?.tehsilName || '',
-        visitDate: formData.visitDate || now.toISOString().split('T')[0],
-        arrivalTime: formData.arrivalTime || currentTime,
-        departureTime: formData.departureTime || currentTime,
-        evidence,
-        status: 'submitted',
-        submittedAt: new Date(),
-      };
-      const savedVisit = await addOfficeVisit(visit);
 
-      // Link GPS points from session to the submitted visit
-      try {
-        const linkResponse = await fetch('/api/gps-tracking/link-to-visit', {
-          method: 'PATCH',
+      if (isEditMode && visitId) {
+        // UPDATE existing visit
+        const visitData = {
+          ...formData,
+          evidence,
+        };
+
+        const response = await fetch(`/api/activities/office/${visitId}`, {
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sessionId: sessionIdRef.current,
-            visitId: savedVisit.id,
-            visitType: 'office_visit'
-          })
+          body: JSON.stringify(visitData),
         });
 
-        if (linkResponse.ok) {
-          const linkResult = await linkResponse.json();
-          console.log(`[OfficeVisitForm] Linked ${linkResult.updatedCount} GPS points to visit`);
+        if (!response.ok) {
+          throw new Error('Failed to update visit');
         }
-      } catch (error) {
-        // Silently fail - GPS linking is not critical
-        console.error('[OfficeVisitForm] Failed to link GPS points:', error);
+
+        const updatedVisit = await response.json();
+        toast.success('Office visit updated successfully!');
+        navigate('/aeo-activity/logs');
+      } else {
+        // CREATE new visit
+        const visit: OfficeVisitData = {
+          ...(dataWithoutId as OfficeVisitData),
+          id: `off-${Date.now()}`,
+          aeoId: formData.aeoId || user?.id || '',
+          aeoName: formData.aeoName || user?.name || '',
+          markaz: user?.markaz || '',
+          tehsil: user?.tehsilName || '',
+          visitDate: formData.visitDate || now.toISOString().split('T')[0],
+          arrivalTime: formData.arrivalTime || currentTime,
+          departureTime: formData.departureTime || currentTime,
+          evidence,
+          status: 'submitted',
+          submittedAt: new Date(),
+        };
+        const savedVisit = await addOfficeVisit(visit);
+
+        // Link GPS points from session to the submitted visit
+        try {
+          const linkResponse = await fetch('/api/gps-tracking/link-to-visit', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId: sessionIdRef.current,
+              visitId: savedVisit.id,
+              visitType: 'office_visit'
+            })
+          });
+
+          if (linkResponse.ok) {
+            const linkResult = await linkResponse.json();
+            console.log(`[OfficeVisitForm] Linked ${linkResult.updatedCount} GPS points to visit`);
+          }
+        } catch (error) {
+          // Silently fail - GPS linking is not critical
+          console.error('[OfficeVisitForm] Failed to link GPS points:', error);
+        }
+
+        // Stop GPS tracking after successful submission
+        await gpsTracker.stopTracking();
+
+        analytics.visit.submitted(savedVisit.id, 'office', 'District Office');
+        toast.success('Office visit submitted successfully!');
+        onClose?.();
       }
-
-      // Stop GPS tracking after successful submission
-      await gpsTracker.stopTracking();
-
-      analytics.visit.submitted(savedVisit.id, 'office', 'District Office');
-      toast.success('Office visit submitted successfully!');
-      onClose?.();
     } catch (error) {
       console.error('Error submitting office visit:', error);
+      toast.error(isEditMode ? 'Failed to update visit' : 'Failed to submit visit');
     } finally {
       isSubmittingRef.current = false;
       setLoading(false);

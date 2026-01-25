@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
+import { useRoute, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -37,6 +38,10 @@ interface Props {
 export default function MonitoringVisitForm({ onClose }: Props) {
   const { user } = useAuth();
   const { addMonitoringVisit } = useActivities();
+  const [, params] = useRoute('/edit-monitoring-visit/:id');
+  const [, navigate] = useLocation();
+  const visitId = params?.id;
+  const isEditMode = !!visitId;
 
   // Get schools - filter by assigned schools for AEO users
   const getSchools = () => {
@@ -68,7 +73,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
 
   // Sync formData with user data when user loads asynchronously
   useEffect(() => {
-    if (user) {
+    if (user && !isEditMode) {
       setFormData(prev => ({
         ...prev,
         aeoId: user.id || prev.aeoId,
@@ -76,7 +81,43 @@ export default function MonitoringVisitForm({ onClose }: Props) {
         markaz: user.markaz || prev.markaz,
       }));
     }
-  }, [user]);
+  }, [user, isEditMode]);
+
+  // Fetch existing visit data when in edit mode
+  useEffect(() => {
+    if (isEditMode && visitId) {
+      const fetchVisitData = async () => {
+        try {
+          setLoading(true);
+          const response = await fetch(`/api/activities/monitoring/${visitId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch visit data');
+          }
+          const visit = await response.json();
+
+          // Pre-fill form with existing data
+          setFormData({
+            ...visit,
+            visitDate: visit.visitDate || new Date().toISOString().split('T')[0],
+          });
+
+          // Set voice note if exists
+          if (visit.voiceNoteTranscription) {
+            setVoiceNoteTranscription(visit.voiceNoteTranscription);
+          }
+
+        } catch (error) {
+          console.error('Error fetching visit:', error);
+          toast.error('Failed to load visit data');
+          navigate('/aeo-activity/logs');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchVisitData();
+    }
+  }, [isEditMode, visitId, navigate]);
 
   // Start GPS tracking when form opens (silent tracking for AEO)
   useEffect(() => {
@@ -192,12 +233,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
       console.log('[MonitoringVisitForm] Blocked duplicate submission - state already true');
       return;
     }
-    
+
     // Set ref FIRST (synchronous) to block subsequent clicks before any async operation
     isSubmittingRef.current = true;
     setIsSubmitting(true);
     setLoading(true);
-    
+
     try {
       const { id: _, ...dataWithoutId } = formData;
       const evidence = uploadedFiles.map((f) => ({
@@ -209,54 +250,80 @@ export default function MonitoringVisitForm({ onClose }: Props) {
 
       const now = new Date();
       const currentTime = now.toTimeString().slice(0, 5);
-      const visitId = `mon-${Date.now()}`;
-      const visit: MonitoringVisitData = {
-        ...(dataWithoutId as MonitoringVisitData),
-        id: visitId,
-        aeoId: formData.aeoId || user?.id || '',
-        schoolId: formData.schoolId || '',
-        aeoName: formData.aeoName || user?.name || '',
-        schoolName: formData.schoolName || '',
-        visitDate: formData.visitDate || now.toISOString().split('T')[0],
-        arrivalTime: formData.arrivalTime || currentTime,
-        departureTime: formData.departureTime || currentTime,
-        markaz: user?.markaz || formData.markaz || '',
-        tehsil: user?.tehsilName || formData.tehsil || '',
-        evidence,
-        status: 'submitted',
-        submittedAt: new Date(),
-      };
-      const savedVisit = await addMonitoringVisit(visit);
 
-      // Link GPS points from session to the submitted visit
-      try {
-        const linkResponse = await fetch('/api/gps-tracking/link-to-visit', {
-          method: 'PATCH',
+      if (isEditMode && visitId) {
+        // UPDATE existing visit
+        const visitData = {
+          ...formData,
+          evidence,
+          voiceNoteTranscription,
+        };
+
+        const response = await fetch(`/api/activities/monitoring/${visitId}`, {
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sessionId: sessionIdRef.current,
-            visitId: savedVisit.id,
-            visitType: 'monitoring_visit'
-          })
+          body: JSON.stringify(visitData),
         });
 
-        if (linkResponse.ok) {
-          const linkResult = await linkResponse.json();
-          console.log(`[MonitoringVisitForm] Linked ${linkResult.updatedCount} GPS points to visit`);
+        if (!response.ok) {
+          throw new Error('Failed to update visit');
         }
-      } catch (error) {
-        // Silently fail - GPS linking is not critical
-        console.error('[MonitoringVisitForm] Failed to link GPS points:', error);
+
+        const updatedVisit = await response.json();
+        toast.success('Monitoring visit updated successfully!');
+        navigate('/aeo-activity/logs');
+      } else {
+        // CREATE new visit
+        const newVisitId = `mon-${Date.now()}`;
+        const visit: MonitoringVisitData = {
+          ...(dataWithoutId as MonitoringVisitData),
+          id: newVisitId,
+          aeoId: formData.aeoId || user?.id || '',
+          schoolId: formData.schoolId || '',
+          aeoName: formData.aeoName || user?.name || '',
+          schoolName: formData.schoolName || '',
+          visitDate: formData.visitDate || now.toISOString().split('T')[0],
+          arrivalTime: formData.arrivalTime || currentTime,
+          departureTime: formData.departureTime || currentTime,
+          markaz: user?.markaz || formData.markaz || '',
+          tehsil: user?.tehsilName || formData.tehsil || '',
+          evidence,
+          status: 'submitted',
+          submittedAt: new Date(),
+        };
+        const savedVisit = await addMonitoringVisit(visit);
+
+        // Link GPS points from session to the submitted visit
+        try {
+          const linkResponse = await fetch('/api/gps-tracking/link-to-visit', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId: sessionIdRef.current,
+              visitId: savedVisit.id,
+              visitType: 'monitoring_visit'
+            })
+          });
+
+          if (linkResponse.ok) {
+            const linkResult = await linkResponse.json();
+            console.log(`[MonitoringVisitForm] Linked ${linkResult.updatedCount} GPS points to visit`);
+          }
+        } catch (error) {
+          // Silently fail - GPS linking is not critical
+          console.error('[MonitoringVisitForm] Failed to link GPS points:', error);
+        }
+
+        // Stop GPS tracking after successful submission
+        await gpsTracker.stopTracking();
+
+        analytics.visit.submitted(savedVisit.id, 'monitoring', visit.schoolName || '');
+        toast.success('Monitoring visit submitted successfully!');
+        onClose?.();
       }
-
-      // Stop GPS tracking after successful submission
-      await gpsTracker.stopTracking();
-
-      analytics.visit.submitted(savedVisit.id, 'monitoring', visit.schoolName || '');
-      toast.success('Monitoring visit submitted successfully!');
-      onClose?.();
     } catch (error) {
       console.error('Error submitting monitoring visit:', error);
+      toast.error(isEditMode ? 'Failed to update visit' : 'Failed to submit visit');
     } finally {
       isSubmittingRef.current = false;
       setIsSubmitting(false);
