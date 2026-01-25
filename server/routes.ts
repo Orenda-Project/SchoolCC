@@ -2474,5 +2474,46 @@ export async function registerRoutes(
     }
   });
 
+  // Push notification subscriptions
+  app.post("/api/push-subscriptions", async (req, res) => {
+    try {
+      const { userId, endpoint, p256dh, auth, featureType } = req.body;
+
+      if (!endpoint || !featureType) {
+        return res.status(400).json({ error: "Missing required fields: endpoint, featureType" });
+      }
+
+      // Check if subscription already exists
+      const existing = await storage.getPushSubscriptionByEndpoint(endpoint);
+      if (existing) {
+        return res.json({ message: "Already subscribed", subscription: existing });
+      }
+
+      const subscription = await storage.createPushSubscription({
+        userId: userId || null,
+        endpoint,
+        p256dh: p256dh || '',
+        auth: auth || '',
+        featureType
+      });
+
+      res.json({ message: "Subscribed successfully", subscription });
+    } catch (error: any) {
+      console.error("Push subscription error:", error);
+      res.status(500).json({ error: "Failed to save subscription" });
+    }
+  });
+
+  app.get("/api/push-subscriptions/:featureType", async (req, res) => {
+    try {
+      const { featureType } = req.params;
+      const subscriptions = await storage.getPushSubscriptionsByFeature(featureType);
+      res.json(subscriptions);
+    } catch (error: any) {
+      console.error("Get subscriptions error:", error);
+      res.status(500).json({ error: "Failed to get subscriptions" });
+    }
+  });
+
   return httpServer;
 }

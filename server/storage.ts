@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { users, dataRequests, requestAssignees, voiceRecordings, districts, clusters, schools, notifications, queries, queryResponses, visitLogs, schoolAlbums, albumPhotos, albumComments, albumReactions, announcements, monitoringVisits, mentoringVisits, officeVisits, otherActivities, visitSessions } from "@shared/schema";
+import { users, dataRequests, requestAssignees, voiceRecordings, districts, clusters, schools, notifications, queries, queryResponses, visitLogs, schoolAlbums, albumPhotos, albumComments, albumReactions, announcements, monitoringVisits, mentoringVisits, officeVisits, otherActivities, visitSessions, pushSubscriptions } from "@shared/schema";
 import type {
   InsertUser, User, InsertDataRequest, DataRequest, InsertRequestAssignee, RequestAssignee,
   InsertVoiceRecording, VoiceRecording,
@@ -9,7 +9,7 @@ import type {
   InsertAlbumComment, AlbumComment, InsertAlbumReaction, AlbumReaction, InsertAnnouncement, Announcement,
   InsertMonitoringVisit, MonitoringVisit, InsertMentoringVisit, MentoringVisit,
   InsertOfficeVisit, OfficeVisit, InsertOtherActivity, OtherActivity,
-  InsertVisitSession, VisitSession
+  InsertVisitSession, VisitSession, InsertPushSubscription, PushSubscription
 } from "@shared/schema";
 import { eq, and, or, inArray, desc } from "drizzle-orm";
 
@@ -931,6 +931,25 @@ export class DBStorage implements IStorage {
       .where(eq(visitSessions.id, id))
       .returning();
     return result[0];
+  }
+
+  // Push subscription operations
+  async createPushSubscription(subscription: InsertPushSubscription): Promise<PushSubscription> {
+    const result = await db.insert(pushSubscriptions).values(subscription).returning();
+    return result[0];
+  }
+
+  async getPushSubscriptionsByFeature(featureType: string): Promise<PushSubscription[]> {
+    return await db.select().from(pushSubscriptions).where(eq(pushSubscriptions.featureType, featureType));
+  }
+
+  async getPushSubscriptionByEndpoint(endpoint: string): Promise<PushSubscription | undefined> {
+    const result = await db.select().from(pushSubscriptions).where(eq(pushSubscriptions.endpoint, endpoint));
+    return result[0];
+  }
+
+  async deletePushSubscription(id: string): Promise<void> {
+    await db.delete(pushSubscriptions).where(eq(pushSubscriptions.id, id));
   }
 }
 
