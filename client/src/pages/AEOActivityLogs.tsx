@@ -68,10 +68,10 @@ export default function AEOActivityLogs() {
 
   const getColorClasses = (color: string) => {
     const colors: Record<string, { bg: string; icon: string; badge: string }> = {
-      blue: { bg: 'bg-blue-50', icon: 'text-blue-600', badge: 'bg-blue-100 text-blue-800' },
-      purple: { bg: 'bg-purple-50', icon: 'text-purple-600', badge: 'bg-purple-100 text-purple-800' },
-      emerald: { bg: 'bg-emerald-50', icon: 'text-emerald-600', badge: 'bg-emerald-100 text-emerald-800' },
-      slate: { bg: 'bg-slate-50', icon: 'text-muted-foreground', badge: 'bg-slate-100 text-slate-800' },
+      blue: { bg: 'bg-blue-50 dark:bg-blue-900/20', icon: 'text-blue-600 dark:text-blue-400', badge: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
+      purple: { bg: 'bg-purple-50 dark:bg-purple-900/20', icon: 'text-purple-600 dark:text-purple-400', badge: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400' },
+      emerald: { bg: 'bg-emerald-50 dark:bg-emerald-900/20', icon: 'text-emerald-600 dark:text-emerald-400', badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' },
+      slate: { bg: 'bg-slate-50 dark:bg-slate-800/30', icon: 'text-muted-foreground', badge: 'bg-slate-100 text-slate-800 dark:bg-slate-800/30 dark:text-slate-300' },
     };
     return colors[color] || colors.slate;
   };
