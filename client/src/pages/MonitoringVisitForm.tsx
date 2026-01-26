@@ -207,13 +207,19 @@ export default function MonitoringVisitForm({ onClose }: Props) {
   };
 
   const calculatePercentages = () => {
-    if (formData.teacherTotal && formData.teacherPresent) {
+    // Calculate teacher attendance percentage
+    if (formData.teacherTotal > 0) {
       const pct = Math.min(100, Math.round((formData.teacherPresent / formData.teacherTotal) * 100));
       handleInputChange('teacherPercentage', pct);
+    } else {
+      handleInputChange('teacherPercentage', 0);
     }
-    if (formData.studentTotal && formData.studentPresent) {
+    // Calculate student attendance percentage
+    if (formData.studentTotal > 0) {
       const pct = Math.min(100, Math.round((formData.studentPresent / formData.studentTotal) * 100));
       handleInputChange('studentPercentage', pct);
+    } else {
+      handleInputChange('studentPercentage', 0);
     }
   };
 
@@ -507,10 +513,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Total Teachers</label>
               <Input
                 type="number"
-                value={formData.teacherTotal || ''}
+                min="0"
+                value={formData.teacherTotal ?? ''}
                 onChange={(e) => {
-                  handleInputChange('teacherTotal', parseInt(e.target.value) || 0);
-                  calculatePercentages();
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('teacherTotal', isNaN(val) ? 0 : val);
+                  setTimeout(calculatePercentages, 0);
                 }}
                 data-testid="input-teacher-total"
               />
@@ -519,10 +527,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Present</label>
               <Input
                 type="number"
-                value={formData.teacherPresent || ''}
+                min="0"
+                value={formData.teacherPresent ?? ''}
                 onChange={(e) => {
-                  handleInputChange('teacherPresent', parseInt(e.target.value) || 0);
-                  calculatePercentages();
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('teacherPresent', isNaN(val) ? 0 : val);
+                  setTimeout(calculatePercentages, 0);
                 }}
                 data-testid="input-teacher-present"
               />
@@ -557,10 +567,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Total Students</label>
               <Input
                 type="number"
-                value={formData.studentTotal || ''}
+                min="0"
+                value={formData.studentTotal ?? ''}
                 onChange={(e) => {
-                  handleInputChange('studentTotal', parseInt(e.target.value) || 0);
-                  calculatePercentages();
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('studentTotal', isNaN(val) ? 0 : val);
+                  setTimeout(calculatePercentages, 0);
                 }}
                 data-testid="input-student-total"
               />
@@ -569,10 +581,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Present</label>
               <Input
                 type="number"
-                value={formData.studentPresent || ''}
+                min="0"
+                value={formData.studentPresent ?? ''}
                 onChange={(e) => {
-                  handleInputChange('studentPresent', parseInt(e.target.value) || 0);
-                  calculatePercentages();
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('studentPresent', isNaN(val) ? 0 : val);
+                  setTimeout(calculatePercentages, 0);
                 }}
                 data-testid="input-student-present"
               />
@@ -580,7 +594,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
             <div>
               <label className="block text-sm font-medium text-muted-foreground mb-2">Percentage</label>
               <div className="px-3 py-2 border border-input rounded-md bg-muted text-muted-foreground">
-                {formData.studentPercentage || 0}%
+                {formData.studentPercentage ?? 0}%
               </div>
             </div>
           </div>
@@ -601,8 +615,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Total Furniture</label>
               <Input
                 type="number"
-                value={formData.furnitureTotal || ''}
-                onChange={(e) => handleInputChange('furnitureTotal', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.furnitureTotal ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('furnitureTotal', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-furniture-total"
               />
             </div>
@@ -610,8 +628,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Functional</label>
               <Input
                 type="number"
-                value={formData.furnitureWith || ''}
-                onChange={(e) => handleInputChange('furnitureWith', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.furnitureWith ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('furnitureWith', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-furniture-with"
               />
             </div>
@@ -619,8 +641,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Non-Functional</label>
               <Input
                 type="number"
-                value={formData.furnitureWithout || ''}
-                onChange={(e) => handleInputChange('furnitureWithout', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.furnitureWithout ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('furnitureWithout', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-furniture-without"
               />
             </div>
@@ -634,8 +660,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Total Toilets</label>
               <Input
                 type="number"
-                value={formData.toiletTotal || ''}
-                onChange={(e) => handleInputChange('toiletTotal', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.toiletTotal ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('toiletTotal', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-toilet-total"
               />
             </div>
@@ -643,8 +673,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Functional</label>
               <Input
                 type="number"
-                value={formData.toiletStudentTotal || ''}
-                onChange={(e) => handleInputChange('toiletStudentTotal', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.toiletStudentTotal ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('toiletStudentTotal', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-toilet-functional"
               />
             </div>
@@ -652,8 +686,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Required</label>
               <Input
                 type="number"
-                value={formData.toiletRequired || ''}
-                onChange={(e) => handleInputChange('toiletRequired', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.toiletRequired ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('toiletRequired', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-toilet-required"
               />
             </div>
@@ -709,8 +747,11 @@ export default function MonitoringVisitForm({ onClose }: Props) {
                 type="number"
                 min="0"
                 max="100"
-                value={formData.lndEnglishPercent || ''}
-                onChange={(e) => handleInputChange('lndEnglishPercent', parseInt(e.target.value) || 0)}
+                value={formData.lndEnglishPercent ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('lndEnglishPercent', isNaN(val) ? 0 : Math.min(100, val));
+                }}
                 data-testid="input-lnd-english"
               />
             </div>
@@ -720,8 +761,11 @@ export default function MonitoringVisitForm({ onClose }: Props) {
                 type="number"
                 min="0"
                 max="100"
-                value={formData.lndUrduPercent || ''}
-                onChange={(e) => handleInputChange('lndUrduPercent', parseInt(e.target.value) || 0)}
+                value={formData.lndUrduPercent ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('lndUrduPercent', isNaN(val) ? 0 : Math.min(100, val));
+                }}
                 data-testid="input-lnd-urdu"
               />
             </div>
@@ -731,8 +775,11 @@ export default function MonitoringVisitForm({ onClose }: Props) {
                 type="number"
                 min="0"
                 max="100"
-                value={formData.lndMathsPercent || ''}
-                onChange={(e) => handleInputChange('lndMathsPercent', parseInt(e.target.value) || 0)}
+                value={formData.lndMathsPercent ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('lndMathsPercent', isNaN(val) ? 0 : Math.min(100, val));
+                }}
                 data-testid="input-lnd-maths"
               />
             </div>
@@ -746,8 +793,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Total Allocation</label>
               <Input
                 type="number"
-                value={formData.nsbAllocation || ''}
-                onChange={(e) => handleInputChange('nsbAllocation', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.nsbAllocation ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('nsbAllocation', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-nsb-allocation"
               />
             </div>
@@ -755,8 +806,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Expenditure</label>
               <Input
                 type="number"
-                value={formData.nsbExpenditure || ''}
-                onChange={(e) => handleInputChange('nsbExpenditure', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.nsbExpenditure ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('nsbExpenditure', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-nsb-expenditure"
               />
             </div>
@@ -764,8 +819,12 @@ export default function MonitoringVisitForm({ onClose }: Props) {
               <label className="block text-sm font-medium text-muted-foreground mb-2">Balance</label>
               <Input
                 type="number"
-                value={formData.nsbBalance || ''}
-                onChange={(e) => handleInputChange('nsbBalance', parseInt(e.target.value) || 0)}
+                min="0"
+                value={formData.nsbBalance ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('nsbBalance', isNaN(val) ? 0 : val);
+                }}
                 data-testid="input-nsb-balance"
               />
             </div>
@@ -775,8 +834,11 @@ export default function MonitoringVisitForm({ onClose }: Props) {
                 type="number"
                 min="0"
                 max="100"
-                value={formData.nsbUtilizationPercent || ''}
-                onChange={(e) => handleInputChange('nsbUtilizationPercent', parseInt(e.target.value) || 0)}
+                value={formData.nsbUtilizationPercent ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                  handleInputChange('nsbUtilizationPercent', isNaN(val) ? 0 : Math.min(100, val));
+                }}
                 data-testid="input-nsb-utilization"
               />
             </div>
