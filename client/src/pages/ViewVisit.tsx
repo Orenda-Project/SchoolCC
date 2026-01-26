@@ -289,26 +289,38 @@ export default function ViewVisit() {
     </Card>
   );
 
-  const renderVoiceNotesSection = () => (
-    <Card className="p-6">
-      <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-        <Mic className="w-5 h-5 text-green-600" />
-        Voice Notes ({voiceNotesCount})
-      </h2>
-      {voiceNotesCount > 0 ? (
-        <div className="space-y-2">
-          {visit.evidence.filter(e => e.type === 'voice').map((note) => (
-            <div key={note.id} className="flex items-center gap-2 p-2 bg-muted/30 rounded">
-              <Mic className="w-4 h-4 text-green-600" />
-              <span className="text-sm text-foreground">{note.name}</span>
+  const renderVoiceNotesSection = () => {
+    const transcription = (visit.rawData as any)?.voiceNoteTranscription;
+    const hasTranscription = transcription && transcription.trim().length > 0;
+    
+    return (
+      <Card className="p-6">
+        <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+          <Mic className="w-5 h-5 text-green-600" />
+          Voice Notes {hasTranscription ? '(1)' : `(${voiceNotesCount})`}
+        </h2>
+        {hasTranscription ? (
+          <div className="space-y-3">
+            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+              <p className="text-sm font-medium text-green-800 dark:text-green-300 mb-2">Voice Note Transcription:</p>
+              <p className="text-sm text-foreground whitespace-pre-wrap">{transcription}</p>
             </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-sm text-muted-foreground">No voice notes recorded</p>
-      )}
-    </Card>
-  );
+          </div>
+        ) : voiceNotesCount > 0 ? (
+          <div className="space-y-2">
+            {visit.evidence.filter(e => e.type === 'voice').map((note) => (
+              <div key={note.id} className="flex items-center gap-2 p-2 bg-muted/30 rounded">
+                <Mic className="w-4 h-4 text-green-600" />
+                <span className="text-sm text-foreground">{note.name}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">No voice notes recorded</p>
+        )}
+      </Card>
+    );
+  };
 
   const renderPhotosSection = () => (
     <Card className="p-6">

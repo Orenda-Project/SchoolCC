@@ -60,11 +60,7 @@ export default function AEOActivityLogs() {
   };
 
   const handleView = (id: string, activityType: 'monitoring' | 'mentoring') => {
-    if (activityType === 'monitoring') {
-      navigate(`/edit-monitoring-visit/${id}`);
-    } else if (activityType === 'mentoring') {
-      navigate(`/edit-mentoring-visit/${id}`);
-    }
+    navigate(`/visit/${id}`);
   };
 
   const allItems = [
@@ -152,7 +148,7 @@ export default function AEOActivityLogs() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate('/aeo-activity/hub')}
+              onClick={() => navigate('/dashboard')}
               data-testid="button-back"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -218,7 +214,7 @@ export default function AEOActivityLogs() {
               </p>
               <Button
                 className="mt-6 bg-blue-600 hover:bg-blue-700"
-                onClick={() => navigate('/aeo-activity/hub')}
+                onClick={() => navigate('/dashboard')}
               >
                 Go to Activity Hub
               </Button>
