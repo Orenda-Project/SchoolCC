@@ -319,8 +319,8 @@ export default function SchoolVisits() {
                   </div>
                 </div>
 
-                {/* GPS Location for completed visits */}
-                {visit.status === 'completed' && visit.gpsLocation && (
+                {/* GPS Location for completed visits - only visible to supervisors, not AEOs */}
+                {visit.status === 'completed' && visit.gpsLocation && user.role !== 'AEO' && (
                   <div className="mt-4 pt-4 border-t border-border">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <MapPin className="w-4 h-4 text-green-600" />

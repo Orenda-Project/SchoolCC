@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useVisitSession } from '@/contexts/visit-session';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { MapPin, Clock, Square, FileText, Loader2 } from 'lucide-react';
+import { Clock, Square, FileText, Loader2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface ActiveVisitBannerProps {
@@ -40,12 +40,6 @@ export function ActiveVisitBanner({ onOpenMonitoringForm, onOpenMentoringForm }:
                 <Clock className="w-3 h-3" />
                 {duration}
               </span>
-              {activeSession.startLatitude && activeSession.startLongitude && (
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  GPS Tracked
-                </span>
-              )}
             </div>
           </div>
         </div>
