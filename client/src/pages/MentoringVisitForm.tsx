@@ -1381,7 +1381,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const handleClose = () => {
     if (onClose) {
       onClose();
-    } else if (isEditMode) {
+    } else {
       navigate('/aeo-activity/logs');
     }
   };

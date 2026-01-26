@@ -984,7 +984,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
   const handleClose = () => {
     if (onClose) {
       onClose();
-    } else if (isEditMode) {
+    } else {
       navigate('/aeo-activity/logs');
     }
   };
