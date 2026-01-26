@@ -155,16 +155,16 @@ export default function SchoolVisits() {
 
   // Show embedded form based on selected type
   if (showFormType === 'monitoring') {
-    return <MonitoringVisitForm />;
+    return <MonitoringVisitForm onClose={() => setShowFormType(null)} />;
   }
   if (showFormType === 'mentoring') {
-    return <MentoringVisitForm />;
+    return <MentoringVisitForm onClose={() => setShowFormType(null)} />;
   }
   if (showFormType === 'office') {
-    return <OfficeVisitForm />;
+    return <OfficeVisitForm onClose={() => setShowFormType(null)} />;
   }
   if (showFormType === 'other') {
-    return <OtherActivityForm />;
+    return <OtherActivityForm onClose={() => setShowFormType(null)} />;
   }
 
   return (
