@@ -301,6 +301,7 @@ export default function MonitoringVisitForm({ onClose }: Props) {
           markaz: user?.markaz || formData.markaz || '',
           tehsil: user?.tehsilName || formData.tehsil || '',
           evidence,
+          voiceNoteTranscription,
           status: 'submitted',
           submittedAt: new Date(),
         };

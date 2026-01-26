@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useActivities, MonitoringVisitData, MentoringVisitData, OfficeVisitData } from '@/contexts/activities';
 import { useLocation } from 'wouter';
-import { ArrowLeft, MapPin, Calendar, User, CheckCircle, Mic, Camera, Clock, FileText, Navigation, Edit } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar, User, CheckCircle, Mic, Camera, Clock, FileText, Navigation, Edit, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { useState, useEffect, useMemo } from 'react';
 import { analytics } from '@/lib/analytics';
 import type { GpsTrackingPoint } from '@shared/schema';
@@ -29,11 +30,12 @@ export default function ViewVisit() {
   const { id } = useParams();
   const { user } = useAuth();
   const [, navigate] = useLocation();
-  const { monitoringVisits, mentoringVisits, officeVisits } = useActivities();
+  const { monitoringVisits, mentoringVisits, officeVisits, refreshActivities } = useActivities();
   const [loading, setLoading] = useState(true);
   const [gpsTrail, setGpsTrail] = useState<GpsTrackingPoint[]>([]);
   const [loadingGps, setLoadingGps] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
+  const [deleting, setDeleting] = useState(false);
 
   const visit = useMemo(() => {
     let found: NormalizedVisit | null = null;
@@ -134,6 +136,50 @@ export default function ViewVisit() {
 
     fetchGpsTrail();
   }, [visit?.id, user?.role]);
+
+  const canEditOrDelete = visit && user && visit.aeoId === user.id && (visit.type === 'monitoring' || visit.type === 'mentoring');
+
+  const handleEdit = () => {
+    if (!visit) return;
+    if (visit.type === 'monitoring') {
+      navigate(`/edit-monitoring-visit/${visit.id}`);
+    } else if (visit.type === 'mentoring') {
+      navigate(`/edit-mentoring-visit/${visit.id}`);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!visit || !user || visit.aeoId !== user.id) {
+      toast.error('You can only delete your own reports');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this report? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      const response = await fetch(`/api/activities/${visit.type}/${visit.id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ aeoId: user.id }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete');
+      }
+
+      toast.success('Report deleted successfully');
+      refreshActivities();
+      navigate('/aeo-activity/logs');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to delete report');
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -763,7 +809,7 @@ export default function ViewVisit() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate('/school-visits')}
+              onClick={() => navigate('/aeo-activity/logs')}
               data-testid="button-back"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -771,26 +817,29 @@ export default function ViewVisit() {
             <h1 className="text-2xl font-bold text-foreground ml-4 uppercase">{visit.schoolName}</h1>
           </div>
           <div className="flex items-center gap-3">
-            {/* Edit button - only for AEO viewing their own visit */}
-            {user.role === 'AEO' && visit.aeoId === user.id && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  // Navigate to edit form based on visit type
-                  if (visit.type === 'monitoring') {
-                    navigate(`/edit-monitoring-visit/${visit.id}`);
-                  } else if (visit.type === 'mentoring') {
-                    navigate(`/edit-mentoring-visit/${visit.id}`);
-                  } else if (visit.type === 'office') {
-                    navigate(`/edit-office-visit/${visit.id}`);
-                  }
-                }}
-                className="flex items-center gap-2"
-              >
-                <Edit className="w-4 h-4" />
-                Edit Visit
-              </Button>
+            {/* Edit and Delete buttons - only for AEO viewing their own visit */}
+            {user.role === 'AEO' && visit.aeoId === user.id && (visit.type === 'monitoring' || visit.type === 'mentoring') && (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleEdit}
+                  className="flex items-center gap-2 text-amber-600 border-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                >
+                  <Edit className="w-4 h-4" />
+                  Edit
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex items-center gap-2 text-red-600 border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  {deleting ? 'Deleting...' : 'Delete'}
+                </Button>
+              </>
             )}
             <span className={`px-3 py-1 rounded text-sm font-medium ${
               visit.status === 'submitted' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
