@@ -13,11 +13,14 @@ const getAllSchools = () => realSchools.map(school => `${school.name.toUpperCase
 
 const SUBJECTS = ['English', 'Urdu', 'Mathematics', 'Science', 'Social Studies', 'General'];
 
+// Wizard steps shown to the user.
+// Note: The full Feedback UI is still implemented below, but the step is
+// temporarily hidden from the flow so we don't collect mentoring feedback.
 const STEPS = [
   { id: 0, label: 'Basic Info' },
   { id: 1, label: 'HOTS Indicators' },
-  { id: 2, label: 'Feedback' },
-  { id: 3, label: 'Evidence' },
+  // { id: 2, label: 'Feedback' }, // hidden for now
+  { id: 2, label: 'Evidence' },
 ];
 
 interface UploadedFile {
@@ -796,11 +799,11 @@ export default function MentoringVisitForm({ onClose }: Props) {
       case 0:
         return renderBasicInfo();
       case 1:
-        return renderIndicators();
-      case 2:
-        return renderFeedback();
-      case 3:
         return renderEvidence();
+      // case 2:
+      //   return renderFeedback();
+      // case 3:
+      //   return renderEvidence();
       default:
         return null;
     }
