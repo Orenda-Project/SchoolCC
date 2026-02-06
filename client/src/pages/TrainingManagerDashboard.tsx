@@ -23,7 +23,7 @@ interface TrainingTip {
   icon: typeof Target;
 }
 
-export default function CoachDashboard() {
+export default function TrainingManagerDashboard() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
   const { toast } = useToast();
@@ -45,7 +45,7 @@ export default function CoachDashboard() {
       navigate('/');
       return;
     }
-    analytics.navigation.dashboardViewed('COACH');
+    analytics.navigation.dashboardViewed('TRAINING_MANAGER');
   }, [user, navigate]);
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export default function CoachDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex" data-testid="coach-dashboard">
+    <div className="min-h-screen bg-background flex" data-testid="training-manager-dashboard">
       {showSidebar && (
         <div className="lg:hidden fixed inset-0 z-[60]">
           <div
@@ -111,21 +111,21 @@ export default function CoachDashboard() {
           />
           <aside
             className="absolute left-0 top-0 h-full w-72 bg-card dark:bg-card border-r border-border animate-slideInLeft flex flex-col"
-            data-testid="coach-mobile-sidebar"
+            data-testid="training-manager-mobile-sidebar"
           >
             <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
                 <div>
                   <h1 className="text-lg font-bold gradient-text-gold">TaleemHub</h1>
-                  <p className="text-xs text-muted-foreground">Coach</p>
+                  <p className="text-xs text-muted-foreground">Training Manager</p>
                 </div>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSidebar(false)}
-                data-testid="button-close-coach-menu"
+                data-testid="button-close-training-manager-menu"
                 className="rounded-full"
               >
                 <X className="w-5 h-5" />
@@ -165,7 +165,7 @@ export default function CoachDashboard() {
                   logout();
                   navigate('/');
                 }}
-                data-testid="button-coach-logout"
+                data-testid="button-training-manager-logout"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
@@ -178,13 +178,13 @@ export default function CoachDashboard() {
       {showSidebar && (
         <aside
           className="hidden lg:flex w-72 bg-card dark:bg-card border-r border-border flex-col fixed left-0 top-0 h-full z-40"
-          data-testid="coach-desktop-sidebar"
+          data-testid="training-manager-desktop-sidebar"
         >
           <div className="p-4 border-b border-border flex items-center gap-3 shrink-0 h-[88px]">
             <img src="/taleemhub-logo.png" alt="TaleemHub Logo" className="w-12 h-12" />
             <div>
               <h1 className="text-lg font-bold gradient-text-gold">TaleemHub</h1>
-              <p className="text-xs text-muted-foreground">Coach Panel</p>
+              <p className="text-xs text-muted-foreground">Training Manager Panel</p>
             </div>
           </div>
 
@@ -220,7 +220,7 @@ export default function CoachDashboard() {
                 logout();
                 navigate('/');
               }}
-              data-testid="button-coach-logout-desktop"
+              data-testid="button-training-manager-logout-desktop"
             >
               <LogOut className="w-4 h-4" />
               <span>Logout</span>
@@ -237,14 +237,14 @@ export default function CoachDashboard() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSidebar(!showSidebar)}
-                data-testid="button-coach-toggle-menu"
+                data-testid="button-training-manager-toggle-menu"
                 className="rounded-full h-9 w-9"
               >
                 <Menu className="w-5 h-5" />
               </Button>
               <div className="min-w-0">
                 <h1 className="text-sm font-bold gradient-text truncate">Welcome, {user.name.split(' ')[0]}</h1>
-                <p className="text-[10px] text-muted-foreground">Coach Dashboard</p>
+                <p className="text-[10px] text-muted-foreground">Training Manager Dashboard</p>
               </div>
             </div>
             <div className="flex items-center gap-1.5">
@@ -253,7 +253,7 @@ export default function CoachDashboard() {
               <div
                 onClick={() => navigate('/profile')}
                 className="cursor-pointer"
-                data-testid="coach-mobile-profile"
+                data-testid="training-manager-mobile-profile"
               >
                 {user.profilePicture ? (
                   <img src={user.profilePicture} alt={user.name} className="w-8 h-8 rounded-full object-cover shadow-md ring-2 ring-primary/20" />
@@ -274,14 +274,14 @@ export default function CoachDashboard() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSidebar(!showSidebar)}
-                data-testid="button-coach-toggle-menu-desktop"
+                data-testid="button-training-manager-toggle-menu-desktop"
                 className="rounded-full"
               >
                 <Menu className="w-6 h-6" />
               </Button>
               <div>
                 <h1 className="text-2xl font-bold gradient-text">Welcome back, {user.name}</h1>
-                <p className="text-base text-muted-foreground mt-1">Coach Dashboard — Training & Mentoring Overview</p>
+                <p className="text-base text-muted-foreground mt-1">Training Manager Dashboard — Training & Mentoring Overview</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -296,7 +296,7 @@ export default function CoachDashboard() {
               <div
                 onClick={() => navigate('/profile')}
                 className="flex items-center gap-2 px-2 py-1 rounded-xl hover:bg-muted/50 cursor-pointer transition-all duration-200"
-                data-testid="coach-header-profile"
+                data-testid="training-manager-header-profile"
               >
                 {user.profilePicture ? (
                   <img src={user.profilePicture} alt={user.name} className="w-10 h-10 rounded-full object-cover shadow-md ring-2 ring-primary/20" />
@@ -314,7 +314,7 @@ export default function CoachDashboard() {
         <div className="px-3 sm:px-4 lg:px-8 py-3 sm:py-5 lg:py-8">
           <div className="space-y-4 sm:space-y-6 lg:space-y-8">
 
-            <div data-testid="widget-coach-stats">
+            <div data-testid="widget-training-manager-stats">
               <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:gap-4">
                 <MetricCard
                   value={staffStats.aeos.total}
@@ -327,7 +327,7 @@ export default function CoachDashboard() {
                     { label: 'On Leave', value: staffStats.aeos.onLeave, valueColor: 'text-amber-600', showAsBadge: false },
                   ]}
                   className="hover-lift card-shine"
-                  data-testid="card-coach-aeos"
+                  data-testid="card-training-manager-aeos"
                 />
                 <MetricCard
                   value={staffStats.headTeachers.total}
@@ -340,7 +340,7 @@ export default function CoachDashboard() {
                     { label: 'On Leave', value: staffStats.headTeachers.onLeave, valueColor: 'text-amber-600', showAsBadge: false },
                   ]}
                   className="hover-lift card-shine"
-                  data-testid="card-coach-headteachers"
+                  data-testid="card-training-manager-headteachers"
                 />
                 <MetricCard
                   value={staffStats.teachers.total}
@@ -353,7 +353,7 @@ export default function CoachDashboard() {
                     { label: 'On Leave', value: staffStats.teachers.onLeave, valueColor: 'text-amber-600', showAsBadge: false },
                   ]}
                   className="hover-lift card-shine"
-                  data-testid="card-coach-teachers"
+                  data-testid="card-training-manager-teachers"
                 />
                 <MetricCard
                   value={staffStats.aeos.total + staffStats.headTeachers.total + staffStats.teachers.total}
@@ -362,12 +362,12 @@ export default function CoachDashboard() {
                   iconGradient="from-amber-500 to-amber-600"
                   size="lg"
                   className="hover-lift card-shine"
-                  data-testid="card-coach-total-staff"
+                  data-testid="card-training-manager-total-staff"
                 />
               </div>
             </div>
 
-            <div data-testid="widget-coach-quick-actions">
+            <div data-testid="widget-training-manager-quick-actions">
               <h2 className="text-base sm:text-lg lg:text-xl font-bold gradient-text mb-2 sm:mb-3 lg:mb-4">Quick Actions</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                 {quickActions.map((action) => (
@@ -392,7 +392,7 @@ export default function CoachDashboard() {
               </div>
             </div>
 
-            <div data-testid="widget-coach-staff-overview">
+            <div data-testid="widget-training-manager-staff-overview">
               <h2 className="text-base sm:text-lg lg:text-xl font-bold gradient-text mb-2 sm:mb-3 lg:mb-4">Staff Overview</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
                 <Card className="p-3 sm:p-4 bg-white dark:bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300">
@@ -457,8 +457,8 @@ export default function CoachDashboard() {
               </div>
             </div>
 
-            <div data-testid="widget-coach-training-tips">
-              <h2 className="text-base sm:text-lg lg:text-xl font-bold gradient-text mb-2 sm:mb-3 lg:mb-4">Coaching Tips</h2>
+            <div data-testid="widget-training-manager-training-tips">
+              <h2 className="text-base sm:text-lg lg:text-xl font-bold gradient-text mb-2 sm:mb-3 lg:mb-4">Training Tips</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                 {displayTips.map((tip, idx) => (
                   <Card key={idx} className="p-3 sm:p-4 bg-white dark:bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300 active:scale-[0.98]">
@@ -480,13 +480,13 @@ export default function CoachDashboard() {
               </div>
             </div>
 
-            <div data-testid="widget-coach-visit-overview">
+            <div data-testid="widget-training-manager-visit-overview">
               <h2 className="text-base sm:text-lg lg:text-xl font-bold gradient-text mb-2 sm:mb-3 lg:mb-4">Visit & Activity Hub</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 <Card
                   className="p-4 sm:p-5 bg-white dark:bg-card border border-border shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group active:scale-[0.98]"
                   onClick={() => navigate('/school-visits')}
-                  data-testid="card-coach-visit-hub"
+                  data-testid="card-training-manager-visit-hub"
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -503,7 +503,7 @@ export default function CoachDashboard() {
                 <Card
                   className="p-4 sm:p-5 bg-white dark:bg-card border border-border shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group active:scale-[0.98]"
                   onClick={() => navigate('/data-requests')}
-                  data-testid="card-coach-data-requests"
+                  data-testid="card-training-manager-data-requests"
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -520,7 +520,7 @@ export default function CoachDashboard() {
                 <Card
                   className="p-4 sm:p-5 bg-white dark:bg-card border border-border shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group active:scale-[0.98]"
                   onClick={() => navigate('/calendar')}
-                  data-testid="card-coach-calendar"
+                  data-testid="card-training-manager-calendar"
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -537,7 +537,7 @@ export default function CoachDashboard() {
                 <Card
                   className="p-4 sm:p-5 bg-white dark:bg-card border border-border shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group active:scale-[0.98]"
                   onClick={() => navigate('/school-data')}
-                  data-testid="card-coach-school-inventory"
+                  data-testid="card-training-manager-school-inventory"
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">

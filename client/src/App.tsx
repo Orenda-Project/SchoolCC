@@ -11,7 +11,7 @@ import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
 import CEODashboard from "@/pages/CEODashboard";
 import DEODashboard from "@/pages/DEODashboard";
-import CoachDashboard from "@/pages/CoachDashboard";
+import TrainingManagerDashboard from "@/pages/TrainingManagerDashboard";
 import DataRequests from "@/pages/DataRequests";
 import CreateRequest from "@/pages/CreateRequest";
 import ViewRequest from "@/pages/ViewRequest";
@@ -72,8 +72,8 @@ function DashboardRoute() {
   // DEO and DDEO get DEO Dashboard (same interface, DEO is superior in hierarchy)
   if (user?.role === 'DEO' || user?.role === 'DDEO') return <DEODashboard />;
 
-  // COACH gets Coach Dashboard
-  if (user?.role === 'COACH') return <CoachDashboard />;
+  // TRAINING_MANAGER gets Training Manager Dashboard
+  if (user?.role === 'TRAINING_MANAGER') return <TrainingManagerDashboard />;
 
   // All other roles get general Dashboard
   return <Dashboard />;
@@ -100,7 +100,7 @@ function Router() {
         <Route path="/" component={DashboardRoute} />
         <Route path="/dashboard" component={DashboardRoute} />
         <Route path="/deo-dashboard" component={DEODashboard} />
-        <Route path="/coach-dashboard" component={CoachDashboard} />
+        <Route path="/training-manager-dashboard" component={TrainingManagerDashboard} />
         <Route path="/data-requests" component={DataRequests} />
         <Route path="/create-request" component={DataRequests} />
         <Route path="/request/:id" component={ViewRequest} />

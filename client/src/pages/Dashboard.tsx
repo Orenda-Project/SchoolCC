@@ -82,8 +82,8 @@ export default function Dashboard() {
       navigate('/deo-dashboard');
       return;
     }
-    if (user.role === 'COACH') {
-      navigate('/coach-dashboard');
+    if (user.role === 'TRAINING_MANAGER') {
+      navigate('/training-manager-dashboard');
       return;
     }
     analytics.navigation.dashboardViewed(user.role);
@@ -118,7 +118,7 @@ export default function Dashboard() {
   }, [user]);
 
   // Return null while redirecting
-  if (!user || user.role === 'CEO' || user.role === 'DEO' || user.role === 'DDEO' || user.role === 'COACH') {
+  if (!user || user.role === 'CEO' || user.role === 'DEO' || user.role === 'DDEO' || user.role === 'TRAINING_MANAGER') {
     return null;
   }
   
