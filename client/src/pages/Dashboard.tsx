@@ -19,6 +19,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { MetricCard, TeacherDetailsDialog, CustomizeDashboardModal } from '@/components/dashboard';
 import { TeacherExportDialog } from '@/components/TeacherExportDialog';
 import { analytics } from '@/lib/analytics';
+import TrainingManagerProfileModal from '@/components/TrainingManagerProfileModal';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -43,6 +44,7 @@ export default function Dashboard() {
     headTeachers: { total: 0, present: 0, onLeave: 0, absent: 0 },
     teachers: { total: 0, present: 0, onLeave: 0, absent: 0 },
   });
+  const [showProfileCompletion, setShowProfileCompletion] = useState(false);
 
   const {
     widgets,
@@ -55,6 +57,16 @@ export default function Dashboard() {
     handleDragEnd,
     handleDragOver,
   } = useDashboardWidgets(user?.id || 'guest', user?.role || 'TEACHER');
+
+  // Check if Training Manager needs to complete profile
+  useEffect(() => {
+    if (user?.role === 'TRAINING_MANAGER') {
+      const hasAssignedAEOs = user.assignedAEOs && user.assignedAEOs.length > 0;
+      if (!hasAssignedAEOs) {
+        setShowProfileCompletion(true);
+      }
+    }
+  }, [user]);
 
   // Listen for guide sidebar events
   useEffect(() => {
@@ -1317,6 +1329,19 @@ export default function Dashboard() {
         onClose={() => setShowTeacherExportDialog(false)}
         userId={user?.id || ''}
       />
+
+      {/* Training Manager Profile Completion Modal */}
+      {showProfileCompletion && user?.role === 'TRAINING_MANAGER' && (
+        <TrainingManagerProfileModal
+          trainingManagerId={user.id}
+          onComplete={() => {
+            setShowProfileCompletion(false);
+            // Refresh user data to get updated assignedAEOs
+            window.location.reload();
+          }}
+          allowSkip={false}
+        />
+      )}
     </div>
   );
 }

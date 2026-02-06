@@ -888,6 +888,105 @@ export async function registerRoutes(
     }
   });
 
+  // Training Manager: Get all AEOs for assignment
+  app.get("/api/training-manager/aeos", async (req, res) => {
+    try {
+      const aeos = await storage.getUsersByRole("AEO");
+      res.json(aeos.map(aeo => ({
+        ...aeo,
+        password: undefined
+      })));
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch AEOs" });
+    }
+  });
+
+  // Training Manager: Update assigned AEOs
+  app.patch("/api/training-manager/:id/assigned-aeos", async (req, res) => {
+    try {
+      const { assignedAEOs } = req.body;
+      const trainingManager = await findUserByIdOrPhone(req.params.id);
+
+      if (!trainingManager) {
+        return res.status(404).json({ error: "Training Manager not found" });
+      }
+
+      if (trainingManager.role !== "TRAINING_MANAGER") {
+        return res.status(403).json({ error: "User is not a Training Manager" });
+      }
+
+      const updated = await storage.updateUser(trainingManager.id, {
+        assignedAEOs: assignedAEOs || []
+      });
+
+      res.json({ ...updated, password: undefined });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update assigned AEOs" });
+    }
+  });
+
+  // Training Manager: Get hierarchical view of assigned AEOs
+  app.get("/api/training-manager/:id/hierarchy", async (req, res) => {
+    try {
+      const trainingManager = await findUserByIdOrPhone(req.params.id);
+
+      if (!trainingManager) {
+        return res.status(404).json({ error: "Training Manager not found" });
+      }
+
+      const assignedAEOIds = trainingManager.assignedAEOs || [];
+
+      if (assignedAEOIds.length === 0) {
+        return res.json([]);
+      }
+
+      // Fetch all assigned AEOs
+      const allUsers = await storage.getAllUsers();
+      const aeos = allUsers.filter(u => assignedAEOIds.includes(u.id));
+
+      // For each AEO, get their schools, principals, and teachers
+      const hierarchy = await Promise.all(aeos.map(async (aeo) => {
+        // Get schools assigned to this AEO
+        const assignedSchoolNames = aeo.assignedSchools || [];
+        const allSchools = await storage.getAllSchools();
+
+        // Filter schools that belong to this AEO
+        const aeoSchools = allSchools.filter(school =>
+          assignedSchoolNames.some(name =>
+            name.includes(school.emisNumber)
+          )
+        );
+
+        // For each school, get principals and teachers
+        const schoolsWithStaff = await Promise.all(aeoSchools.map(async (school) => {
+          const principals = allUsers.filter(u =>
+            u.role === "HEAD_TEACHER" && u.schoolId === school.id
+          );
+          const teachers = allUsers.filter(u =>
+            u.role === "TEACHER" && u.schoolId === school.id
+          );
+
+          return {
+            ...school,
+            principals: principals.map(p => ({ ...p, password: undefined })),
+            teachers: teachers.map(t => ({ ...t, password: undefined })),
+          };
+        }));
+
+        return {
+          aeo: { ...aeo, password: undefined },
+          markaz: aeo.markazName || aeo.markaz,
+          schools: schoolsWithStaff,
+        };
+      }));
+
+      res.json(hierarchy);
+    } catch (error) {
+      console.error("Error fetching hierarchy:", error);
+      res.status(500).json({ error: "Failed to fetch hierarchy" });
+    }
+  });
+
   // Auth: Login endpoint
   app.post("/api/auth/login", async (req, res) => {
     try {
