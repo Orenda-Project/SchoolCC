@@ -5,6 +5,7 @@ server/public
 vite.config.ts.*
 *.tar.gz
 .env
+.claude/
 
 # Android build files
 android/app/build/
@@ -18,3 +19,7 @@ android/gradle.properties
 # Capacitor
 capacitor.config.json
 .capacitor/
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md

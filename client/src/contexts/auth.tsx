@@ -29,6 +29,8 @@ export interface User {
   markaz?: string;
   createdAt?: string;
   updatedAt?: string;
+  // Training Manager specific fields
+  assignedAEOs?: string[];
 }
 
 // Hierarchy: CEO > DEO/DDEO > AEO/TRAINING_MANAGER > HEAD_TEACHER > TEACHER

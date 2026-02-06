@@ -109,6 +109,8 @@ export const users = pgTable("users", {
   profilePicture: text("profile_picture"),
   // AEO assigned schools (array of school IDs)
   assignedSchools: json("assigned_schools").$type<string[]>().default([]),
+  // Training Manager assigned AEOs (array of AEO user IDs)
+  assignedAEOs: json("assigned_aeos").$type<string[]>().default([]),
   // AEO markaz name (legacy - use markazName instead)
   markaz: text("markaz"),
   // Approval workflow fields
