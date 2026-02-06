@@ -376,10 +376,39 @@ export class DBStorage implements IStorage {
   }
 
   async createUser(user: InsertUser): Promise<User> {
-    const userValues = {
-      ...user,
-      assignedSchools: user.assignedSchools ? (Array.isArray(user.assignedSchools) ? user.assignedSchools : []) : []
+    const userValues: Record<string, any> = {
+      name: user.name,
+      phoneNumber: user.phoneNumber,
+      password: user.password,
+      role: user.role,
+      status: user.status,
+      schoolId: user.schoolId,
+      schoolName: user.schoolName,
+      clusterId: user.clusterId,
+      districtId: user.districtId,
+      tehsilId: user.tehsilId,
+      tehsilName: user.tehsilName,
+      markazId: user.markazId,
+      markazName: user.markazName,
+      gender: user.gender,
+      fatherName: user.fatherName,
+      spouseName: user.spouseName,
+      email: user.email,
+      residentialAddress: user.residentialAddress,
+      cnic: user.cnic,
+      dateOfBirth: user.dateOfBirth,
+      dateOfJoining: user.dateOfJoining,
+      qualification: user.qualification,
+      profilePicture: user.profilePicture,
+      assignedSchools: user.assignedSchools ? (Array.isArray(user.assignedSchools) ? user.assignedSchools : []) : [],
+      markaz: user.markaz,
+      approverRole: user.approverRole,
+      approverId: user.approverId,
+      approvedAt: user.approvedAt,
     };
+    Object.keys(userValues).forEach(key => {
+      if (userValues[key] === undefined) delete userValues[key];
+    });
     const result = await db.insert(users).values(userValues as any).returning();
     return result[0];
   }

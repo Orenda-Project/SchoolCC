@@ -1088,6 +1088,9 @@ export async function registerRoutes(
         approverRole = 'DEO';
       }
 
+      // Extract additional fields from body
+      const { gender, tehsilId, tehsilName, markazId } = req.body;
+
       // Create pending user (awaiting approval)
       const newUser = await storage.createUser({
         name,
@@ -1103,12 +1106,17 @@ export async function registerRoutes(
         dateOfBirth,
         dateOfJoining,
         qualification,
+        gender,
+        tehsilId,
+        tehsilName,
+        markazId,
         clusterId: markazName || clusterId || schoolClusterId,
         districtId: districtId || schoolDistrictId || 'Rawalpindi',
         schoolId,
         schoolName,
         assignedSchools: finalAssignedSchools,
         markaz: markazName || null,
+        markazName: markazName || null,
       });
 
       // Return appropriate message based on approver
