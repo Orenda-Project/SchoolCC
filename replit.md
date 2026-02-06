@@ -45,7 +45,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Authentication & Authorization
 - **Auth Pattern**: Context-based authentication with role hierarchy enforcement
-- **Role Hierarchy**: CEO (5) > DEO (4) > DDEO/AEO (3) > HEAD_TEACHER (2) > TEACHER (1)
+- **Role Hierarchy**: CEO (5) > DEO (4) > DDEO/AEO/TRAINING_MANAGER (3) > HEAD_TEACHER (2) > TEACHER (1)
 - **Assignment Rules**: Users can only assign requests to direct subordinates (defined in `VALID_ASSIGNEES`)
 - **Visibility Rules**: Upward visibility (superiors see all below), no peer or upward access
 
