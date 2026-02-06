@@ -82,6 +82,10 @@ export default function Dashboard() {
       navigate('/deo-dashboard');
       return;
     }
+    if (user.role === 'COACH') {
+      navigate('/coach-dashboard');
+      return;
+    }
     analytics.navigation.dashboardViewed(user.role);
   }, [user, navigate]);
 
@@ -114,7 +118,7 @@ export default function Dashboard() {
   }, [user]);
 
   // Return null while redirecting
-  if (!user || user.role === 'CEO' || user.role === 'DEO' || user.role === 'DDEO') {
+  if (!user || user.role === 'CEO' || user.role === 'DEO' || user.role === 'DDEO' || user.role === 'COACH') {
     return null;
   }
   

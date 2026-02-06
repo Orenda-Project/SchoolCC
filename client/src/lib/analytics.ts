@@ -1,6 +1,6 @@
 import posthog from 'posthog-js';
 
-type UserRole = 'CEO' | 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHER' | 'TRAINING_MANAGER';
+type UserRole = 'CEO' | 'DEO' | 'DDEO' | 'AEO' | 'HEAD_TEACHER' | 'TEACHER' | 'TRAINING_MANAGER' | 'COACH';
 
 interface UserProperties {
   userId?: string;
