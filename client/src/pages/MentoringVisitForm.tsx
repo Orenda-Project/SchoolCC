@@ -50,13 +50,38 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const visitId = isEditMode ? location.split('/').pop() : undefined;
   const mentoringAreas = MENTORING_AREAS;
 
-  // Get schools - filter by assigned schools for AEO users
+  const isTrainingManager = user?.role === 'TRAINING_MANAGER';
+
+  const [tmSchools, setTmSchools] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (isTrainingManager && user?.id) {
+      const fetchTMSchools = async () => {
+        try {
+          const response = await fetch(`/api/training-manager/${user.id}/hierarchy`);
+          if (response.ok) {
+            const hierarchy = await response.json();
+            if (Array.isArray(hierarchy)) {
+              const schools = hierarchy.flatMap((entry: any) =>
+                (entry.schools || []).map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`)
+              );
+              setTmSchools(schools);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching TM schools:', error);
+        }
+      };
+      fetchTMSchools();
+    }
+  }, [isTrainingManager, user?.id]);
+
   const getSchools = () => {
     const allSchools = getAllSchools();
+    if (isTrainingManager && tmSchools.length > 0) {
+      return tmSchools;
+    }
     if (user?.role === 'AEO' && user?.assignedSchools && user.assignedSchools.length > 0) {
-      // assignedSchools contains names like "GBPS DHOKE ZIARAT"
-      // allSchools contains display strings like "GBPS DHOKE ZIARAT (37330XXX)"
-      // Match by checking if display string starts with the assigned school name (trimmed and normalized)
       return allSchools.filter(schoolDisplay => 
         user.assignedSchools!.some(assignedName => 
           schoolDisplay.toUpperCase().trim().startsWith(assignedName.toUpperCase().trim())
@@ -67,6 +92,11 @@ export default function MentoringVisitForm({ onClose }: Props) {
   };
   
   const SCHOOLS = getSchools();
+
+  const getBackPath = () => {
+    if (isTrainingManager) return '/training-manager-dashboard';
+    return '/aeo-activity/logs';
+  };
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<MentoringVisitData>>({
@@ -173,7 +203,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
         } catch (error) {
           console.error('Error fetching visit:', error);
           toast.error('Failed to load visit data');
-          navigate('/aeo-activity/logs');
+          navigate(getBackPath());
         } finally {
           setLoading(false);
         }
@@ -580,7 +610,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
 
         const updatedVisit = await response.json();
         toast.success('Mentoring visit updated successfully!');
-        navigate('/aeo-activity/logs');
+        navigate(getBackPath());
       } else {
         // CREATE new visit
         const visit: MentoringVisitData = {
@@ -1379,7 +1409,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
     if (onClose) {
       onClose();
     } else {
-      navigate('/aeo-activity/logs');
+      navigate(getBackPath());
     }
   };
 

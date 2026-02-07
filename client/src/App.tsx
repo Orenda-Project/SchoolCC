@@ -149,6 +149,7 @@ function Router() {
           component={MonitoringVisitForm}
         />
         <Route path="/aeo-activity/mentoring" component={MentoringVisitForm} />
+        <Route path="/tm-activity/mentoring" component={MentoringVisitForm} />
         <Route path="/aeo-activity/office" component={OfficeVisitForm} />
         <Route
           path="/aeo-activity/other-activity"

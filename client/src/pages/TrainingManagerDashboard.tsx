@@ -266,6 +266,13 @@ export default function TrainingManagerDashboard() {
       path: "/data-requests",
     },
     {
+      label: "Mentoring Visit",
+      icon: BookOpen,
+      gradient: "from-orange-400 to-orange-600",
+      hoverBg: "hover:bg-orange-50 dark:hover:bg-orange-900/30",
+      path: "/tm-activity/mentoring",
+    },
+    {
       label: "Queries",
       icon: MessageSquare,
       gradient: "from-purple-400 to-purple-600",
@@ -314,6 +321,14 @@ export default function TrainingManagerDashboard() {
       hoverBg: "hover:bg-pink-100/80 dark:hover:bg-pink-900/30",
       path: "/community-album",
       testId: "nav-community-album",
+    },
+    {
+      label: "Mentoring Visit",
+      icon: BookOpen,
+      gradient: "from-orange-400 to-orange-600",
+      hoverBg: "hover:bg-orange-100/80 dark:hover:bg-orange-900/30",
+      path: "/tm-activity/mentoring",
+      testId: "nav-mentoring-visit",
     },
     {
       label: "Queries",
@@ -930,6 +945,27 @@ export default function TrainingManagerDashboard() {
                       </p>
                     </div>
                     <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-violet-500 transition-colors" />
+                  </div>
+                </Card>
+
+                <Card
+                  className="p-4 sm:p-5 bg-white dark:bg-card border border-border shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer group active:scale-[0.98]"
+                  onClick={() => navigate("/tm-activity/mentoring")}
+                  data-testid="card-training-manager-mentoring"
+                >
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <BookOpen className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-sm sm:text-base text-foreground">
+                        Mentoring Visit
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                        Create mentoring visit forms
+                      </p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-orange-500 transition-colors" />
                   </div>
                 </Card>
 
