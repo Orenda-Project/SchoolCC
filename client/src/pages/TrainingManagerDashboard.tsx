@@ -532,7 +532,7 @@ export default function TrainingManagerDashboard() {
         <div className="px-3 sm:px-4 lg:px-8 py-3 sm:py-5 lg:py-8">
           <div className="space-y-4 sm:space-y-6 lg:space-y-8">
             <div data-testid="widget-training-manager-stats">
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
                 <MetricCard
                   value={staffStats.aeos.total}
                   label="AEOs"
