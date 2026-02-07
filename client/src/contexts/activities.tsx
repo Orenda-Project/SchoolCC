@@ -326,7 +326,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
         if (res.ok) {
           const hierarchy = await res.json();
           if (Array.isArray(hierarchy)) {
-            const aeoIds = hierarchy.map((entry: any) => entry.aeoId).filter(Boolean);
+            const aeoIds = hierarchy.map((entry: any) => entry.aeo?.id || entry.aeoId).filter(Boolean);
             const allIds = [user.id, ...aeoIds];
             return `?aeoIds=${allIds.join(',')}`;
           }
