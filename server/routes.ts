@@ -793,8 +793,8 @@ export async function registerRoutes(
         return res.status(404).json({ error: "User not found" });
       }
       
-      // Get all users (approved ones only)
-      let allUsers = await storage.getUsersByStatus('approved');
+      let allUsers = await storage.getAllUsers();
+      allUsers = allUsers.filter(u => u.status === 'approved' || u.status === 'active');
       
       // Filter based on requesting user's role and access
       if (requestingUser.role === 'CEO' || requestingUser.role === 'DEO' || requestingUser.role === 'DDEO') {
@@ -810,14 +810,30 @@ export async function registerRoutes(
           return inCluster || inAssignedSchool;
         });
       }
+      else if (requestingUser.role === 'TRAINING_MANAGER') {
+        const assignedAEOIds = requestingUser.assignedAEOs || [];
+        const assignedAEOs = allUsers.filter(u => u.role === 'AEO' && assignedAEOIds.includes(u.id));
+        const allSchools = await storage.getAllSchools();
+        const aeoSchoolIds = new Set<string>();
+        assignedAEOs.forEach(aeo => {
+          const aeoSchoolNames = aeo.assignedSchools || [];
+          allSchools.forEach(school => {
+            if (aeoSchoolNames.some((name: string) => name.includes(school.emisNumber))) {
+              aeoSchoolIds.add(school.id);
+            }
+          });
+        });
+        const htAndTeachers = allUsers.filter(u =>
+          (u.role === 'HEAD_TEACHER' || u.role === 'TEACHER') && u.schoolId && aeoSchoolIds.has(u.schoolId)
+        );
+        allUsers = [...assignedAEOs, ...htAndTeachers];
+      }
       else if (requestingUser.role === 'HEAD_TEACHER') {
-        // HEAD_TEACHER can only see teachers in their school
         allUsers = allUsers.filter(u =>
           u.role === 'TEACHER' && u.schoolId === requestingUser.schoolId
         );
       }
       else {
-        // Teachers see no staff statistics
         allUsers = []
       }
       
