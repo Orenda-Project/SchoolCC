@@ -401,6 +401,7 @@ export class DBStorage implements IStorage {
       qualification: user.qualification,
       profilePicture: user.profilePicture,
       assignedSchools: user.assignedSchools ? (Array.isArray(user.assignedSchools) ? user.assignedSchools : []) : [],
+      assignedAEOs: user.assignedAEOs ? (Array.isArray(user.assignedAEOs) ? user.assignedAEOs : []) : [],
       markaz: user.markaz,
       approverRole: user.approverRole,
       approverId: user.approverId,
