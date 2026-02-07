@@ -399,6 +399,7 @@ export const mentoringVisits = pgTable("mentoring_visits", {
   actionItems: text("action_items"),
   evidence: json("evidence").$type<{ id: string; name: string; type: string; url: string }[]>().default([]),
   voiceNoteTranscription: text("voice_note_transcription"),
+  tmNotes: text("tm_notes"),
   status: text("status").notNull().default("draft"),
   submittedAt: timestamp("submitted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),

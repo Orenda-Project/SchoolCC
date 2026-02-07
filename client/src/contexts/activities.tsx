@@ -245,6 +245,7 @@ export interface MentoringVisitData {
   strengthsObserved: string;
   areasForImprovement: string;
   actionItems: string;
+  tmNotes?: string;
   evidence: { id: string; name: string; type: 'photo' | 'document' | 'voice'; url: string }[];
   status: 'draft' | 'submitted';
   submittedAt?: Date;

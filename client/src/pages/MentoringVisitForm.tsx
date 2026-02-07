@@ -632,6 +632,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
           strengthsObserved: formData.strengthsObserved || '',
           areasForImprovement: formData.areasForImprovement || '',
           actionItems: formData.actionItems || '',
+          tmNotes: formData.tmNotes || '',
           evidence,
           status: 'submitted',
           submittedAt: new Date(),
@@ -1252,6 +1253,22 @@ export default function MentoringVisitForm({ onClose }: Props) {
             </div>
           )}
         </div>
+
+        {user?.role === 'TRAINING_MANAGER' && (
+          <div className="pt-4 border-t border-border">
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Training Manager Notes
+            </label>
+            <textarea
+              className="w-full min-h-[100px] p-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-y text-sm"
+              placeholder="Add any additional observations, coaching notes, or follow-up actions specific to your Training Manager review..."
+              value={formData.tmNotes || ''}
+              onChange={(e) => handleInputChange('tmNotes', e.target.value)}
+              data-testid="textarea-tm-notes"
+            />
+            <p className="text-xs text-muted-foreground mt-1">This field is only visible to Training Managers</p>
+          </div>
+        )}
       </div>
     </Card>
   );

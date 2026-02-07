@@ -388,14 +388,6 @@ export default function TrainingManagerDashboard() {
       testId: "nav-community-album",
     },
     {
-      label: "Mentoring Visit",
-      icon: BookOpen,
-      gradient: "from-orange-400 to-orange-600",
-      hoverBg: "hover:bg-orange-100/80 dark:hover:bg-orange-900/30",
-      path: "/tm-activity/mentoring",
-      testId: "nav-mentoring-visit",
-    },
-    {
       label: "Queries",
       icon: MessageSquare,
       gradient: "from-purple-400 to-purple-600",
