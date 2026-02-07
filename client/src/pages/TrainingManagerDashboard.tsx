@@ -3,7 +3,7 @@ import { useActivities } from "@/contexts/activities";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useLocation } from "wouter";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   LogOut,
   Users,
@@ -33,6 +33,8 @@ import {
   Search,
   Check,
   Loader2,
+  Phone,
+  School,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import NotificationBell from "@/components/NotificationBell";
@@ -47,6 +49,22 @@ interface AEOUser {
   markazName?: string;
   markazId?: string;
 }
+
+interface HierarchySchool {
+  id: string;
+  name: string;
+  emisNumber: string;
+  principals: Array<{ id: string; name: string; phoneNumber: string; schoolName?: string; }>;
+  teachers: Array<{ id: string; name: string; phoneNumber: string; schoolName?: string; }>;
+}
+
+interface HierarchyEntry {
+  aeo: { id: string; name: string; phoneNumber: string; markaz?: string; markazName?: string; clusterId?: string; };
+  markaz: string | null;
+  schools: HierarchySchool[];
+}
+
+type StaffModalType = "aeos" | "headTeachers" | "teachers" | "totalStaff" | null;
 
 interface TrainingTip {
   text: string;
@@ -78,6 +96,10 @@ export default function TrainingManagerDashboard() {
   const [aeoSearchQuery, setAeoSearchQuery] = useState("");
   const [savingAEOs, setSavingAEOs] = useState(false);
   const [loadingAEOs, setLoadingAEOs] = useState(false);
+
+  const [staffModalType, setStaffModalType] = useState<StaffModalType>(null);
+  const [staffModalSearch, setStaffModalSearch] = useState("");
+  const [hierarchyData, setHierarchyData] = useState<HierarchyEntry[]>([]);
 
   useEffect(() => {
     if (!user) {
@@ -184,8 +206,51 @@ export default function TrainingManagerDashboard() {
         .catch((err) => {
           console.error("Failed to fetch staff stats:", err);
         });
+
+      if (user.role === "TRAINING_MANAGER") {
+        fetch(`/api/training-manager/${user.id}/hierarchy`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (Array.isArray(data)) {
+              setHierarchyData(data);
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to fetch hierarchy:", err);
+          });
+      }
     }
   }, [user]);
+
+  const allHeadTeachers = useMemo(() => {
+    const ht: Array<{ id: string; name: string; phoneNumber: string; schoolName: string; aeoName: string; markaz: string }> = [];
+    hierarchyData.forEach((entry) => {
+      entry.schools.forEach((school) => {
+        school.principals.forEach((p) => {
+          ht.push({ id: p.id, name: p.name, phoneNumber: p.phoneNumber, schoolName: school.name || school.emisNumber, aeoName: entry.aeo.name, markaz: entry.markaz || "" });
+        });
+      });
+    });
+    return ht;
+  }, [hierarchyData]);
+
+  const allTeachers = useMemo(() => {
+    const t: Array<{ id: string; name: string; phoneNumber: string; schoolName: string; aeoName: string; markaz: string }> = [];
+    hierarchyData.forEach((entry) => {
+      entry.schools.forEach((school) => {
+        school.teachers.forEach((tc) => {
+          t.push({ id: tc.id, name: tc.name, phoneNumber: tc.phoneNumber, schoolName: school.name || school.emisNumber, aeoName: entry.aeo.name, markaz: entry.markaz || "" });
+        });
+      });
+    });
+    return t;
+  }, [hierarchyData]);
+
+  const staffModalTitle = staffModalType === "aeos" ? "AEOs" : staffModalType === "headTeachers" ? "Head Teachers" : staffModalType === "teachers" ? "Teachers" : "Total Staff";
+
+  const staffModalIcon = staffModalType === "aeos" ? Award : staffModalType === "headTeachers" ? Building2 : staffModalType === "teachers" ? Users : TrendingUp;
+
+  const staffModalGradient = staffModalType === "aeos" ? "from-purple-500 to-indigo-600" : staffModalType === "headTeachers" ? "from-teal-500 to-teal-600" : staffModalType === "teachers" ? "from-blue-500 to-blue-600" : "from-amber-500 to-amber-600";
 
   if (!user) return null;
 
@@ -495,6 +560,156 @@ export default function TrainingManagerDashboard() {
         </div>
       )}
 
+      {staffModalType && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => { setStaffModalType(null); setStaffModalSearch(""); }}
+          />
+          <div
+            className="relative z-10 w-[95%] max-w-lg max-h-[85vh] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            data-testid={`modal-staff-${staffModalType}`}
+          >
+            <div className="p-4 sm:p-6 border-b border-border shrink-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${staffModalGradient} flex items-center justify-center shadow-lg`}>
+                    {(() => { const Icon = staffModalIcon; return <Icon className="w-5 h-5 text-white" />; })()}
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-bold text-foreground">{staffModalTitle}</h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      {staffModalType === "aeos" && `${hierarchyData.length} AEO${hierarchyData.length !== 1 ? "s" : ""} assigned`}
+                      {staffModalType === "headTeachers" && `${allHeadTeachers.length} head teacher${allHeadTeachers.length !== 1 ? "s" : ""}`}
+                      {staffModalType === "teachers" && `${allTeachers.length} teacher${allTeachers.length !== 1 ? "s" : ""}`}
+                      {staffModalType === "totalStaff" && `${hierarchyData.length + allHeadTeachers.length + allTeachers.length} total staff`}
+                    </p>
+                  </div>
+                </div>
+                <Button variant="ghost" size="icon" className="rounded-full" onClick={() => { setStaffModalType(null); setStaffModalSearch(""); }} data-testid="button-close-staff-modal">
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className="relative mt-3">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search by name, school, or phone..."
+                  value={staffModalSearch}
+                  onChange={(e) => setStaffModalSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  data-testid="input-staff-modal-search"
+                />
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 min-h-0">
+              {(staffModalType === "aeos" || staffModalType === "totalStaff") && (() => {
+                const filtered = hierarchyData.filter((e) => {
+                  const q = staffModalSearch.toLowerCase();
+                  if (!q) return true;
+                  return e.aeo.name.toLowerCase().includes(q) || e.aeo.phoneNumber.includes(q) || (e.markaz || "").toLowerCase().includes(q);
+                });
+                if (filtered.length === 0 && staffModalType === "aeos") return <p className="text-sm text-muted-foreground text-center py-8">No AEOs found</p>;
+                return filtered.length > 0 && (
+                  <div className="mb-4">
+                    {staffModalType === "totalStaff" && <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">AEOs ({filtered.length})</p>}
+                    <div className="space-y-2">
+                      {filtered.map((entry) => (
+                        <div key={entry.aeo.id} className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background/50" data-testid={`staff-aeo-${entry.aeo.id}`}>
+                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shrink-0">
+                            <Award className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground truncate">{entry.aeo.name}</p>
+                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                              {entry.markaz && <span className="text-xs text-muted-foreground">{entry.markaz}</span>}
+                              <span className="text-xs text-muted-foreground/70 flex items-center gap-1"><Phone className="w-3 h-3" />{entry.aeo.phoneNumber}</span>
+                            </div>
+                            {entry.schools.length > 0 && (
+                              <div className="flex items-center gap-1 mt-1">
+                                <School className="w-3 h-3 text-muted-foreground/50" />
+                                <span className="text-[10px] text-muted-foreground/60">{entry.schools.length} school{entry.schools.length !== 1 ? "s" : ""}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {(staffModalType === "headTeachers" || staffModalType === "totalStaff") && (() => {
+                const filtered = allHeadTeachers.filter((ht) => {
+                  const q = staffModalSearch.toLowerCase();
+                  if (!q) return true;
+                  return ht.name.toLowerCase().includes(q) || ht.phoneNumber.includes(q) || ht.schoolName.toLowerCase().includes(q) || ht.aeoName.toLowerCase().includes(q);
+                });
+                if (filtered.length === 0 && staffModalType === "headTeachers") return <p className="text-sm text-muted-foreground text-center py-8">No head teachers found</p>;
+                return filtered.length > 0 && (
+                  <div className="mb-4">
+                    {staffModalType === "totalStaff" && <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Head Teachers ({filtered.length})</p>}
+                    <div className="space-y-2">
+                      {filtered.map((ht) => (
+                        <div key={ht.id} className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background/50" data-testid={`staff-ht-${ht.id}`}>
+                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shrink-0">
+                            <Building2 className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground truncate">{ht.name}</p>
+                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                              <span className="text-xs text-muted-foreground truncate">{ht.schoolName}</span>
+                              <span className="text-xs text-muted-foreground/70 flex items-center gap-1"><Phone className="w-3 h-3" />{ht.phoneNumber}</span>
+                            </div>
+                            <span className="text-[10px] text-muted-foreground/60">Under: {ht.aeoName}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {(staffModalType === "teachers" || staffModalType === "totalStaff") && (() => {
+                const filtered = allTeachers.filter((t) => {
+                  const q = staffModalSearch.toLowerCase();
+                  if (!q) return true;
+                  return t.name.toLowerCase().includes(q) || t.phoneNumber.includes(q) || t.schoolName.toLowerCase().includes(q) || t.aeoName.toLowerCase().includes(q);
+                });
+                if (filtered.length === 0 && staffModalType === "teachers") return <p className="text-sm text-muted-foreground text-center py-8">No teachers found</p>;
+                return filtered.length > 0 && (
+                  <div className="mb-4">
+                    {staffModalType === "totalStaff" && <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Teachers ({filtered.length})</p>}
+                    <div className="space-y-2">
+                      {filtered.map((t) => (
+                        <div key={t.id} className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background/50" data-testid={`staff-teacher-${t.id}`}>
+                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0">
+                            <Users className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground truncate">{t.name}</p>
+                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                              <span className="text-xs text-muted-foreground truncate">{t.schoolName}</span>
+                              <span className="text-xs text-muted-foreground/70 flex items-center gap-1"><Phone className="w-3 h-3" />{t.phoneNumber}</span>
+                            </div>
+                            <span className="text-[10px] text-muted-foreground/60">Under: {t.aeoName}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {staffModalType === "totalStaff" && hierarchyData.length === 0 && allHeadTeachers.length === 0 && allTeachers.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-8">No staff data available</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {showSidebar && (
         <div className="lg:hidden fixed inset-0 z-[60]">
           <div
@@ -775,6 +990,8 @@ export default function TrainingManagerDashboard() {
                       showAsBadge: false,
                     },
                   ]}
+                  onClick={() => setStaffModalType("aeos")}
+                  showChevron
                   className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-aeos"
                 />
@@ -798,6 +1015,8 @@ export default function TrainingManagerDashboard() {
                       showAsBadge: false,
                     },
                   ]}
+                  onClick={() => setStaffModalType("headTeachers")}
+                  showChevron
                   className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-headteachers"
                 />
@@ -821,6 +1040,8 @@ export default function TrainingManagerDashboard() {
                       showAsBadge: false,
                     },
                   ]}
+                  onClick={() => setStaffModalType("teachers")}
+                  showChevron
                   className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-teachers"
                 />
@@ -834,6 +1055,8 @@ export default function TrainingManagerDashboard() {
                   icon={TrendingUp}
                   iconGradient="from-amber-500 to-amber-600"
                   size="md"
+                  onClick={() => setStaffModalType("totalStaff")}
+                  showChevron
                   className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-total-staff"
                 />
