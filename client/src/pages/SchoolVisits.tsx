@@ -115,7 +115,7 @@ export default function SchoolVisits() {
 
     // Sort by date descending
     return visits.sort((a, b) => b.visitDate.getTime() - a.visitDate.getTime());
-  }, [monitoringVisits, mentoringVisits, officeVisits, user.id, user.role]);
+  }, [monitoringVisits, mentoringVisits, officeVisits, user?.id, user?.role]);
   
   const tabFilteredVisits = useMemo(() => {
     if (!isTrainingManager || activeTab === 'all') return userVisits;
