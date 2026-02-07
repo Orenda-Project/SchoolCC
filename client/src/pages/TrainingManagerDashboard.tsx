@@ -149,13 +149,6 @@ export default function TrainingManagerDashboard() {
       path: "/school-visits",
     },
     {
-      label: "Data Requests",
-      icon: FileText,
-      gradient: "from-violet-400 to-violet-600",
-      hoverBg: "hover:bg-violet-50 dark:hover:bg-violet-900/30",
-      path: "/data-requests",
-    },
-    {
       label: "School Inventory",
       icon: Building2,
       gradient: "from-teal-400 to-teal-600",
@@ -163,18 +156,11 @@ export default function TrainingManagerDashboard() {
       path: "/school-data",
     },
     {
-      label: "Leave Calendar",
-      icon: Calendar,
-      gradient: "from-blue-400 to-blue-600",
-      hoverBg: "hover:bg-blue-50 dark:hover:bg-blue-900/30",
-      path: "/calendar",
-    },
-    {
-      label: "Community Album",
-      icon: BookOpen,
-      gradient: "from-pink-400 to-pink-600",
-      hoverBg: "hover:bg-pink-50 dark:hover:bg-pink-900/30",
-      path: "/community-album",
+      label: "Data Requests",
+      icon: FileText,
+      gradient: "from-violet-400 to-violet-600",
+      hoverBg: "hover:bg-violet-50 dark:hover:bg-violet-900/30",
+      path: "/data-requests",
     },
     {
       label: "Queries",
@@ -182,21 +168,6 @@ export default function TrainingManagerDashboard() {
       gradient: "from-purple-400 to-purple-600",
       hoverBg: "hover:bg-purple-50 dark:hover:bg-purple-900/30",
       path: "/queries",
-    },
-    {
-      label: "Lesson Plans",
-      icon: BookOpen,
-      gradient: "from-indigo-400 to-indigo-500",
-      hoverBg: "hover:bg-indigo-50 dark:hover:bg-indigo-900/30",
-      path: "/lesson-plans",
-    },
-    {
-      label: "Help Guide",
-      icon: HelpCircle,
-      gradient: "from-blue-500 to-purple-600",
-      hoverBg: "hover:bg-blue-50 dark:hover:bg-blue-900/30",
-      path: null,
-      action: () => window.dispatchEvent(new CustomEvent("openHelpGuide")),
     },
   ];
 
@@ -646,85 +617,6 @@ export default function TrainingManagerDashboard() {
                     </span>
                   </button>
                 ))}
-              </div>
-            </div>
-
-            <div data-testid="widget-training-manager-staff-overview">
-              <h2 className="text-base sm:text-lg lg:text-xl font-bold gradient-text mb-2 sm:mb-3 lg:mb-4">
-                Staff Overview
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
-                <Card className="p-3 sm:p-4 bg-white dark:bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-2 sm:mb-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-sm">
-                      <Award className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        AEOs
-                      </p>
-                      <p className="text-lg sm:text-xl font-bold text-foreground">
-                        {staffStats.aeos.total}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 text-xs">
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium">
-                      {staffStats.aeos.present} Present
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-medium">
-                      {staffStats.aeos.onLeave} Leave
-                    </span>
-                  </div>
-                </Card>
-
-                <Card className="p-3 sm:p-4 bg-white dark:bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-2 sm:mb-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-sm">
-                      <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        Head Teachers
-                      </p>
-                      <p className="text-lg sm:text-xl font-bold text-foreground">
-                        {staffStats.headTeachers.total}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 text-xs">
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium">
-                      {staffStats.headTeachers.present} Present
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-medium">
-                      {staffStats.headTeachers.onLeave} Leave
-                    </span>
-                  </div>
-                </Card>
-
-                <Card className="p-3 sm:p-4 bg-white dark:bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-2 sm:mb-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-sm">
-                      <Users className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        Teachers
-                      </p>
-                      <p className="text-lg sm:text-xl font-bold text-foreground">
-                        {staffStats.teachers.total}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 text-xs">
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium">
-                      {staffStats.teachers.present} Present
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-medium">
-                      {staffStats.teachers.onLeave} Leave
-                    </span>
-                  </div>
-                </Card>
               </div>
             </div>
 
