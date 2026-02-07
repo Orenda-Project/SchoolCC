@@ -7,10 +7,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Edit, Save, X, User, ArrowLeft, School, Camera } from "lucide-react";
+import { Loader2, Edit, Save, X, User, ArrowLeft, School, Camera, Users, Search, Check, Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { analytics } from '@/lib/analytics';
 import { ProfilePictureEditor } from "@/components/ProfilePictureEditor";
+
+interface AEOUser {
+  id: string;
+  name: string;
+  phoneNumber: string;
+  markazName?: string;
+  markazId?: string;
+}
 
 interface UserProfile {
   id: string;
@@ -30,6 +38,7 @@ interface UserProfile {
   qualification?: string;
   profilePicture?: string;
   assignedSchools?: string[];
+  assignedAEOs?: string[];
   markaz?: string;
 }
 
@@ -44,6 +53,11 @@ export default function UserProfile() {
   const [editedProfile, setEditedProfile] = useState<Partial<UserProfile>>({});
   const [availableSchools, setAvailableSchools] = useState<Array<{ id: string; name: string }>>([]);
   const [showPictureEditor, setShowPictureEditor] = useState(false);
+  const [availableAEOs, setAvailableAEOs] = useState<AEOUser[]>([]);
+  const [editedAEOs, setEditedAEOs] = useState<string[]>([]);
+  const [aeoSearchQuery, setAeoSearchQuery] = useState("");
+  const [savingAEOs, setSavingAEOs] = useState(false);
+  const [aeoEditMode, setAeoEditMode] = useState(false);
 
   useEffect(() => {
     if (!user?.id) {
@@ -58,11 +72,28 @@ export default function UserProfile() {
     fetchProfile();
     analytics.navigation.profileViewed();
 
-    // Fetch available schools for AEO
     if (user?.role === 'AEO' && user?.clusterId) {
       fetchAvailableSchools(user.clusterId);
     }
+
+    if (user?.role === 'TRAINING_MANAGER') {
+      fetchAvailableAEOs();
+    }
   }, [user?.id]);
+
+  const fetchAvailableAEOs = async () => {
+    try {
+      const response = await fetch("/api/training-manager/aeos");
+      if (response.ok) {
+        const aeos = await response.json();
+        if (Array.isArray(aeos)) {
+          setAvailableAEOs(aeos.filter((a: AEOUser) => a.id));
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching AEOs:", error);
+    }
+  };
 
   const fetchAvailableSchools = async (clusterId: string) => {
     try {
@@ -103,6 +134,7 @@ export default function UserProfile() {
             qualification: user.qualification,
             profilePicture: user.profilePicture,
             assignedSchools: user.assignedSchools,
+            assignedAEOs: user.assignedAEOs,
           };
           setProfile(contextProfile);
           setEditedProfile(contextProfile);
@@ -116,7 +148,6 @@ export default function UserProfile() {
       setEditedProfile(data);
     } catch (error) {
       console.error("Error fetching profile:", error);
-      // Final fallback to context user
       if (user) {
         const contextProfile: UserProfile = {
           id: user.id,
@@ -136,6 +167,7 @@ export default function UserProfile() {
           qualification: user.qualification,
           profilePicture: user.profilePicture,
           assignedSchools: user.assignedSchools,
+          assignedAEOs: user.assignedAEOs,
         };
         setProfile(contextProfile);
         setEditedProfile(contextProfile);
@@ -221,6 +253,70 @@ export default function UserProfile() {
       return { ...prev, assignedSchools: updated };
     });
   };
+
+  const handleStartAEOEdit = () => {
+    setEditedAEOs(profile?.assignedAEOs || []);
+    setAeoSearchQuery("");
+    setAeoEditMode(true);
+  };
+
+  const handleCancelAEOEdit = () => {
+    setEditedAEOs([]);
+    setAeoSearchQuery("");
+    setAeoEditMode(false);
+  };
+
+  const toggleAEO = (aeoId: string) => {
+    setEditedAEOs((prev) =>
+      prev.includes(aeoId) ? prev.filter((id) => id !== aeoId) : [...prev, aeoId]
+    );
+  };
+
+  const removeAEO = (aeoId: string) => {
+    setEditedAEOs((prev) => prev.filter((id) => id !== aeoId));
+  };
+
+  const handleSaveAEOs = async () => {
+    if (!user?.id) return;
+
+    setSavingAEOs(true);
+    try {
+      const response = await fetch(`/api/training-manager/${user.id}/assigned-aeos`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assignedAEOs: editedAEOs }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update AEOs");
+      }
+
+      const updatedUser = await response.json();
+      const newAEOs = updatedUser.assignedAEOs || editedAEOs;
+      updateUser({ assignedAEOs: newAEOs });
+      setProfile((prev) => prev ? { ...prev, assignedAEOs: newAEOs } : prev);
+      setAeoEditMode(false);
+      toast({
+        title: "Success",
+        description: `Updated AEO assignments (${newAEOs.length} AEO${newAEOs.length !== 1 ? "s" : ""})`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update AEO assignments",
+        variant: "destructive",
+      });
+    } finally {
+      setSavingAEOs(false);
+    }
+  };
+
+  const filteredAvailableAEOs = availableAEOs.filter(
+    (aeo) =>
+      aeo.name.toLowerCase().includes(aeoSearchQuery.toLowerCase()) ||
+      (aeo.markazName || "").toLowerCase().includes(aeoSearchQuery.toLowerCase()) ||
+      aeo.phoneNumber.includes(aeoSearchQuery)
+  );
 
   if (loading) {
     return (
@@ -479,6 +575,192 @@ export default function UserProfile() {
               )}
             </div>
           </div>
+
+          {/* Training Manager AEO Management */}
+          {profile.role === 'TRAINING_MANAGER' && (
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Managed AEOs
+                </h3>
+                {!aeoEditMode ? (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleStartAEOEdit}
+                    data-testid="button-edit-aeos"
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Manage AEOs
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCancelAEOEdit}
+                      disabled={savingAEOs}
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleSaveAEOs}
+                      disabled={savingAEOs || editedAEOs.length === 0}
+                      data-testid="button-save-aeos-profile"
+                    >
+                      {savingAEOs ? (
+                        <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                      ) : (
+                        <Save className="h-4 w-4 mr-1" />
+                      )}
+                      Save
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Select the AEOs you oversee. Their schools, principals, and teachers will be linked to your account.
+              </p>
+
+              {aeoEditMode ? (
+                <div className="space-y-3">
+                  {editedAEOs.length > 0 && (
+                    <div className="space-y-2 mb-4">
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        Currently Selected ({editedAEOs.length})
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {editedAEOs.map((aeoId) => {
+                          const aeo = availableAEOs.find((a) => a.id === aeoId);
+                          return (
+                            <div
+                              key={aeoId}
+                              className="flex items-center justify-between p-2.5 bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-lg"
+                              data-testid={`selected-aeo-${aeoId}`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shrink-0">
+                                  <User className="w-3.5 h-3.5 text-white" />
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="text-sm font-medium truncate">
+                                    {aeo?.name || "Unknown AEO"}
+                                  </p>
+                                  {aeo?.markazName && (
+                                    <p className="text-xs text-muted-foreground truncate">
+                                      {aeo.markazName}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => removeAEO(aeoId)}
+                                className="p-1 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 transition-colors shrink-0"
+                                data-testid={`button-remove-aeo-${aeoId}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Search AEOs by name, markaz, or phone..."
+                      value={aeoSearchQuery}
+                      onChange={(e) => setAeoSearchQuery(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                      data-testid="input-aeo-search-profile"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-72 overflow-y-auto border rounded-lg p-3">
+                    {filteredAvailableAEOs.length === 0 ? (
+                      <p className="text-sm text-muted-foreground col-span-2 text-center py-4">
+                        {aeoSearchQuery ? "No AEOs match your search" : "No AEOs available"}
+                      </p>
+                    ) : (
+                      filteredAvailableAEOs.map((aeo) => {
+                        const isSelected = editedAEOs.includes(aeo.id);
+                        return (
+                          <button
+                            key={aeo.id}
+                            onClick={() => toggleAEO(aeo.id)}
+                            className={`flex items-center gap-2.5 p-2.5 rounded-lg border text-left transition-all duration-150 ${
+                              isSelected
+                                ? "border-primary bg-primary/5 dark:bg-primary/10"
+                                : "border-border hover:border-primary/30 hover:bg-muted/50"
+                            }`}
+                            data-testid={`aeo-profile-option-${aeo.id}`}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-all ${
+                                isSelected
+                                  ? "border-primary bg-primary"
+                                  : "border-muted-foreground/30"
+                              }`}
+                            >
+                              {isSelected && <Check className="w-3 h-3 text-white" />}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm font-medium truncate">{aeo.name}</p>
+                              <p className="text-xs text-muted-foreground truncate">
+                                {aeo.markazName || aeo.phoneNumber}
+                              </p>
+                            </div>
+                          </button>
+                        );
+                      })
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {editedAEOs.length} AEO{editedAEOs.length !== 1 ? "s" : ""} selected
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {profile.assignedAEOs && profile.assignedAEOs.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {profile.assignedAEOs.map((aeoId) => {
+                        const aeo = availableAEOs.find((a) => a.id === aeoId);
+                        return (
+                          <div
+                            key={aeoId}
+                            className="flex items-center gap-2 p-2.5 bg-muted/50 dark:bg-muted/20 rounded-lg border border-border"
+                            data-testid={`assigned-aeo-${aeoId}`}
+                          >
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shrink-0">
+                              <User className="w-4 h-4 text-white" />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium truncate">
+                                {aeo?.name || "Loading..."}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate">
+                                {aeo?.markazName || aeo?.phoneNumber || ""}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground italic">
+                      No AEOs assigned. Click "Manage AEOs" to select AEOs.
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* AEO School Selection - Only for AEO users */}
           {profile.role === 'AEO' && availableSchools.length > 0 && (
