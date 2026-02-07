@@ -317,6 +317,29 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
   const [officeVisits, setOfficeVisits] = useState<OfficeVisitData[]>([]);
   const [otherActivities, setOtherActivities] = useState<OtherActivityData[]>([]);
 
+  const buildFilterParam = useCallback(async () => {
+    if (!user) return '';
+    if (user.role === 'AEO') return `?aeoId=${user.id}`;
+    if (user.role === 'TRAINING_MANAGER') {
+      try {
+        const res = await fetch(`/api/training-manager/${user.id}/hierarchy`);
+        if (res.ok) {
+          const hierarchy = await res.json();
+          if (Array.isArray(hierarchy)) {
+            const aeoIds = hierarchy.map((entry: any) => entry.aeoId).filter(Boolean);
+            const allIds = [user.id, ...aeoIds];
+            return `?aeoIds=${allIds.join(',')}`;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch TM hierarchy for activity filtering:', error);
+      }
+      return `?aeoId=${user.id}`;
+    }
+    if (['CEO', 'DEO', 'DDEO'].includes(user.role)) return '';
+    return '';
+  }, [user?.id, user?.role]);
+
   // Load activities from the API on mount and when user changes
   useEffect(() => {
     const loadActivities = async () => {
@@ -329,15 +352,13 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
       }
 
       try {
-        // For AEO role, filter by their own ID; for leadership roles, get all
-        const isLeadership = ['CEO', 'DEO', 'DDEO', 'TRAINING_MANAGER'].includes(user.role);
-        const aeoParam = !isLeadership && user.role === 'AEO' ? `?aeoId=${user.id}` : '';
+        const filterParam = await buildFilterParam();
         
         const [monitoringRes, mentoringRes, officeRes, otherRes] = await Promise.all([
-          fetch(`/api/activities/monitoring${aeoParam}`),
-          fetch(`/api/activities/mentoring${aeoParam}`),
-          fetch(`/api/activities/office${aeoParam}`),
-          fetch(`/api/activities/other${aeoParam}`),
+          fetch(`/api/activities/monitoring${filterParam}`),
+          fetch(`/api/activities/mentoring${filterParam}`),
+          fetch(`/api/activities/office${filterParam}`),
+          fetch(`/api/activities/other${filterParam}`),
         ]);
 
         if (monitoringRes.ok) {
@@ -362,7 +383,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     };
 
     loadActivities();
-  }, [user?.id, user?.role]);
+  }, [user?.id, user?.role, buildFilterParam]);
 
   const addMonitoringVisit = useCallback(async (visit: MonitoringVisitData) => {
     // Omit frontend-generated id - server will generate it
@@ -442,14 +463,13 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     if (!user) return;
     
     try {
-      const isLeadership = ['CEO', 'DEO', 'DDEO', 'TRAINING_MANAGER'].includes(user.role);
-      const aeoParam = !isLeadership && user.role === 'AEO' ? `?aeoId=${user.id}` : '';
+      const filterParam = await buildFilterParam();
       
       const [monitoringRes, mentoringRes, officeRes, otherRes] = await Promise.all([
-        fetch(`/api/activities/monitoring${aeoParam}`),
-        fetch(`/api/activities/mentoring${aeoParam}`),
-        fetch(`/api/activities/office${aeoParam}`),
-        fetch(`/api/activities/other${aeoParam}`),
+        fetch(`/api/activities/monitoring${filterParam}`),
+        fetch(`/api/activities/mentoring${filterParam}`),
+        fetch(`/api/activities/office${filterParam}`),
+        fetch(`/api/activities/other${filterParam}`),
       ]);
 
       if (monitoringRes.ok) {
@@ -471,7 +491,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Failed to refresh activities:', error);
     }
-  }, [user?.id, user?.role]);
+  }, [user?.id, user?.role, buildFilterParam]);
 
   return (
     <ActivitiesContext.Provider

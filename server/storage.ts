@@ -152,6 +152,7 @@ export interface IStorage {
   createMonitoringVisit(visit: InsertMonitoringVisit): Promise<MonitoringVisit>;
   getMonitoringVisitById(id: string): Promise<MonitoringVisit | undefined>;
   getMonitoringVisitsByAeo(aeoId: string): Promise<MonitoringVisit[]>;
+  getMonitoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MonitoringVisit[]>;
   getAllMonitoringVisits(): Promise<MonitoringVisit[]>;
   updateMonitoringVisit(id: string, visit: Partial<InsertMonitoringVisit>): Promise<MonitoringVisit>;
   deleteMonitoringVisit(id: string, aeoId: string): Promise<boolean>;
@@ -160,6 +161,7 @@ export interface IStorage {
   createMentoringVisit(visit: InsertMentoringVisit): Promise<MentoringVisit>;
   getMentoringVisitById(id: string): Promise<MentoringVisit | undefined>;
   getMentoringVisitsByAeo(aeoId: string): Promise<MentoringVisit[]>;
+  getMentoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MentoringVisit[]>;
   getAllMentoringVisits(): Promise<MentoringVisit[]>;
   updateMentoringVisit(id: string, visit: Partial<InsertMentoringVisit>): Promise<MentoringVisit>;
   deleteMentoringVisit(id: string, aeoId: string): Promise<boolean>;
@@ -168,12 +170,14 @@ export interface IStorage {
   createOfficeVisit(visit: InsertOfficeVisit): Promise<OfficeVisit>;
   getOfficeVisitById(id: string): Promise<OfficeVisit | undefined>;
   getOfficeVisitsByAeo(aeoId: string): Promise<OfficeVisit[]>;
+  getOfficeVisitsByMultipleAeos(aeoIds: string[]): Promise<OfficeVisit[]>;
   getAllOfficeVisits(): Promise<OfficeVisit[]>;
   updateOfficeVisit(id: string, visit: Partial<InsertOfficeVisit>): Promise<OfficeVisit>;
 
   // Other Activity operations
   createOtherActivity(activity: InsertOtherActivity): Promise<OtherActivity>;
   getOtherActivitiesByAeo(aeoId: string): Promise<OtherActivity[]>;
+  getOtherActivitiesByMultipleAeos(aeoIds: string[]): Promise<OtherActivity[]>;
   getAllOtherActivities(): Promise<OtherActivity[]>;
 
   // Visit Session operations (GPS tracking)
@@ -942,6 +946,14 @@ export class DBStorage implements IStorage {
       .orderBy(desc(monitoringVisits.createdAt));
   }
 
+  async getMonitoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MonitoringVisit[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(monitoringVisits)
+      .where(inArray(monitoringVisits.aeoId, aeoIds))
+      .orderBy(desc(monitoringVisits.createdAt));
+  }
+
   async getAllMonitoringVisits(): Promise<MonitoringVisit[]> {
     return await db.select()
       .from(monitoringVisits)
@@ -983,6 +995,14 @@ export class DBStorage implements IStorage {
     return await db.select()
       .from(mentoringVisits)
       .where(eq(mentoringVisits.aeoId, aeoId))
+      .orderBy(desc(mentoringVisits.createdAt));
+  }
+
+  async getMentoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MentoringVisit[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(mentoringVisits)
+      .where(inArray(mentoringVisits.aeoId, aeoIds))
       .orderBy(desc(mentoringVisits.createdAt));
   }
 
@@ -1030,6 +1050,14 @@ export class DBStorage implements IStorage {
       .orderBy(desc(officeVisits.createdAt));
   }
 
+  async getOfficeVisitsByMultipleAeos(aeoIds: string[]): Promise<OfficeVisit[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(officeVisits)
+      .where(inArray(officeVisits.aeoId, aeoIds))
+      .orderBy(desc(officeVisits.createdAt));
+  }
+
   async getAllOfficeVisits(): Promise<OfficeVisit[]> {
     return await db.select()
       .from(officeVisits)
@@ -1054,6 +1082,14 @@ export class DBStorage implements IStorage {
     return await db.select()
       .from(otherActivities)
       .where(eq(otherActivities.aeoId, aeoId))
+      .orderBy(desc(otherActivities.createdAt));
+  }
+
+  async getOtherActivitiesByMultipleAeos(aeoIds: string[]): Promise<OtherActivity[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(otherActivities)
+      .where(inArray(otherActivities.aeoId, aeoIds))
       .orderBy(desc(otherActivities.createdAt));
   }
 

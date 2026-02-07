@@ -2390,9 +2390,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/monitoring", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let visits;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        visits = await storage.getMonitoringVisitsByMultipleAeos(ids);
+      } else if (aeoId) {
         visits = await storage.getMonitoringVisitsByAeo(aeoId as string);
       } else {
         visits = await storage.getAllMonitoringVisits();
@@ -2472,9 +2475,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/mentoring", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let visits;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        visits = await storage.getMentoringVisitsByMultipleAeos(ids);
+      } else if (aeoId) {
         visits = await storage.getMentoringVisitsByAeo(aeoId as string);
       } else {
         visits = await storage.getAllMentoringVisits();
@@ -2554,9 +2560,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/office", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let visits;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        visits = await storage.getOfficeVisitsByMultipleAeos(ids);
+      } else if (aeoId) {
         visits = await storage.getOfficeVisitsByAeo(aeoId as string);
       } else {
         visits = await storage.getAllOfficeVisits();
@@ -2615,9 +2624,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/other", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let activities;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        activities = await storage.getOtherActivitiesByMultipleAeos(ids);
+      } else if (aeoId) {
         activities = await storage.getOtherActivitiesByAeo(aeoId as string);
       } else {
         activities = await storage.getAllOtherActivities();
