@@ -1254,28 +1254,13 @@ export default function MentoringVisitForm({ onClose }: Props) {
           )}
         </div>
 
-        {user?.role === 'TRAINING_MANAGER' && (
-          <div className="pt-4 border-t border-border">
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Training Manager Notes
-            </label>
-            <textarea
-              className="w-full min-h-[100px] p-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-y text-sm"
-              placeholder="Add any additional observations, coaching notes, or follow-up actions specific to your Training Manager review..."
-              value={formData.tmNotes || ''}
-              onChange={(e) => handleInputChange('tmNotes', e.target.value)}
-              data-testid="textarea-tm-notes"
-            />
-            <p className="text-xs text-muted-foreground mt-1">This field is only visible to Training Managers</p>
-          </div>
-        )}
       </div>
     </Card>
   );
 
   const renderEvidence = () => (
     <Card className="p-6">
-      <h2 className="text-lg font-semibold text-foreground mb-4">Evidence (Optional)</h2>
+      <h2 className="text-lg font-semibold text-foreground mb-4">Evidence & Notes</h2>
 
       <div className="space-y-4">
         <div className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-6 text-center">
@@ -1339,6 +1324,22 @@ export default function MentoringVisitForm({ onClose }: Props) {
                 </Button>
               </div>
             ))}
+          </div>
+        )}
+
+        {user?.role === 'TRAINING_MANAGER' && (
+          <div className="pt-4 border-t border-border">
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Training Manager Notes
+            </label>
+            <textarea
+              className="w-full min-h-[100px] p-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-y text-sm"
+              placeholder="Add any additional observations, coaching notes, or follow-up actions specific to your Training Manager review..."
+              value={formData.tmNotes || ''}
+              onChange={(e) => handleInputChange('tmNotes', e.target.value)}
+              data-testid="textarea-tm-notes-evidence"
+            />
+            <p className="text-xs text-muted-foreground mt-1">This field is only visible to Training Managers</p>
           </div>
         )}
       </div>
