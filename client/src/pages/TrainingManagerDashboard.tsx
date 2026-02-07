@@ -538,7 +538,7 @@ export default function TrainingManagerDashboard() {
                   label="AEOs"
                   icon={Award}
                   iconGradient="from-purple-500 to-purple-600"
-                  size="lg"
+                  size="md"
                   breakdown={[
                     {
                       label: "Present",
@@ -553,7 +553,7 @@ export default function TrainingManagerDashboard() {
                       showAsBadge: false,
                     },
                   ]}
-                  className="hover-lift card-shine"
+                  className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-aeos"
                 />
                 <MetricCard
@@ -561,7 +561,7 @@ export default function TrainingManagerDashboard() {
                   label="Head Teachers"
                   icon={Building2}
                   iconGradient="from-teal-500 to-teal-600"
-                  size="lg"
+                  size="md"
                   breakdown={[
                     {
                       label: "Present",
@@ -576,7 +576,7 @@ export default function TrainingManagerDashboard() {
                       showAsBadge: false,
                     },
                   ]}
-                  className="hover-lift card-shine"
+                  className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-headteachers"
                 />
                 <MetricCard
@@ -584,7 +584,7 @@ export default function TrainingManagerDashboard() {
                   label="Teachers"
                   icon={Users}
                   iconGradient="from-blue-500 to-blue-600"
-                  size="lg"
+                  size="md"
                   breakdown={[
                     {
                       label: "Present",
@@ -599,7 +599,7 @@ export default function TrainingManagerDashboard() {
                       showAsBadge: false,
                     },
                   ]}
-                  className="hover-lift card-shine"
+                  className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-teachers"
                 />
                 <MetricCard
@@ -611,8 +611,8 @@ export default function TrainingManagerDashboard() {
                   label="Total Staff"
                   icon={TrendingUp}
                   iconGradient="from-amber-500 to-amber-600"
-                  size="lg"
-                  className="hover-lift card-shine"
+                  size="md"
+                  className="hover-lift card-shine h-full"
                   data-testid="card-training-manager-total-staff"
                 />
               </div>
