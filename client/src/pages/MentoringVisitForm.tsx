@@ -169,6 +169,29 @@ export default function MentoringVisitForm({ onClose }: Props) {
         url: f.previewUrl || f.name,
       }));
 
+      // Convert selectedAreas to indicators array
+      const indicators = [];
+      for (const areaId in selectedAreas) {
+        const area = mentoringAreas.find(a => a.id === areaId);
+        if (!area) continue;
+
+        for (const indicatorId in selectedAreas[areaId]) {
+          const rating = selectedAreas[areaId][indicatorId];
+          if (!rating) continue;
+
+          const indicator = area.indicators.find(i => i.id === indicatorId);
+          if (!indicator) continue;
+
+          indicators.push({
+            id: indicator.id,
+            name: indicator.name,
+            rating: rating,
+            rubricText: indicator.rubric[rating] || '',
+            examples: indicator.description || '',
+          });
+        }
+      }
+
       const now = new Date();
       const currentTime = now.toTimeString().slice(0, 5);
       const visit: MentoringVisitData = {
@@ -183,7 +206,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
         classObserved: formData.classObserved || '',
         teacherName: formData.teacherName || '',
         subject: formData.subject || '',
-        indicators: formData.indicators || [],
+        indicators: indicators,
         generalFeedback: formData.generalFeedback || '',
         strengthsObserved: formData.strengthsObserved || '',
         areasForImprovement: formData.areasForImprovement || '',
