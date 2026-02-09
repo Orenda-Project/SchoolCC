@@ -1,11 +1,21 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { createClient } from '@deepgram/sdk';
+import { createClient, DeepgramClient } from '@deepgram/sdk';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
 
-const deepgram = createClient(process.env.DEEPGRAM_API_KEY || '');
+let deepgram: DeepgramClient | null = null;
+
+function getDeepgramClient(): DeepgramClient {
+  if (!process.env.DEEPGRAM_API_KEY) {
+    throw new Error('Deepgram API key not configured');
+  }
+  if (!deepgram) {
+    deepgram = createClient(process.env.DEEPGRAM_API_KEY);
+  }
+  return deepgram;
+}
 
 /**
  * Transcribe audio using Deepgram speech-to-text API
@@ -13,15 +23,13 @@ const deepgram = createClient(process.env.DEEPGRAM_API_KEY || '');
  */
 export async function transcribeAudio(audioBuffer: Buffer, language: string = 'en'): Promise<string> {
   try {
-    if (!process.env.DEEPGRAM_API_KEY) {
-      throw new Error('Deepgram API key not configured');
-    }
+    const client = getDeepgramClient();
 
     // Determine language code for Deepgram
     const languageCode = language === 'ur' ? 'ur' : 'en-US';
 
     // Transcribe audio using Deepgram
-    const { result, error } = await deepgram.listen.prerecorded.transcribeFile(
+    const { result, error } = await client.listen.prerecorded.transcribeFile(
       audioBuffer,
       {
         model: 'nova-2',

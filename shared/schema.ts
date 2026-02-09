@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, date, boolean, integer, json, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, date, boolean, integer, bigint, json, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -87,7 +87,7 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   phoneNumber: text("phone_number").notNull().unique(),
   password: text("password").notNull(),
-  role: text("role").notNull(), // CEO, DEO, DDEO, AEO, HEAD_TEACHER, TEACHER, COACH
+  role: text("role").notNull(), // CEO, DEO, DDEO, AEO, HEAD_TEACHER, TEACHER, TRAINING_MANAGER
   status: text("status").notNull().default("active"), // pending, active, restricted
   schoolId: varchar("school_id"),
   schoolName: text("school_name"),
@@ -110,6 +110,8 @@ export const users = pgTable("users", {
   profilePicture: text("profile_picture"),
   // AEO assigned schools (array of school IDs)
   assignedSchools: json("assigned_schools").$type<string[]>().default([]),
+  // Training Manager assigned AEOs (array of AEO user IDs)
+  assignedAEOs: json("assigned_aeos").$type<string[]>().default([]),
   // AEO markaz name (legacy - use markazName instead)
   markaz: text("markaz"),
   // Approval workflow fields
@@ -349,9 +351,9 @@ export const monitoringVisits = pgTable("monitoring_visits", {
   lndEnglishPercent: integer("lnd_english_percent").notNull().default(0),
   lndUrduPercent: integer("lnd_urdu_percent").notNull().default(0),
   lndMathsPercent: integer("lnd_maths_percent").notNull().default(0),
-  nsbAllocation: integer("nsb_allocation").notNull().default(0),
-  nsbExpenditure: integer("nsb_expenditure").notNull().default(0),
-  nsbBalance: integer("nsb_balance").notNull().default(0),
+  nsbAllocation: bigint("nsb_allocation", { mode: 'number' }).notNull().default(0),
+  nsbExpenditure: bigint("nsb_expenditure", { mode: 'number' }).notNull().default(0),
+  nsbBalance: bigint("nsb_balance", { mode: 'number' }).notNull().default(0),
   nsbUtilizationPercent: integer("nsb_utilization_percent").notNull().default(0),
   toiletStudentTotal: integer("toilet_student_total").notNull().default(0),
   toiletTotal: integer("toilet_total").notNull().default(0),
@@ -370,6 +372,7 @@ export const monitoringVisits = pgTable("monitoring_visits", {
   headTeacherSignature: boolean("head_teacher_signature").notNull().default(false),
   aeoSignature: boolean("aeo_signature").notNull().default(false),
   evidence: json("evidence").$type<{ id: string; name: string; type: string; url: string }[]>().default([]),
+  voiceNoteTranscription: text("voice_note_transcription"),
   status: text("status").notNull().default("draft"),
   submittedAt: timestamp("submitted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -396,6 +399,8 @@ export const mentoringVisits = pgTable("mentoring_visits", {
   areasForImprovement: text("areas_for_improvement"),
   actionItems: text("action_items"),
   evidence: json("evidence").$type<{ id: string; name: string; type: string; url: string }[]>().default([]),
+  voiceNoteTranscription: text("voice_note_transcription"),
+  tmNotes: text("tm_notes"),
   status: text("status").notNull().default("draft"),
   submittedAt: timestamp("submitted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),

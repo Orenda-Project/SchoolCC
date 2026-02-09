@@ -15,8 +15,8 @@ export default function AEOVisitTypeSelector({ onClose, onSelectType }: Props) {
       name: 'Monitoring Visit',
       description: 'Infrastructure, attendance, and facility assessment',
       icon: Monitor,
-      color: 'bg-blue-50 border-blue-200 hover:border-blue-400',
-      iconColor: 'text-blue-600 bg-blue-100',
+      color: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-500',
+      iconColor: 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30',
       benefits: ['Check infrastructure', 'Record attendance', 'Assess facilities'],
     },
     {
@@ -24,8 +24,8 @@ export default function AEOVisitTypeSelector({ onClose, onSelectType }: Props) {
       name: 'Mentoring Visit',
       description: 'Higher-Order Thinking Skills (HOTS) development',
       icon: Users,
-      color: 'bg-purple-50 border-purple-200 hover:border-purple-400',
-      iconColor: 'text-purple-600 bg-purple-100',
+      color: 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500',
+      iconColor: 'text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30',
       benefits: ['Observe teaching', 'Provide feedback', 'Develop HOTS'],
     },
     {
@@ -33,8 +33,8 @@ export default function AEOVisitTypeSelector({ onClose, onSelectType }: Props) {
       name: 'Office Visit',
       description: 'Administrative tasks and office work',
       icon: Building2,
-      color: 'bg-emerald-50 border-emerald-200 hover:border-emerald-400',
-      iconColor: 'text-emerald-600 bg-emerald-100',
+      color: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500',
+      iconColor: 'text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30',
       benefits: ['Log activities', 'Track time', 'Record tasks'],
     },
   ];
@@ -83,13 +83,13 @@ export default function AEOVisitTypeSelector({ onClose, onSelectType }: Props) {
                     Select
                   </Button>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-1">{type.name}</h3>
-                <p className="text-sm text-slate-600 mb-4">{type.description}</p>
+                <h3 className="text-lg font-semibold text-foreground mb-1">{type.name}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{type.description}</p>
                 <div className="flex gap-2">
                   {type.benefits.map((benefit, idx) => (
                     <span
                       key={idx}
-                      className="text-xs px-3 py-1 bg-white rounded-full text-slate-700 border border-current"
+                      className="text-xs px-3 py-1 bg-background rounded-full text-muted-foreground border border-border"
                     >
                       {benefit}
                     </span>

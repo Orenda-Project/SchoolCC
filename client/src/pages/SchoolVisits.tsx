@@ -19,6 +19,7 @@ import { analytics } from '@/lib/analytics';
 
 interface NormalizedVisit {
   id: string;
+  aeoId: string;
   schoolName: string;
   visitType: 'monitoring' | 'mentoring' | 'office';
   visitDate: Date;
@@ -42,6 +43,8 @@ export default function SchoolVisits() {
   const [showStartVisitModal, setShowStartVisitModal] = useState(false);
   const [showFormType, setShowFormType] = useState<'monitoring' | 'mentoring' | 'office' | 'other' | null>(null);
   const [showNewVisitModal, setShowNewVisitModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<'all' | 'team' | 'mine'>('all');
+  const isTrainingManager = user?.role === 'TRAINING_MANAGER';
 
   // Track page view
   useEffect(() => {
@@ -59,12 +62,12 @@ export default function SchoolVisits() {
     // Filter by user for AEO role, show all for leadership
     const filterByUser = user.role === 'AEO';
 
-    // Normalize monitoring visits (cast to any to access API fields)
     (monitoringVisits as any[])
       .filter(v => !filterByUser || v.aeoId === user.id)
       .forEach(v => {
         visits.push({
           id: v.id,
+          aeoId: v.aeoId,
           schoolName: v.schoolName,
           visitType: 'monitoring',
           visitDate: new Date(v.visitDate),
@@ -76,12 +79,12 @@ export default function SchoolVisits() {
         });
       });
 
-    // Normalize mentoring visits
     (mentoringVisits as any[])
       .filter(v => !filterByUser || v.aeoId === user.id)
       .forEach(v => {
         visits.push({
           id: v.id,
+          aeoId: v.aeoId,
           schoolName: v.schoolName,
           visitType: 'mentoring',
           visitDate: new Date(v.visitDate),
@@ -93,12 +96,12 @@ export default function SchoolVisits() {
         });
       });
 
-    // Normalize office visits
     (officeVisits as any[])
       .filter(v => !filterByUser || v.aeoId === user.id)
       .forEach(v => {
         visits.push({
           id: v.id,
+          aeoId: v.aeoId,
           schoolName: 'Office Visit',
           visitType: 'office',
           visitDate: new Date(v.visitDate),
@@ -112,9 +115,16 @@ export default function SchoolVisits() {
 
     // Sort by date descending
     return visits.sort((a, b) => b.visitDate.getTime() - a.visitDate.getTime());
-  }, [monitoringVisits, mentoringVisits, officeVisits, user.id, user.role]);
+  }, [monitoringVisits, mentoringVisits, officeVisits, user?.id, user?.role]);
   
-  const filteredVisits = userVisits.filter((visit) => {
+  const tabFilteredVisits = useMemo(() => {
+    if (!isTrainingManager || activeTab === 'all') return userVisits;
+    if (activeTab === 'mine') return userVisits.filter(v => v.aeoId === user?.id);
+    if (activeTab === 'team') return userVisits.filter(v => v.aeoId !== user?.id);
+    return userVisits;
+  }, [userVisits, activeTab, isTrainingManager, user?.id]);
+
+  const filteredVisits = tabFilteredVisits.filter((visit) => {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
     return (
@@ -127,11 +137,11 @@ export default function SchoolVisits() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'text-green-600 bg-green-100';
+        return 'text-green-600 bg-green-100 dark:bg-green-900/30 dark:text-green-400';
       case 'in_progress':
-        return 'text-blue-600 bg-blue-100';
+        return 'text-blue-600 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400';
       case 'planned':
-        return 'text-amber-600 bg-amber-100';
+        return 'text-amber-600 bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400';
       default:
         return 'text-muted-foreground bg-muted';
     }
@@ -140,11 +150,11 @@ export default function SchoolVisits() {
   const getVisitTypeColor = (type: string) => {
     switch (type) {
       case 'monitoring':
-        return 'bg-purple-100 text-purple-700';
+        return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
       case 'mentoring':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
       case 'office':
-        return 'bg-amber-100 text-amber-700';
+        return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
       default:
         return 'bg-muted text-muted-foreground';
     }
@@ -155,16 +165,16 @@ export default function SchoolVisits() {
 
   // Show embedded form based on selected type
   if (showFormType === 'monitoring') {
-    return <MonitoringVisitForm />;
+    return <MonitoringVisitForm onClose={() => setShowFormType(null)} />;
   }
   if (showFormType === 'mentoring') {
-    return <MentoringVisitForm />;
+    return <MentoringVisitForm onClose={() => setShowFormType(null)} />;
   }
   if (showFormType === 'office') {
-    return <OfficeVisitForm />;
+    return <OfficeVisitForm onClose={() => setShowFormType(null)} />;
   }
   if (showFormType === 'other') {
-    return <OtherActivityForm />;
+    return <OtherActivityForm onClose={() => setShowFormType(null)} />;
   }
 
   return (
@@ -184,7 +194,7 @@ export default function SchoolVisits() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate(user.role === 'CEO' ? '/ceo-dashboard' : '/dashboard')}
+              onClick={() => navigate(user.role === 'CEO' ? '/ceo-dashboard' : user.role === 'TRAINING_MANAGER' ? '/training-manager-dashboard' : '/dashboard')}
               data-testid="button-back"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -195,8 +205,7 @@ export default function SchoolVisits() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {/* New Visit Button for AEOs */}
-            {user.role === 'AEO' && (
+            {(user.role === 'AEO' || user.role === 'TRAINING_MANAGER') && (
               <Button
                 onClick={() => setShowNewVisitModal(true)}
                 className="gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
@@ -216,6 +225,33 @@ export default function SchoolVisits() {
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* TM Filter Tabs */}
+        {isTrainingManager && (
+          <div className="mb-6 flex gap-1 bg-muted p-1 rounded-lg w-fit" data-testid="tm-visit-tabs">
+            <button
+              onClick={() => setActiveTab('all')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'all' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+              data-testid="tab-all-submissions"
+            >
+              All Submissions
+            </button>
+            <button
+              onClick={() => setActiveTab('team')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'team' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+              data-testid="tab-team-submissions"
+            >
+              AEO Submissions
+            </button>
+            <button
+              onClick={() => setActiveTab('mine')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'mine' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+              data-testid="tab-my-submissions"
+            >
+              My Submissions
+            </button>
+          </div>
+        )}
+
         {/* Search Bar */}
         <div className="mb-6">
           <div className="relative max-w-md">

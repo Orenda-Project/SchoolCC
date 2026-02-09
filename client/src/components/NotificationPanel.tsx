@@ -190,7 +190,7 @@ export default function NotificationPanel({ open, onOpenChange }: NotificationPa
                   className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer ${
                     notification.isRead
                       ? 'bg-background border-border hover:bg-muted/50'
-                      : 'bg-blue-50 border-blue-200 hover:bg-blue-100'
+                      : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/30'
                   }`}
                 >
                   <div className="flex items-start gap-3">

@@ -25,8 +25,7 @@ const SUBJECTS = ['English', 'Urdu', 'Mathematics', 'Science', 'Social Studies',
 const STEPS = [
   { id: 0, label: 'Basic Info' },
   { id: 1, label: 'HOTS Indicators' },
-  { id: 2, label: 'Feedback' },
-  { id: 3, label: 'Evidence' },
+  { id: 2, label: 'Evidence' },
 ];
 
 interface UploadedFile {
@@ -51,23 +50,77 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const visitId = isEditMode ? location.split('/').pop() : undefined;
   const mentoringAreas = MENTORING_AREAS;
 
-  // Get schools - filter by assigned schools for AEO users
-  const getSchools = () => {
-    const allSchools = getAllSchools();
-    if (user?.role === 'AEO' && user?.assignedSchools && user.assignedSchools.length > 0) {
-      // assignedSchools contains names like "GBPS DHOKE ZIARAT"
-      // allSchools contains display strings like "GBPS DHOKE ZIARAT (37330XXX)"
-      // Match by checking if display string starts with the assigned school name (trimmed and normalized)
-      return allSchools.filter(schoolDisplay => 
-        user.assignedSchools!.some(assignedName => 
-          schoolDisplay.toUpperCase().trim().startsWith(assignedName.toUpperCase().trim())
-        )
-      );
+  const isTrainingManager = user?.role === 'TRAINING_MANAGER';
+
+  const [tmSchools, setTmSchools] = useState<string[]>([]);
+  const [apiSchools, setApiSchools] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (isTrainingManager && user?.id) {
+      const fetchTMSchools = async () => {
+        try {
+          const response = await fetch(`/api/training-manager/${user.id}/hierarchy`);
+          if (response.ok) {
+            const hierarchy = await response.json();
+            if (Array.isArray(hierarchy)) {
+              const schools = hierarchy.flatMap((entry: any) =>
+                (entry.schools || []).map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`)
+              );
+              setTmSchools(schools);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching TM schools:', error);
+        }
+      };
+      fetchTMSchools();
     }
-    return allSchools;
+
+    if (user?.role === 'AEO') {
+      const fetchAEOSchools = async () => {
+        try {
+          const response = await fetch("/api/admin/schools");
+          if (response.ok) {
+            const schools = await response.json();
+            if (Array.isArray(schools)) {
+              const userAssigned = user.assignedSchools || [];
+              if (userAssigned.length > 0) {
+                const matched = schools.filter((s: any) =>
+                  userAssigned.some((assigned: string) =>
+                    assigned.toUpperCase().trim() === (s.name || '').toUpperCase().trim() ||
+                    (s.emisNumber && assigned.includes(s.emisNumber))
+                  )
+                );
+                setApiSchools(matched.map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`));
+              } else {
+                setApiSchools(schools.map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`));
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching schools for AEO:', error);
+        }
+      };
+      fetchAEOSchools();
+    }
+  }, [isTrainingManager, user?.id]);
+
+  const getSchools = () => {
+    if (isTrainingManager && tmSchools.length > 0) {
+      return tmSchools;
+    }
+    if (user?.role === 'AEO' && apiSchools.length > 0) {
+      return apiSchools;
+    }
+    return getAllSchools();
   };
   
   const SCHOOLS = getSchools();
+
+  const getBackPath = () => {
+    if (isTrainingManager) return '/training-manager-dashboard';
+    return '/aeo-activity/logs';
+  };
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<MentoringVisitData>>({
@@ -174,7 +227,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
         } catch (error) {
           console.error('Error fetching visit:', error);
           toast.error('Failed to load visit data');
-          navigate('/aeo-activity/logs');
+          navigate(getBackPath());
         } finally {
           setLoading(false);
         }
@@ -562,9 +615,10 @@ export default function MentoringVisitForm({ onClose }: Props) {
       const currentTime = now.toTimeString().slice(0, 5);
 
       if (isEditMode && visitId) {
-        // UPDATE existing visit
+        // UPDATE existing visit - exclude submittedAt to prevent date conversion issues
+        const { submittedAt, createdAt, id, ...updateFields } = formData as any;
         const visitData = {
-          ...formData,
+          ...updateFields,
           evidence,
         };
 
@@ -580,7 +634,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
 
         const updatedVisit = await response.json();
         toast.success('Mentoring visit updated successfully!');
-        navigate('/aeo-activity/logs');
+        navigate(getBackPath());
       } else {
         // CREATE new visit
         const visit: MentoringVisitData = {
@@ -602,6 +656,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
           strengthsObserved: formData.strengthsObserved || '',
           areasForImprovement: formData.areasForImprovement || '',
           actionItems: formData.actionItems || '',
+          tmNotes: formData.tmNotes || '',
           evidence,
           status: 'submitted',
           submittedAt: new Date(),
@@ -1222,13 +1277,14 @@ export default function MentoringVisitForm({ onClose }: Props) {
             </div>
           )}
         </div>
+
       </div>
     </Card>
   );
 
   const renderEvidence = () => (
     <Card className="p-6">
-      <h2 className="text-lg font-semibold text-foreground mb-4">Evidence (Optional)</h2>
+      <h2 className="text-lg font-semibold text-foreground mb-4">Evidence & Notes</h2>
 
       <div className="space-y-4">
         <div className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-6 text-center">
@@ -1294,6 +1350,22 @@ export default function MentoringVisitForm({ onClose }: Props) {
             ))}
           </div>
         )}
+
+        {user?.role === 'TRAINING_MANAGER' && (
+          <div className="pt-4 border-t border-border">
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Training Manager Notes
+            </label>
+            <textarea
+              className="w-full min-h-[100px] p-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-y text-sm"
+              placeholder="Add any additional observations, coaching notes, or follow-up actions specific to your Training Manager review..."
+              value={formData.tmNotes || ''}
+              onChange={(e) => handleInputChange('tmNotes', e.target.value)}
+              data-testid="textarea-tm-notes-evidence"
+            />
+            <p className="text-xs text-muted-foreground mt-1">This field is only visible to Training Managers</p>
+          </div>
+        )}
       </div>
     </Card>
   );
@@ -1305,8 +1377,6 @@ export default function MentoringVisitForm({ onClose }: Props) {
       case 1:
         return renderIndicators();
       case 2:
-        return renderFeedback();
-      case 3:
         return renderEvidence();
       default:
         return null;
@@ -1380,8 +1450,8 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const handleClose = () => {
     if (onClose) {
       onClose();
-    } else if (isEditMode) {
-      navigate('/aeo-activity/logs');
+    } else {
+      navigate(getBackPath());
     }
   };
 

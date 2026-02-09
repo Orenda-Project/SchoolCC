@@ -793,8 +793,8 @@ export async function registerRoutes(
         return res.status(404).json({ error: "User not found" });
       }
       
-      // Get all users (approved ones only)
-      let allUsers = await storage.getUsersByStatus('approved');
+      let allUsers = await storage.getAllUsers();
+      allUsers = allUsers.filter(u => u.status === 'approved' || u.status === 'active');
       
       // Filter based on requesting user's role and access
       if (requestingUser.role === 'CEO' || requestingUser.role === 'DEO' || requestingUser.role === 'DDEO') {
@@ -810,14 +810,30 @@ export async function registerRoutes(
           return inCluster || inAssignedSchool;
         });
       }
+      else if (requestingUser.role === 'TRAINING_MANAGER') {
+        const assignedAEOIds = requestingUser.assignedAEOs || [];
+        const assignedAEOs = allUsers.filter(u => u.role === 'AEO' && assignedAEOIds.includes(u.id));
+        const allSchools = await storage.getAllSchools();
+        const aeoSchoolIds = new Set<string>();
+        assignedAEOs.forEach(aeo => {
+          const aeoSchoolNames = aeo.assignedSchools || [];
+          allSchools.forEach(school => {
+            if (aeoSchoolNames.some((name: string) => name.includes(school.emisNumber))) {
+              aeoSchoolIds.add(school.id);
+            }
+          });
+        });
+        const htAndTeachers = allUsers.filter(u =>
+          (u.role === 'HEAD_TEACHER' || u.role === 'TEACHER') && u.schoolId && aeoSchoolIds.has(u.schoolId)
+        );
+        allUsers = [...assignedAEOs, ...htAndTeachers];
+      }
       else if (requestingUser.role === 'HEAD_TEACHER') {
-        // HEAD_TEACHER can only see teachers in their school
         allUsers = allUsers.filter(u =>
           u.role === 'TEACHER' && u.schoolId === requestingUser.schoolId
         );
       }
       else {
-        // Teachers see no staff statistics
         allUsers = []
       }
       
@@ -885,6 +901,105 @@ export async function registerRoutes(
       res.json({ success: true });
     } catch (error) {
       res.status(500).json({ error: "Failed to delete user" });
+    }
+  });
+
+  // Training Manager: Get all AEOs for assignment
+  app.get("/api/training-manager/aeos", async (req, res) => {
+    try {
+      const aeos = await storage.getUsersByRole("AEO");
+      res.json(aeos.map(aeo => ({
+        ...aeo,
+        password: undefined
+      })));
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch AEOs" });
+    }
+  });
+
+  // Training Manager: Update assigned AEOs
+  app.patch("/api/training-manager/:id/assigned-aeos", async (req, res) => {
+    try {
+      const { assignedAEOs } = req.body;
+      const trainingManager = await findUserByIdOrPhone(req.params.id);
+
+      if (!trainingManager) {
+        return res.status(404).json({ error: "Training Manager not found" });
+      }
+
+      if (trainingManager.role !== "TRAINING_MANAGER") {
+        return res.status(403).json({ error: "User is not a Training Manager" });
+      }
+
+      const updated = await storage.updateUser(trainingManager.id, {
+        assignedAEOs: assignedAEOs || []
+      });
+
+      res.json({ ...updated, password: undefined });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update assigned AEOs" });
+    }
+  });
+
+  // Training Manager: Get hierarchical view of assigned AEOs
+  app.get("/api/training-manager/:id/hierarchy", async (req, res) => {
+    try {
+      const trainingManager = await findUserByIdOrPhone(req.params.id);
+
+      if (!trainingManager) {
+        return res.status(404).json({ error: "Training Manager not found" });
+      }
+
+      const assignedAEOIds = trainingManager.assignedAEOs || [];
+
+      if (assignedAEOIds.length === 0) {
+        return res.json([]);
+      }
+
+      // Fetch all assigned AEOs
+      const allUsers = await storage.getAllUsers();
+      const aeos = allUsers.filter(u => assignedAEOIds.includes(u.id));
+
+      // For each AEO, get their schools, principals, and teachers
+      const hierarchy = await Promise.all(aeos.map(async (aeo) => {
+        // Get schools assigned to this AEO
+        const assignedSchoolNames = aeo.assignedSchools || [];
+        const allSchools = await storage.getAllSchools();
+
+        // Filter schools that belong to this AEO
+        const aeoSchools = allSchools.filter(school =>
+          assignedSchoolNames.some(name =>
+            name.includes(school.emisNumber)
+          )
+        );
+
+        // For each school, get principals and teachers
+        const schoolsWithStaff = await Promise.all(aeoSchools.map(async (school) => {
+          const principals = allUsers.filter(u =>
+            u.role === "HEAD_TEACHER" && u.schoolId === school.id
+          );
+          const teachers = allUsers.filter(u =>
+            u.role === "TEACHER" && u.schoolId === school.id
+          );
+
+          return {
+            ...school,
+            principals: principals.map(p => ({ ...p, password: undefined })),
+            teachers: teachers.map(t => ({ ...t, password: undefined })),
+          };
+        }));
+
+        return {
+          aeo: { ...aeo, password: undefined },
+          markaz: aeo.markazName || aeo.markaz,
+          schools: schoolsWithStaff,
+        };
+      }));
+
+      res.json(hierarchy);
+    } catch (error) {
+      console.error("Error fetching hierarchy:", error);
+      res.status(500).json({ error: "Failed to fetch hierarchy" });
     }
   });
 
@@ -1088,6 +1203,9 @@ export async function registerRoutes(
         approverRole = 'DEO';
       }
 
+      // Extract additional fields from body
+      const { gender, tehsilId, tehsilName, markazId } = req.body;
+
       // Create pending user (awaiting approval)
       const newUser = await storage.createUser({
         name,
@@ -1103,12 +1221,17 @@ export async function registerRoutes(
         dateOfBirth,
         dateOfJoining,
         qualification,
+        gender,
+        tehsilId,
+        tehsilName,
+        markazId,
         clusterId: markazName || clusterId || schoolClusterId,
         districtId: districtId || schoolDistrictId || 'Rawalpindi',
         schoolId,
         schoolName,
         assignedSchools: finalAssignedSchools,
         markaz: markazName || null,
+        markazName: markazName || null,
       });
 
       // Return appropriate message based on approver
@@ -1568,6 +1691,7 @@ export async function registerRoutes(
         qualification,
         profilePicture,
         phoneNumber,
+        assignedSchools,
       } = req.body;
 
       // Find user by ID or phone number (for session compatibility)
@@ -1590,6 +1714,7 @@ export async function registerRoutes(
       if (qualification !== undefined) updateData.qualification = qualification;
       if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
       if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+      if (assignedSchools !== undefined) updateData.assignedSchools = assignedSchools;
 
       // Use the actual database ID for the update
       const user = await storage.updateUser(existingUser.id, updateData);
@@ -2283,9 +2408,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/monitoring", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let visits;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        visits = await storage.getMonitoringVisitsByMultipleAeos(ids);
+      } else if (aeoId) {
         visits = await storage.getMonitoringVisitsByAeo(aeoId as string);
       } else {
         visits = await storage.getAllMonitoringVisits();
@@ -2327,6 +2455,27 @@ export async function registerRoutes(
     }
   });
 
+  app.delete("/api/activities/monitoring/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { aeoId } = req.body;
+      
+      if (!aeoId) {
+        return res.status(400).json({ error: "aeoId is required" });
+      }
+      
+      const deleted = await storage.deleteMonitoringVisit(id, aeoId);
+      if (!deleted) {
+        return res.status(403).json({ error: "Not authorized to delete this visit or visit not found" });
+      }
+      
+      res.json({ success: true, message: "Monitoring visit deleted successfully" });
+    } catch (error: any) {
+      console.error("Monitoring visit delete error:", error?.message || error);
+      res.status(500).json({ error: "Failed to delete monitoring visit", details: error?.message || String(error) });
+    }
+  });
+
   // Mentoring Visit endpoints
   app.post("/api/activities/mentoring", async (req, res) => {
     try {
@@ -2344,9 +2493,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/mentoring", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let visits;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        visits = await storage.getMentoringVisitsByMultipleAeos(ids);
+      } else if (aeoId) {
         visits = await storage.getMentoringVisitsByAeo(aeoId as string);
       } else {
         visits = await storage.getAllMentoringVisits();
@@ -2388,6 +2540,27 @@ export async function registerRoutes(
     }
   });
 
+  app.delete("/api/activities/mentoring/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { aeoId } = req.body;
+      
+      if (!aeoId) {
+        return res.status(400).json({ error: "aeoId is required" });
+      }
+      
+      const deleted = await storage.deleteMentoringVisit(id, aeoId);
+      if (!deleted) {
+        return res.status(403).json({ error: "Not authorized to delete this visit or visit not found" });
+      }
+      
+      res.json({ success: true, message: "Mentoring visit deleted successfully" });
+    } catch (error: any) {
+      console.error("Mentoring visit delete error:", error?.message || error);
+      res.status(500).json({ error: "Failed to delete mentoring visit", details: error?.message || String(error) });
+    }
+  });
+
   // Office Visit endpoints
   app.post("/api/activities/office", async (req, res) => {
     try {
@@ -2405,9 +2578,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/office", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let visits;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        visits = await storage.getOfficeVisitsByMultipleAeos(ids);
+      } else if (aeoId) {
         visits = await storage.getOfficeVisitsByAeo(aeoId as string);
       } else {
         visits = await storage.getAllOfficeVisits();
@@ -2466,9 +2642,12 @@ export async function registerRoutes(
 
   app.get("/api/activities/other", async (req, res) => {
     try {
-      const { aeoId } = req.query;
+      const { aeoId, aeoIds } = req.query;
       let activities;
-      if (aeoId) {
+      if (aeoIds) {
+        const ids = (aeoIds as string).split(',').filter(Boolean);
+        activities = await storage.getOtherActivitiesByMultipleAeos(ids);
+      } else if (aeoId) {
         activities = await storage.getOtherActivitiesByAeo(aeoId as string);
       } else {
         activities = await storage.getAllOtherActivities();

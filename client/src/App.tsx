@@ -11,6 +11,7 @@ import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
 import CEODashboard from "@/pages/CEODashboard";
 import DEODashboard from "@/pages/DEODashboard";
+import TrainingManagerDashboard from "@/pages/TrainingManagerDashboard";
 import DataRequests from "@/pages/DataRequests";
 import CreateRequest from "@/pages/CreateRequest";
 import ViewRequest from "@/pages/ViewRequest";
@@ -53,7 +54,7 @@ import { HelpGuide } from "@/components/HelpGuide";
 
 function DashboardRoute() {
   const { isAuthenticated, user, isLoading } = useAuth();
-  
+
   // Show loading state while checking auth - prevents redirect flash
   if (isLoading) {
     return (
@@ -62,14 +63,17 @@ function DashboardRoute() {
       </div>
     );
   }
-  
+
   if (!isAuthenticated) return <Login />;
 
   // CEO gets CEO Dashboard
-  if (user?.role === 'CEO') return <CEODashboard />;
+  if (user?.role === "CEO") return <CEODashboard />;
 
   // DEO and DDEO get DEO Dashboard (same interface, DEO is superior in hierarchy)
-  if (user?.role === 'DEO' || user?.role === 'DDEO') return <DEODashboard />;
+  if (user?.role === "DEO" || user?.role === "DDEO") return <DEODashboard />;
+
+  // Training Manager gets Training Manager Dashboard
+  if (user?.role === "TRAINING_MANAGER") return <TrainingManagerDashboard />;
 
   // All other roles get general Dashboard
   return <Dashboard />;
@@ -90,12 +94,18 @@ function Router() {
   return (
     <>
       {/* Announcement Bar - Shows at top when logged in */}
-      {isAuthenticated && user && <AnnouncementBar districtId={user.districtId} />}
+      {isAuthenticated && user && (
+        <AnnouncementBar districtId={user.districtId} />
+      )}
 
       <Switch>
         <Route path="/" component={DashboardRoute} />
         <Route path="/dashboard" component={DashboardRoute} />
         <Route path="/deo-dashboard" component={DEODashboard} />
+        <Route
+          path="/training-manager-dashboard"
+          component={TrainingManagerDashboard}
+        />
         <Route path="/data-requests" component={DataRequests} />
         <Route path="/create-request" component={DataRequests} />
         <Route path="/request/:id" component={ViewRequest} />
@@ -110,8 +120,14 @@ function Router() {
         <Route path="/create-activity/:schoolId" component={CreateActivity} />
         <Route path="/create-activity" component={CreateActivity} />
         <Route path="/collaborative-forms" component={CollaborativeForms} />
-        <Route path="/create-collaborative-form" component={CreateCollaborativeForm} />
-        <Route path="/collaborative-form/:formId" component={ViewCollaborativeForm} />
+        <Route
+          path="/create-collaborative-form"
+          component={CreateCollaborativeForm}
+        />
+        <Route
+          path="/collaborative-form/:formId"
+          component={ViewCollaborativeForm}
+        />
         <Route path="/edit-school" component={EditSchool} />
         <Route path="/queries" component={Queries} />
         <Route path="/create-query" component={CreateQuery} />
@@ -120,17 +136,33 @@ function Router() {
         <Route path="/signup" component={Signup} />
         <Route path="/user-management" component={UserManagement} />
         <Route path="/aeo-user-management" component={AEOUserManagement} />
-        <Route path="/headteacher-user-management" component={HeadTeacherUserManagement} />
+        <Route
+          path="/headteacher-user-management"
+          component={HeadTeacherUserManagement}
+        />
         <Route path="/school-management" component={SchoolManagement} />
         <Route path="/data-export" component={DataExport} />
         <Route path="/aeo-activity" component={AEOActivityHub} />
         <Route path="/aeo-activity/logs" component={AEOActivityLogs} />
-        <Route path="/aeo-activity/monitoring" component={MonitoringVisitForm} />
+        <Route
+          path="/aeo-activity/monitoring"
+          component={MonitoringVisitForm}
+        />
         <Route path="/aeo-activity/mentoring" component={MentoringVisitForm} />
+        <Route path="/tm-activity/mentoring" component={MentoringVisitForm} />
         <Route path="/aeo-activity/office" component={OfficeVisitForm} />
-        <Route path="/aeo-activity/other-activity" component={OtherActivityForm} />
-        <Route path="/edit-monitoring-visit/:id" component={MonitoringVisitForm} />
-        <Route path="/edit-mentoring-visit/:id" component={MentoringVisitForm} />
+        <Route
+          path="/aeo-activity/other-activity"
+          component={OtherActivityForm}
+        />
+        <Route
+          path="/edit-monitoring-visit/:id"
+          component={MonitoringVisitForm}
+        />
+        <Route
+          path="/edit-mentoring-visit/:id"
+          component={MentoringVisitForm}
+        />
         <Route path="/edit-office-visit/:id" component={OfficeVisitForm} />
         <Route path="/lesson-plans" component={LessonPlansPreview} />
         <Route path="/data-requests-preview" component={DataRequestsPreview} />

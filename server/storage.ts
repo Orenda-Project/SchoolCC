@@ -152,26 +152,32 @@ export interface IStorage {
   createMonitoringVisit(visit: InsertMonitoringVisit): Promise<MonitoringVisit>;
   getMonitoringVisitById(id: string): Promise<MonitoringVisit | undefined>;
   getMonitoringVisitsByAeo(aeoId: string): Promise<MonitoringVisit[]>;
+  getMonitoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MonitoringVisit[]>;
   getAllMonitoringVisits(): Promise<MonitoringVisit[]>;
   updateMonitoringVisit(id: string, visit: Partial<InsertMonitoringVisit>): Promise<MonitoringVisit>;
+  deleteMonitoringVisit(id: string, aeoId: string): Promise<boolean>;
 
   // Mentoring Visit operations
   createMentoringVisit(visit: InsertMentoringVisit): Promise<MentoringVisit>;
   getMentoringVisitById(id: string): Promise<MentoringVisit | undefined>;
   getMentoringVisitsByAeo(aeoId: string): Promise<MentoringVisit[]>;
+  getMentoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MentoringVisit[]>;
   getAllMentoringVisits(): Promise<MentoringVisit[]>;
   updateMentoringVisit(id: string, visit: Partial<InsertMentoringVisit>): Promise<MentoringVisit>;
+  deleteMentoringVisit(id: string, aeoId: string): Promise<boolean>;
 
   // Office Visit operations
   createOfficeVisit(visit: InsertOfficeVisit): Promise<OfficeVisit>;
   getOfficeVisitById(id: string): Promise<OfficeVisit | undefined>;
   getOfficeVisitsByAeo(aeoId: string): Promise<OfficeVisit[]>;
+  getOfficeVisitsByMultipleAeos(aeoIds: string[]): Promise<OfficeVisit[]>;
   getAllOfficeVisits(): Promise<OfficeVisit[]>;
   updateOfficeVisit(id: string, visit: Partial<InsertOfficeVisit>): Promise<OfficeVisit>;
 
   // Other Activity operations
   createOtherActivity(activity: InsertOtherActivity): Promise<OtherActivity>;
   getOtherActivitiesByAeo(aeoId: string): Promise<OtherActivity[]>;
+  getOtherActivitiesByMultipleAeos(aeoIds: string[]): Promise<OtherActivity[]>;
   getAllOtherActivities(): Promise<OtherActivity[]>;
 
   // Visit Session operations (GPS tracking)
@@ -374,10 +380,40 @@ export class DBStorage implements IStorage {
   }
 
   async createUser(user: InsertUser): Promise<User> {
-    const userValues = {
-      ...user,
-      assignedSchools: user.assignedSchools ? (Array.isArray(user.assignedSchools) ? user.assignedSchools : []) : []
+    const userValues: Record<string, any> = {
+      name: user.name,
+      phoneNumber: user.phoneNumber,
+      password: user.password,
+      role: user.role,
+      status: user.status,
+      schoolId: user.schoolId,
+      schoolName: user.schoolName,
+      clusterId: user.clusterId,
+      districtId: user.districtId,
+      tehsilId: user.tehsilId,
+      tehsilName: user.tehsilName,
+      markazId: user.markazId,
+      markazName: user.markazName,
+      gender: user.gender,
+      fatherName: user.fatherName,
+      spouseName: user.spouseName,
+      email: user.email,
+      residentialAddress: user.residentialAddress,
+      cnic: user.cnic,
+      dateOfBirth: user.dateOfBirth,
+      dateOfJoining: user.dateOfJoining,
+      qualification: user.qualification,
+      profilePicture: user.profilePicture,
+      assignedSchools: user.assignedSchools ? (Array.isArray(user.assignedSchools) ? user.assignedSchools : []) : [],
+      assignedAEOs: user.assignedAEOs ? (Array.isArray(user.assignedAEOs) ? user.assignedAEOs : []) : [],
+      markaz: user.markaz,
+      approverRole: user.approverRole,
+      approverId: user.approverId,
+      approvedAt: user.approvedAt,
     };
+    Object.keys(userValues).forEach(key => {
+      if (userValues[key] === undefined) delete userValues[key];
+    });
     const result = await db.insert(users).values(userValues as any).returning();
     return result[0];
   }
@@ -910,6 +946,14 @@ export class DBStorage implements IStorage {
       .orderBy(desc(monitoringVisits.createdAt));
   }
 
+  async getMonitoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MonitoringVisit[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(monitoringVisits)
+      .where(inArray(monitoringVisits.aeoId, aeoIds))
+      .orderBy(desc(monitoringVisits.createdAt));
+  }
+
   async getAllMonitoringVisits(): Promise<MonitoringVisit[]> {
     return await db.select()
       .from(monitoringVisits)
@@ -922,6 +966,15 @@ export class DBStorage implements IStorage {
       .where(eq(monitoringVisits.id, id))
       .returning();
     return result[0];
+  }
+
+  async deleteMonitoringVisit(id: string, aeoId: string): Promise<boolean> {
+    const visit = await this.getMonitoringVisitById(id);
+    if (!visit || visit.aeoId !== aeoId) {
+      return false;
+    }
+    await db.delete(monitoringVisits).where(eq(monitoringVisits.id, id));
+    return true;
   }
 
   // Mentoring Visit operations
@@ -945,6 +998,14 @@ export class DBStorage implements IStorage {
       .orderBy(desc(mentoringVisits.createdAt));
   }
 
+  async getMentoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MentoringVisit[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(mentoringVisits)
+      .where(inArray(mentoringVisits.aeoId, aeoIds))
+      .orderBy(desc(mentoringVisits.createdAt));
+  }
+
   async getAllMentoringVisits(): Promise<MentoringVisit[]> {
     return await db.select()
       .from(mentoringVisits)
@@ -957,6 +1018,15 @@ export class DBStorage implements IStorage {
       .where(eq(mentoringVisits.id, id))
       .returning();
     return result[0];
+  }
+
+  async deleteMentoringVisit(id: string, aeoId: string): Promise<boolean> {
+    const visit = await this.getMentoringVisitById(id);
+    if (!visit || visit.aeoId !== aeoId) {
+      return false;
+    }
+    await db.delete(mentoringVisits).where(eq(mentoringVisits.id, id));
+    return true;
   }
 
   // Office Visit operations
@@ -977,6 +1047,14 @@ export class DBStorage implements IStorage {
     return await db.select()
       .from(officeVisits)
       .where(eq(officeVisits.aeoId, aeoId))
+      .orderBy(desc(officeVisits.createdAt));
+  }
+
+  async getOfficeVisitsByMultipleAeos(aeoIds: string[]): Promise<OfficeVisit[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(officeVisits)
+      .where(inArray(officeVisits.aeoId, aeoIds))
       .orderBy(desc(officeVisits.createdAt));
   }
 
@@ -1004,6 +1082,14 @@ export class DBStorage implements IStorage {
     return await db.select()
       .from(otherActivities)
       .where(eq(otherActivities.aeoId, aeoId))
+      .orderBy(desc(otherActivities.createdAt));
+  }
+
+  async getOtherActivitiesByMultipleAeos(aeoIds: string[]): Promise<OtherActivity[]> {
+    if (aeoIds.length === 0) return [];
+    return await db.select()
+      .from(otherActivities)
+      .where(inArray(otherActivities.aeoId, aeoIds))
       .orderBy(desc(otherActivities.createdAt));
   }
 

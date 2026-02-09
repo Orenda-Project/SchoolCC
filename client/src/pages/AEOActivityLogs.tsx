@@ -1,14 +1,17 @@
+import { useState } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Calendar, Clock, FileText, Award, CheckSquare } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, FileText, Award, CheckSquare, Trash2, Edit, Eye } from 'lucide-react';
 import { useActivities } from '@/contexts/activities';
+import { toast } from 'sonner';
 
 export default function AEOActivityLogs() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
-  const { getAllActivities } = useActivities();
+  const { getAllActivities, refreshActivities } = useActivities();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const activities = getAllActivities();
 
   if (!user || user.role !== 'AEO') {
@@ -16,38 +19,98 @@ export default function AEOActivityLogs() {
     return null;
   }
 
+  const handleDelete = async (id: string, activityType: 'monitoring' | 'mentoring', aeoId: string) => {
+    if (!user?.id || user.id !== aeoId) {
+      toast.error('You can only delete your own forms');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this form? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeletingId(id);
+    try {
+      const response = await fetch(`/api/activities/${activityType}/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ aeoId: user.id }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete');
+      }
+
+      toast.success('Form deleted successfully');
+      refreshActivities();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to delete form');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const handleEdit = (id: string, activityType: 'monitoring' | 'mentoring') => {
+    if (activityType === 'monitoring') {
+      navigate(`/edit-monitoring-visit/${id}`);
+    } else if (activityType === 'mentoring') {
+      navigate(`/edit-mentoring-visit/${id}`);
+    }
+  };
+
+  const handleView = (id: string, activityType: 'monitoring' | 'mentoring') => {
+    navigate(`/visit/${id}`);
+  };
+
   const allItems = [
     ...activities.monitoring.map((item) => ({
+      id: item.id,
+      aeoId: item.aeoId,
+      activityType: 'monitoring' as const,
       type: 'Monitoring Visit',
       date: item.visitDate,
       school: item.schoolName,
       status: item.status,
       icon: 'monitor',
       color: 'blue',
+      canDelete: item.aeoId === user?.id,
     })),
     ...activities.mentoring.map((item) => ({
+      id: item.id,
+      aeoId: item.aeoId,
+      activityType: 'mentoring' as const,
       type: 'Mentoring Visit',
       date: item.visitDate,
       school: item.schoolName,
       status: item.status,
       icon: 'award',
       color: 'purple',
+      canDelete: item.aeoId === user?.id,
     })),
     ...activities.office.map((item) => ({
+      id: item.id,
+      aeoId: item.aeoId,
+      activityType: 'office' as const,
       type: 'Office Visit',
       date: item.visitDate,
       school: '-',
       status: item.status,
       icon: 'building',
       color: 'emerald',
+      canDelete: false,
     })),
     ...activities.other.map((item) => ({
+      id: item.id,
+      aeoId: item.aeoId,
+      activityType: 'other' as const,
       type: item.activityType,
       date: item.activityDate,
       school: '-',
       status: item.status,
       icon: 'checkmark',
       color: 'slate',
+      canDelete: false,
     })),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -68,10 +131,10 @@ export default function AEOActivityLogs() {
 
   const getColorClasses = (color: string) => {
     const colors: Record<string, { bg: string; icon: string; badge: string }> = {
-      blue: { bg: 'bg-blue-50', icon: 'text-blue-600', badge: 'bg-blue-100 text-blue-800' },
-      purple: { bg: 'bg-purple-50', icon: 'text-purple-600', badge: 'bg-purple-100 text-purple-800' },
-      emerald: { bg: 'bg-emerald-50', icon: 'text-emerald-600', badge: 'bg-emerald-100 text-emerald-800' },
-      slate: { bg: 'bg-slate-50', icon: 'text-muted-foreground', badge: 'bg-slate-100 text-slate-800' },
+      blue: { bg: 'bg-blue-50 dark:bg-blue-900/20', icon: 'text-blue-600 dark:text-blue-400', badge: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
+      purple: { bg: 'bg-purple-50 dark:bg-purple-900/20', icon: 'text-purple-600 dark:text-purple-400', badge: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400' },
+      emerald: { bg: 'bg-emerald-50 dark:bg-emerald-900/20', icon: 'text-emerald-600 dark:text-emerald-400', badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' },
+      slate: { bg: 'bg-slate-50 dark:bg-slate-800/30', icon: 'text-muted-foreground', badge: 'bg-slate-100 text-slate-800 dark:bg-slate-800/30 dark:text-slate-300' },
     };
     return colors[color] || colors.slate;
   };
@@ -85,7 +148,7 @@ export default function AEOActivityLogs() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate('/aeo-activity/hub')}
+              onClick={() => navigate('/dashboard')}
               data-testid="button-back"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -151,7 +214,7 @@ export default function AEOActivityLogs() {
               </p>
               <Button
                 className="mt-6 bg-blue-600 hover:bg-blue-700"
-                onClick={() => navigate('/aeo-activity/hub')}
+                onClick={() => navigate('/dashboard')}
               >
                 Go to Activity Hub
               </Button>
@@ -190,10 +253,49 @@ export default function AEOActivityLogs() {
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="flex items-center gap-2">
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${colors.badge}`}>
                         {item.status === 'submitted' ? '✓ Submitted' : 'Draft'}
                       </span>
+                      {(item.activityType === 'monitoring' || item.activityType === 'mentoring') && (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-blue-600 hover:text-blue-800 hover:bg-blue-100 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/30"
+                            onClick={() => handleView(item.id, item.activityType)}
+                            data-testid={`button-view-${item.id}`}
+                            title="View"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          {item.canDelete && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-amber-600 hover:text-amber-800 hover:bg-amber-100 dark:text-amber-400 dark:hover:text-amber-300 dark:hover:bg-amber-900/30"
+                                onClick={() => handleEdit(item.id, item.activityType)}
+                                data-testid={`button-edit-${item.id}`}
+                                title="Edit"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-red-600 hover:text-red-800 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30"
+                                onClick={() => handleDelete(item.id, item.activityType, item.aeoId)}
+                                disabled={deletingId === item.id}
+                                data-testid={`button-delete-${item.id}`}
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </>
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                 </Card>
