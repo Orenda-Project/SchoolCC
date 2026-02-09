@@ -44,20 +44,43 @@ export default function MonitoringVisitForm({ onClose }: Props) {
   const isEditMode = location.startsWith('/edit-monitoring-visit/');
   const visitId = isEditMode ? location.split('/').pop() : undefined;
 
-  // Get schools - filter by assigned schools for AEO users
-  const getSchools = () => {
-    const allSchools = getAllSchools();
-    if (user?.role === 'AEO' && user?.assignedSchools && user.assignedSchools.length > 0) {
-      // assignedSchools contains names like "GBPS DHOKE ZIARAT"
-      // allSchools contains display strings like "GBPS DHOKE ZIARAT (37330XXX)"
-      // Match by checking if display string starts with the assigned school name (trimmed and normalized)
-      return allSchools.filter(schoolDisplay => 
-        user.assignedSchools!.some(assignedName => 
-          schoolDisplay.toUpperCase().trim().startsWith(assignedName.toUpperCase().trim())
-        )
-      );
+  const [apiSchools, setApiSchools] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (user?.role === 'AEO') {
+      const fetchAEOSchools = async () => {
+        try {
+          const response = await fetch("/api/admin/schools");
+          if (response.ok) {
+            const schools = await response.json();
+            if (Array.isArray(schools)) {
+              const userAssigned = user.assignedSchools || [];
+              if (userAssigned.length > 0) {
+                const matched = schools.filter((s: any) =>
+                  userAssigned.some((assigned: string) =>
+                    assigned.toUpperCase().trim() === (s.name || '').toUpperCase().trim() ||
+                    (s.emisNumber && assigned.includes(s.emisNumber))
+                  )
+                );
+                setApiSchools(matched.map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`));
+              } else {
+                setApiSchools(schools.map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`));
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching schools for AEO:', error);
+        }
+      };
+      fetchAEOSchools();
     }
-    return allSchools;
+  }, [user?.id]);
+
+  const getSchools = () => {
+    if (user?.role === 'AEO' && apiSchools.length > 0) {
+      return apiSchools;
+    }
+    return getAllSchools();
   };
   
   const SCHOOLS = getSchools();

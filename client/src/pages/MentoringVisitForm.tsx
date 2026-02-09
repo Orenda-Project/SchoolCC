@@ -53,6 +53,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
   const isTrainingManager = user?.role === 'TRAINING_MANAGER';
 
   const [tmSchools, setTmSchools] = useState<string[]>([]);
+  const [apiSchools, setApiSchools] = useState<string[]>([]);
 
   useEffect(() => {
     if (isTrainingManager && user?.id) {
@@ -74,21 +75,44 @@ export default function MentoringVisitForm({ onClose }: Props) {
       };
       fetchTMSchools();
     }
+
+    if (user?.role === 'AEO') {
+      const fetchAEOSchools = async () => {
+        try {
+          const response = await fetch("/api/admin/schools");
+          if (response.ok) {
+            const schools = await response.json();
+            if (Array.isArray(schools)) {
+              const userAssigned = user.assignedSchools || [];
+              if (userAssigned.length > 0) {
+                const matched = schools.filter((s: any) =>
+                  userAssigned.some((assigned: string) =>
+                    assigned.toUpperCase().trim() === (s.name || '').toUpperCase().trim() ||
+                    (s.emisNumber && assigned.includes(s.emisNumber))
+                  )
+                );
+                setApiSchools(matched.map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`));
+              } else {
+                setApiSchools(schools.map((s: any) => `${s.name.toUpperCase()} (${s.emisNumber})`));
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching schools for AEO:', error);
+        }
+      };
+      fetchAEOSchools();
+    }
   }, [isTrainingManager, user?.id]);
 
   const getSchools = () => {
-    const allSchools = getAllSchools();
     if (isTrainingManager && tmSchools.length > 0) {
       return tmSchools;
     }
-    if (user?.role === 'AEO' && user?.assignedSchools && user.assignedSchools.length > 0) {
-      return allSchools.filter(schoolDisplay => 
-        user.assignedSchools!.some(assignedName => 
-          schoolDisplay.toUpperCase().trim().startsWith(assignedName.toUpperCase().trim())
-        )
-      );
+    if (user?.role === 'AEO' && apiSchools.length > 0) {
+      return apiSchools;
     }
-    return allSchools;
+    return getAllSchools();
   };
   
   const SCHOOLS = getSchools();
