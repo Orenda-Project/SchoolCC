@@ -76,7 +76,7 @@ export default function UserProfile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editedProfile, setEditedProfile] = useState<Partial<UserProfile>>({});
-  const [availableSchools, setAvailableSchools] = useState<Array<{ id: string; name: string }>>([]);
+  const [availableSchools, setAvailableSchools] = useState<Array<{ id: string; name: string; emisNumber?: string }>>([]);
   const [showPictureEditor, setShowPictureEditor] = useState(false);
   const [availableAEOs, setAvailableAEOs] = useState<AEOUser[]>([]);
   const [editedAEOs, setEditedAEOs] = useState<string[]>([]);
@@ -100,8 +100,8 @@ export default function UserProfile() {
     fetchProfile();
     analytics.navigation.profileViewed();
 
-    if (user?.role === 'AEO' && user?.clusterId) {
-      fetchAvailableSchools(user.clusterId);
+    if (user?.role === 'AEO') {
+      fetchAvailableSchools();
       fetchAEOStaffData(user.id);
     }
 
@@ -158,7 +158,11 @@ export default function UserProfile() {
       const allSchools = await schoolsRes.json();
 
       const matchedSchools = allSchools.filter((s: any) =>
-        assignedSchoolIds.some((id: string) => id === s.id || id.includes(s.emisNumber))
+        assignedSchoolIds.some((assigned: string) => 
+          assigned === s.id || 
+          assigned.toUpperCase() === (s.name || '').toUpperCase() ||
+          (s.emisNumber && assigned.includes(s.emisNumber))
+        )
       );
 
       const usersRes = await fetch("/api/users?role=HEAD_TEACHER,TEACHER");
@@ -182,12 +186,12 @@ export default function UserProfile() {
     }
   };
 
-  const fetchAvailableSchools = async (clusterId: string) => {
+  const fetchAvailableSchools = async () => {
     try {
-      const response = await fetch(`/api/admin/clusters/${clusterId}/schools`);
+      const response = await fetch("/api/admin/schools");
       if (response.ok) {
         const schools = await response.json();
-        setAvailableSchools(schools);
+        setAvailableSchools(schools.map((s: any) => ({ id: s.id, name: s.name, emisNumber: s.emisNumber })));
       }
     } catch (error) {
       console.error("Error fetching schools:", error);
@@ -303,6 +307,7 @@ export default function UserProfile() {
         dateOfBirth: updatedProfile.dateOfBirth,
         dateOfJoining: updatedProfile.dateOfJoining,
         qualification: updatedProfile.qualification,
+        assignedSchools: updatedProfile.assignedSchools,
       });
       
       setEditMode(false);
@@ -331,12 +336,13 @@ export default function UserProfile() {
     setEditedProfile((prev) => ({ ...prev, [field]: value }));
   };
 
-  const toggleSchool = (schoolId: string) => {
+  const toggleSchool = (schoolName: string) => {
     setEditedProfile((prev) => {
       const current = prev.assignedSchools || [];
-      const updated = current.includes(schoolId)
-        ? current.filter(id => id !== schoolId)
-        : [...current, schoolId];
+      const exists = current.some(s => s.toUpperCase() === schoolName.toUpperCase());
+      const updated = exists
+        ? current.filter(s => s.toUpperCase() !== schoolName.toUpperCase())
+        : [...current, schoolName];
       return { ...prev, assignedSchools: updated };
     });
   };
@@ -1100,7 +1106,7 @@ export default function UserProfile() {
           )}
 
           {/* AEO School Selection - Only for AEO users */}
-          {profile.role === 'AEO' && availableSchools.length > 0 && (
+          {profile.role === 'AEO' && (
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
                 <School className="w-5 h-5" />
@@ -1110,35 +1116,45 @@ export default function UserProfile() {
                 Select schools you want to monitor. Data will be filtered to show only selected schools.
               </p>
               {editMode ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto border rounded-lg p-4">
-                  {availableSchools.map((school) => (
-                    <div key={school.id} className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
-                      <Checkbox
-                        id={`school-${school.id}`}
-                        checked={editedProfile.assignedSchools?.includes(school.id) || false}
-                        onCheckedChange={() => toggleSchool(school.id)}
-                      />
-                      <label
-                        htmlFor={`school-${school.id}`}
-                        className="text-sm cursor-pointer flex-1"
-                      >
-                        {school.name}
-                      </label>
-                    </div>
-                  ))}
-                </div>
+                availableSchools.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto border rounded-lg p-4">
+                    {availableSchools.map((school) => {
+                      const isChecked = editedProfile.assignedSchools?.some(
+                        s => s.toUpperCase() === school.name.toUpperCase()
+                      ) || false;
+                      return (
+                        <div key={school.id} className="flex items-center space-x-2 p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded">
+                          <Checkbox
+                            id={`school-${school.id}`}
+                            checked={isChecked}
+                            onCheckedChange={() => toggleSchool(school.name)}
+                          />
+                          <label
+                            htmlFor={`school-${school.id}`}
+                            className="text-sm cursor-pointer flex-1"
+                          >
+                            {school.name}
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground italic">Loading schools...</p>
+                )
               ) : (
                 <div className="space-y-2">
                   {profile.assignedSchools && profile.assignedSchools.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {profile.assignedSchools.map((schoolId) => {
-                        const school = availableSchools.find(s => s.id === schoolId);
-                        return school ? (
-                          <div key={schoolId} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
+                      {profile.assignedSchools.map((schoolName, idx) => {
+                        const school = availableSchools.find(s => s.name.toUpperCase() === schoolName.toUpperCase());
+                        const displayName = school ? school.name : schoolName;
+                        return (
+                          <div key={idx} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded">
                             <School className="w-4 h-4 text-blue-500" />
-                            <span className="text-sm">{school.name}</span>
+                            <span className="text-sm">{displayName}</span>
                           </div>
-                        ) : null;
+                        );
                       })}
                     </div>
                   ) : (
