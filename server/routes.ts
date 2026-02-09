@@ -1691,6 +1691,7 @@ export async function registerRoutes(
         qualification,
         profilePicture,
         phoneNumber,
+        assignedSchools,
       } = req.body;
 
       // Find user by ID or phone number (for session compatibility)
@@ -1713,6 +1714,7 @@ export async function registerRoutes(
       if (qualification !== undefined) updateData.qualification = qualification;
       if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
       if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+      if (assignedSchools !== undefined) updateData.assignedSchools = assignedSchools;
 
       // Use the actual database ID for the update
       const user = await storage.updateUser(existingUser.id, updateData);
