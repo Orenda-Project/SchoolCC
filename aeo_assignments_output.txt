@@ -1,0 +1,392 @@
+📊 Fetching AEO-School assignments from production database...
+
+Total AEOs found: 31
+
+Total schools found: 259
+
+======================================================================================================================================================
+AEO-SCHOOL ASSIGNMENTS BY MARKAZ
+======================================================================================================================================================
+
+
+1. MARKAZ: ADIALA MALE
+   Schools: 0
+   ✅ AEOs Assigned (1):
+      - Waheed Ahmad Butt (03345123169) - active
+
+2. MARKAZ: ADYALA
+   Schools: 11
+   ✅ AEOs Assigned (2):
+      - Muhammad Asif Jabbar janjua (03345147094) - active
+      - Tasneem Shahzadi (03325562375) - active
+   Schools:
+      1. GES KHASALAA KALLAN (37330350) - 9 users
+      2. GPS BODIAL (37330309) - 6 users
+      3. GPS CENTRAL JAIL RWP (37330305) - 5 users
+      4. GPS DEGAL (37330315) - 4 users
+      5. GPS DHALA (37330307) - 4 users
+      6. GPS DHAMIAL (37330317) - 12 users
+      7. GPS HAYAL. (37330250) - 2 users
+      8. GPS KALRI (37330349) - 5 users
+      9. GPS KHATANA (37330687) - 7 users
+      10. GPS MISRIOT (37330254) - 2 users
+      11. GPS SHAHPUR SYEDAN (37330335) - 3 users
+
+3. MARKAZ: BAGGA SHEIKHAN
+   Schools: 10
+   ✅ AEOs Assigned (1):
+      - Safia Aftab (03318828415) - active
+   Schools:
+      1. GGES HARRAKA (37330553) - No users
+      2. GGPS BAGGA SANGRAL (37330549) - No users
+      3. GGPS BAGGA SHEIKHAN # 1 (37330548) - 1 users
+      4. GGPS CHANI ALAM SHER (37330529) - 1 users
+      5. GGPS GOHRA BARATA (IASP) (37330542) - 1 users
+      6. GGPS KALIAM MUGHAL (37330513) - 1 users
+      7. GGPS MAIRA BHARTA (37330521) - 1 users
+      8. GGPS No. 2 BAGGA SHEIKHAN (37330704) - 1 users
+      9. GGPS SUMBAL (37330507) - 1 users
+      10. GMPS PIAL (37330262) - 1 users
+
+4. MARKAZ: BASSALI
+   Schools: 13
+   ✅ AEOs Assigned (2):
+      - Hafiz Asif Shahzad (03455548775) - active
+      - Sadia Aziz (03455250037) - active
+   Schools:
+      1. GES CHANI ALAM SHER (37330295) - No users
+      2. GES DODHAR NAJJAR (37330125) - No users
+      3. GES MAL JANJAL (37330132) - No users
+      4. GES MUJAHID GANGAL RAWALPINDI (37330128) - No users
+      5. GPS BAGGA SHEIKHAN (37330289) - No users
+      6. GPS BANGIAL SAWAN (37330292) - No users
+      7. GPS BASSALI (37330293) - No users
+      8. GPS CHAK KHAS (37330294) - No users
+      9. GPS GHORA GUJRAN (37330284) - No users
+      10. GPS GHROLI (37330283) - No users
+      11. GPS GOHRA RAMIAL (37330271) - No users
+      12. GPS KALRI (37330285) - No users
+      13. GPS KHAI AWAN (37330275) - No users
+
+5. MARKAZ: CHAK BELI KHAN
+   Schools: 0
+   ✅ AEOs Assigned (2):
+      - Shakoor Ahmed (03455374326) - active
+      - Test AEO (03166848291) - active
+
+6. MARKAZ: CHAKRI
+   Schools: 14
+   ✅ AEOs Assigned (2):
+      - Atif Minhas (03325491580) - active
+      - Maryam Naeem (03035131318) - active
+   Schools:
+      1. GES DHULIAL (37330259) - 1 users
+      2. GES GHEELA KALAN (37330361) - 2 users
+      3. GES KOLIAN HAMEED (37330352) - 1 users
+      4. GES MUJAHID (37330138) - No users
+      5. GES RAJAR (37330140) - 2 users
+      6. GES SANGRAL (37330142) - 1 users
+      7. GPS CHACH RAWAN (37330716) - No users
+      8. GPS CHAK DENAL (37330312) - 1 users
+      9. GPS DAHRI (37330401) - 1 users
+      10. GPS DHOK KHASALA (37330321) - 1 users
+      11. GPS DHOK RAJA HASSO KHAN (37330332) - 1 users
+      12. GPS MAIRA KHURD (37330253) - 1 users
+      13. GPS SAROBA (37330334) - No users
+      14. GPS SHARIFABAD (37330336) - No users
+
+7. MARKAZ: CHOUNTRA
+   Schools: 0
+   ✅ AEOs Assigned (1):
+      - Abdullah Rahim (03215285486) - active
+
+8. MARKAZ: JATHA HATHIAL
+   Schools: 0
+   ✅ AEOs Assigned (3):
+      - Abdul Mateen (03335344393) - active
+      - Sehrish Kanwal (03367896790) - active
+      - Waseem Ashraf (03425399599) - active
+
+9. MARKAZ: KOLIAN HAMEED
+   Schools: 0
+   ✅ AEOs Assigned (1):
+      - Memoona Saeed (03049485747) - active
+
+10. MARKAZ: LODHRAN
+   Schools: 0
+   ✅ AEOs Assigned (2):
+      - Rabia Rauf (03367763062) - active
+      - Test AEO (03221234567) - active
+
+11. MARKAZ: MANDRA (W)
+   Schools: 0
+   ✅ AEOs Assigned (1):
+      - Test AEO (03121234567) - active
+
+12. MARKAZ: ⚠️  NO MARKAZ ASSIGNED
+   Schools: 199
+   ✅ AEOs Assigned (8):
+      - Gakakagavaha (03121425899) - active
+      - Iram nosheen (03415173078) - pending
+      - Sana Ashraf (03709597493) - pending
+      - Sheraz Hussain (03169424715) - active
+      - TAUQEER AKBAR (03365289056) - active
+      - Tayyaba Hamna (03402337911) - active
+      - Waqas Akhtar (03325596926) - active
+      - shahla Andleeb (03145123547) - pending
+   Schools:
+      1. GES BAGH SANGRA (37330288) - 8 users
+      2. GES BAJNIAL (37330257) - 3 users
+      3. GES BANGUSH COLONY (37330201) - No users
+      4. GES CHAK BELI KHAN (37330396) - No users
+      5. GES HOON (37330145) - 9 users
+      6. GES JAWA (37330130) - 2 users
+      7. GES KURI KHUDA BUKSH (37330131) - No users
+      8. GES LAKHAN (37330241) - 16 users
+      9. GES MIANA MOHRA (37330377) - 4 users
+      10. GES RAIKA MIRA (37330385) - 5 users
+      11. GES THALLA KHURD (37330392) - 6 users
+      12. GGCMS MOHRI KHAMBAL (37330556) - 1 users
+      13. GGES ARAZI SOHAL (37330172) - No users
+      14. GGES Anwarulislam kamalabad (37330151) - 2 users
+      15. GGES BAINS (37330411) - 6 users
+      16. GGES Banda (37330551) - 11 users
+      17. GGES Bodial (37330621) - No users
+      18. GGES DADHOCHA (37330175) - 1 users
+      19. GGES DHAKALA (37330176) - No users
+      20. GGES DHERI (37330634) - No users
+      21. GGES DHOKE CHACH (37330605) - 6 users
+      22. GGES DHOKE PARACHA (37330455) - No users
+      23. GGES DHUDHUMBER (37330630) - 2 users
+      24. GGES Dhok Mureed (37330637) - No users
+      25. GGES Dhoke Budhal (37330537) - No users
+      26. GGES Dhoke Gujri (37330627) - 1 users
+      27. GGES GANGAWALA (37330610) - 3 users
+      28. GGES GHELLA KALAN (37330643) - No users
+      29. GGES GULAM SARWAR BRITISH HOMES (37330717) - 1 users
+      30. GGES Hoshial (37330554) - 9 users
+      31. GGES JAIL COLONY (37330614) - 13 users
+      32. GGES JHUMMAT MUGHAL (37330512) - 1 users
+      33. GGES Jabber Miana (37330129) - 1 users
+      34. GGES Jharaki (37330555) - 11 users
+      35. GGES KARAHI (37330195) - 9 users
+      36. GGES KOTHA KALLAN (37330561) - 15 users
+      37. GGES Kurar (37330664) - 3 users
+      38. GGES MERA Mohra (37330524) - 12 users
+      39. GGES MOHRA (37330380) - No users
+      40. GGES MUJAHID (37330587) - 1 users
+      41. GGES Misrial (37330669) - 1 users
+      42. GGES Mohra (37330629) - 5 users
+      43. GGES Mohri Khattran (37330585) - 1 users
+      44. GGES Murree Road Rawalpindi (37330161) - No users
+      45. GGES Naseerabad (37330461) - 2 users
+      46. GGES New Sarfraz Road Rwp (37330157) - No users
+      47. GGES Nikrali (37330706) - 1 users
+      48. GGES No  2 Siham (37330479) - 1 users
+      49. GGES PIND HABTAL  RAWALPINDI (37330612) - 8 users
+      50. GGES Salmoon (37330389) - No users
+      51. GGES Shoukat Saddar (37330165) - 1 users
+      52. GGES THALLA KHURD (37330659) - 6 users
+      53. GGMPS THALLA KALAN (37330658) - 2 users
+      54. GGPS  Mangtal 1 (37330440) - No users
+      55. GGPS ARIYA MOHALLAH (37330450) - 1 users
+      56. GGPS Akhtar islamia (37330150) - No users
+      57. GGPS Arazi Sohal (37330172-A) - No users
+      58. GGPS BANDA NAGIAL (37330709) - 1 users
+      59. GGPS Berket (37330618) - 1 users
+      60. GGPS CHATRO (37330530) - 1 users
+      61. GGPS Carriage Factory (37330433) - 4 users
+      62. GGPS Chakara (37330598) - 1 users
+      63. GGPS DADHAR NAJJAR (37330532) - 1 users
+      64. GGPS DHOK MALKAN (37330607) - 2 users
+      65. GGPS DK ALI BHADUR (37330639) - 1 users
+      66. GGPS DK BABA (37330708) - 4 users
+      67. GGPS DK KAMMAN KHAN (37330604) - 2 users
+      68. GGPS DK Rahim baksh (37330443) - 1 users
+      69. GGPS Dhudian (37330538) - 1 users
+      70. GGPS Dohk Ziarat (37330710) - 2 users
+      71. GGPS Ferozy (37330539) - 1 users
+      72. GGPS GHORA RAMIAL (37330531) - 1 users
+      73. GGPS Hoon (37330649) - No users
+      74. GGPS JORIAN (37330565) - No users
+      75. GGPS Jhawra (37330488) - 1 users
+      76. GGPS KALAS (37330568) - 5 users
+      77. GGPS KHASALA KHURD (37330571) - 3 users
+      78. GGPS KHILRI (37330569) - 4 users
+      79. GGPS KOHALA KALLAN (37330572) - 3 users
+      80. GGPS KOHALA SYEDAN (37330573) - No users
+      81. GGPS Kharakan (37330515) - 2 users
+      82. GGPS Khinger Kalan (37330516) - 3 users
+      83. GGPS Lakhan (37330575) - 1 users
+      84. GGPS Lakhoo (37330576) - 1 users
+      85. GGPS Lilakamalpur (37330518) - 2 users
+      86. GGPS MAIRA KHURD (37330583) - 1 users
+      87. GGPS MC Dhoke hassu (37330452) - No users
+      88. GGPS MC PIR WADHAL (37330454) - No users
+      89. GGPS MC bangush colony (37330451) - No users
+      90. GGPS MC chamanzar (37330446) - 1 users
+      91. GGPS MORGAH (37330586) - 6 users
+      92. GGPS Mari Bangial (37330522) - 3 users
+      93. GGPS Mohra Tullah (37330584) - 1 users
+      94. GGPS Mohra sowian (37330527) - 6 users
+      95. GGPS NEW PHAGWARI (37330457) - No users
+      96. GGPS Raika Maira (37330654) - 4 users
+      97. GGPS Rehmania (37330473) - No users
+      98. GGPS TATRAL (37330657) - No users
+      99. GGPS Unpur (37330511) - 2 users
+      100. GGPS liaqat colony (37330578) - 1 users
+      101. GMPS ABAN CHAK (37330547) - 1 users
+      102. GMPS BAGRA SYEDAN (37330256) - 2 users
+      103. GMPS BARWALA (37330300) - 1 users
+      104. GMPS BILAWAL (37330620) - 2 users
+      105. GMPS Banian (37330623) - No users
+      106. GMPS CHAKRAN (37330599) - 2 users
+      107. GMPS CHOORA (37330314) - 3 users
+      108. GMPS Chak Sigho (37330397) - No users
+      109. GMPS Chokar (37330633) - No users
+      110. GMPS DAWRI (37330534) - 1 users
+      111. GMPS DHANDI GUJRAN (37330400) - No users
+      112. GMPS DK BHATIAN (37330640) - 3 users
+      113. GMPS Dhok Adrana (37330638) - No users
+      114. GMPS Dhok Chehr (37330606) - 1 users
+      115. GMPS Dhumma (37330608) - 1 users
+      116. GMPS GAHI SYEDAN (37330325) - No users
+      117. GMPS GANG (37330327) - No users
+      118. GMPS GHELLA KHURD (37330362) - No users
+      119. GMPS Gangal (37330540) - 1 users
+      120. GMPS Gangal (37330410) - No users
+      121. GMPS Guggan (37330409) - No users
+      122. GMPS Gurbal (37330342) - 6 users
+      123. GMPS HAKIMAL (37330363) - 2 users
+      124. GMPS HARNIALI SYEDAN (37330364) - No users
+      125. GMPS JADA (37330613) - 2 users
+      126. GMPS JARA (37330366) - 4 users
+      127. GMPS JASWAL (37330661) - No users
+      128. GMPS JHANGI DAIM (37330368) - 4 users
+      129. GMPS Jattal (37330345) - 1 users
+      130. GMPS Jhandu Syedan (37330346) - 2 users
+      131. GMPS KHINGER (37330351) - 2 users
+      132. GMPS Kali Pari (37330369) - No users
+      133. GMPS Khabba Barala (37330370) - No users
+      134. GMPS LADIAN (37330574) - 2 users
+      135. GMPS LOHDRA (37330519) - 1 users
+      136. GMPS Las Mali (37330374) - No users
+      137. GMPS MALUKAL (37330580) - 1 users
+      138. GMPS MEHMOODA (37330667) - 3 users
+      139. GMPS MOHRA BHATAN (37330281) - 1 users
+      140. GMPS MOJHANG (37330381) - 2 users
+      141. GMPS PINDORI (37330384) - 4 users
+      142. GMPS Pind Malhu (37330331) - 1 users
+      143. GMPS Pind Ranjha (37330255) - 1 users
+      144. GMPS RUPPER KHURD (37330388) - 4 users
+      145. GMPS SAGRI (37330504) - No users
+      146. GMPS Saffair (37330263) - 5 users
+      147. GMPS Talla Bajar (37330390) - 1 users
+      148. GMPS WARYAMA (37330546) - 4 users
+      149. GMPS samlal (37330264) - 2 users
+      150. GPS ADHAWAL (37330393) - 4 users
+      151. GPS BAKRA MANDI (37330200) - 5 users
+      152. GPS CHAKLALA RAWALPNDI (37330203) - No users
+      153. GPS CHAKRA (37330258) - 7 users
+      154. GPS DHOK CHATTA (37330318) - 4 users
+      155. GPS DHOK GUJRAN MISRIAL (37330204) - 9 users
+      156. GPS DHOK HAMMIT (37330298) - 3 users
+      157. GPS DHOK HASSO (37330205) - No users
+      158. GPS DHOK MISTRIAN (37330206) - 5 users
+      159. GPS DHOK MUNSHI (37330322) - No users
+      160. GPS DHOK ROSHAN DIN RAWALPINDI (37330207) - No users
+      161. GPS DHOK ZIARAT (37330209) - 6 users
+      162. GPS DHOKE SYEDAN (37330208) - 7 users
+      163. GPS GANDIAN (37330715) - 2 users
+      164. GPS GHILWAL (37330339) - 3 users
+      165. GPS HAMIDIA (37330235) - No users
+      166. GPS ISLAMIA RATTA (37330237) - No users
+      167. GPS JHANDA CHICHI (37330238) - No users
+      168. GPS JHARKAY (37330273) - 2 users
+      169. GPS KOLIAN GOHRU (37330371) - 3 users
+      170. GPS KOT JABBI (37330688) - No users
+      171. GPS LIAQAT MODEL (37330242) - 8 users
+      172. GPS MALANA (37330302) - 2 users
+      173. GPS MC ARJAN NAGAR RWP (37330228) - 1 users
+      174. GPS MC MOHALLAH WORKSHOPI RWP (37330231) - No users
+      175. GPS MC QASIMABAD STREET NO. 6 RWP (37330233) - No users
+      176. GPS MIAN AHMEDA (37330280) - 1 users
+      177. GPS MOHRI GHAZAN (37330249) - 1 users
+      178. GPS MORGAH (37330359) - No users
+      179. GPS NEW PUBLIC RAWALPINDI (37330216) - No users
+      180. GPS PAPIAN (37330383) - 2 users
+      181. GPS POSTAL COLONY (37330218) - No users
+      182. GPS QUMI PAY JHANDA CHACHI (37330219) - No users
+      183. GPS RATTA AMRAL (37330221) - No users
+      184. GPS REHMAT ABAD (37330333) - No users
+      185. GPS SHEIKH ZADA (37330266) - No users
+      186. GPS STANDARD MUSLIM (37330222) - No users
+      187. GPS TAKHTI (37330267) - 1 users
+      188. GPS TANVEER-UL-ISLAM DHOKE HUKAM DAD RWP (37330225) - No users
+      189. GPS TULSA (37330226) - 8 users
+      190. GPS UN PUR (37330303) - 3 users
+      191. GPS WESTRIDGE-I (37330227) - 1 users
+      192. Gges Mujahid Gangal (37330179) - No users
+      193. Ggps Darogha Hassan Ali (37330544) - 4 users
+      194. Ggps Timber ratial (37330509) - 4 users
+      195. Ggps sarhandi (37330497) - 4 users
+      196. Ggps sarhdnay (37330505) - 4 users
+      197. MC GGPS Chittian Hattian (37330459) - No users
+      198. MC GGPS DK hukamdad (37330453) - No users
+      199. MC GGPS ward 28 Ratta Amral (37330458) - No users
+
+13. MARKAZ: RAIKA MAIRA
+   Schools: 0
+   ✅ AEOs Assigned (1):
+      - Malik Nadeem Sultan (03325564268) - active
+
+14. MARKAZ: RAWALPINDI CANTT
+   Schools: 0
+   ✅ AEOs Assigned (2):
+      - Amer Aqeel Shah  (03005538538) - active
+      - Nighat Noureen (03075135280) - active
+
+15. MARKAZ: SADAR BERONI
+   Schools: 0
+   ✅ AEOs Assigned (1):
+      - Atiqa Tariq (03357007313) - active
+
+16. MARKAZ: SIHAL
+   Schools: 0
+   ✅ AEOs Assigned (1):
+      - Sania Naseem (03455544944) - active
+
+17. MARKAZ: SHAKRIAL
+   Schools: 12
+   ❌ NO AEO ASSIGNED
+   Schools:
+      1. GES MUSLIM GULSHAN ABAD (37330118) - 6 users
+      2. GPS AMAR PURA (37330199) - 5 users
+      3. GPS IQBAL RAHIM TOWN (37330236) - 1 users
+      4. GPS JHANGIR ABAD SAID GUL TOWN RWP (37330251) - 6 users
+      5. GPS KHAN ASGHAR MALL (37330240) - No users
+      6. GPS MANZOOR MUSLIM (37330244) - 1 users
+      7. GPS MC DHOK PARACHA (37330229) - 1 users
+      8. GPS MC FEROZABAD (37330230) - 1 users
+      9. GPS MC MUSLIM TOWN (37330234) - 6 users
+      10. GPS MILLAT ISLAMIA DHOK RAHEEM BAKHSH RAWALPINDI (37330245) - 1 users
+      11. GPS SHIMLA ISLAMIA RWP (37330121) - 5 users
+      12. GPS TAJ UL ISLAM (37330223) - 7 users
+
+======================================================================================================================================================
+SUMMARY
+======================================================================================================================================================
+Total Markazes: 17
+Markazes with AEO: 16
+Markazes without AEO: 1
+
+Schools with AEO Coverage: 247
+Schools without AEO Coverage: 12
+
+Total AEOs: 31
+Active AEOs: 28
+Pending AEOs: 3
+======================================================================================================================================================
+
+✅ Export complete!
+   CSV file: aeo_school_assignments.csv

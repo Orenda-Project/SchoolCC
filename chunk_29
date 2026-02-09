@@ -1,0 +1,50 @@
+SET name = 'GGPS Ferozy',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330539';
+
+-- Update: GMPS Gangal (EMIS: 37330540)
+UPDATE schools
+SET name = 'GMPS Gangal',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330540';
+
+-- Update: GGES Jabber Miana (EMIS: 37330129)
+UPDATE schools
+SET name = 'GGES Jabber Miana',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330129';
+
+-- Update: GGES Dhoke Budhal (EMIS: 37330537)
+UPDATE schools
+SET name = 'GGES Dhoke Budhal',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330537';
+
+-- Update: GGES Hoshial (EMIS: 37330554)
+UPDATE schools
+SET name = 'GGES Hoshial',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330554';
+
+-- Update: GGES Mohra (EMIS: 37330629)
+UPDATE schools

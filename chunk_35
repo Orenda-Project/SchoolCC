@@ -1,0 +1,50 @@
+SET name = 'GGES GULAM SARWAR BRITISH HOMES',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330717';
+
+-- Update: GGPS Berket (EMIS: 37330618)
+UPDATE schools
+SET name = 'GGPS Berket',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330618';
+
+-- Update: GMPS Dhumma (EMIS: 37330608)
+UPDATE schools
+SET name = 'GMPS Dhumma',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330608';
+
+-- Update: GMPS Gurbal (EMIS: 37330342)
+UPDATE schools
+SET name = 'GMPS Gurbal',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330342';
+
+-- Update: GMPS Pind Ranjha (EMIS: 37330255)
+UPDATE schools
+SET name = 'GMPS Pind Ranjha',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330255';
+
+-- Update: GGPS Chakara (EMIS: 37330598)
+UPDATE schools

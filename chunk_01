@@ -1,0 +1,50 @@
+SET name = 'GPS DHALA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330307';
+
+-- Update: GPS BODIAL (EMIS: 37330309)
+UPDATE schools
+SET name = 'GPS BODIAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330309';
+
+-- Update: GPS DEGAL (EMIS: 37330315)
+UPDATE schools
+SET name = 'GPS DEGAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330315';
+
+-- Update: GPS DHAMIAL (EMIS: 37330317)
+UPDATE schools
+SET name = 'GPS DHAMIAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330317';
+
+-- Update: GPS SHAHPUR SYEDAN (EMIS: 37330335)
+UPDATE schools
+SET name = 'GPS SHAHPUR SYEDAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330335';
+
+-- Update: GPS KALRI (EMIS: 37330349)
+UPDATE schools

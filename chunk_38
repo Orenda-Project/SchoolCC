@@ -1,0 +1,50 @@
+SET name = 'GGES PIND HABTAL  RAWALPINDI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SIHAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330612';
+
+-- Update: GGES DHOKE CHACH (EMIS: 37330605)
+UPDATE schools
+SET name = 'GGES DHOKE CHACH',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SIHAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330605';
+
+-- Update: GGES MERA Mohra (EMIS: 37330524)
+UPDATE schools
+SET name = 'GGES MERA Mohra',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330524';
+
+-- Update: GGES Jharaki (EMIS: 37330555)
+UPDATE schools
+SET name = 'GGES Jharaki',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330555';
+
+-- Update: GGES Banda (EMIS: 37330551)
+UPDATE schools
+SET name = 'GGES Banda',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330551';
+
+-- Update: Gges Mujahid Gangal (EMIS: 37330179)
+UPDATE schools

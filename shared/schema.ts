@@ -44,6 +44,7 @@ export const schools = pgTable("schools", {
   districtId: varchar("district_id").notNull(),
   tehsilId: varchar("tehsil_id"),
   markazId: varchar("markaz_id"),
+  markazName: text("markaz_name"),
   address: text("address"),
   // Attendance tracking
   totalStudents: integer("total_students").default(0),

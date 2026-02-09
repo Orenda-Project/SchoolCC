@@ -1,0 +1,50 @@
+SET name = 'GGPS KHASALA KHURD',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330571';
+
+-- Update: GGPS KOHALA KALLAN (EMIS: 37330572)
+UPDATE schools
+SET name = 'GGPS KOHALA KALLAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330572';
+
+-- Update: GGPS KOHALA SYEDAN (EMIS: 37330573)
+UPDATE schools
+SET name = 'GGPS KOHALA SYEDAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330573';
+
+-- Update: GMPS LADIAN (EMIS: 37330574)
+UPDATE schools
+SET name = 'GMPS LADIAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330574';
+
+-- Update: GGPS MAIRA KHURD (EMIS: 37330583)
+UPDATE schools
+SET name = 'GGPS MAIRA KHURD',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330583';
+
+-- Update: GGPS MORGAH (EMIS: 37330586)
+UPDATE schools

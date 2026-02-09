@@ -1,0 +1,50 @@
+SET name = 'GPS IQBAL RAHIM TOWN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330236';
+
+-- Update: GPS KHAN ASGHAR MALL (EMIS: 37330240)
+UPDATE schools
+SET name = 'GPS KHAN ASGHAR MALL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330240';
+
+-- Update: GPS MANZOOR MUSLIM (EMIS: 37330244)
+UPDATE schools
+SET name = 'GPS MANZOOR MUSLIM',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330244';
+
+-- Update: GPS MILLAT ISLAMIA DHOK RAHEEM BAKHSH RAWALPINDI (EMIS: 37330245)
+UPDATE schools
+SET name = 'GPS MILLAT ISLAMIA DHOK RAHEEM BAKHSH RAWALPINDI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330245';
+
+-- Update: GPS JHANGIR ABAD SAID GUL TOWN RWP (EMIS: 37330251)
+UPDATE schools
+SET name = 'GPS JHANGIR ABAD SAID GUL TOWN RWP',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330251';
+
+-- Update: GMPS PIAL (EMIS: 37330262)
+UPDATE schools

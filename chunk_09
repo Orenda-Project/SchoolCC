@@ -1,0 +1,50 @@
+SET name = 'GES MUJAHID',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330138';
+
+-- Update: GES SANGRAL (EMIS: 37330142)
+UPDATE schools
+SET name = 'GES SANGRAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330142';
+
+-- Update: GES DHULIAL (EMIS: 37330259)
+UPDATE schools
+SET name = 'GES DHULIAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330259';
+
+-- Update: GES KOLIAN HAMEED (EMIS: 37330352)
+UPDATE schools
+SET name = 'GES KOLIAN HAMEED',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330352';
+
+-- Update: GES GHEELA KALAN (EMIS: 37330361)
+UPDATE schools
+SET name = 'GES GHEELA KALAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330361';
+
+-- Update: GES HOON (EMIS: 37330145)
+UPDATE schools

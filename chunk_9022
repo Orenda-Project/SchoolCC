@@ -1,0 +1,50 @@
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GMPS ABAN CHAK',
+  'SCH-37330547',
+  '37330547',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330547'
+);
+
+-- Insert if not exists: GGCMS MOHRI KHAMBAL (EMIS: 37330556)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GGCMS MOHRI KHAMBAL',
+  'SCH-37330556',
+  '37330556',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330556'
+);
+
+-- Insert if not exists: GGES ARAZI SOHAL (EMIS: 37330172)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,

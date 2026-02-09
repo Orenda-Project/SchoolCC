@@ -1,0 +1,50 @@
+SET name = 'GGPS DADHAR NAJJAR',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330532';
+
+-- Update: GMPS DAWRI (EMIS: 37330534)
+UPDATE schools
+SET name = 'GMPS DAWRI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330534';
+
+-- Update: GMPS ABAN CHAK (EMIS: 37330547)
+UPDATE schools
+SET name = 'GMPS ABAN CHAK',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330547';
+
+-- Update: GGCMS MOHRI KHAMBAL (EMIS: 37330556)
+UPDATE schools
+SET name = 'GGCMS MOHRI KHAMBAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330556';
+
+-- Update: GGES ARAZI SOHAL (EMIS: 37330172)
+UPDATE schools
+SET name = 'GGES ARAZI SOHAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330172';
+
+-- Update: GGES DADHOCHA (EMIS: 37330175)
+UPDATE schools

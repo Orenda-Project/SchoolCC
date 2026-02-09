@@ -1,0 +1,50 @@
+  'GGPS Chakara',
+  'SCH-37330598',
+  '37330598',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330598'
+);
+
+-- Insert if not exists: GGPS Lakhoo (EMIS: 37330576)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GGPS Lakhoo',
+  'SCH-37330576',
+  '37330576',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330576'
+);
+
+-- Insert if not exists: GMPS Jattal (EMIS: 37330345)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GMPS Jattal',
+  'SCH-37330345',

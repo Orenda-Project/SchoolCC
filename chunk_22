@@ -1,0 +1,50 @@
+SET name = 'GGPS GOHRA BARATA (IASP)',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330542';
+
+-- Update: GGPS BAGGA SHEIKHAN # 1 (EMIS: 37330548)
+UPDATE schools
+SET name = 'GGPS BAGGA SHEIKHAN # 1',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330548';
+
+-- Update: GGPS BAGGA SANGRAL (EMIS: 37330549)
+UPDATE schools
+SET name = 'GGPS BAGGA SANGRAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330549';
+
+-- Update: GGPS No. 2 BAGGA SHEIKHAN (EMIS: 37330704)
+UPDATE schools
+SET name = 'GGPS No. 2 BAGGA SHEIKHAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330704';
+
+-- Update: GGES HARRAKA (EMIS: 37330553)
+UPDATE schools
+SET name = 'GGES HARRAKA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330553';
+
+-- Update: GMPS BARWALA (EMIS: 37330300)
+UPDATE schools

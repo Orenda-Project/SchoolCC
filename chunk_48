@@ -1,0 +1,50 @@
+-- Update: GGES Naseerabad (EMIS: 37330461)
+UPDATE schools
+SET name = 'GGES Naseerabad',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330461';
+
+-- Update: GGES Shoukat Saddar (EMIS: 37330165)
+UPDATE schools
+SET name = 'GGES Shoukat Saddar',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330165';
+
+-- Update: GGES No  2 Siham (EMIS: 37330479)
+UPDATE schools
+SET name = 'GGES No  2 Siham',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330479';
+
+-- Update: GGES Anwarulislam kamalabad (EMIS: 37330151)
+UPDATE schools
+SET name = 'GGES Anwarulislam kamalabad',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330151';
+
+-- Update: GGPS Dohk Ziarat (EMIS: 37330710)
+UPDATE schools
+SET name = 'GGPS Dohk Ziarat',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330710';
+

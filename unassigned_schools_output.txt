@@ -1,0 +1,627 @@
+📊 Finding schools with NO staff assigned...
+
+======================================================================================================================================================
+SCHOOLS WITH NO STAFF ASSIGNED
+======================================================================================================================================================
+Total schools with no direct users: 86
+
+
+████████████████████████████████████████████████████████████████████████████████
+█ CRITICAL: Schools with NO AEO and NO Staff (0 schools)
+████████████████████████████████████████████████████████████████████████████████
+
+
+████████████████████████████████████████████████████████████████████████████████
+█ WARNING: Schools with AEO but NO Staff (86 schools)
+████████████████████████████████████████████████████████████████████████████████
+
+1. GGES HARRAKA
+   EMIS: 37330553
+   Markaz: BAGGA SHEIKHAN (1 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+2. GGPS BAGGA SANGRAL
+   EMIS: 37330549
+   Markaz: BAGGA SHEIKHAN (1 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+3. GES CHANI ALAM SHER
+   EMIS: 37330295
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+4. GES DODHAR NAJJAR
+   EMIS: 37330125
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+5. GES MAL JANJAL
+   EMIS: 37330132
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+6. GES MUJAHID GANGAL RAWALPINDI
+   EMIS: 37330128
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+7. GPS BAGGA SHEIKHAN
+   EMIS: 37330289
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+8. GPS BANGIAL SAWAN
+   EMIS: 37330292
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+9. GPS BASSALI
+   EMIS: 37330293
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+10. GPS CHAK KHAS
+   EMIS: 37330294
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+11. GPS GHORA GUJRAN
+   EMIS: 37330284
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+12. GPS GHROLI
+   EMIS: 37330283
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+13. GPS GOHRA RAMIAL
+   EMIS: 37330271
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+14. GPS KALRI
+   EMIS: 37330285
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+15. GPS KHAI AWAN
+   EMIS: 37330275
+   Markaz: BASSALI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+16. GES MUJAHID
+   EMIS: 37330138
+   Markaz: CHAKRI (2 AEOs)
+   Tehsil: N/A
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+17. GPS CHACH RAWAN
+   EMIS: 37330716
+   Markaz: CHAKRI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+18. GPS SAROBA
+   EMIS: 37330334
+   Markaz: CHAKRI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+19. GPS SHARIFABAD
+   EMIS: 37330336
+   Markaz: CHAKRI (2 AEOs)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+20. GPS KHAN ASGHAR MALL
+   EMIS: 37330240
+   Markaz: Shakrial (0 AEO)
+   Tehsil: N/A
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+21. GES BANGUSH COLONY
+   EMIS: 37330201
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+22. GES CHAK BELI KHAN
+   EMIS: 37330396
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+23. GES KURI KHUDA BUKSH
+   EMIS: 37330131
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+24. GGES ARAZI SOHAL
+   EMIS: 37330172
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+25. GGES Bodial
+   EMIS: 37330621
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+26. GGES DHAKALA
+   EMIS: 37330176
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+27. GGES DHERI
+   EMIS: 37330634
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+28. GGES DHOKE PARACHA
+   EMIS: 37330455
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+29. GGES Dhok Mureed
+   EMIS: 37330637
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+30. GGES Dhoke Budhal
+   EMIS: 37330537
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+31. GGES GHELLA KALAN
+   EMIS: 37330643
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+32. GGES MOHRA
+   EMIS: 37330380
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+33. GGES Murree Road Rawalpindi
+   EMIS: 37330161
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+34. GGES New Sarfraz Road Rwp
+   EMIS: 37330157
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+35. GGES Salmoon
+   EMIS: 37330389
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+36. GGPS  Mangtal 1
+   EMIS: 37330440
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+37. GGPS Akhtar islamia
+   EMIS: 37330150
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+38. GGPS Arazi Sohal
+   EMIS: 37330172-A
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+39. GGPS Hoon
+   EMIS: 37330649
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+40. GGPS JORIAN
+   EMIS: 37330565
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+41. GGPS KOHALA SYEDAN
+   EMIS: 37330573
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+42. GGPS MC Dhoke hassu
+   EMIS: 37330452
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+43. GGPS MC PIR WADHAL
+   EMIS: 37330454
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+44. GGPS MC bangush colony
+   EMIS: 37330451
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+45. GGPS NEW PHAGWARI
+   EMIS: 37330457
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+46. GGPS Rehmania
+   EMIS: 37330473
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+47. GGPS TATRAL
+   EMIS: 37330657
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+48. GMPS Banian
+   EMIS: 37330623
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+49. GMPS Chak Sigho
+   EMIS: 37330397
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+50. GMPS Chokar
+   EMIS: 37330633
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+51. GMPS DHANDI GUJRAN
+   EMIS: 37330400
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+52. GMPS Dhok Adrana
+   EMIS: 37330638
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+53. GMPS GAHI SYEDAN
+   EMIS: 37330325
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+54. GMPS GANG
+   EMIS: 37330327
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+55. GMPS GHELLA KHURD
+   EMIS: 37330362
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+56. GMPS Gangal
+   EMIS: 37330410
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+57. GMPS Guggan
+   EMIS: 37330409
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+58. GMPS HARNIALI SYEDAN
+   EMIS: 37330364
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+59. GMPS JASWAL
+   EMIS: 37330661
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+60. GMPS Kali Pari
+   EMIS: 37330369
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+61. GMPS Khabba Barala
+   EMIS: 37330370
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+62. GMPS Las Mali
+   EMIS: 37330374
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+63. GMPS SAGRI
+   EMIS: 37330504
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+64. GPS CHAKLALA RAWALPNDI
+   EMIS: 37330203
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+65. GPS DHOK HASSO
+   EMIS: 37330205
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+66. GPS DHOK MUNSHI
+   EMIS: 37330322
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+67. GPS DHOK ROSHAN DIN RAWALPINDI
+   EMIS: 37330207
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+68. GPS HAMIDIA
+   EMIS: 37330235
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+69. GPS ISLAMIA RATTA
+   EMIS: 37330237
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+70. GPS JHANDA CHICHI
+   EMIS: 37330238
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+71. GPS KOT JABBI
+   EMIS: 37330688
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+72. GPS MC MOHALLAH WORKSHOPI RWP
+   EMIS: 37330231
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+73. GPS MC QASIMABAD STREET NO. 6 RWP
+   EMIS: 37330233
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+74. GPS MORGAH
+   EMIS: 37330359
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+75. GPS NEW PUBLIC RAWALPINDI
+   EMIS: 37330216
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+76. GPS POSTAL COLONY
+   EMIS: 37330218
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+77. GPS QUMI PAY JHANDA CHACHI
+   EMIS: 37330219
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+78. GPS RATTA AMRAL
+   EMIS: 37330221
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+79. GPS REHMAT ABAD
+   EMIS: 37330333
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+80. GPS SHEIKH ZADA
+   EMIS: 37330266
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+81. GPS STANDARD MUSLIM
+   EMIS: 37330222
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+82. GPS TANVEER-UL-ISLAM DHOKE HUKAM DAD RWP
+   EMIS: 37330225
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+83. Gges Mujahid Gangal
+   EMIS: 37330179
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+84. MC GGPS Chittian Hattian
+   EMIS: 37330459
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+85. MC GGPS DK hukamdad
+   EMIS: 37330453
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+86. MC GGPS ward 28 Ratta Amral
+   EMIS: 37330458
+   Markaz: N/A (0 AEO)
+   Tehsil: N/A
+   Address: Rawalpindi, Pakistan
+   Status: ⚠️  HAS AEO, but NO HEAD TEACHER, NO TEACHER
+
+
+======================================================================================================================================================
+SUMMARY
+======================================================================================================================================================
+Total unassigned schools: 86
+
+Critical (No AEO + No Staff): 0
+Warning (Has AEO but No Staff): 86
+======================================================================================================================================================
+
+✅ Export complete!
+   Files created:
+   - critical_unassigned_schools.csv (No AEO + No Staff)
+   - warning_unassigned_schools.csv (Has AEO but No Staff)
+   - all_unassigned_schools.csv (All unassigned schools)

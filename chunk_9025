@@ -1,0 +1,50 @@
+SELECT
+  gen_random_uuid(),
+  'GMPS MOHRA BHATAN',
+  'SCH-37330281',
+  '37330281',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330281'
+);
+
+-- Insert if not exists: GMPS GAHI SYEDAN (EMIS: 37330325)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GMPS GAHI SYEDAN',
+  'SCH-37330325',
+  '37330325',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI FEMALE' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330325'
+);
+
+-- Insert if not exists: GMPS GANG (EMIS: 37330327)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),

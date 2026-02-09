@@ -1,0 +1,50 @@
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GPS MC MUSLIM TOWN',
+  'SCH-37330234',
+  '37330234',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330234'
+);
+
+-- Insert if not exists: GPS IQBAL RAHIM TOWN (EMIS: 37330236)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GPS IQBAL RAHIM TOWN',
+  'SCH-37330236',
+  '37330236',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330236'
+);
+
+-- Insert if not exists: GPS KHAN ASGHAR MALL (EMIS: 37330240)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,

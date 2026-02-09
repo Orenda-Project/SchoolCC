@@ -1,0 +1,50 @@
+SET name = 'GES BAJNIAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330257';
+
+-- Update: GPS CHAKRA (EMIS: 37330258)
+UPDATE schools
+SET name = 'GPS CHAKRA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330258';
+
+-- Update: GPS DHOK CHATTA (EMIS: 37330318)
+UPDATE schools
+SET name = 'GPS DHOK CHATTA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330318';
+
+-- Update: GES MUSLIM GULSHAN ABAD (EMIS: 37330118)
+UPDATE schools
+SET name = 'GES MUSLIM GULSHAN ABAD',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330118';
+
+-- Update: GPS SHIMLA ISLAMIA RWP (EMIS: 37330121)
+UPDATE schools
+SET name = 'GPS SHIMLA ISLAMIA RWP',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SHAKRIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330121';
+
+-- Update: GPS AMAR PURA (EMIS: 37330199)
+UPDATE schools

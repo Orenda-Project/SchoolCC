@@ -1,0 +1,50 @@
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330704'
+);
+
+-- Insert if not exists: GGES HARRAKA (EMIS: 37330553)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GGES HARRAKA',
+  'SCH-37330553',
+  '37330553',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (
+  SELECT 1 FROM schools WHERE emis_number = '37330553'
+);
+
+-- Insert if not exists: GMPS BARWALA (EMIS: 37330300)
+INSERT INTO schools (
+  id, name, code, emis_number, cluster_id, district_id, markaz_id,
+  address, created_at,
+  total_students, present_students, absent_students,
+  total_teachers, present_teachers, absent_teachers,
+  total_toilets, working_toilets, broken_toilets,
+  is_drinking_water_available
+)
+SELECT
+  gen_random_uuid(),
+  'GMPS BARWALA',
+  'SCH-37330300',
+  '37330300',
+  (SELECT id FROM clusters WHERE code = 'RWP-C' LIMIT 1),
+  (SELECT id FROM districts WHERE code = 'RWP' LIMIT 1),
+  (SELECT id FROM markazes WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'LOHDRAN FEMALE' LIMIT 1),
+  'Rawalpindi, Pakistan',
+  NOW(),
+  0, 0, 0, 0, 0, 0, 0, 0, 0, false
+WHERE NOT EXISTS (

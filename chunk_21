@@ -1,0 +1,50 @@
+SET name = 'GMPS PIAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330262';
+
+-- Update: GGPS SUMBAL (EMIS: 37330507)
+UPDATE schools
+SET name = 'GGPS SUMBAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330507';
+
+-- Update: GGPS KALIAM MUGHAL (EMIS: 37330513)
+UPDATE schools
+SET name = 'GGPS KALIAM MUGHAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330513';
+
+-- Update: GGPS MAIRA BHARTA (EMIS: 37330521)
+UPDATE schools
+SET name = 'GGPS MAIRA BHARTA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330521';
+
+-- Update: GGPS CHANI ALAM SHER (EMIS: 37330529)
+UPDATE schools
+SET name = 'GGPS CHANI ALAM SHER',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BAGGA SHEIKHAN'
+      LIMIT 1
+    )
+WHERE emis_number = '37330529';
+
+-- Update: GGPS GOHRA BARATA (IASP) (EMIS: 37330542)
+UPDATE schools

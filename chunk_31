@@ -1,0 +1,50 @@
+SET name = 'GMPS RUPPER KHURD',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAK BELI KHAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330388';
+
+-- Update: GGPS DK ALI BHADUR (EMIS: 37330639)
+UPDATE schools
+SET name = 'GGPS DK ALI BHADUR',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAK BELI KHAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330639';
+
+-- Update: GMPS DK BHATIAN (EMIS: 37330640)
+UPDATE schools
+SET name = 'GMPS DK BHATIAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAK BELI KHAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330640';
+
+-- Update: GGMPS THALLA KALAN (EMIS: 37330658)
+UPDATE schools
+SET name = 'GGMPS THALLA KALAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAK BELI KHAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330658';
+
+-- Update: GMPS MEHMOODA (EMIS: 37330667)
+UPDATE schools
+SET name = 'GMPS MEHMOODA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAK BELI KHAN FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330667';
+
+-- Update: GGES BAINS (EMIS: 37330411)
+UPDATE schools

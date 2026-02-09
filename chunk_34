@@ -1,0 +1,50 @@
+SET name = 'GMPS Chak Sigho',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330397';
+
+-- Update: GGES Dhok Mureed (EMIS: 37330637)
+UPDATE schools
+SET name = 'GGES Dhok Mureed',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330637';
+
+-- Update: GGES Bodial (EMIS: 37330621)
+UPDATE schools
+SET name = 'GGES Bodial',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330621';
+
+-- Update: GGES Salmoon (EMIS: 37330389)
+UPDATE schools
+SET name = 'GGES Salmoon',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330389';
+
+-- Update: GGES Mohri Khattran (EMIS: 37330585)
+UPDATE schools
+SET name = 'GGES Mohri Khattran',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'SADDAR BERONI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330585';
+
+-- Update: GGES GULAM SARWAR BRITISH HOMES (EMIS: 37330717)
+UPDATE schools

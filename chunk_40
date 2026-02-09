@@ -1,0 +1,50 @@
+SET name = 'Ggps Timber ratial',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330509';
+
+-- Update: GMPS samlal (EMIS: 37330264)
+UPDATE schools
+SET name = 'GMPS samlal',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330264';
+
+-- Update: GMPS WARYAMA (EMIS: 37330546)
+UPDATE schools
+SET name = 'GMPS WARYAMA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330546';
+
+-- Update: GGPS Mari Bangial (EMIS: 37330522)
+UPDATE schools
+SET name = 'GGPS Mari Bangial',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330522';
+
+-- Update: GGPS Mohra sowian (EMIS: 37330527)
+UPDATE schools
+SET name = 'GGPS Mohra sowian',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330527';
+
+-- Update: Ggps sarhandi (EMIS: 37330497)
+UPDATE schools

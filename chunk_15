@@ -1,0 +1,50 @@
+SET name = 'GPS MC MOHALLAH WORKSHOPI RWP',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330231';
+
+-- Update: GPS HAMIDIA (EMIS: 37330235)
+UPDATE schools
+SET name = 'GPS HAMIDIA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330235';
+
+-- Update: GPS DHOK HASSO (EMIS: 37330205)
+UPDATE schools
+SET name = 'GPS DHOK HASSO',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330205';
+
+-- Update: GPS RATTA AMRAL (EMIS: 37330221)
+UPDATE schools
+SET name = 'GPS RATTA AMRAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330221';
+
+-- Update: GPS MC ARJAN NAGAR RWP (EMIS: 37330228)
+UPDATE schools
+SET name = 'GPS MC ARJAN NAGAR RWP',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330228';
+
+-- Update: GPS ISLAMIA RATTA (EMIS: 37330237)
+UPDATE schools

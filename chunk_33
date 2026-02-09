@@ -1,0 +1,50 @@
+SET name = 'GGPS Hoon',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330649';
+
+-- Update: GMPS Gangal (EMIS: 37330410)
+UPDATE schools
+SET name = 'GMPS Gangal',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330410';
+
+-- Update: GMPS Chokar (EMIS: 37330633)
+UPDATE schools
+SET name = 'GMPS Chokar',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330633';
+
+-- Update: GMPS Dhok Adrana (EMIS: 37330638)
+UPDATE schools
+SET name = 'GMPS Dhok Adrana',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330638';
+
+-- Update: GMPS Khabba Barala (EMIS: 37330370)
+UPDATE schools
+SET name = 'GMPS Khabba Barala',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHOUNTRA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330370';
+
+-- Update: GMPS Chak Sigho (EMIS: 37330397)
+UPDATE schools

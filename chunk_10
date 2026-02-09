@@ -1,0 +1,50 @@
+SET name = 'GES HOON',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAUNTRA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330145';
+
+-- Update: GPS GHILWAL (EMIS: 37330339)
+UPDATE schools
+SET name = 'GPS GHILWAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAUNTRA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330339';
+
+-- Update: GPS KOLIAN GOHRU (EMIS: 37330371)
+UPDATE schools
+SET name = 'GPS KOLIAN GOHRU',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAUNTRA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330371';
+
+-- Update: GES MIANA MOHRA (EMIS: 37330377)
+UPDATE schools
+SET name = 'GES MIANA MOHRA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAUNTRA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330377';
+
+-- Update: GPS PAPIAN (EMIS: 37330383)
+UPDATE schools
+SET name = 'GPS PAPIAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAUNTRA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330383';
+
+-- Update: GES RAIKA MIRA (EMIS: 37330385)
+UPDATE schools

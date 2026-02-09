@@ -1,0 +1,50 @@
+-- Update: GGPS ARIYA MOHALLAH (EMIS: 37330450)
+UPDATE schools
+SET name = 'GGPS ARIYA MOHALLAH',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330450';
+
+-- Update: GGPS Jhawra (EMIS: 37330488)
+UPDATE schools
+SET name = 'GGPS Jhawra',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330488';
+
+-- Update: GGPS liaqat colony (EMIS: 37330578)
+UPDATE schools
+SET name = 'GGPS liaqat colony',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330578';
+
+-- Update: GGPS MC chamanzar (EMIS: 37330446)
+UPDATE schools
+SET name = 'GGPS MC chamanzar',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330446';
+
+-- Update: GGPS Mohra Tullah (EMIS: 37330584)
+UPDATE schools
+SET name = 'GGPS Mohra Tullah',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330584';
+

@@ -1,0 +1,50 @@
+SET name = 'GPS POSTAL COLONY',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330218';
+
+-- Update: GPS WESTRIDGE-I (EMIS: 37330227)
+UPDATE schools
+SET name = 'GPS WESTRIDGE-I',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330227';
+
+-- Update: GES BANGUSH COLONY (EMIS: 37330201)
+UPDATE schools
+SET name = 'GES BANGUSH COLONY',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330201';
+
+-- Update: GPS NEW PUBLIC RAWALPINDI (EMIS: 37330216)
+UPDATE schools
+SET name = 'GPS NEW PUBLIC RAWALPINDI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330216';
+
+-- Update: GPS STANDARD MUSLIM (EMIS: 37330222)
+UPDATE schools
+SET name = 'GPS STANDARD MUSLIM',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'PIR WADHAI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330222';
+
+-- Update: GPS MC MOHALLAH WORKSHOPI RWP (EMIS: 37330231)
+UPDATE schools

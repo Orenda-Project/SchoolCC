@@ -1,0 +1,50 @@
+SET name = 'GPS KALRI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330285';
+
+-- Update: GPS BAGGA SHEIKHAN (EMIS: 37330289)
+UPDATE schools
+SET name = 'GPS BAGGA SHEIKHAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330289';
+
+-- Update: GPS BANGIAL SAWAN (EMIS: 37330292)
+UPDATE schools
+SET name = 'GPS BANGIAL SAWAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330292';
+
+-- Update: GPS BASSALI (EMIS: 37330293)
+UPDATE schools
+SET name = 'GPS BASSALI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330293';
+
+-- Update: GPS CHAK KHAS (EMIS: 37330294)
+UPDATE schools
+SET name = 'GPS CHAK KHAS',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330294';
+
+-- Update: GES CHANI ALAM SHER (EMIS: 37330295)
+UPDATE schools

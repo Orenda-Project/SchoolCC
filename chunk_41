@@ -1,0 +1,50 @@
+SET name = 'Ggps sarhandi',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330497';
+
+-- Update: GGES KOTHA KALLAN (EMIS: 37330561)
+UPDATE schools
+SET name = 'GGES KOTHA KALLAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330561';
+
+-- Update: GGES JAIL COLONY (EMIS: 37330614)
+UPDATE schools
+SET name = 'GGES JAIL COLONY',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330614';
+
+-- Update: GMPS KHINGER (EMIS: 37330351)
+UPDATE schools
+SET name = 'GMPS KHINGER',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330351';
+
+-- Update: GGPS KALAS (EMIS: 37330568)
+UPDATE schools
+SET name = 'GGPS KALAS',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'ADYALA FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330568';
+
+-- Update: GGPS KHASALA KHURD (EMIS: 37330571)
+UPDATE schools

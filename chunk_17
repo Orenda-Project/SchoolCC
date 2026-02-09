@@ -1,0 +1,50 @@
+SET name = 'GPS DHOK ZIARAT',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330209';
+
+-- Update: GPS TULSA (EMIS: 37330226)
+UPDATE schools
+SET name = 'GPS TULSA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330226';
+
+-- Update: GES LAKHAN (EMIS: 37330241)
+UPDATE schools
+SET name = 'GES LAKHAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330241';
+
+-- Update: GPS LIAQAT MODEL (EMIS: 37330242)
+UPDATE schools
+SET name = 'GPS LIAQAT MODEL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330242';
+
+-- Update: GPS MOHRI GHAZAN (EMIS: 37330249)
+UPDATE schools
+SET name = 'GPS MOHRI GHAZAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'RWP CANTT'
+      LIMIT 1
+    )
+WHERE emis_number = '37330249';
+
+-- Update: GES BAJNIAL (EMIS: 37330257)
+UPDATE schools

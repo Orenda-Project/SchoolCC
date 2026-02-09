@@ -1,0 +1,50 @@
+-- Update: GGPS KHILRI (EMIS: 37330569)
+UPDATE schools
+SET name = 'GGPS KHILRI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'KOLLIAN HAMEED'
+      LIMIT 1
+    )
+WHERE emis_number = '37330569';
+
+-- Update: GMPS BILAWAL (EMIS: 37330620)
+UPDATE schools
+SET name = 'GMPS BILAWAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'KOLLIAN HAMEED'
+      LIMIT 1
+    )
+WHERE emis_number = '37330620';
+
+-- Update: GMPS CHAKRAN (EMIS: 37330599)
+UPDATE schools
+SET name = 'GMPS CHAKRAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'KOLLIAN HAMEED'
+      LIMIT 1
+    )
+WHERE emis_number = '37330599';
+
+-- Update: GMPS CHOORA (EMIS: 37330314)
+UPDATE schools
+SET name = 'GMPS CHOORA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'KOLLIAN HAMEED'
+      LIMIT 1
+    )
+WHERE emis_number = '37330314';
+
+-- Update: GMPS MALUKAL (EMIS: 37330580)
+UPDATE schools
+SET name = 'GMPS MALUKAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'KOLLIAN HAMEED'
+      LIMIT 1
+    )
+WHERE emis_number = '37330580';
+

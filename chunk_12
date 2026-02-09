@@ -1,0 +1,50 @@
+SET name = 'GES KURI KHUDA BUKSH',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330131';
+
+-- Update: GPS SHEIKH ZADA (EMIS: 37330266)
+UPDATE schools
+SET name = 'GPS SHEIKH ZADA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330266';
+
+-- Update: GPS TAKHTI (EMIS: 37330267)
+UPDATE schools
+SET name = 'GPS TAKHTI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330267';
+
+-- Update: GPS JHARKAY (EMIS: 37330273)
+UPDATE schools
+SET name = 'GPS JHARKAY',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330273';
+
+-- Update: GPS MIAN AHMEDA (EMIS: 37330280)
+UPDATE schools
+SET name = 'GPS MIAN AHMEDA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330280';
+
+-- Update: GES BAGH SANGRA (EMIS: 37330288)
+UPDATE schools

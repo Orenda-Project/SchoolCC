@@ -1,0 +1,50 @@
+SET name = 'GES CHANI ALAM SHER',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330295';
+
+-- Update: GPS CHAKLALA RAWALPNDI (EMIS: 37330203)
+UPDATE schools
+SET name = 'GPS CHAKLALA RAWALPNDI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKLALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330203';
+
+-- Update: GPS DHOK ROSHAN DIN RAWALPINDI (EMIS: 37330207)
+UPDATE schools
+SET name = 'GPS DHOK ROSHAN DIN RAWALPINDI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKLALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330207';
+
+-- Update: GPS QUMI PAY JHANDA CHACHI (EMIS: 37330219)
+UPDATE schools
+SET name = 'GPS QUMI PAY JHANDA CHACHI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKLALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330219';
+
+-- Update: GPS TANVEER-UL-ISLAM DHOKE HUKAM DAD RWP (EMIS: 37330225)
+UPDATE schools
+SET name = 'GPS TANVEER-UL-ISLAM DHOKE HUKAM DAD RWP',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKLALA'
+      LIMIT 1
+    )
+WHERE emis_number = '37330225';
+
+-- Update: GPS MC QASIMABAD STREET NO. 6 RWP (EMIS: 37330233)
+UPDATE schools

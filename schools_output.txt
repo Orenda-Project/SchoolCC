@@ -1,0 +1,2800 @@
+📊 Fetching all schools and their users from production database...
+
+Total schools found: 259
+
+Total users with schools: 602
+
+======================================================================================================================================================
+SCHOOLS WITH USERS
+======================================================================================================================================================
+
+
+1. GES BAGH SANGRA
+   EMIS: 37330288
+   Users (8):
+      1. AFZAL AHMED (HEAD_TEACHER)
+         Phone: 03124618035
+         Status: pending
+      2. AFIA YASMIN (TEACHER)
+         Phone: 03105003253
+         Status: pending
+      3. Misbah Tariq  (TEACHER)
+         Phone: 03445947573
+         Status: pending
+      4. Muhammad usman  (TEACHER)
+         Phone: 03055862537
+         Status: pending
+      5. Samana Mohsin  (TEACHER)
+         Phone: 03331533346
+         Status: pending
+      6. Shaista kanwal (TEACHER)
+         Phone: 03317572964
+         Status: pending
+      7. Shakil Ahmed (TEACHER)
+         Phone: 03335411303
+         Status: pending
+      8. Sumaira Manzoor (TEACHER)
+         Phone: 03315008928
+         Status: pending
+
+2. GES BAJNIAL
+   EMIS: 37330257
+   Users (3):
+      1. Hasan Mahmood  (HEAD_TEACHER)
+         Phone: 03125000705
+         Status: active
+      2. Hafiz Muhammad Saad  (TEACHER)
+         Phone: 03337474654
+         Status: active
+      3. Muhammad Ammar  (TEACHER)
+         Phone: 03125665676
+         Status: active
+
+3. GES BANGUSH COLONY
+   EMIS: 37330201
+   ⚠️  No users assigned
+
+4. GES CHAK BELI KHAN
+   EMIS: 37330396
+   ⚠️  No users assigned
+
+5. GES CHANI ALAM SHER
+   EMIS: 37330295
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+6. GES DHULIAL
+   EMIS: 37330259
+   Markaz: CHAKRI
+   Users (1):
+      1. Shafqat hussain (HEAD_TEACHER)
+         Phone: 03005149910
+         Status: active
+
+7. GES DODHAR NAJJAR
+   EMIS: 37330125
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+8. GES GHEELA KALAN
+   EMIS: 37330361
+   Markaz: CHAKRI
+   Users (2):
+      1. Muhammad Shabbir  (HEAD_TEACHER)
+         Phone: 03165024935
+         Status: active
+      2. Aisha Anjum (TEACHER)
+         Phone: 03188992526
+         Status: active
+
+9. GES HOON
+   EMIS: 37330145
+   Users (9):
+      1.     Aziz urehman  (HEAD_TEACHER)
+         Phone: 03075013699
+         Status: active
+      2. Anila Khalid (TEACHER)
+         Phone: 03359065420
+         Status: active
+      3. Bilal Sarfaraz  (TEACHER)
+         Phone: 03165683913
+         Status: active
+      4. Humaira Imtiaz  (TEACHER)
+         Phone: 03208824474
+         Status: pending
+      5. Iqra naz (TEACHER)
+         Phone: 03457893990
+         Status: pending
+      6. Mehmoona Kanwal (TEACHER)
+         Phone: 0305215904
+         Status: active
+      7. Muhammad Afzaal (TEACHER)
+         Phone: 03035468707
+         Status: active
+      8. Rameez Ahmad  (TEACHER)
+         Phone: 03125841969
+         Status: active
+      9. Saeeda Yasmin  (TEACHER)
+         Phone: 03365485492
+         Status: pending
+
+10. GES JAWA
+   EMIS: 37330130
+   Users (2):
+      1. Sabir Hussain (HEAD_TEACHER)
+         Phone: 03465739371
+         Status: active
+      2. AbdulRehman  (TEACHER)
+         Phone: 03335515053
+         Status: active
+
+11. GES KHASALAA KALLAN
+   EMIS: 37330350
+   Markaz: Adyala
+   Users (9):
+      1. Isma Sajjad  (TEACHER)
+         Phone: 03160520791
+         Status: active
+      2. Marina Haq Nawaz (TEACHER)
+         Phone: 03325258233
+         Status: active
+      3. Muhammad Umer (TEACHER)
+         Phone: 03055169624
+         Status: active
+      4. Muhammad Zubair  (TEACHER)
+         Phone: 03345719997
+         Status: active
+      5. Sajjad Ahmad  (TEACHER)
+         Phone: 03151763604
+         Status: active
+      6. Tayyaba Munir (TEACHER)
+         Phone: 03206350095
+         Status: active
+      7. Yasmin akhtar (TEACHER)
+         Phone: 03105601313
+         Status: active
+      8. Zahid Mehmood  (TEACHER)
+         Phone: 03125380345
+         Status: active
+      9. Zahida Parveen  (TEACHER)
+         Phone: 03325508012
+         Status: active
+
+12. GES KOLIAN HAMEED
+   EMIS: 37330352
+   Markaz: CHAKRI
+   Users (1):
+      1. Khawar Ali Hussain  (HEAD_TEACHER)
+         Phone: 03125818452
+         Status: active
+
+13. GES KURI KHUDA BUKSH
+   EMIS: 37330131
+   ⚠️  No users assigned
+
+14. GES LAKHAN
+   EMIS: 37330241
+   Users (16):
+      1. Azeem Altaf Hashmi (HEAD_TEACHER)
+         Phone: 03335648076
+         Status: active
+      2. Afsana Bibi  (TEACHER)
+         Phone: 03235302337
+         Status: active
+      3. Ambreen Manzoor  (TEACHER)
+         Phone: 03125123918
+         Status: active
+      4. Atif Ali (TEACHER)
+         Phone: 03225394248
+         Status: active
+      5. Iram Noureen  (TEACHER)
+         Phone: 03155603857
+         Status: active
+      6. Mamoona shahzadi  (TEACHER)
+         Phone: 03485569107
+         Status: active
+      7. Muhammad Banaras  (TEACHER)
+         Phone: 03028166538
+         Status: active
+      8. Muhammad Suleman (TEACHER)
+         Phone: 03175098968
+         Status: active
+      9. Nazneen Akhtar (TEACHER)
+         Phone: 03415447857
+         Status: active
+      10. Noreen Alam (TEACHER)
+         Phone: 03175653258
+         Status: active
+      11. Sana Ashraf (TEACHER)
+         Phone: 03488379112
+         Status: active
+      12. Shabnam iqbal (TEACHER)
+         Phone: 03315397818
+         Status: active
+      13. Shamraiz Iqbal Awan  (TEACHER)
+         Phone: 03025215997
+         Status: active
+      14. Talha Zaheer Ahmed (TEACHER)
+         Phone: 03030538688
+         Status: active
+      15. malik fateh khan (TEACHER)
+         Phone: 03335389844
+         Status: active
+      16. shaista bibi (TEACHER)
+         Phone: 03100866046
+         Status: active
+
+15. GES MAL JANJAL
+   EMIS: 37330132
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+16. GES MIANA MOHRA
+   EMIS: 37330377
+   Users (4):
+      1. Muhammad shafiq (HEAD_TEACHER)
+         Phone: 03335763990
+         Status: active
+      2. Maggi Noureena  (TEACHER)
+         Phone: 03183405631
+         Status: active
+      3. Mohammed Yousaf Rehmani  (TEACHER)
+         Phone: 03219157998
+         Status: active
+      4. Uzma Javed (TEACHER)
+         Phone: 03060919843
+         Status: active
+
+17. GES MUJAHID
+   EMIS: 37330138
+   Markaz: CHAKRI
+   ⚠️  No users assigned
+
+18. GES MUJAHID GANGAL RAWALPINDI
+   EMIS: 37330128
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+19. GES MUSLIM GULSHAN ABAD
+   EMIS: 37330118
+   Markaz: Shakrial
+   Users (6):
+      1. Asghar Ali  (HEAD_TEACHER)
+         Phone: 03455353727
+         Status: active
+      2. Noreen Akhtar (TEACHER)
+         Phone: 03219524975
+         Status: active
+      3. Saqib Zaman  (TEACHER)
+         Phone: 03335125382
+         Status: active
+      4. Shaista Khanum  (TEACHER)
+         Phone: 03425013133
+         Status: active
+      5. Zaitoon fatima  (TEACHER)
+         Phone: 03105190682
+         Status: active
+      6. ateeq ahmad (TEACHER)
+         Phone: 03370427722
+         Status: active
+
+20. GES RAIKA MIRA
+   EMIS: 37330385
+   Users (5):
+      1. Muhammad Afzal Mughal (HEAD_TEACHER)
+         Phone: 03335543088
+         Status: active
+      2. Khatiba Zubair  (TEACHER)
+         Phone: 03005168722
+         Status: active
+      3. MUHAMMAD ABID  (TEACHER)
+         Phone: 03330539327
+         Status: pending
+      4. Muhammad Sohail Bhatti  (TEACHER)
+         Phone: 03065323012
+         Status: pending
+      5. shoukat mehmood (TEACHER)
+         Phone: 03065282809
+         Status: active
+
+21. GES RAJAR
+   EMIS: 37330140
+   Markaz: CHAKRI
+   Users (2):
+      1. Saira bibi (HEAD_TEACHER)
+         Phone: 03325544480
+         Status: active
+      2. Irfan Akram (TEACHER)
+         Phone: 03135794667
+         Status: pending
+
+22. GES SANGRAL
+   EMIS: 37330142
+   Markaz: CHAKRI
+   Users (1):
+      1. Amna Sajjad  (HEAD_TEACHER)
+         Phone: 03015550718
+         Status: active
+
+23. GES THALLA KHURD
+   EMIS: 37330392
+   Users (6):
+      1. Naveed Akhtar (HEAD_TEACHER)
+         Phone: 03465740477
+         Status: active
+      2. Mubashar Ahmad (TEACHER)
+         Phone: 03361103057
+         Status: active
+      3. Mudassar Hussain (TEACHER)
+         Phone: 03465379534
+         Status: active
+      4. Muhammad Bilal (TEACHER)
+         Phone: 03340558882
+         Status: active
+      5. Uzma Batool  (TEACHER)
+         Phone: 03180483175
+         Status: active
+      6. Waqar Ahmad (TEACHER)
+         Phone: 03425312747
+         Status: active
+
+24. GGCMS MOHRI KHAMBAL
+   EMIS: 37330556
+   Users (1):
+      1. Sumaira Rami (HEAD_TEACHER)
+         Phone: 03145233085
+         Status: active
+
+25. GGES ARAZI SOHAL
+   EMIS: 37330172
+   ⚠️  No users assigned
+
+26. GGES Anwarulislam kamalabad
+   EMIS: 37330151
+   Users (2):
+      1. Mehwish Sultana (HEAD_TEACHER)
+         Phone: 03315967406
+         Status: active
+      2. Uzma Batool  (TEACHER)
+         Phone: 03321907890
+         Status: pending
+
+27. GGES BAINS
+   EMIS: 37330411
+   Users (6):
+      1. Ume Habiba (HEAD_TEACHER)
+         Phone: 03349588401
+         Status: active
+      2. AMBREEN AKBAR (TEACHER)
+         Phone: 03083927289
+         Status: active
+      3. Raheela jabeen  (TEACHER)
+         Phone: 03365006389
+         Status: active
+      4. RiffatAyesha  (TEACHER)
+         Phone: 03455459195
+         Status: active
+      5. Sundas Batool (TEACHER)
+         Phone: 03045283496
+         Status: active
+      6. Tahira jabeen (TEACHER)
+         Phone: 03431524515
+         Status: active
+
+28. GGES Banda
+   EMIS: 37330551
+   Users (11):
+      1. Fouzia jabeen (HEAD_TEACHER)
+         Phone: 03121535225
+         Status: active
+      2. Ambreen Mukhtar  (TEACHER)
+         Phone: 03325186953
+         Status: active
+      3. Amira Mubarak (TEACHER)
+         Phone: 03125616702
+         Status: active
+      4. Anam Rashid (TEACHER)
+         Phone: 03474785253
+         Status: active
+      5. Asma Amjad  (TEACHER)
+         Phone: 03215204692
+         Status: active
+      6. Mobina Mughal (TEACHER)
+         Phone: 03145149626
+         Status: active
+      7. MobinaMughal (TEACHER)
+         Phone: 03115310732
+         Status: active
+      8. Nusrat parveen  (TEACHER)
+         Phone: 03015388615
+         Status: active
+      9. Sadaf afreen (TEACHER)
+         Phone: 03336714877
+         Status: active
+      10. Samina  kausar (TEACHER)
+         Phone: 03199435359
+         Status: active
+      11. Sumreen saba  (TEACHER)
+         Phone: 03334489820
+         Status: active
+
+29. GGES Bodial
+   EMIS: 37330621
+   ⚠️  No users assigned
+
+30. GGES DADHOCHA
+   EMIS: 37330175
+   Users (1):
+      1. Amna Munir  (HEAD_TEACHER)
+         Phone: 03317140346
+         Status: active
+
+31. GGES DHAKALA
+   EMIS: 37330176
+   ⚠️  No users assigned
+
+32. GGES DHERI
+   EMIS: 37330634
+   ⚠️  No users assigned
+
+33. GGES DHOKE CHACH
+   EMIS: 37330605
+   Users (6):
+      1. syeda narjis kazmi (HEAD_TEACHER)
+         Phone: 03457067709
+         Status: active
+      2. Amina Liaqat  (TEACHER)
+         Phone: 03084873461
+         Status: active
+      3. Iram Naseer  (TEACHER)
+         Phone: 03326827334
+         Status: active
+      4. Sabiha Iftikhar (TEACHER)
+         Phone: 03135615554
+         Status: active
+      5. Safina Aziz (TEACHER)
+         Phone: 03115113540
+         Status: active
+      6. naseera aziz (TEACHER)
+         Phone: 03155152074
+         Status: active
+
+34. GGES DHOKE PARACHA
+   EMIS: 37330455
+   ⚠️  No users assigned
+
+35. GGES DHUDHUMBER
+   EMIS: 37330630
+   Users (2):
+      1. Fakhar un nisa (HEAD_TEACHER)
+         Phone: 03455938040
+         Status: active
+      2. Iffat Ruqayya (TEACHER)
+         Phone: 03235251732
+         Status: active
+
+36. GGES Dhok Mureed
+   EMIS: 37330637
+   ⚠️  No users assigned
+
+37. GGES Dhoke Budhal
+   EMIS: 37330537
+   ⚠️  No users assigned
+
+38. GGES Dhoke Gujri
+   EMIS: 37330627
+   Users (1):
+      1. Ansar (HEAD_TEACHER)
+         Phone: 03049724449
+         Status: active
+
+39. GGES GANGAWALA
+   EMIS: 37330610
+   Users (3):
+      1. Rabia Aslam (HEAD_TEACHER)
+         Phone: 03319952486
+         Status: pending
+      2. Rabia aslam (HEAD_TEACHER)
+         Phone: 03075696831
+         Status: pending
+      3. Rabia aslam (HEAD_TEACHER)
+         Phone: 03318870656
+         Status: pending
+
+40. GGES GHELLA KALAN
+   EMIS: 37330643
+   ⚠️  No users assigned
+
+41. GGES GULAM SARWAR BRITISH HOMES
+   EMIS: 37330717
+   Users (1):
+      1. Zia Fatima  (HEAD_TEACHER)
+         Phone: 03437831171
+         Status: active
+
+42. GGES HARRAKA
+   EMIS: 37330553
+   Markaz: BAGGA SHEIKHAN
+   ⚠️  No users assigned
+
+43. GGES Hoshial
+   EMIS: 37330554
+   Users (9):
+      1. Nigar Zahra Zaidi (HEAD_TEACHER)
+         Phone: 03365208352
+         Status: active
+      2. Aneela kausar (TEACHER)
+         Phone: 03475567650
+         Status: active
+      3. Anila ulfat (TEACHER)
+         Phone: 03335281921
+         Status: active
+      4. Khairun Nisa  (TEACHER)
+         Phone: 03350552423
+         Status: active
+      5. Madiha Shafqat  (TEACHER)
+         Phone: 03111530283
+         Status: active
+      6. Saeeda naseem (TEACHER)
+         Phone: 03045108210
+         Status: active
+      7. Samreen Jan (TEACHER)
+         Phone: 03344455316
+         Status: active
+      8. Shahwana Saeed  (TEACHER)
+         Phone: 03328000812
+         Status: active
+      9. rumisha aaman (TEACHER)
+         Phone: 03085541364
+         Status: active
+
+44. GGES JAIL COLONY
+   EMIS: 37330614
+   Users (13):
+      1. AZRA GUL  (HEAD_TEACHER)
+         Phone: 03365182882
+         Status: active
+      2. AYESHA SIDDIQA (TEACHER)
+         Phone: 03331578325
+         Status: active
+      3. Aamina Zafar  (TEACHER)
+         Phone: 03351596354
+         Status: active
+      4. Asia Akbar (TEACHER)
+         Phone: 03125675797
+         Status: active
+      5. Ayesha Farooq Chishty  (TEACHER)
+         Phone: 03329454226
+         Status: active
+      6. Kiran hafeez (TEACHER)
+         Phone: 03356862991
+         Status: active
+      7. Mamoona Mushtaq (TEACHER)
+         Phone: 03365151935
+         Status: active
+      8. Mariam Meboob (TEACHER)
+         Phone: 03445737422
+         Status: active
+      9. Nazia Abrar (TEACHER)
+         Phone: 03325497995
+         Status: active
+      10. Rabiah kalsoom (TEACHER)
+         Phone: 03125264511
+         Status: active
+      11. Rashida Bibi  (TEACHER)
+         Phone: 03055057367
+         Status: active
+      12. Saiqa Batool (TEACHER)
+         Phone: 03015670203
+         Status: active
+      13. Shazia bibi (TEACHER)
+         Phone: 03329155618
+         Status: active
+
+45. GGES JHUMMAT MUGHAL
+   EMIS: 37330512
+   Users (1):
+      1. Ghazia Kanwal (HEAD_TEACHER)
+         Phone: 03335406969
+         Status: active
+
+46. GGES Jabber Miana
+   EMIS: 37330129
+   Users (1):
+      1. Hafsa akram (HEAD_TEACHER)
+         Phone: 03340550053
+         Status: pending
+
+47. GGES Jharaki
+   EMIS: 37330555
+   Users (11):
+      1. Shaheen Akhtar  (HEAD_TEACHER)
+         Phone: 03005375701
+         Status: active
+      2. Ayesha Rafiq (TEACHER)
+         Phone: 03701518770
+         Status: active
+      3. ISMAT JABEEN (TEACHER)
+         Phone: 03711993870
+         Status: active
+      4. Sabika  (TEACHER)
+         Phone: 03154914018
+         Status: active
+      5. Samar Zara (TEACHER)
+         Phone: 03035939243
+         Status: active
+      6. Samia Haneef (TEACHER)
+         Phone: 03335617133
+         Status: active
+      7. Sana Abbas (TEACHER)
+         Phone: 9233645740
+         Status: active
+      8. Sidra Yaqoob  (TEACHER)
+         Phone: 03349692182
+         Status: active
+      9. Sidra sadiq  (TEACHER)
+         Phone: 03075798244
+         Status: active
+      10. Waqar un Nisa (TEACHER)
+         Phone: 03156556893
+         Status: active
+      11. sana abbas (TEACHER)
+         Phone: 03364574070
+         Status: active
+
+48. GGES KARAHI
+   EMIS: 37330195
+   Users (9):
+      1. Sehrish Javed  (HEAD_TEACHER)
+         Phone: 03365901081
+         Status: active
+      2. Iram shehzadi  (TEACHER)
+         Phone: 03325634103
+         Status: active
+      3. Nigar Zahra  (TEACHER)
+         Phone: 03165346695
+         Status: active
+      4. Quratulain Ahmed  (TEACHER)
+         Phone: 03705828952
+         Status: active
+      5. Robina Shaheen  (TEACHER)
+         Phone: 03485223613
+         Status: active
+      6. Safia Begum (TEACHER)
+         Phone: 03455249442
+         Status: active
+      7. Syeda Nuzhat Zahara (TEACHER)
+         Phone: 03435044866
+         Status: active
+      8. sehar andaleeb (TEACHER)
+         Phone: 03237193606
+         Status: pending
+      9. shazia BiBi (TEACHER)
+         Phone: 03015015054
+         Status: active
+
+49. GGES KOTHA KALLAN
+   EMIS: 37330561
+   Users (15):
+      1. Nadia Shaheen  (HEAD_TEACHER)
+         Phone: 03335546401
+         Status: active
+      2.  Asmara Jabeen  (TEACHER)
+         Phone: 03125265459
+         Status: active
+      3. Attia Bano (TEACHER)
+         Phone: 03335645350
+         Status: active
+      4. Azeema Hamid (TEACHER)
+         Phone: 03041504270
+         Status: active
+      5. Fouzia tehsin (TEACHER)
+         Phone: 03028174492
+         Status: active
+      6. Lubna mumtaz  (TEACHER)
+         Phone: 03331578370
+         Status: active
+      7. Mashal Qadeer (TEACHER)
+         Phone: 03047151398
+         Status: active
+      8. Naila Manzoor (TEACHER)
+         Phone: 3315556446
+         Status: active
+      9. Rehana parveen (TEACHER)
+         Phone: 03125182640
+         Status: active
+      10. Sabiha Mateen (TEACHER)
+         Phone: 03215285965
+         Status: active
+      11. Saima Akhter  (TEACHER)
+         Phone: 03315256069
+         Status: active
+      12. Samreen Akhtar  (TEACHER)
+         Phone: 03435166671
+         Status: active
+      13. Sanam Ali (TEACHER)
+         Phone: 03424691806
+         Status: active
+      14. Shazia Anjum  (TEACHER)
+         Phone: 03345457203
+         Status: active
+      15. sumaira safdar (TEACHER)
+         Phone: 03365392802
+         Status: active
+
+50. GGES Kurar
+   EMIS: 37330664
+   Users (3):
+      1. Aalia Aziz (HEAD_TEACHER)
+         Phone: 03365010878
+         Status: active
+      2. Asma Irshad (TEACHER)
+         Phone: 03225084940
+         Status: active
+      3. naseem akhtar (TEACHER)
+         Phone: 03135458243
+         Status: active
+
+51. GGES MERA Mohra
+   EMIS: 37330524
+   Users (12):
+      1. Samina Qaiser (HEAD_TEACHER)
+         Phone: 03315234123
+         Status: active
+      2. Farah Jabeen  (TEACHER)
+         Phone: 03345174522
+         Status: active
+      3. Ghazala Shaheen  (TEACHER)
+         Phone: 92316521115
+         Status: active
+      4. Ghazala Shaheen  (TEACHER)
+         Phone: 03709591512
+         Status: active
+      5. Ishtiaq Ahmed (TEACHER)
+         Phone: 03335354572
+         Status: active
+      6. Komal Javed  (TEACHER)
+         Phone: 03040059582
+         Status: active
+      7. Lehrab Kanwal  (TEACHER)
+         Phone: 03225023690
+         Status: active
+      8. Musarat Fatima (TEACHER)
+         Phone: 03365476343
+         Status: active
+      9. Sadaf Ambreen  (TEACHER)
+         Phone: 03209108318
+         Status: active
+      10. Sana Maryum  (TEACHER)
+         Phone: 03335477217
+         Status: active
+      11. Shamim Ara Malik (TEACHER)
+         Phone: 03345519710
+         Status: active
+      12. Uzma Noureen  (TEACHER)
+         Phone: 03125399486
+         Status: active
+
+52. GGES MOHRA
+   EMIS: 37330380
+   ⚠️  No users assigned
+
+53. GGES MUJAHID
+   EMIS: 37330587
+   Users (1):
+      1. Nadeema rani (TEACHER)
+         Phone: 03225189604
+         Status: active
+
+54. GGES Misrial
+   EMIS: 37330669
+   Users (1):
+      1. Naveed Tabassum  (HEAD_TEACHER)
+         Phone: 03249132470
+         Status: active
+
+55. GGES Mohra
+   EMIS: 37330629
+   Users (5):
+      1. Aqeela kazmi (HEAD_TEACHER)
+         Phone: 03356055842
+         Status: active
+      2. Hafiza Umm E Ammara (TEACHER)
+         Phone: 03345224507
+         Status: active
+      3. Khalida parveen  (TEACHER)
+         Phone: 03045181877
+         Status: active
+      4. Samia hassan (TEACHER)
+         Phone: 03315550825
+         Status: active
+      5. Zeryab Nageen (TEACHER)
+         Phone: 03367702921
+         Status: active
+
+56. GGES Mohri Khattran
+   EMIS: 37330585
+   Users (1):
+      1. Sadaf Sultana (HEAD_TEACHER)
+         Phone: 03335778497
+         Status: pending
+
+57. GGES Murree Road Rawalpindi
+   EMIS: 37330161
+   ⚠️  No users assigned
+
+58. GGES Naseerabad
+   EMIS: 37330461
+   Users (2):
+      1. Rabia Bibi  (HEAD_TEACHER)
+         Phone: 03325238316
+         Status: pending
+      2. rabia javed (HEAD_TEACHER)
+         Phone: 03463595012
+         Status: pending
+
+59. GGES New Sarfraz Road Rwp
+   EMIS: 37330157
+   ⚠️  No users assigned
+
+60. GGES Nikrali
+   EMIS: 37330706
+   Users (1):
+      1. TAZEEM-UN-NISA (HEAD_TEACHER)
+         Phone: 03315276708
+         Status: active
+
+61. GGES No  2 Siham
+   EMIS: 37330479
+   Users (1):
+      1. Sonia (HEAD_TEACHER)
+         Phone: 03214517171
+         Status: pending
+
+62. GGES PIND HABTAL  RAWALPINDI
+   EMIS: 37330612
+   Users (8):
+      1. Shabnam bibi (HEAD_TEACHER)
+         Phone: 03369046022
+         Status: active
+      2. Azra Nawaz  (TEACHER)
+         Phone: 03437828968
+         Status: active
+      3. Farhat Shaheen (TEACHER)
+         Phone: 03325309406
+         Status: active
+      4. Farzana Asghar  (TEACHER)
+         Phone: 03219658701
+         Status: active
+      5. Moniba shoukat (TEACHER)
+         Phone: 03365763741
+         Status: active
+      6. Mussrat Shaheen  (TEACHER)
+         Phone: 03319879324
+         Status: active
+      7. Nida Khushal (TEACHER)
+         Phone: 03420009989
+         Status: active
+      8. Sadaf ambreen  (TEACHER)
+         Phone: 03335935592
+         Status: active
+
+63. GGES Salmoon
+   EMIS: 37330389
+   ⚠️  No users assigned
+
+64. GGES Shoukat Saddar
+   EMIS: 37330165
+   Users (1):
+      1. shaziashafait (HEAD_TEACHER)
+         Phone: 03445598864
+         Status: pending
+
+65. GGES THALLA KHURD
+   EMIS: 37330659
+   Users (6):
+      1. SAIRA KANWAL  (HEAD_TEACHER)
+         Phone: 03459763526
+         Status: pending
+      2. Saira kanwal (HEAD_TEACHER)
+         Phone: 03330527184
+         Status: pending
+      3. Saira kanwal (HEAD_TEACHER)
+         Phone: 03458090366
+         Status: pending
+      4. Saira kanwal (HEAD_TEACHER)
+         Phone: 03008349070
+         Status: pending
+      5. Saira kanwal  (HEAD_TEACHER)
+         Phone: 03335449917
+         Status: pending
+      6. RAZIA FARID (TEACHER)
+         Phone: 03175012371
+         Status: pending
+
+66. GGMPS THALLA KALAN
+   EMIS: 37330658
+   Users (2):
+      1. Munazza idrees (HEAD_TEACHER)
+         Phone: 03448568442
+         Status: active
+      2. Salbah Zainab  (TEACHER)
+         Phone: 03719050477
+         Status: pending
+
+67. GGPS  Mangtal 1
+   EMIS: 37330440
+   ⚠️  No users assigned
+
+68. GGPS ARIYA MOHALLAH
+   EMIS: 37330450
+   Users (1):
+      1. Aneesa Iram (HEAD_TEACHER)
+         Phone: 03405241643
+         Status: pending
+
+69. GGPS Akhtar islamia
+   EMIS: 37330150
+   ⚠️  No users assigned
+
+70. GGPS Arazi Sohal
+   EMIS: 37330172-A
+   ⚠️  No users assigned
+
+71. GGPS BAGGA SANGRAL
+   EMIS: 37330549
+   Markaz: BAGGA SHEIKHAN
+   ⚠️  No users assigned
+
+72. GGPS BAGGA SHEIKHAN # 1
+   EMIS: 37330548
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. Farhana Altaf (HEAD_TEACHER)
+         Phone: 03125420209
+         Status: active
+
+73. GGPS BANDA NAGIAL
+   EMIS: 37330709
+   Users (1):
+      1. Shamim akhtar (HEAD_TEACHER)
+         Phone: 03125701323
+         Status: active
+
+74. GGPS Berket
+   EMIS: 37330618
+   Users (1):
+      1. Zarlish Butt  (HEAD_TEACHER)
+         Phone: 03005680249
+         Status: active
+
+75. GGPS CHANI ALAM SHER
+   EMIS: 37330529
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. Shazia Parveen  (HEAD_TEACHER)
+         Phone: 03336589541
+         Status: pending
+
+76. GGPS CHATRO
+   EMIS: 37330530
+   Users (1):
+      1. Sehar kanwal (HEAD_TEACHER)
+         Phone: 03429735288
+         Status: active
+
+77. GGPS Carriage Factory
+   EMIS: 37330433
+   Users (4):
+      1. Hamna (HEAD_TEACHER)
+         Phone: 03002337912
+         Status: active
+      2. Jjjjjjjjj (HEAD_TEACHER)
+         Phone: 03142587966
+         Status: active
+      3. Abcde (TEACHER)
+         Phone: 03112336523
+         Status: active
+      4. Tayyaba Hamna (TEACHER)
+         Phone: 03402337913
+         Status: active
+
+78. GGPS Chakara
+   EMIS: 37330598
+   Users (1):
+      1. Rifat Perveen chakra (HEAD_TEACHER)
+         Phone: 03321526271
+         Status: pending
+
+79. GGPS DADHAR NAJJAR
+   EMIS: 37330532
+   Users (1):
+      1. Sobia kamran (HEAD_TEACHER)
+         Phone: 03045237961
+         Status: active
+
+80. GGPS DHOK MALKAN
+   EMIS: 37330607
+   Users (2):
+      1. Musarat Nisar  (HEAD_TEACHER)
+         Phone: 03175107769
+         Status: active
+      2. Isma Maqsood  (TEACHER)
+         Phone: 03135730488
+         Status: active
+
+81. GGPS DK ALI BHADUR
+   EMIS: 37330639
+   Users (1):
+      1. Iqra yasmeen (HEAD_TEACHER)
+         Phone: 03075540951
+         Status: active
+
+82. GGPS DK BABA
+   EMIS: 37330708
+   Users (4):
+      1. Asma Khalil (HEAD_TEACHER)
+         Phone: 03105534518
+         Status: pending
+      2. Kalsoom Bibi (TEACHER)
+         Phone: 03358728766
+         Status: pending
+      3. Raheela Shaheen (TEACHER)
+         Phone: 03328769143
+         Status: pending
+      4. Tahira Naeem (TEACHER)
+         Phone: 03345632868
+         Status: pending
+
+83. GGPS DK KAMMAN KHAN
+   EMIS: 37330604
+   Users (2):
+      1. Naheed akhtar (TEACHER)
+         Phone: 03320559111
+         Status: pending
+      2. Rakshanda yaseen (TEACHER)
+         Phone: 03327564615
+         Status: pending
+
+84. GGPS DK Rahim baksh
+   EMIS: 37330443
+   Users (1):
+      1. Samina Kousar (HEAD_TEACHER)
+         Phone: 03225198252
+         Status: pending
+
+85. GGPS Dhudian
+   EMIS: 37330538
+   Users (1):
+      1. Nazish Farooq (HEAD_TEACHER)
+         Phone: 03105838193
+         Status: active
+
+86. GGPS Dohk Ziarat
+   EMIS: 37330710
+   Users (2):
+      1. Sabiha tabraiz (HEAD_TEACHER)
+         Phone: 03495988064
+         Status: pending
+      2. Umaira saleem  (HEAD_TEACHER)
+         Phone: 03365495372
+         Status: pending
+
+87. GGPS Ferozy
+   EMIS: 37330539
+   Users (1):
+      1. Sadia qayyum (HEAD_TEACHER)
+         Phone: 03705560909
+         Status: active
+
+88. GGPS GHORA RAMIAL
+   EMIS: 37330531
+   Users (1):
+      1. Muntazim Tariq kiyani  (HEAD_TEACHER)
+         Phone: 03140868811
+         Status: active
+
+89. GGPS GOHRA BARATA (IASP)
+   EMIS: 37330542
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. Rani Iman (HEAD_TEACHER)
+         Phone: 03349046786
+         Status: pending
+
+90. GGPS Hoon
+   EMIS: 37330649
+   ⚠️  No users assigned
+
+91. GGPS JORIAN
+   EMIS: 37330565
+   ⚠️  No users assigned
+
+92. GGPS Jhawra
+   EMIS: 37330488
+   Users (1):
+      1. Nadia Riasat  (HEAD_TEACHER)
+         Phone: 03185349279
+         Status: pending
+
+93. GGPS KALAS
+   EMIS: 37330568
+   Users (5):
+      1. Sadia Nawaz  (HEAD_TEACHER)
+         Phone: 03125347948
+         Status: active
+      2. Tasawar Mehmood (HEAD_TEACHER)
+         Phone: 03129111496
+         Status: pending
+      3. Lasbela anjum  (TEACHER)
+         Phone: 03259812845
+         Status: active
+      4. Qurat ul ain kousar  (TEACHER)
+         Phone: 03181979040
+         Status: active
+      5. Quratulann (TEACHER)
+         Phone: 03400167961
+         Status: active
+
+94. GGPS KALIAM MUGHAL
+   EMIS: 37330513
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. Unmbreen Nazli (HEAD_TEACHER)
+         Phone: 03325871858
+         Status: active
+
+95. GGPS KHASALA KHURD
+   EMIS: 37330571
+   Users (3):
+      1. Naila Altaf Hashmi (HEAD_TEACHER)
+         Phone: 03085102086
+         Status: active
+      2. Ammara zanib (TEACHER)
+         Phone: 03335748622
+         Status: active
+      3. Fareeha Hussain  (TEACHER)
+         Phone: 03377008507
+         Status: active
+
+96. GGPS KHILRI
+   EMIS: 37330569
+   Users (4):
+      1. Nadia Akbar (HEAD_TEACHER)
+         Phone: 03135643047
+         Status: active
+      2. Nadia Akbar  (HEAD_TEACHER)
+         Phone: 03124604502
+         Status: pending
+      3. Ambreen Iqbal (TEACHER)
+         Phone: 03215077461
+         Status: pending
+      4. Sehrish bashir  (TEACHER)
+         Phone: 03351829203
+         Status: pending
+
+97. GGPS KOHALA KALLAN
+   EMIS: 37330572
+   Users (3):
+      1. Saima Hayat  (HEAD_TEACHER)
+         Phone: 03181982982
+         Status: active
+      2. Mehvish maqbool (TEACHER)
+         Phone: 03245234041
+         Status: active
+      3. Mutasra Batool (TEACHER)
+         Phone: 03085147005
+         Status: active
+
+98. GGPS KOHALA SYEDAN
+   EMIS: 37330573
+   ⚠️  No users assigned
+
+99. GGPS Kharakan
+   EMIS: 37330515
+   Users (2):
+      1. Shehla mehmood (HEAD_TEACHER)
+         Phone: 03125333108
+         Status: active
+      2. Shehla mehmood  (HEAD_TEACHER)
+         Phone: 03325216103
+         Status: pending
+
+100. GGPS Khinger Kalan
+   EMIS: 37330516
+   Users (3):
+      1. Zaburan Nisa  (HEAD_TEACHER)
+         Phone: 03115363734
+         Status: active
+      2. Maryam Abdul t (TEACHER)
+         Phone: 03335608179
+         Status: active
+      3. Shamim (TEACHER)
+         Phone: 03105832638
+         Status: active
+
+101. GGPS Lakhan
+   EMIS: 37330575
+   Users (1):
+      1. Danish Amjad  (HEAD_TEACHER)
+         Phone: 03335515140
+         Status: active
+
+102. GGPS Lakhoo
+   EMIS: 37330576
+   Users (1):
+      1. Ayesha Mughal  (HEAD_TEACHER)
+         Phone: 03361568656
+         Status: active
+
+103. GGPS Lilakamalpur
+   EMIS: 37330518
+   Users (2):
+      1. Tasneem Akhtar (HEAD_TEACHER)
+         Phone: 03368366106
+         Status: active
+      2. Kiran Sarfraz  (TEACHER)
+         Phone: 03348464764
+         Status: active
+
+104. GGPS MAIRA BHARTA
+   EMIS: 37330521
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. SadiaAzam (TEACHER)
+         Phone: 03095414622
+         Status: pending
+
+105. GGPS MAIRA KHURD
+   EMIS: 37330583
+   Users (1):
+      1. NAIMA KHALID  (TEACHER)
+         Phone: 03336969804
+         Status: active
+
+106. GGPS MC Dhoke hassu
+   EMIS: 37330452
+   ⚠️  No users assigned
+
+107. GGPS MC PIR WADHAL
+   EMIS: 37330454
+   ⚠️  No users assigned
+
+108. GGPS MC bangush colony
+   EMIS: 37330451
+   ⚠️  No users assigned
+
+109. GGPS MC chamanzar
+   EMIS: 37330446
+   Users (1):
+      1. Aroosa Jabeen (HEAD_TEACHER)
+         Phone: 03335473758
+         Status: pending
+
+110. GGPS MORGAH
+   EMIS: 37330586
+   Users (6):
+      1. Uzma Younas (HEAD_TEACHER)
+         Phone: 03165329518
+         Status: active
+      2. Aqsa batool (TEACHER)
+         Phone: 03105722414
+         Status: active
+      3. Irum Naz (TEACHER)
+         Phone: 3445911583
+         Status: active
+      4. Nadia Riaz  (TEACHER)
+         Phone: 03365295697
+         Status: active
+      5. Shahnaz gahfoor  (TEACHER)
+         Phone: 03349578673
+         Status: active
+      6. amber mehmood (TEACHER)
+         Phone: 03228987788
+         Status: active
+
+111. GGPS Mari Bangial
+   EMIS: 37330522
+   Users (3):
+      1. Zil E Humma  (HEAD_TEACHER)
+         Phone: 03390071961
+         Status: active
+      2. BeenishKhalid (TEACHER)
+         Phone: 03489897589
+         Status: active
+      3. Shafqat Sultana  (TEACHER)
+         Phone: 03209756918
+         Status: active
+
+112. GGPS Mohra Tullah
+   EMIS: 37330584
+   Users (1):
+      1. Faryal Mazhar (HEAD_TEACHER)
+         Phone: 03355466018
+         Status: active
+
+113. GGPS Mohra sowian
+   EMIS: 37330527
+   Users (6):
+      1. Marriam Zahoor (HEAD_TEACHER)
+         Phone: 03181842919
+         Status: pending
+      2. Marriam Zahoor  (HEAD_TEACHER)
+         Phone: 03141738476
+         Status: pending
+      3. Bushra Yasmin  (TEACHER)
+         Phone: 03149505656
+         Status: pending
+      4. Maryam zahoor (TEACHER)
+         Phone: 03175104566
+         Status: pending
+      5. Tehmina Naeem  (TEACHER)
+         Phone: 03215055618
+         Status: pending
+      6. Tehmina Naeem  (TEACHER)
+         Phone: 03136429533
+         Status: pending
+
+114. GGPS NEW PHAGWARI
+   EMIS: 37330457
+   ⚠️  No users assigned
+
+115. GGPS No. 2 BAGGA SHEIKHAN
+   EMIS: 37330704
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. Farzana kosar  (HEAD_TEACHER)
+         Phone: 03335570759
+         Status: pending
+
+116. GGPS Raika Maira
+   EMIS: 37330654
+   Users (4):
+      1. Durr-e-Shahwar Tajamal  (HEAD_TEACHER)
+         Phone: 03115493426
+         Status: active
+      2. Amber naz (TEACHER)
+         Phone: 03213321270
+         Status: active
+      3. Asmat Yasmin  (TEACHER)
+         Phone: 03045756063
+         Status: active
+      4. Zahida parveen  (TEACHER)
+         Phone: 03125305208
+         Status: active
+
+117. GGPS Rehmania
+   EMIS: 37330473
+   ⚠️  No users assigned
+
+118. GGPS SUMBAL
+   EMIS: 37330507
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. Hafsa Malik (HEAD_TEACHER)
+         Phone: 03361504880
+         Status: active
+
+119. GGPS TATRAL
+   EMIS: 37330657
+   ⚠️  No users assigned
+
+120. GGPS Unpur
+   EMIS: 37330511
+   Users (2):
+      1. Maryam Yousaf  (HEAD_TEACHER)
+         Phone: 03348944418
+         Status: active
+      2. Saira bani (TEACHER)
+         Phone: 03310075172
+         Status: active
+
+121. GGPS liaqat colony
+   EMIS: 37330578
+   Users (1):
+      1. Rubina walayat  (HEAD_TEACHER)
+         Phone: 03341540819
+         Status: active
+
+122. GMPS ABAN CHAK
+   EMIS: 37330547
+   Users (1):
+      1. Faiza Noreen  (HEAD_TEACHER)
+         Phone: 03185142382
+         Status: active
+
+123. GMPS BAGRA SYEDAN
+   EMIS: 37330256
+   Users (2):
+      1. Bushra Tasleem (HEAD_TEACHER)
+         Phone: 03121539235
+         Status: active
+      2. Haleema Sadia  (TEACHER)
+         Phone: 3355385066
+         Status: active
+
+124. GMPS BARWALA
+   EMIS: 37330300
+   Users (1):
+      1. Unsia kanwal  (HEAD_TEACHER)
+         Phone: 03119035365
+         Status: active
+
+125. GMPS BILAWAL
+   EMIS: 37330620
+   Users (2):
+      1. Noureen Akhtar  (HEAD_TEACHER)
+         Phone: 03065268629
+         Status: active
+      2. Sadaf sultan (TEACHER)
+         Phone: 03161509857
+         Status: active
+
+126. GMPS Banian
+   EMIS: 37330623
+   ⚠️  No users assigned
+
+127. GMPS CHAKRAN
+   EMIS: 37330599
+   Users (2):
+      1. Ayesha Riaz (HEAD_TEACHER)
+         Phone: 03425501356
+         Status: active
+      2. Rabia sarfaraz  (TEACHER)
+         Phone: 03145816695
+         Status: active
+
+128. GMPS CHOORA
+   EMIS: 37330314
+   Users (3):
+      1. Shaista Nazir  (HEAD_TEACHER)
+         Phone: 03145581094
+         Status: active
+      2. Fozia Shaheen  (TEACHER)
+         Phone: 03102492174
+         Status: active
+      3. Kiran Tabassum (TEACHER)
+         Phone: 03335277884
+         Status: active
+
+129. GMPS Chak Sigho
+   EMIS: 37330397
+   ⚠️  No users assigned
+
+130. GMPS Chokar
+   EMIS: 37330633
+   ⚠️  No users assigned
+
+131. GMPS DAWRI
+   EMIS: 37330534
+   Users (1):
+      1. Rabia Zafar (HEAD_TEACHER)
+         Phone: 03135295504
+         Status: active
+
+132. GMPS DHANDI GUJRAN
+   EMIS: 37330400
+   ⚠️  No users assigned
+
+133. GMPS DK BHATIAN
+   EMIS: 37330640
+   Users (3):
+      1. Sadia Khan (HEAD_TEACHER)
+         Phone: 03325955234
+         Status: active
+      2. Nasreen Akhtar  (TEACHER)
+         Phone: 03355288236
+         Status: active
+      3. Sidra waqas (TEACHER)
+         Phone: 03315589682
+         Status: active
+
+134. GMPS Dhok Adrana
+   EMIS: 37330638
+   ⚠️  No users assigned
+
+135. GMPS Dhok Chehr
+   EMIS: 37330606
+   Users (1):
+      1. Saira Zameer  (HEAD_TEACHER)
+         Phone: 03109374402
+         Status: pending
+
+136. GMPS Dhumma
+   EMIS: 37330608
+   Users (1):
+      1. Nabila Abbasi (HEAD_TEACHER)
+         Phone: 03410507913
+         Status: active
+
+137. GMPS GAHI SYEDAN
+   EMIS: 37330325
+   ⚠️  No users assigned
+
+138. GMPS GANG
+   EMIS: 37330327
+   ⚠️  No users assigned
+
+139. GMPS GHELLA KHURD
+   EMIS: 37330362
+   ⚠️  No users assigned
+
+140. GMPS Gangal
+   EMIS: 37330540
+   Users (1):
+      1. Samina asghar (HEAD_TEACHER)
+         Phone: 03345556488
+         Status: active
+
+141. GMPS Gangal
+   EMIS: 37330410
+   ⚠️  No users assigned
+
+142. GMPS Guggan
+   EMIS: 37330409
+   ⚠️  No users assigned
+
+143. GMPS Gurbal
+   EMIS: 37330342
+   Users (6):
+      1. Khalid Mehmood (HEAD_TEACHER)
+         Phone: 03065599738
+         Status: pending
+      2. Sadia Younis  (HEAD_TEACHER)
+         Phone: 03135334231
+         Status: active
+      3. Ashtalfa Asim (TEACHER)
+         Phone: 03316987049
+         Status: pending
+      4. Javeria javed (TEACHER)
+         Phone: 03135271916
+         Status: pending
+      5. Nayyar Zia (TEACHER)
+         Phone: 03335436612
+         Status: pending
+      6. Qudsia Bano (TEACHER)
+         Phone: 03488692218
+         Status: pending
+
+144. GMPS HAKIMAL
+   EMIS: 37330363
+   Users (2):
+      1. Memoona Munir  (HEAD_TEACHER)
+         Phone: 03115109181
+         Status: active
+      2. Saima Batool  (TEACHER)
+         Phone: 03459751382
+         Status: active
+
+145. GMPS HARNIALI SYEDAN
+   EMIS: 37330364
+   ⚠️  No users assigned
+
+146. GMPS JADA
+   EMIS: 37330613
+   Users (2):
+      1. Tania Shaheen  (HEAD_TEACHER)
+         Phone: 03165042057
+         Status: active
+      2. Rabbia Ilyas (TEACHER)
+         Phone: 03065521554
+         Status: active
+
+147. GMPS JARA
+   EMIS: 37330366
+   Users (4):
+      1. Sadia Ajaib (HEAD_TEACHER)
+         Phone: 03355080665
+         Status: active
+      2. Farzana bibi  (TEACHER)
+         Phone: 03330526893
+         Status: active
+      3. Kousar Sultana (TEACHER)
+         Phone: 03213213095
+         Status: active
+      4. Sadiqa Younas  (TEACHER)
+         Phone: 03345252170
+         Status: active
+
+148. GMPS JASWAL
+   EMIS: 37330661
+   ⚠️  No users assigned
+
+149. GMPS JHANGI DAIM
+   EMIS: 37330368
+   Users (4):
+      1. Sana hameed (HEAD_TEACHER)
+         Phone: 03349318242
+         Status: active
+      2. Aamna alyas (TEACHER)
+         Phone: 03365715389
+         Status: active
+      3. Fareena Khalid  (TEACHER)
+         Phone: 03355289155
+         Status: active
+      4. Summaiya Gul  (TEACHER)
+         Phone: 03365125871
+         Status: active
+
+150. GMPS Jattal
+   EMIS: 37330345
+   Users (1):
+      1. Javeria Mehreen  (HEAD_TEACHER)
+         Phone: 03355467386
+         Status: active
+
+151. GMPS Jhandu Syedan
+   EMIS: 37330346
+   Users (2):
+      1. Summia Aziz  (HEAD_TEACHER)
+         Phone: 03160526030
+         Status: pending
+      2. Fouzia iltaf  (TEACHER)
+         Phone: 03102443097
+         Status: pending
+
+152. GMPS KHINGER
+   EMIS: 37330351
+   Users (2):
+      1. Ifat Nawaz (TEACHER)
+         Phone: 03488919391
+         Status: active
+      2. UzmaTanveer (TEACHER)
+         Phone: 03005300305
+         Status: active
+
+153. GMPS Kali Pari
+   EMIS: 37330369
+   ⚠️  No users assigned
+
+154. GMPS Khabba Barala
+   EMIS: 37330370
+   ⚠️  No users assigned
+
+155. GMPS LADIAN
+   EMIS: 37330574
+   Users (2):
+      1. Salma Batool (HEAD_TEACHER)
+         Phone: 03348537845
+         Status: active
+      2. Sabiha yasmin (TEACHER)
+         Phone: 03345328208
+         Status: active
+
+156. GMPS LOHDRA
+   EMIS: 37330519
+   Users (1):
+      1. Sanam javed  (HEAD_TEACHER)
+         Phone: 03321296088
+         Status: active
+
+157. GMPS Las Mali
+   EMIS: 37330374
+   ⚠️  No users assigned
+
+158. GMPS MALUKAL
+   EMIS: 37330580
+   Users (1):
+      1. Lubna Shaheen  (HEAD_TEACHER)
+         Phone: 03085095125
+         Status: active
+
+159. GMPS MEHMOODA
+   EMIS: 37330667
+   Users (3):
+      1. Saba Minhas  (HEAD_TEACHER)
+         Phone: 03450485474
+         Status: active
+      2. Sarwat Bano (TEACHER)
+         Phone: 03410572191
+         Status: active
+      3. Shumaila Tuz Zahra  (TEACHER)
+         Phone: 03045932961
+         Status: active
+
+160. GMPS MOHRA BHATAN
+   EMIS: 37330281
+   Users (1):
+      1. Maryam (HEAD_TEACHER)
+         Phone: 03321296176
+         Status: active
+
+161. GMPS MOJHANG
+   EMIS: 37330381
+   Users (2):
+      1. Aneela Ajaib  (HEAD_TEACHER)
+         Phone: 03115224080
+         Status: active
+      2. misbah bashir (TEACHER)
+         Phone: 03035214645
+         Status: active
+
+162. GMPS PIAL
+   EMIS: 37330262
+   Markaz: BAGGA SHEIKHAN
+   Users (1):
+      1. Ansa Humaira Saleem  (HEAD_TEACHER)
+         Phone: 03331448569
+         Status: active
+
+163. GMPS PINDORI
+   EMIS: 37330384
+   Users (4):
+      1. Noshaba Aqeel  (HEAD_TEACHER)
+         Phone: 03175099574
+         Status: active
+      2. Maryam Nisa  (TEACHER)
+         Phone: 03315221863
+         Status: active
+      3. Noureen Ashraf (TEACHER)
+         Phone: 03425970054
+         Status: active
+      4. Shazia Batool (TEACHER)
+         Phone: 03150419594
+         Status: active
+
+164. GMPS Pind Malhu
+   EMIS: 37330331
+   Users (1):
+      1. Ummara siddique (HEAD_TEACHER)
+         Phone: 03151554073
+         Status: active
+
+165. GMPS Pind Ranjha
+   EMIS: 37330255
+   Users (1):
+      1. Rabia Amin (HEAD_TEACHER)
+         Phone: 03025408809
+         Status: active
+
+166. GMPS RUPPER KHURD
+   EMIS: 37330388
+   Users (4):
+      1. Yasira yasmeen (HEAD_TEACHER)
+         Phone: 03305817024
+         Status: active
+      2. Ghulam Batool  (TEACHER)
+         Phone: 03460280301
+         Status: active
+      3. Riffat batool (TEACHER)
+         Phone: 03105690969
+         Status: active
+      4. Tanzeela bibi (TEACHER)
+         Phone: 03085841889
+         Status: active
+
+167. GMPS SAGRI
+   EMIS: 37330504
+   ⚠️  No users assigned
+
+168. GMPS Saffair
+   EMIS: 37330263
+   Users (5):
+      1. Gulnaz  (HEAD_TEACHER)
+         Phone: 03425715705
+         Status: active
+      2. Nabila kausar (TEACHER)
+         Phone: 03075090144
+         Status: active
+      3. Nusrat Jabeen  (TEACHER)
+         Phone: 03135306246
+         Status: active
+      4. Sidra Kanwal (TEACHER)
+         Phone: 03165743190
+         Status: active
+      5. Sidra Kanwal  (TEACHER)
+         Phone: 03465743190
+         Status: active
+
+169. GMPS Talla Bajar
+   EMIS: 37330390
+   Users (1):
+      1. Benish rafiq (HEAD_TEACHER)
+         Phone: 03070509740
+         Status: pending
+
+170. GMPS WARYAMA
+   EMIS: 37330546
+   Users (4):
+      1. Anila Bano (HEAD_TEACHER)
+         Phone: 03325161798
+         Status: active
+      2. Maria Shahid (TEACHER)
+         Phone: 03494007562
+         Status: active
+      3. Ojala akhtar (TEACHER)
+         Phone: 03431158349
+         Status: active
+      4. Rozina Kausar (TEACHER)
+         Phone: 03097102305
+         Status: active
+
+171. GMPS samlal
+   EMIS: 37330264
+   Users (2):
+      1. Nazia khatoon  (HEAD_TEACHER)
+         Phone: 03415180143
+         Status: active
+      2. Tehmina niaz (TEACHER)
+         Phone: 03008355835
+         Status: active
+
+172. GPS ADHAWAL
+   EMIS: 37330393
+   Users (4):
+      1. Saima Rashid (HEAD_TEACHER)
+         Phone: 03046704914
+         Status: active
+      2. Kanwal iltaf (TEACHER)
+         Phone: 03129721376
+         Status: active
+      3. Nazia sharif (TEACHER)
+         Phone: 03035787093
+         Status: active
+      4. Uroosa Shafqat (TEACHER)
+         Phone: 03125244895
+         Status: active
+
+173. GPS AMAR PURA
+   EMIS: 37330199
+   Markaz: Shakrial
+   Users (5):
+      1. Naseem Akhtar (HEAD_TEACHER)
+         Phone: 03455363377
+         Status: pending
+      2. Amna Sehar (TEACHER)
+         Phone: 03445972507
+         Status: pending
+      3. Humaira javed (TEACHER)
+         Phone: 03405777865
+         Status: pending
+      4. Muhammad Asim Yasin  (TEACHER)
+         Phone: 03335616038
+         Status: pending
+      5. qamar islam (TEACHER)
+         Phone: 03445381054
+         Status: pending
+
+174. GPS BAGGA SHEIKHAN
+   EMIS: 37330289
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+175. GPS BAKRA MANDI
+   EMIS: 37330200
+   Users (5):
+      1. Hameed Akhter (HEAD_TEACHER)
+         Phone: 03161577897
+         Status: pending
+      2. Muhammad Ramzan  (TEACHER)
+         Phone: 03125042403
+         Status: pending
+      3. Rabia  (TEACHER)
+         Phone: 03215056723
+         Status: pending
+      4. Sidra Malik (TEACHER)
+         Phone: 03315277107
+         Status: pending
+      5. Sumaira Mehmood (TEACHER)
+         Phone: 03135118941
+         Status: pending
+
+176. GPS BANGIAL SAWAN
+   EMIS: 37330292
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+177. GPS BASSALI
+   EMIS: 37330293
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+178. GPS BODIAL
+   EMIS: 37330309
+   Markaz: Adyala
+   Users (6):
+      1. Shahzad Mustafa (HEAD_TEACHER)
+         Phone: 03135157129
+         Status: active
+      2. Atif Javed  (TEACHER)
+         Phone: 03325173080
+         Status: active
+      3. Iqra Zafar (TEACHER)
+         Phone: 03165140864
+         Status: active
+      4. Sajid Mehmood (TEACHER)
+         Phone: 03105390407
+         Status: active
+      5. Sehrish Khan (TEACHER)
+         Phone: 03079699462
+         Status: active
+      6. Tanzeela Majeed (TEACHER)
+         Phone: 03409201466
+         Status: active
+
+179. GPS CENTRAL JAIL RWP
+   EMIS: 37330305
+   Markaz: Adyala
+   Users (5):
+      1. SYEDA SAIMA ZUBAIR (HEAD_TEACHER)
+         Phone: 03485376370
+         Status: active
+      2. Baseerat Fatima  (TEACHER)
+         Phone: 03325020714
+         Status: active
+      3. Javaria Choudhary  (TEACHER)
+         Phone: 03355307003
+         Status: active
+      4. Muhammad Azad Aslam  (TEACHER)
+         Phone: 03045021421
+         Status: active
+      5. Uzma Bibi  (TEACHER)
+         Phone: 03455606864
+         Status: active
+
+180. GPS CHACH RAWAN
+   EMIS: 37330716
+   Markaz: CHAKRI
+   ⚠️  No users assigned
+
+181. GPS CHAK DENAL
+   EMIS: 37330312
+   Markaz: CHAKRI
+   Users (1):
+      1. Mehwish Kanwal  (HEAD_TEACHER)
+         Phone: 03455348503
+         Status: pending
+
+182. GPS CHAK KHAS
+   EMIS: 37330294
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+183. GPS CHAKLALA RAWALPNDI
+   EMIS: 37330203
+   ⚠️  No users assigned
+
+184. GPS CHAKRA
+   EMIS: 37330258
+   Users (7):
+      1. Muhammad Qadeer  (HEAD_TEACHER)
+         Phone: 03155001416
+         Status: pending
+      2. Muhammad Yousaf  (TEACHER)
+         Phone: 03455641963
+         Status: pending
+      3. Nouman Safdar (TEACHER)
+         Phone: 03465383122
+         Status: pending
+      4. Rabia Sattar  (TEACHER)
+         Phone: 03435861078
+         Status: pending
+      5. Sajida Noureen  (TEACHER)
+         Phone: 03235409709
+         Status: pending
+      6. Tariq Saeed  (TEACHER)
+         Phone: 03115221631
+         Status: pending
+      7. Usman Waheed (TEACHER)
+         Phone: 03135073126
+         Status: pending
+
+185. GPS DAHRI
+   EMIS: 37330401
+   Markaz: CHAKRI
+   Users (1):
+      1. Shakeela Naz  (HEAD_TEACHER)
+         Phone: 03465156747
+         Status: pending
+
+186. GPS DEGAL
+   EMIS: 37330315
+   Markaz: Adyala
+   Users (4):
+      1. Muhammad Azeem ch  (HEAD_TEACHER)
+         Phone: 03035900021
+         Status: active
+      2. Saira Manzoor (TEACHER)
+         Phone: 03128295060
+         Status: active
+      3. Shahida Naureen (TEACHER)
+         Phone: 03165824561
+         Status: active
+      4. Yasmin Akhter  (TEACHER)
+         Phone: 03185326287
+         Status: active
+
+187. GPS DHALA
+   EMIS: 37330307
+   Markaz: Adyala
+   Users (4):
+      1. Afsheenkanwal  (HEAD_TEACHER)
+         Phone: 03105960775
+         Status: active
+      2. Abdul Qadoos (TEACHER)
+         Phone: 03075324467
+         Status: active
+      3. Azra Parveen  (TEACHER)
+         Phone: 03327542931
+         Status: active
+      4. Sadia Aslam (TEACHER)
+         Phone: 03016931852
+         Status: active
+
+188. GPS DHAMIAL
+   EMIS: 37330317
+   Markaz: Adyala
+   Users (12):
+      1. Zahid ali abbasi  (HEAD_TEACHER)
+         Phone: 03335217996
+         Status: active
+      2. Ajmal Hussain  (TEACHER)
+         Phone: 03135058948
+         Status: active
+      3. Hajra Ayub (TEACHER)
+         Phone: 03195274336
+         Status: active
+      4. Malik Tariq mehmood  (TEACHER)
+         Phone: 03115157066
+         Status: active
+      5. Muhammad Asif khan  (TEACHER)
+         Phone: 03475320810
+         Status: active
+      6. Muniba kaleem (TEACHER)
+         Phone: 03125878351
+         Status: active
+      7. Nazia kousar  (TEACHER)
+         Phone: 03015264586
+         Status: active
+      8. Rabia bibi (TEACHER)
+         Phone: 03165398175
+         Status: active
+      9. Sobia amin (TEACHER)
+         Phone: 03360516261
+         Status: active
+      10. Tahmeena Rafique (TEACHER)
+         Phone: 03320369369
+         Status: active
+      11. salma yasmeen (TEACHER)
+         Phone: 03105353984
+         Status: active
+      12. shagufta naheed (TEACHER)
+         Phone: 03315045931
+         Status: active
+
+189. GPS DHOK CHATTA
+   EMIS: 37330318
+   Users (4):
+      1. Ishtiaq Mehmood (HEAD_TEACHER)
+         Phone: 03415169147
+         Status: pending
+      2. Ali Asghar (TEACHER)
+         Phone: 03113387745
+         Status: pending
+      3. Azra bibi (TEACHER)
+         Phone: 03075326011
+         Status: pending
+      4. Mariya kalsoom (TEACHER)
+         Phone: 03165142173
+         Status: pending
+
+190. GPS DHOK GUJRAN MISRIAL
+   EMIS: 37330204
+   Users (9):
+      1. Bushra bibi  (HEAD_TEACHER)
+         Phone: 03165286549
+         Status: active
+      2. Irum nosheen  (TEACHER)
+         Phone: 03206688009
+         Status: active
+      3. Madeeha Asgher (TEACHER)
+         Phone: 03315005491
+         Status: active
+      4. Maria Arif (TEACHER)
+         Phone: 03324162751
+         Status: active
+      5. Rabia Parveen  (TEACHER)
+         Phone: 03035296742
+         Status: active
+      6. Rukhsana satti (TEACHER)
+         Phone: 03455155728
+         Status: active
+      7. Sumaira Fraz (TEACHER)
+         Phone: 03488917293
+         Status: active
+      8. Syed Shabbar Ali Naqi (TEACHER)
+         Phone: 03130455444
+         Status: active
+      9. Syed Shabbar Ali Naqi (TEACHER)
+         Phone: 03430455444
+         Status: active
+
+191. GPS DHOK HAMMIT
+   EMIS: 37330298
+   Users (3):
+      1. Shahgufta Shaheen  (HEAD_TEACHER)
+         Phone: 03065271272
+         Status: pending
+      2. Amjid Mahmood (TEACHER)
+         Phone: 03425346499
+         Status: pending
+      3. Raheem Arif (TEACHER)
+         Phone: 03005116459
+         Status: pending
+
+192. GPS DHOK HASSO
+   EMIS: 37330205
+   ⚠️  No users assigned
+
+193. GPS DHOK KHASALA
+   EMIS: 37330321
+   Markaz: CHAKRI
+   Users (1):
+      1. Yasmeen Fatima  (HEAD_TEACHER)
+         Phone: 03037274503
+         Status: pending
+
+194. GPS DHOK MISTRIAN
+   EMIS: 37330206
+   Users (5):
+      1. Sumaira Noren (HEAD_TEACHER)
+         Phone: 03166888978
+         Status: active
+      2. Naila akbar (TEACHER)
+         Phone: 03115988796
+         Status: active
+      3. Rizwana kausar  (TEACHER)
+         Phone: 03425887594
+         Status: active
+      4. Shanza yousaf  (TEACHER)
+         Phone: 03105627132
+         Status: active
+      5. Sughra parveen (TEACHER)
+         Phone: 03185600087
+         Status: active
+
+195. GPS DHOK MUNSHI
+   EMIS: 37330322
+   ⚠️  No users assigned
+
+196. GPS DHOK RAJA HASSO KHAN
+   EMIS: 37330332
+   Markaz: CHAKRI
+   Users (1):
+      1. Saira Yasmeen  (HEAD_TEACHER)
+         Phone: 03125849606
+         Status: active
+
+197. GPS DHOK ROSHAN DIN RAWALPINDI
+   EMIS: 37330207
+   ⚠️  No users assigned
+
+198. GPS DHOK ZIARAT
+   EMIS: 37330209
+   Users (6):
+      1. Nighat Seema (HEAD_TEACHER)
+         Phone: 03345627602
+         Status: active
+      2. Farida Rubab (TEACHER)
+         Phone: 03115714234
+         Status: active
+      3. Mehwish Jahangir  (TEACHER)
+         Phone: 03151250337
+         Status: active
+      4. Nazia Roshan  (TEACHER)
+         Phone: 03415445544
+         Status: active
+      5. Saba Ambreen  (TEACHER)
+         Phone: 03175652571
+         Status: active
+      6. Shumaila Perveen  (TEACHER)
+         Phone: 03235423864
+         Status: active
+
+199. GPS DHOKE SYEDAN
+   EMIS: 37330208
+   Users (7):
+      1. ABID ALI  (HEAD_TEACHER)
+         Phone: 03005590497
+         Status: pending
+      2. ABID ALI  (HEAD_TEACHER)
+         Phone: 03102442718
+         Status: pending
+      3. Abid Ali  (HEAD_TEACHER)
+         Phone: 03455283832
+         Status: pending
+      4. Bariera Akbar (TEACHER)
+         Phone: 03235354538
+         Status: pending
+      5. Imrana yasmin (TEACHER)
+         Phone: 03335544661
+         Status: pending
+      6. JOKER 302 (TEACHER)
+         Phone: 03405746864
+         Status: pending
+      7. Rehana kousar  (TEACHER)
+         Phone: 03135372991
+         Status: pending
+
+200. GPS GANDIAN
+   EMIS: 37330715
+   Users (2):
+      1. Muhammad Waqas Arif  (HEAD_TEACHER)
+         Phone: 03025153954
+         Status: active
+      2. BABAR IQBAL  (TEACHER)
+         Phone: 03326238888
+         Status: active
+
+201. GPS GHILWAL
+   EMIS: 37330339
+   Users (3):
+      1. Nouman Sabir (HEAD_TEACHER)
+         Phone: 03425282904
+         Status: pending
+      2. Ashiq Hussain (TEACHER)
+         Phone: 03145149868
+         Status: pending
+      3. Misbah Naseer  (TEACHER)
+         Phone: 03125217362
+         Status: pending
+
+202. GPS GHORA GUJRAN
+   EMIS: 37330284
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+203. GPS GHROLI
+   EMIS: 37330283
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+204. GPS GOHRA RAMIAL
+   EMIS: 37330271
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+205. GPS HAMIDIA
+   EMIS: 37330235
+   ⚠️  No users assigned
+
+206. GPS HAYAL.
+   EMIS: 37330250
+   Markaz: Adyala
+   Users (2):
+      1. Mohsin Shahzad (HEAD_TEACHER)
+         Phone: 03145283801
+         Status: active
+      2. Sohail Raza  (TEACHER)
+         Phone: 03136558808
+         Status: active
+
+207. GPS IQBAL RAHIM TOWN
+   EMIS: 37330236
+   Markaz: Shakrial
+   Users (1):
+      1. Khawer Javed (HEAD_TEACHER)
+         Phone: 03035888287
+         Status: active
+
+208. GPS ISLAMIA RATTA
+   EMIS: 37330237
+   ⚠️  No users assigned
+
+209. GPS JHANDA CHICHI
+   EMIS: 37330238
+   ⚠️  No users assigned
+
+210. GPS JHANGIR ABAD SAID GUL TOWN RWP
+   EMIS: 37330251
+   Markaz: Shakrial
+   Users (6):
+      1. Muhammad Nasir  (HEAD_TEACHER)
+         Phone: 03145218866
+         Status: active
+      2. Irfana Yasmeen (TEACHER)
+         Phone: 03219696360
+         Status: active
+      3. Qudsia Bano  (TEACHER)
+         Phone: 03410010373
+         Status: active
+      4. Shagufta Hafeez  (TEACHER)
+         Phone: 03137733220
+         Status: pending
+      5. Sidra Nizar Abbasi (TEACHER)
+         Phone: 03157146165
+         Status: active
+      6. Tayyba Imtiaz (TEACHER)
+         Phone: 03361525063
+         Status: pending
+
+211. GPS JHARKAY
+   EMIS: 37330273
+   Users (2):
+      1. USMAN SIDDEEQ  (HEAD_TEACHER)
+         Phone: 03455143782
+         Status: active
+      2. Sadia Anwar  (TEACHER)
+         Phone: 03213244851
+         Status: active
+
+212. GPS KALRI
+   EMIS: 37330349
+   Markaz: Adyala
+   Users (5):
+      1. Saima Ali (HEAD_TEACHER)
+         Phone: 03128866379
+         Status: active
+      2. Azmat mehmood (TEACHER)
+         Phone: 03335512490
+         Status: active
+      3. Ghulam Hussain  (TEACHER)
+         Phone: 03135194085
+         Status: active
+      4. HAMMAD MAQSOOD  (TEACHER)
+         Phone: 03230957579
+         Status: active
+      5. Zahoor Ul hassan (TEACHER)
+         Phone: 03175414464
+         Status: active
+
+213. GPS KALRI
+   EMIS: 37330285
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+214. GPS KHAI AWAN
+   EMIS: 37330275
+   Markaz: BASSALI
+   ⚠️  No users assigned
+
+215. GPS KHAN ASGHAR MALL
+   EMIS: 37330240
+   Markaz: Shakrial
+   ⚠️  No users assigned
+
+216. GPS KHATANA
+   EMIS: 37330687
+   Markaz: Adyala
+   Users (7):
+      1. Bashir Ahmed (HEAD_TEACHER)
+         Phone: 03345005041
+         Status: active
+      2. Aasia Tabassum  (TEACHER)
+         Phone: 03005156642
+         Status: active
+      3. Asma Perveen (TEACHER)
+         Phone: 03329238667
+         Status: active
+      4. Kalsoom Sohail (TEACHER)
+         Phone: 03349540134
+         Status: active
+      5. Muhammad Tanveer  (TEACHER)
+         Phone: 03325576954
+         Status: active
+      6. Shagufta Bibi (TEACHER)
+         Phone: 03105898458
+         Status: active
+      7. Zeba Parveen (TEACHER)
+         Phone: 03425080795
+         Status: active
+
+217. GPS KOLIAN GOHRU
+   EMIS: 37330371
+   Users (3):
+      1. Muhammad Umer Jawwad  (HEAD_TEACHER)
+         Phone: 03145383160
+         Status: pending
+      2. AMARA AZHAR  (TEACHER)
+         Phone: 03035205224
+         Status: pending
+      3. Zafar Mehmood  (TEACHER)
+         Phone: 03369186531
+         Status: pending
+
+218. GPS KOT JABBI
+   EMIS: 37330688
+   ⚠️  No users assigned
+
+219. GPS LIAQAT MODEL
+   EMIS: 37330242
+   Users (8):
+      1. Benish Bukhari (HEAD_TEACHER)
+         Phone: 03009722789
+         Status: pending
+      2. Benish Bukhari (HEAD_TEACHER)
+         Phone: 33349722789
+         Status: pending
+      3. Benish Bukhari (HEAD_TEACHER)
+         Phone: 03349722789
+         Status: pending
+      4. Attish zainab (TEACHER)
+         Phone: 03336186372
+         Status: pending
+      5. MubinaMunir (TEACHER)
+         Phone: 03338620163
+         Status: pending
+      6. Rizwan Khalid (TEACHER)
+         Phone: 03420552017
+         Status: pending
+      7. Saher Naveed (TEACHER)
+         Phone: 03312647787
+         Status: pending
+      8. Saher Naveed (TEACHER)
+         Phone: 03365545536
+         Status: pending
+
+220. GPS MAIRA KHURD
+   EMIS: 37330253
+   Markaz: CHAKRI
+   Users (1):
+      1. Muhammad Akbar (HEAD_TEACHER)
+         Phone: 03335707067
+         Status: pending
+
+221. GPS MALANA
+   EMIS: 37330302
+   Users (2):
+      1. Tehmina Abbas (HEAD_TEACHER)
+         Phone: 03338884523
+         Status: active
+      2. Mafia (TEACHER)
+         Phone: 03327407501
+         Status: active
+
+222. GPS MANZOOR MUSLIM
+   EMIS: 37330244
+   Markaz: Shakrial
+   Users (1):
+      1. Sobia Danish  (TEACHER)
+         Phone: 03125507015
+         Status: pending
+
+223. GPS MC ARJAN NAGAR RWP
+   EMIS: 37330228
+   Users (1):
+      1. Ghulam Abbas (TEACHER)
+         Phone: 03002316060
+         Status: pending
+
+224. GPS MC DHOK PARACHA
+   EMIS: 37330229
+   Markaz: Shakrial
+   Users (1):
+      1. Samia Bibi (HEAD_TEACHER)
+         Phone: 03155042231
+         Status: pending
+
+225. GPS MC FEROZABAD
+   EMIS: 37330230
+   Markaz: Shakrial
+   Users (1):
+      1. Mehwish Javed (HEAD_TEACHER)
+         Phone: 03345629212
+         Status: pending
+
+226. GPS MC MOHALLAH WORKSHOPI RWP
+   EMIS: 37330231
+   ⚠️  No users assigned
+
+227. GPS MC MUSLIM TOWN
+   EMIS: 37330234
+   Markaz: Shakrial
+   Users (6):
+      1. Anam shahab (TEACHER)
+         Phone: 03185044858
+         Status: pending
+      2. Bushra Mubarik  (TEACHER)
+         Phone: 03365258945
+         Status: pending
+      3. Farhat Naheed (TEACHER)
+         Phone: 03365247296
+         Status: pending
+      4. Javeria abbasi (TEACHER)
+         Phone: 03338892041
+         Status: pending
+      5. Saira tabassum  (TEACHER)
+         Phone: 03459717267
+         Status: pending
+      6. Tahira Aziz (TEACHER)
+         Phone: 03105799266
+         Status: pending
+
+228. GPS MC QASIMABAD STREET NO. 6 RWP
+   EMIS: 37330233
+   ⚠️  No users assigned
+
+229. GPS MIAN AHMEDA
+   EMIS: 37330280
+   Users (1):
+      1. Syed Haseeb Raza  (HEAD_TEACHER)
+         Phone: 03307070611
+         Status: active
+
+230. GPS MILLAT ISLAMIA DHOK RAHEEM BAKHSH RAWALPINDI
+   EMIS: 37330245
+   Markaz: Shakrial
+   Users (1):
+      1. Iram Nazeen Abbasi  (TEACHER)
+         Phone: 03320569570
+         Status: active
+
+231. GPS MISRIOT
+   EMIS: 37330254
+   Markaz: Adyala
+   Users (2):
+      1. Fiaz Mehmood  (HEAD_TEACHER)
+         Phone: 03455038609
+         Status: active
+      2. Mian Ehsan Ahmad  (TEACHER)
+         Phone: 03170885165
+         Status: active
+
+232. GPS MOHRI GHAZAN
+   EMIS: 37330249
+   Users (1):
+      1. Sami Ullah (HEAD_TEACHER)
+         Phone: 03315274064
+         Status: pending
+
+233. GPS MORGAH
+   EMIS: 37330359
+   ⚠️  No users assigned
+
+234. GPS NEW PUBLIC RAWALPINDI
+   EMIS: 37330216
+   ⚠️  No users assigned
+
+235. GPS PAPIAN
+   EMIS: 37330383
+   Users (2):
+      1. Muhammad Sajid  (HEAD_TEACHER)
+         Phone: 03115100199
+         Status: active
+      2. Shagufta Shaheen  (TEACHER)
+         Phone: 03355650151
+         Status: active
+
+236. GPS POSTAL COLONY
+   EMIS: 37330218
+   ⚠️  No users assigned
+
+237. GPS QUMI PAY JHANDA CHACHI
+   EMIS: 37330219
+   ⚠️  No users assigned
+
+238. GPS RATTA AMRAL
+   EMIS: 37330221
+   ⚠️  No users assigned
+
+239. GPS REHMAT ABAD
+   EMIS: 37330333
+   ⚠️  No users assigned
+
+240. GPS SAROBA
+   EMIS: 37330334
+   Markaz: CHAKRI
+   ⚠️  No users assigned
+
+241. GPS SHAHPUR SYEDAN
+   EMIS: 37330335
+   Markaz: Adyala
+   Users (3):
+      1. Fazal Hussain  (HEAD_TEACHER)
+         Phone: 03075541270
+         Status: active
+      2. Muhammad Atif Tanveer  (TEACHER)
+         Phone: 03009882935
+         Status: active
+      3. Muhammad Faisal  (TEACHER)
+         Phone: 03130704324
+         Status: active
+
+242. GPS SHARIFABAD
+   EMIS: 37330336
+   Markaz: CHAKRI
+   ⚠️  No users assigned
+
+243. GPS SHEIKH ZADA
+   EMIS: 37330266
+   ⚠️  No users assigned
+
+244. GPS SHIMLA ISLAMIA RWP
+   EMIS: 37330121
+   Markaz: Shakrial
+   Users (5):
+      1. Asif Shahzad  (HEAD_TEACHER)
+         Phone: 03004220782
+         Status: pending
+      2. Aamir Zarin (TEACHER)
+         Phone: 03005043801
+         Status: pending
+      3. Asma asghar  (TEACHER)
+         Phone: 03165088220
+         Status: pending
+      4. Bisma mukhtar (TEACHER)
+         Phone: 03340152628
+         Status: pending
+      5. Muhammad sabir hussain (TEACHER)
+         Phone: 03076738809
+         Status: pending
+
+245. GPS STANDARD MUSLIM
+   EMIS: 37330222
+   ⚠️  No users assigned
+
+246. GPS TAJ UL ISLAM
+   EMIS: 37330223
+   Markaz: Shakrial
+   Users (7):
+      1. Fowzia Shamim (HEAD_TEACHER)
+         Phone: 03155427793
+         Status: pending
+      2. Huma Naz (TEACHER)
+         Phone: 03425484375
+         Status: pending
+      3. Naheed Akhter (TEACHER)
+         Phone: 03431523947
+         Status: pending
+      4. Rabia Qadeer (TEACHER)
+         Phone: 03225083539
+         Status: pending
+      5. Rameesa Tufail  (TEACHER)
+         Phone: 03145297337
+         Status: pending
+      6. Samia jabeen  (TEACHER)
+         Phone: 03185028696
+         Status: pending
+      7. Uzma Shaheen Abbasi  (TEACHER)
+         Phone: 03335381028
+         Status: pending
+
+247. GPS TAKHTI
+   EMIS: 37330267
+   Users (1):
+      1. Huma Naz (HEAD_TEACHER)
+         Phone: 03315188156
+         Status: active
+
+248. GPS TANVEER-UL-ISLAM DHOKE HUKAM DAD RWP
+   EMIS: 37330225
+   ⚠️  No users assigned
+
+249. GPS TULSA
+   EMIS: 37330226
+   Users (8):
+      1. Farooq Ahmad (HEAD_TEACHER)
+         Phone: 03136837763
+         Status: active
+      2. Farooq Ahmed  (HEAD_TEACHER)
+         Phone: 03336837763
+         Status: active
+      3. NasirMehmood  (TEACHER)
+         Phone: 03065361606
+         Status: active
+      4. Nusrat Yasmeen (TEACHER)
+         Phone: 03315475099
+         Status: active
+      5. Rabia Hameed (TEACHER)
+         Phone: 03105149576
+         Status: active
+      6. Samra Saleem  (TEACHER)
+         Phone: 03204898923
+         Status: active
+      7. Sidra Shahid (TEACHER)
+         Phone: 03335366700
+         Status: active
+      8. Yasmin Akhtar  (TEACHER)
+         Phone: 03331715530
+         Status: active
+
+250. GPS UN PUR
+   EMIS: 37330303
+   Users (3):
+      1. Saiqa Perveen  (HEAD_TEACHER)
+         Phone: 03325335429
+         Status: active
+      2. Atika Minhas  (TEACHER)
+         Phone: 03325708475
+         Status: active
+      3. Fiana bi bi (TEACHER)
+         Phone: 03335584087
+         Status: active
+
+251. GPS WESTRIDGE-I
+   EMIS: 37330227
+   Users (1):
+      1. Asma Irshad (TEACHER)
+         Phone: 03139923233
+         Status: active
+
+252. Gges Mujahid Gangal
+   EMIS: 37330179
+   ⚠️  No users assigned
+
+253. Ggps Darogha Hassan Ali
+   EMIS: 37330544
+   Users (4):
+      1. Hiba Karim  (HEAD_TEACHER)
+         Phone: 03325504058
+         Status: active
+      2. Ayesha  (TEACHER)
+         Phone: 03487968897
+         Status: active
+      3. HIRA SAFDAR (TEACHER)
+         Phone: 03045264544
+         Status: active
+      4. Nighat Sultana  (TEACHER)
+         Phone: 03345122045
+         Status: active
+
+254. Ggps Timber ratial
+   EMIS: 37330509
+   Users (4):
+      1. Rashida Naheed  (TEACHER)
+         Phone: 03475862982
+         Status: active
+      2. Rubina bibi (TEACHER)
+         Phone: 03065347521
+         Status: active
+      3. Syeda Iqra Batool (TEACHER)
+         Phone: 03170822346
+         Status: active
+      4. Syeda Iqra Batool (TEACHER)
+         Phone: 03326362629
+         Status: active
+
+255. Ggps sarhandi
+   EMIS: 37330497
+   Users (4):
+      1. Shehla kousar  (HEAD_TEACHER)
+         Phone: 03459711303
+         Status: active
+      2. Afshan Shafique (TEACHER)
+         Phone: 03341856061
+         Status: active
+      3. Nadia Bibi (TEACHER)
+         Phone: 03335985311
+         Status: active
+      4. Sadaf bibi (TEACHER)
+         Phone: 03325245342
+         Status: active
+
+256. Ggps sarhdnay
+   EMIS: 37330505
+   Users (4):
+      1. Abdul Moiz (HEAD_TEACHER)
+         Phone: 03315492472
+         Status: pending
+      2. Adeela bano (HEAD_TEACHER)
+         Phone: 03415166424
+         Status: pending
+      3. Arshia Arif  (TEACHER)
+         Phone: 03338212766
+         Status: pending
+      4. Arshia arif (TEACHER)
+         Phone: 03025056193
+         Status: pending
+
+257. MC GGPS Chittian Hattian
+   EMIS: 37330459
+   ⚠️  No users assigned
+
+258. MC GGPS DK hukamdad
+   EMIS: 37330453
+   ⚠️  No users assigned
+
+259. MC GGPS ward 28 Ratta Amral
+   EMIS: 37330458
+   ⚠️  No users assigned
+
+======================================================================================================================================================
+SUMMARY
+======================================================================================================================================================
+Total Schools: 259
+Schools with Users: 173
+Schools without Users: 86
+======================================================================================================================================================
+
+✅ Export complete!
+   CSV file: schools_with_users.csv

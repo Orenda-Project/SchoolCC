@@ -1,0 +1,50 @@
+SET name = 'GES BAGH SANGRA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330288';
+
+-- Update: GPS DHOK HAMMIT (EMIS: 37330298)
+UPDATE schools
+SET name = 'GPS DHOK HAMMIT',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330298';
+
+-- Update: GPS MALANA (EMIS: 37330302)
+UPDATE schools
+SET name = 'GPS MALANA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330302';
+
+-- Update: GPS UN PUR (EMIS: 37330303)
+UPDATE schools
+SET name = 'GPS UN PUR',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330303';
+
+-- Update: GPS GANDIAN (EMIS: 37330715)
+UPDATE schools
+SET name = 'GPS GANDIAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL'
+      LIMIT 1
+    )
+WHERE emis_number = '37330715';
+
+-- Update: GPS POSTAL COLONY (EMIS: 37330218)
+UPDATE schools

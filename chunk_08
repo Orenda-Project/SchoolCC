@@ -1,0 +1,50 @@
+SET name = 'GPS SAROBA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330334';
+
+-- Update: GPS SHARIFABAD (EMIS: 37330336)
+UPDATE schools
+SET name = 'GPS SHARIFABAD',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330336';
+
+-- Update: GPS CHAK DENAL (EMIS: 37330312)
+UPDATE schools
+SET name = 'GPS CHAK DENAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330312';
+
+-- Update: GPS DAHRI (EMIS: 37330401)
+UPDATE schools
+SET name = 'GPS DAHRI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330401';
+
+-- Update: GES RAJAR (EMIS: 37330140)
+UPDATE schools
+SET name = 'GES RAJAR',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI'
+      LIMIT 1
+    )
+WHERE emis_number = '37330140';
+
+-- Update: GES MUJAHID (EMIS: 37330138)
+UPDATE schools

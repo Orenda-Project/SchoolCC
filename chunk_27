@@ -1,0 +1,50 @@
+SET name = 'GGES MOHRA',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330380';
+
+-- Update: GGES DHERI (EMIS: 37330634)
+UPDATE schools
+SET name = 'GGES DHERI',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330634';
+
+-- Update: GGES GHELLA KALAN (EMIS: 37330643)
+UPDATE schools
+SET name = 'GGES GHELLA KALAN',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330643';
+
+-- Update: GMPS JASWAL (EMIS: 37330661)
+UPDATE schools
+SET name = 'GMPS JASWAL',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'CHAKRI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330661';
+
+-- Update: GMPS Kali Pari (EMIS: 37330369)
+UPDATE schools
+SET name = 'GMPS Kali Pari',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'JHATTA HATHIAL FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330369';
+
+-- Update: GGPS Unpur (EMIS: 37330511)
+UPDATE schools

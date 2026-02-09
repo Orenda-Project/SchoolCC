@@ -1,0 +1,309 @@
+📊 Fetching all users from production database...
+
+Total users found: 642
+
+Users by Role:
+  DEO: 4
+  DDEO: 3
+  AEO: 31
+  HEAD_TEACHER: 190
+  TEACHER: 412
+  TRAINING_MANAGER: 1
+  COACH: 1
+
+======================================================================================================================================================
+COMPLETE USER LIST
+======================================================================================================================================================
+
+
+██████████████████████████████████████████████████
+█ DEO (4 users)
+██████████████████████████████████████████████████
+
+1. Dr Hajira
+   Phone: 03007194767
+   Role: DEO
+   Status: active
+   Created: 1/5/2026
+
+2. Noor 
+   Phone: 03001231231
+   Role: DEO
+   Status: active
+   Created: 1/16/2026
+
+3. Shahenshah Babar Khan
+   Phone: 03315552330
+   Role: DEO
+   Status: active
+   Created: 1/7/2026
+
+4. Test DEO
+   Phone: 03101234567
+   Role: DEO
+   Status: active
+   Created: 1/26/2026
+
+
+██████████████████████████████████████████████████
+█ DDEO (3 users)
+██████████████████████████████████████████████████
+
+1. Dr. Samina Batool 
+   Phone: 03440630651
+   Role: DDEO
+   Status: active
+   Created: 1/5/2026
+
+2. Shumaila kausar
+   Phone: 03345722575
+   Role: DDEO
+   Status: pending
+   Created: 1/28/2026
+
+3. Test DDEO
+   Phone: 03111234567
+   Role: DDEO
+   Status: active
+   Created: 1/26/2026
+
+
+██████████████████████████████████████████████████
+█ AEO (31 users)
+██████████████████████████████████████████████████
+
+1. Abdul Mateen
+   Phone: 03335344393
+   Role: AEO
+   Status: active
+   Markaz: JATHA HATHIAL
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+2. Abdullah Rahim
+   Phone: 03215285486
+   Role: AEO
+   Status: active
+   Markaz: CHOUNTRA
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+3. Amer Aqeel Shah 
+   Phone: 03005538538
+   Role: AEO
+   Status: active
+   Markaz: Rawalpindi Cantt
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+4. Atif Minhas
+   Phone: 03325491580
+   Role: AEO
+   Status: active
+   Markaz: CHAKRI
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+5. Atiqa Tariq
+   Phone: 03357007313
+   Role: AEO
+   Status: active
+   Markaz: SADAR BERONI
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+6. Gakakagavaha
+   Phone: 03121425899
+   Role: AEO
+   Status: active
+   Created: 1/23/2026
+
+7. Hafiz Asif Shahzad
+   Phone: 03455548775
+   Role: AEO
+   Status: active
+   Markaz: BASSALI
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+8. Iram nosheen
+   Phone: 03415173078
+   Role: AEO
+   Status: pending
+   Created: 1/27/2026
+
+9. Malik Nadeem Sultan
+   Phone: 03325564268
+   Role: AEO
+   Status: active
+   Markaz: RAIKA MAIRA
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+10. Maryam Naeem
+   Phone: 03035131318
+   Role: AEO
+   Status: active
+   Markaz: CHAKRI
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+11. Memoona Saeed
+   Phone: 03049485747
+   Role: AEO
+   Status: active
+   Markaz: KOLIAN HAMEED
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+12. Muhammad Asif Jabbar janjua
+   Phone: 03345147094
+   Role: AEO
+   Status: active
+   Markaz: Adyala
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+13. Nighat Noureen
+   Phone: 03075135280
+   Role: AEO
+   Status: active
+   Markaz: Rawalpindi Cantt
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+14. Rabia Rauf
+   Phone: 03367763062
+   Role: AEO
+   Status: active
+   Markaz: LODHRAN
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+15. Sadia Aziz
+   Phone: 03455250037
+   Role: AEO
+   Status: active
+   Markaz: BASSALI
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+16. Safia Aftab
+   Phone: 03318828415
+   Role: AEO
+   Status: active
+   Markaz: BAGGA SHEIKHAN
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+17. Sana Ashraf
+   Phone: 03709597493
+   Role: AEO
+   Status: pending
+   Created: 1/27/2026
+
+18. Sania Naseem
+   Phone: 03455544944
+   Role: AEO
+   Status: active
+   Markaz: SIHAL
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+19. Sehrish Kanwal
+   Phone: 03367896790
+   Role: AEO
+   Status: active
+   Markaz: JATHA HATHIAL
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+20. Shakoor Ahmed
+   Phone: 03455374326
+   Role: AEO
+   Status: active
+   Markaz: CHAK BELI KHAN
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+21. Sheraz Hussain
+   Phone: 03169424715
+   Role: AEO
+   Status: active
+   Created: 1/26/2026
+
+22. TAUQEER AKBAR
+   Phone: 03365289056
+   Role: AEO
+   Status: active
+   Created: 1/27/2026
+
+23. Tasneem Shahzadi
+   Phone: 03325562375
+   Role: AEO
+   Status: active
+   Markaz: Adyala
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+24. Tayyaba Hamna
+   Phone: 03402337911
+   Role: AEO
+   Status: active
+   Created: 1/22/2026
+
+25. Test AEO
+   Phone: 03121234567
+   Role: AEO
+   Status: active
+   Markaz: MANDRA (W)
+   Created: 1/26/2026
+
+26. Test AEO
+   Phone: 03221234567
+   Role: AEO
+   Status: active
+   Markaz: LODHRAN
+   Tehsil: Rawalpindi
+   Created: 1/27/2026
+
+27. Test AEO
+   Phone: 03166848291
+   Role: AEO
+   Status: active
+   Markaz: CHAK BELI KHAN
+   Tehsil: Rawalpindi
+   Created: 1/27/2026
+
+28. Waheed Ahmad Butt
+   Phone: 03345123169
+   Role: AEO
+   Status: active
+   Markaz: Adiala Male
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+29. Waqas Akhtar
+   Phone: 03325596926
+   Role: AEO
+   Status: active
+   Created: 1/26/2026
+
+30. Waseem Ashraf
+   Phone: 03425399599
+   Role: AEO
+   Status: active
+   Markaz: JATHA HATHIAL
+   Tehsil: Rawalpindi
+   Created: 1/26/2026
+
+31. shahla Andleeb
+   Phone: 03145123547
+   Role: AEO
+   Status: pending
+   Created: 1/30/2026
+
+
+======================================================================================================================================================
+✅ Export complete! CSV file saved as: users_list.csv
+======================================================================================================================================================

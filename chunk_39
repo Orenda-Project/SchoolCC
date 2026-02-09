@@ -1,0 +1,50 @@
+SET name = 'Gges Mujahid Gangal',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330179';
+
+-- Update: Ggps sarhdnay (EMIS: 37330505)
+UPDATE schools
+SET name = 'Ggps sarhdnay',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330505';
+
+-- Update: Ggps Jabber Dervaish (EMIS: 37330546)
+UPDATE schools
+SET name = 'Ggps Jabber Dervaish',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330546';
+
+-- Update: GMPS Saffair (EMIS: 37330263)
+UPDATE schools
+SET name = 'GMPS Saffair',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330263';
+
+-- Update: Ggps Darogha Hassan Ali (EMIS: 37330544)
+UPDATE schools
+SET name = 'Ggps Darogha Hassan Ali',
+    markaz_id = (
+      SELECT id FROM markazes
+      WHERE UPPER(TRIM(REGEXP_REPLACE(name, '\.+$', ''))) = 'BASSALI FEMALE'
+      LIMIT 1
+    )
+WHERE emis_number = '37330544';
+
+-- Update: Ggps Timber ratial (EMIS: 37330509)
+UPDATE schools
