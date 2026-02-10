@@ -588,6 +588,29 @@ export default function MentoringVisitForm({ onClose }: Props) {
     }
   };
 
+  const convertSelectedAreasToIndicators = () => {
+    const indicators: { id: string; name: string; rating: string | null; rubricText: string; examples: string; area: string; areaName: string; indicator: string; level: string | null }[] = [];
+    for (const area of mentoringAreas) {
+      for (const indicator of area.indicators) {
+        const rating = selectedAreas[area.id]?.[indicator.id] || null;
+        if (rating) {
+          indicators.push({
+            id: `${area.id}-${indicator.id}`,
+            name: indicator.name,
+            rating,
+            rubricText: indicator.rubric[rating] || '',
+            examples: '',
+            area: area.id,
+            areaName: area.name,
+            indicator: indicator.id,
+            level: rating,
+          });
+        }
+      }
+    }
+    return indicators;
+  };
+
   const handleSubmit = async () => {
     if (isSubmittingRef.current) {
       console.log('[MentoringVisitForm] Blocked duplicate submission - ref already true');
@@ -611,6 +634,8 @@ export default function MentoringVisitForm({ onClose }: Props) {
         url: f.previewUrl || f.name,
       }));
 
+      const convertedIndicators = convertSelectedAreasToIndicators();
+
       const now = new Date();
       const currentTime = now.toTimeString().slice(0, 5);
 
@@ -619,6 +644,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
         const { submittedAt, createdAt, id, ...updateFields } = formData as any;
         const visitData = {
           ...updateFields,
+          indicators: convertedIndicators,
           evidence,
         };
 
@@ -651,7 +677,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
           classObserved: formData.classObserved || '',
           teacherName: formData.teacherName || '',
           subject: formData.subject || '',
-          indicators: formData.indicators || [],
+          indicators: convertedIndicators,
           generalFeedback: formData.generalFeedback || '',
           strengthsObserved: formData.strengthsObserved || '',
           areasForImprovement: formData.areasForImprovement || '',

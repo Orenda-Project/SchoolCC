@@ -502,29 +502,70 @@ export default function ViewVisit() {
     </Card>
   );
 
-  const renderMentoringIndicators = (data: MentoringVisitData) => (
-    <Card className="p-6">
-      <h2 className="text-lg font-semibold text-foreground mb-4">HOTS Indicators</h2>
-      {data.indicators && data.indicators.length > 0 ? (
-        <div className="space-y-2">
-          {data.indicators.map((indicator, idx) => (
-            <div key={idx} className="flex items-center justify-between p-3 bg-muted/30 rounded">
-              <span className="text-sm text-foreground">{indicator.name}</span>
-              <span className={`text-xs px-2 py-1 rounded ${
-                indicator.rating === 'proficient' ? 'bg-green-100 text-green-700' :
-                indicator.rating === 'developing' ? 'bg-yellow-100 text-yellow-700' :
-                'bg-red-100 text-red-700'
-              }`}>
-                {indicator.rating || 'Not Rated'}
-              </span>
+  const renderMentoringIndicators = (data: MentoringVisitData) => {
+    const indicatorsData = data.indicators || [];
+    const grouped: Record<string, { areaName: string; items: typeof indicatorsData }> = {};
+    for (const ind of indicatorsData) {
+      const areaKey = (ind as any).area || 'other';
+      const areaName = (ind as any).areaName || 'Other';
+      if (!grouped[areaKey]) grouped[areaKey] = { areaName, items: [] };
+      grouped[areaKey].items.push(ind);
+    }
+    const hasGroups = Object.keys(grouped).length > 0 && Object.keys(grouped)[0] !== 'other';
+
+    return (
+      <Card className="p-6">
+        <h2 className="text-lg font-semibold text-foreground mb-4">HOTS Indicators</h2>
+        {indicatorsData.length > 0 ? (
+          hasGroups ? (
+            <div className="space-y-6">
+              {Object.entries(grouped).map(([areaId, group]) => (
+                <div key={areaId}>
+                  <h3 className="text-sm font-bold text-foreground mb-2 p-2 bg-muted rounded">{group.areaName}</h3>
+                  <div className="space-y-2 ml-2">
+                    {group.items.map((indicator, idx) => (
+                      <div key={idx} className="p-3 bg-muted/30 rounded">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm text-foreground">{indicator.name}</span>
+                          <span className={`text-xs px-2 py-1 rounded capitalize ${
+                            indicator.rating === 'proficient' ? 'bg-green-100 text-green-700' :
+                            indicator.rating === 'developing' ? 'bg-yellow-100 text-yellow-700' :
+                            'bg-red-100 text-red-700'
+                          }`}>
+                            {indicator.rating || 'Not Rated'}
+                          </span>
+                        </div>
+                        {indicator.rubricText && (
+                          <p className="text-xs text-muted-foreground mt-1">{indicator.rubricText}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-sm text-muted-foreground">No indicators recorded</p>
-      )}
-    </Card>
-  );
+          ) : (
+            <div className="space-y-2">
+              {indicatorsData.map((indicator, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 bg-muted/30 rounded">
+                  <span className="text-sm text-foreground">{indicator.name}</span>
+                  <span className={`text-xs px-2 py-1 rounded capitalize ${
+                    indicator.rating === 'proficient' ? 'bg-green-100 text-green-700' :
+                    indicator.rating === 'developing' ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-red-100 text-red-700'
+                  }`}>
+                    {indicator.rating || 'Not Rated'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )
+        ) : (
+          <p className="text-sm text-muted-foreground">No indicators recorded</p>
+        )}
+      </Card>
+    );
+  };
 
   const renderMentoringFeedback = (data: MentoringVisitData) => (
     <Card className="p-6">
