@@ -737,7 +737,7 @@ export async function registerRoutes(
           // CEO/DEO/DDEO can see all users - no filtering
         }
         else if (requestingUser.role === 'AEO') {
-          // AEO can only see HEAD_TEACHER in their cluster/assigned schools (not teachers)
+          // AEO can see HEAD_TEACHER and TEACHER in their cluster/assigned schools
           // Match via EMIS numbers since assignedSchools stores display strings like "School Name (EMIS)"
           const aeoAssignedSchools = requestingUser.assignedSchools || [];
           const allSchools = await storage.getAllSchools();
@@ -748,7 +748,7 @@ export async function registerRoutes(
             }
           });
           users = users.filter(u => {
-            if (u.role !== 'HEAD_TEACHER') return false;
+            if (u.role !== 'HEAD_TEACHER' && u.role !== 'TEACHER') return false;
             const inCluster = u.clusterId && u.clusterId === requestingUser.clusterId;
             const inAssignedSchool = u.schoolId && aeoSchoolIds.has(u.schoolId);
             return inCluster || inAssignedSchool;
