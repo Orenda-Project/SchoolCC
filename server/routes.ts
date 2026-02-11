@@ -738,13 +738,19 @@ export async function registerRoutes(
         }
         else if (requestingUser.role === 'AEO') {
           // AEO can only see HEAD_TEACHER in their cluster/assigned schools (not teachers)
+          // Match via EMIS numbers since assignedSchools stores display strings like "School Name (EMIS)"
+          const aeoAssignedSchools = requestingUser.assignedSchools || [];
+          const allSchools = await storage.getAllSchools();
+          const aeoSchoolIds = new Set<string>();
+          allSchools.forEach(school => {
+            if (aeoAssignedSchools.some((name: string) => name.includes(school.emisNumber))) {
+              aeoSchoolIds.add(school.id);
+            }
+          });
           users = users.filter(u => {
             if (u.role !== 'HEAD_TEACHER') return false;
-
             const inCluster = u.clusterId && u.clusterId === requestingUser.clusterId;
-            const inAssignedSchool = u.schoolName && requestingUser.assignedSchools &&
-                                     requestingUser.assignedSchools.includes(u.schoolName);
-
+            const inAssignedSchool = u.schoolId && aeoSchoolIds.has(u.schoolId);
             return inCluster || inAssignedSchool;
           });
         }
@@ -801,12 +807,20 @@ export async function registerRoutes(
         // Can see all staff
       }
       else if (requestingUser.role === 'AEO') {
-        // AEO can only see staff in their cluster/schools
+        // AEO can only see staff in their cluster/assigned schools
+        // Match via EMIS numbers since assignedSchools stores display strings like "School Name (EMIS)"
+        const aeoAssignedSchools = requestingUser.assignedSchools || [];
+        const allSchools = await storage.getAllSchools();
+        const aeoSchoolIds = new Set<string>();
+        allSchools.forEach(school => {
+          if (aeoAssignedSchools.some((name: string) => name.includes(school.emisNumber))) {
+            aeoSchoolIds.add(school.id);
+          }
+        });
         allUsers = allUsers.filter(u => {
           if (u.role !== 'HEAD_TEACHER' && u.role !== 'TEACHER') return false;
           const inCluster = u.clusterId && u.clusterId === requestingUser.clusterId;
-          const inAssignedSchool = u.schoolName && requestingUser.assignedSchools &&
-                                   requestingUser.assignedSchools.includes(u.schoolName);
+          const inAssignedSchool = u.schoolId && aeoSchoolIds.has(u.schoolId);
           return inCluster || inAssignedSchool;
         });
       }
@@ -1530,8 +1544,16 @@ export async function registerRoutes(
 
         if (admin.role === 'AEO') {
           const inCluster = userToRestrict.clusterId && userToRestrict.clusterId === admin.clusterId;
-          const inAssignedSchool = userToRestrict.schoolName && admin.assignedSchools &&
-                                   admin.assignedSchools.includes(userToRestrict.schoolName);
+          // Match via EMIS numbers since assignedSchools stores display strings like "School Name (EMIS)"
+          const aeoSchools = admin.assignedSchools || [];
+          const allSchools = await storage.getAllSchools();
+          const aeoSchoolIds = new Set<string>();
+          allSchools.forEach(school => {
+            if (aeoSchools.some((name: string) => name.includes(school.emisNumber))) {
+              aeoSchoolIds.add(school.id);
+            }
+          });
+          const inAssignedSchool = userToRestrict.schoolId && aeoSchoolIds.has(userToRestrict.schoolId);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
@@ -1550,8 +1572,16 @@ export async function registerRoutes(
         }
         else if (admin.role === 'AEO') {
           const inCluster = userToRestrict.clusterId && userToRestrict.clusterId === admin.clusterId;
-          const inAssignedSchool = userToRestrict.schoolName && admin.assignedSchools &&
-                                   admin.assignedSchools.includes(userToRestrict.schoolName);
+          // Match via EMIS numbers since assignedSchools stores display strings like "School Name (EMIS)"
+          const aeoSchools = admin.assignedSchools || [];
+          const allSchools = await storage.getAllSchools();
+          const aeoSchoolIds = new Set<string>();
+          allSchools.forEach(school => {
+            if (aeoSchools.some((name: string) => name.includes(school.emisNumber))) {
+              aeoSchoolIds.add(school.id);
+            }
+          });
+          const inAssignedSchool = userToRestrict.schoolId && aeoSchoolIds.has(userToRestrict.schoolId);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
@@ -1614,8 +1644,16 @@ export async function registerRoutes(
 
         if (admin.role === 'AEO') {
           const inCluster = userToUnrestrict.clusterId && userToUnrestrict.clusterId === admin.clusterId;
-          const inAssignedSchool = userToUnrestrict.schoolName && admin.assignedSchools &&
-                                   admin.assignedSchools.includes(userToUnrestrict.schoolName);
+          // Match via EMIS numbers since assignedSchools stores display strings like "School Name (EMIS)"
+          const aeoSchools = admin.assignedSchools || [];
+          const allSchools = await storage.getAllSchools();
+          const aeoSchoolIds = new Set<string>();
+          allSchools.forEach(school => {
+            if (aeoSchools.some((name: string) => name.includes(school.emisNumber))) {
+              aeoSchoolIds.add(school.id);
+            }
+          });
+          const inAssignedSchool = userToUnrestrict.schoolId && aeoSchoolIds.has(userToUnrestrict.schoolId);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
@@ -1634,8 +1672,16 @@ export async function registerRoutes(
         }
         else if (admin.role === 'AEO') {
           const inCluster = userToUnrestrict.clusterId && userToUnrestrict.clusterId === admin.clusterId;
-          const inAssignedSchool = userToUnrestrict.schoolName && admin.assignedSchools &&
-                                   admin.assignedSchools.includes(userToUnrestrict.schoolName);
+          // Match via EMIS numbers since assignedSchools stores display strings like "School Name (EMIS)"
+          const aeoSchools = admin.assignedSchools || [];
+          const allSchools = await storage.getAllSchools();
+          const aeoSchoolIds = new Set<string>();
+          allSchools.forEach(school => {
+            if (aeoSchools.some((name: string) => name.includes(school.emisNumber))) {
+              aeoSchoolIds.add(school.id);
+            }
+          });
+          const inAssignedSchool = userToUnrestrict.schoolId && aeoSchoolIds.has(userToUnrestrict.schoolId);
 
           if (!inCluster && !inAssignedSchool) {
             return res.status(403).json({
