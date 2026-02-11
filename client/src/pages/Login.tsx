@@ -11,7 +11,6 @@ import PersistentHelpBanner, { HelpStep, useHelpBannerStatus, PersistentHelpButt
 import FloatingHelpButton from '@/components/FloatingHelpButton';
 
 const roles: { value: UserRole; label: string; description: string; icon: any }[] = [
-  { value: 'CEO', label: 'CEO', description: 'System oversight, all data', icon: Crown },
   { value: 'DEO', label: 'District Education Officer', description: 'Full access, all data', icon: Building2 },
   { value: 'DDEO', label: 'Deputy DEO', description: 'Regional oversight', icon: Users },
   { value: 'AEO', label: 'Assistant Education Officer', description: 'Cluster management', icon: GraduationCap },
@@ -56,7 +55,9 @@ export default function Login() {
   // Check if app is running in standalone/installed mode
   useEffect(() => {
     const checkStandalone = () => {
-      const standalone = window.matchMedia("(display-mode: standalone)").matches || 
+      const isNative = (window as any).Capacitor?.isNativePlatform?.();
+      const standalone = isNative ||
+                        window.matchMedia("(display-mode: standalone)").matches ||
                         (window.navigator as any).standalone === true;
       setIsStandalone(standalone);
     };

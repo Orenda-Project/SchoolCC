@@ -20,10 +20,11 @@ export default function StickyPWAButton() {
   useEffect(() => {
     console.log('[Sticky PWA] Initializing...');
 
-    // Check if app is already installed
+    // Check if running in native app (Capacitor) or already installed
+    const isNative = (window as any).Capacitor?.isNativePlatform?.();
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-    if (isStandalone || (window.navigator as any).standalone === true) {
-      console.log('[Sticky PWA] App already installed');
+    if (isNative || isStandalone || (window.navigator as any).standalone === true) {
+      console.log('[Sticky PWA] App already installed or running natively');
       return;
     }
 

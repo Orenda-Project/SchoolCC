@@ -17,10 +17,11 @@ export default function PWAInstallPrompt() {
   useEffect(() => {
     console.log('[PWA] Install prompt initializing...');
 
-    // Check if app is already installed
+    // Check if running in native app (Capacitor) or already installed
+    const isNative = (window as any).Capacitor?.isNativePlatform?.();
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-    if (isStandalone || (window.navigator as any).standalone === true) {
-      console.log('[PWA] App already installed in standalone mode');
+    if (isNative || isStandalone || (window.navigator as any).standalone === true) {
+      console.log('[PWA] App already installed or running natively');
       setShowPrompt(false);
       return;
     }
