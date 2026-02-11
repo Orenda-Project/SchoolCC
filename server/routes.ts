@@ -1711,6 +1711,36 @@ export async function registerRoutes(
     }
   });
 
+  // Export all users as CSV download
+  app.get("/api/export/users", async (req, res) => {
+    try {
+      const allUsers = await storage.getAllUsers();
+      const headers = ["id","name","phone_number","role","status","school_id","school_name","cluster_id","district_id","tehsil_id","tehsil_name","markaz_id","markaz_name","gender","father_name","spouse_name","email","residential_address","cnic","date_of_birth","date_of_joining","qualification","assigned_schools","assigned_aeos","markaz","approver_role","approver_id","approved_at","created_at","updated_at"];
+      
+      const escapeCSV = (val: any) => {
+        if (val === null || val === undefined) return "";
+        const str = typeof val === "object" ? JSON.stringify(val) : String(val);
+        if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+          return '"' + str.replace(/"/g, '""') + '"';
+        }
+        return str;
+      };
+
+      const rows = allUsers.map(u => headers.map(h => {
+        const key = h.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
+        return escapeCSV((u as any)[key] ?? (u as any)[h]);
+      }).join(","));
+
+      const csv = [headers.join(","), ...rows].join("\n");
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader("Content-Disposition", "attachment; filename=users_export.csv");
+      res.send(csv);
+    } catch (error) {
+      console.error("Export users error:", error);
+      res.status(500).json({ error: "Failed to export users" });
+    }
+  });
+
   // User Profile endpoints
   app.get("/api/users/:id", async (req, res) => {
     try {
