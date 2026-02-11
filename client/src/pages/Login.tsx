@@ -55,7 +55,9 @@ export default function Login() {
   // Check if app is running in standalone/installed mode
   useEffect(() => {
     const checkStandalone = () => {
-      const isNative = (window as any).Capacitor?.isNativePlatform?.();
+      const isNative = (window as any).Capacitor?.isNativePlatform?.() ||
+                       document.URL.startsWith('https://localhost') ||
+                       /wv|WebView/i.test(navigator.userAgent);
       const standalone = isNative ||
                         window.matchMedia("(display-mode: standalone)").matches ||
                         (window.navigator as any).standalone === true;
