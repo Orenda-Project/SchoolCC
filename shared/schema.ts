@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, date, boolean, integer, bigint, json, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, date, boolean, integer, bigint, json, timestamp, serial } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -405,6 +405,21 @@ export const mentoringVisits = pgTable("mentoring_visits", {
   submittedAt: timestamp("submitted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+// Mentoring Observations table - stores individual indicator ratings per mentoring visit
+export const mentoringObservations = pgTable("mentoring_observations", {
+  id: serial("id").primaryKey(),
+  observationId: varchar("observation_id").notNull(),
+  areaId: integer("area_id").notNull(),
+  indicatorId: integer("indicator_id").notNull(),
+  optionsId: integer("options_id").notNull(),
+  rationaleId: integer("rationale_id"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertMentoringObservationSchema = createInsertSchema(mentoringObservations).omit({ id: true, createdAt: true });
+export type InsertMentoringObservation = z.infer<typeof insertMentoringObservationSchema>;
+export type MentoringObservation = typeof mentoringObservations.$inferSelect;
 
 // Office Visits table - office/admin visits by AEO
 export const officeVisits = pgTable("office_visits", {
