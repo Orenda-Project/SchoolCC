@@ -78,7 +78,7 @@ export default function AEOActivityLogs() {
     })),
     ...activities.mentoring.map((item) => ({
       id: item.id,
-      aeoId: item.aeoId,
+      aeoId: item.userId || item.aeoId,
       activityType: 'mentoring' as const,
       type: 'Mentoring Visit',
       date: item.visitDate,
@@ -86,7 +86,7 @@ export default function AEOActivityLogs() {
       status: item.status,
       icon: 'award',
       color: 'purple',
-      canDelete: item.aeoId === user?.id,
+      canDelete: (item.userId || item.aeoId) === user?.id,
     })),
     ...activities.office.map((item) => ({
       id: item.id,
@@ -285,7 +285,7 @@ export default function AEOActivityLogs() {
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 text-red-600 hover:text-red-800 hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30"
-                                onClick={() => handleDelete(item.id, item.activityType, item.aeoId)}
+                                onClick={() => handleDelete(item.id, item.activityType, item.aeoId || '')}
                                 disabled={deletingId === item.id}
                                 data-testid={`button-delete-${item.id}`}
                                 title="Delete"

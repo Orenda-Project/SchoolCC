@@ -247,7 +247,7 @@ export default function DEODashboard() {
       })),
       ...activities.mentoring.map(m => ({
         id: m.id,
-        aeoName: m.aeoName,
+        aeoName: m.observerName || m.aeoName || '',
         schoolName: m.schoolName,
         date: m.visitDate,
         activityType: 'mentoring' as const,

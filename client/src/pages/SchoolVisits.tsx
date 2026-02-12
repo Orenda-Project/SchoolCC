@@ -80,11 +80,11 @@ export default function SchoolVisits() {
       });
 
     (mentoringVisits as any[])
-      .filter(v => !filterByUser || v.aeoId === user.id)
+      .filter(v => !filterByUser || (v.userId || v.aeoId) === user.id)
       .forEach(v => {
         visits.push({
           id: v.id,
-          aeoId: v.aeoId,
+          aeoId: v.userId || v.aeoId,
           schoolName: v.schoolName,
           visitType: 'mentoring',
           visitDate: new Date(v.visitDate),
