@@ -1,11 +1,14 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { db } from "./db";
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 import {
   insertDataRequestSchema, insertRequestAssigneeSchema, insertVoiceRecordingSchema,
   insertDistrictSchema, insertClusterSchema, insertSchoolSchema, insertUserSchema,
-  insertTehsilSchema, insertMarkazSchema
+  insertTehsilSchema, insertMarkazSchema,
+  mentoringFields, mentoringIndicators, mentoringOptions, mentoringRationaleOptions
 } from "@shared/schema";
 import multer from "multer";
 import { transcribeAudio, generateVisitSummary } from "./lib/claude";
@@ -2552,15 +2555,49 @@ export async function registerRoutes(
     }
   });
 
+  // Mentoring Config endpoint - serves form structure from database
+  app.get("/api/mentoring/config", async (req, res) => {
+    try {
+      const fields = await db.select().from(mentoringFields).where(eq(mentoringFields.isActive, true));
+      const indicators = await db.select().from(mentoringIndicators).where(eq(mentoringIndicators.isActive, true));
+      const options = await db.select().from(mentoringOptions).where(eq(mentoringOptions.isActive, true));
+      const rationaleOpts = await db.select().from(mentoringRationaleOptions).where(eq(mentoringRationaleOptions.isActive, true));
+
+      res.json({
+        fields,
+        indicators,
+        options,
+        rationaleOptions: rationaleOpts,
+      });
+    } catch (error: any) {
+      console.error("Error fetching mentoring config:", error);
+      res.status(500).json({ error: "Failed to fetch mentoring configuration" });
+    }
+  });
+
   // Mentoring Visit endpoints
   app.post("/api/activities/mentoring", async (req, res) => {
     try {
+      const { observations, ...rest } = req.body;
       const visitData = {
-        ...req.body,
-        submittedAt: req.body.submittedAt ? new Date(req.body.submittedAt) : undefined,
+        ...rest,
+        submittedAt: rest.submittedAt ? new Date(rest.submittedAt) : undefined,
       };
       const visit = await storage.createMentoringVisit(visitData);
-      res.json(visit);
+
+      if (observations && Array.isArray(observations) && observations.length > 0) {
+        const obsRows = observations.map((obs: any) => ({
+          observationId: visit.id,
+          areaId: obs.areaId,
+          indicatorId: obs.indicatorId,
+          optionsId: obs.optionsId,
+          rationaleId: obs.rationaleId || null,
+        }));
+        await storage.createMentoringObservations(obsRows);
+      }
+
+      const savedObs = await storage.getMentoringObservationsByVisitId(visit.id);
+      res.json({ ...visit, observations: savedObs });
     } catch (error: any) {
       console.error("Mentoring visit creation error:", error?.message || error);
       res.status(400).json({ error: "Failed to create mentoring visit", details: error?.message || String(error) });
@@ -2594,7 +2631,8 @@ export async function registerRoutes(
         return res.status(404).json({ error: "Mentoring visit not found" });
       }
 
-      res.json(visit);
+      const observations = await storage.getMentoringObservationsByVisitId(id);
+      res.json({ ...visit, observations });
     } catch (error: any) {
       console.error("Error fetching mentoring visit:", error);
       res.status(500).json({ error: "Failed to fetch mentoring visit" });
@@ -2604,12 +2642,29 @@ export async function registerRoutes(
   app.put("/api/activities/mentoring/:id", async (req, res) => {
     try {
       const { id } = req.params;
+      const { observations, ...rest } = req.body;
       const visitData = {
-        ...req.body,
-        submittedAt: req.body.submittedAt ? new Date(req.body.submittedAt) : undefined,
+        ...rest,
+        submittedAt: rest.submittedAt ? new Date(rest.submittedAt) : undefined,
       };
       const updatedVisit = await storage.updateMentoringVisit(id, visitData);
-      res.json(updatedVisit);
+
+      if (observations && Array.isArray(observations)) {
+        await storage.deleteMentoringObservationsByVisitId(id);
+        if (observations.length > 0) {
+          const obsRows = observations.map((obs: any) => ({
+            observationId: id,
+            areaId: obs.areaId,
+            indicatorId: obs.indicatorId,
+            optionsId: obs.optionsId,
+            rationaleId: obs.rationaleId || null,
+          }));
+          await storage.createMentoringObservations(obsRows);
+        }
+      }
+
+      const savedObs = await storage.getMentoringObservationsByVisitId(id);
+      res.json({ ...updatedVisit, observations: savedObs });
     } catch (error: any) {
       console.error("Mentoring visit update error:", error?.message || error);
       res.status(400).json({ error: "Failed to update mentoring visit", details: error?.message || String(error) });

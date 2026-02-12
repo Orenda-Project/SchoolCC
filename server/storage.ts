@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { users, dataRequests, requestAssignees, voiceRecordings, districts, clusters, schools, tehsils, markazes, notifications, queries, queryResponses, visitLogs, schoolAlbums, albumPhotos, albumComments, albumReactions, announcements, monitoringVisits, mentoringVisits, officeVisits, otherActivities, visitSessions, pushSubscriptions, gpsTrackingPoints } from "@shared/schema";
+import { users, dataRequests, requestAssignees, voiceRecordings, districts, clusters, schools, tehsils, markazes, notifications, queries, queryResponses, visitLogs, schoolAlbums, albumPhotos, albumComments, albumReactions, announcements, monitoringVisits, mentoringVisits, mentoringObservations, officeVisits, otherActivities, visitSessions, pushSubscriptions, gpsTrackingPoints } from "@shared/schema";
 import type {
   InsertUser, User, InsertDataRequest, DataRequest, InsertRequestAssignee, RequestAssignee,
   InsertVoiceRecording, VoiceRecording,
@@ -8,7 +8,7 @@ import type {
   InsertNotification, Notification, InsertQuery, Query, InsertQueryResponse, QueryResponse,
   InsertVisitLog, VisitLog, InsertSchoolAlbum, SchoolAlbum, InsertAlbumPhoto, AlbumPhoto,
   InsertAlbumComment, AlbumComment, InsertAlbumReaction, AlbumReaction, InsertAnnouncement, Announcement,
-  InsertMonitoringVisit, MonitoringVisit, InsertMentoringVisit, MentoringVisit,
+  InsertMonitoringVisit, MonitoringVisit, InsertMentoringVisit, MentoringVisit, InsertMentoringObservation, MentoringObservation,
   InsertOfficeVisit, OfficeVisit, InsertOtherActivity, OtherActivity,
   InsertVisitSession, VisitSession, InsertPushSubscription, PushSubscription,
   InsertGpsTrackingPoint, GpsTrackingPoint
@@ -165,6 +165,11 @@ export interface IStorage {
   getAllMentoringVisits(): Promise<MentoringVisit[]>;
   updateMentoringVisit(id: string, visit: Partial<InsertMentoringVisit>): Promise<MentoringVisit>;
   deleteMentoringVisit(id: string, aeoId: string): Promise<boolean>;
+
+  // Mentoring Observation operations
+  createMentoringObservations(observations: InsertMentoringObservation[]): Promise<MentoringObservation[]>;
+  getMentoringObservationsByVisitId(observationId: string): Promise<MentoringObservation[]>;
+  deleteMentoringObservationsByVisitId(observationId: string): Promise<void>;
 
   // Office Visit operations
   createOfficeVisit(visit: InsertOfficeVisit): Promise<OfficeVisit>;
@@ -1027,6 +1032,23 @@ export class DBStorage implements IStorage {
     }
     await db.delete(mentoringVisits).where(eq(mentoringVisits.id, id));
     return true;
+  }
+
+  // Mentoring Observation operations
+  async createMentoringObservations(observations: InsertMentoringObservation[]): Promise<MentoringObservation[]> {
+    if (observations.length === 0) return [];
+    const result = await db.insert(mentoringObservations).values(observations as any).returning();
+    return result;
+  }
+
+  async getMentoringObservationsByVisitId(observationId: string): Promise<MentoringObservation[]> {
+    return await db.select()
+      .from(mentoringObservations)
+      .where(eq(mentoringObservations.observationId, observationId));
+  }
+
+  async deleteMentoringObservationsByVisitId(observationId: string): Promise<void> {
+    await db.delete(mentoringObservations).where(eq(mentoringObservations.observationId, observationId));
   }
 
   // Office Visit operations

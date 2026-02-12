@@ -406,6 +406,43 @@ export const mentoringVisits = pgTable("mentoring_visits", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+// Mentoring configuration tables - database-driven form structure
+export const mentoringFields = pgTable("mentoring_fields", {
+  id: integer("id").primaryKey(),
+  areas: text("areas").notNull(),
+  isActive: boolean("is_active").notNull().default(true),
+});
+
+export const mentoringIndicators = pgTable("mentoring_indicators", {
+  id: integer("id").primaryKey(),
+  indicators: text("indicators").notNull(),
+  isActive: boolean("is_active").notNull().default(true),
+  areaId: integer("area_id").notNull(),
+  areaName: text("area_name"),
+});
+
+export const mentoringOptions = pgTable("mentoring_options", {
+  id: integer("id").primaryKey(),
+  options: text("options").notNull(),
+  isActive: boolean("is_active").notNull().default(true),
+  meaning: text("meaning"),
+});
+
+export const mentoringRationaleOptions = pgTable("mentoring_rationaleoptions", {
+  id: integer("id").primaryKey(),
+  rationaleId: integer("rationale_id"),
+  rationale: text("rationale").notNull(),
+  isActive: boolean("is_active").notNull().default(true),
+  optionsId: integer("options_id"),
+  indicatorId: integer("indicator_id"),
+  areaId: integer("area_id"),
+});
+
+export type MentoringField = typeof mentoringFields.$inferSelect;
+export type MentoringIndicator = typeof mentoringIndicators.$inferSelect;
+export type MentoringOption = typeof mentoringOptions.$inferSelect;
+export type MentoringRationaleOption = typeof mentoringRationaleOptions.$inferSelect;
+
 // Mentoring Observations table - stores individual indicator ratings per mentoring visit
 export const mentoringObservations = pgTable("mentoring_observations", {
   id: serial("id").primaryKey(),
