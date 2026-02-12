@@ -2575,6 +2575,63 @@ export async function registerRoutes(
     }
   });
 
+  const FRONTEND_AREA_TO_DB: Record<string, number> = {
+    'classroom-env': 329,
+    'lesson-plan': 385,
+    'instructional-strategies': 123,
+    'student-engagement': 119,
+    'assessment-feedback': 166,
+  };
+
+  const FRONTEND_INDICATOR_TO_DB: Record<string, number> = {
+    'ce-1': 229, 'ce-2': 239, 'ce-3': 283,
+    'lp-1': 471, 'lp-2': 222, 'lp-3': 216,
+    'inst-1': 224, 'inst-2': 409, 'inst-3': 253, 'inst-4': 413,
+    'se-1': 494, 'se-2': 346, 'se-3': 314,
+    'af-1': 280, 'af-2': 285, 'af-3': 275,
+  };
+
+  const RATING_TO_OPTIONS_ID: Record<string, number> = {
+    'proficient': 209,
+    'developing': 487,
+    'emerging': 253,
+  };
+
+  const RATIONALE_LOOKUP: Record<string, number> = {
+    '229-253': 1, '239-253': 2, '283-253': 3, '471-253': 4, '222-253': 5, '216-253': 6,
+    '224-253': 7, '409-253': 8, '253-253': 9, '413-253': 10, '494-253': 11, '346-253': 12,
+    '314-253': 13, '280-253': 14, '285-253': 15, '275-253': 16,
+    '229-487': 17, '239-487': 18, '283-487': 19, '471-487': 20, '222-487': 21, '216-487': 22,
+    '224-487': 23, '409-487': 24, '253-487': 25, '413-487': 26, '494-487': 27, '346-487': 28,
+    '314-487': 29, '280-487': 30, '285-487': 31, '275-487': 32,
+    '229-209': 33, '239-209': 34, '283-209': 35, '471-209': 36, '222-209': 37, '216-209': 38,
+    '224-209': 39, '409-209': 40, '253-209': 41, '413-209': 42, '494-209': 43, '346-209': 44,
+    '314-209': 45, '280-209': 46, '285-209': 47, '275-209': 48,
+  };
+
+  function convertIndicatorsToObservations(indicators: any[], visitId: string) {
+    return indicators
+      .filter((ind: any) => ind.rating || ind.level)
+      .map((ind: any) => {
+        const rating = ind.level || ind.rating;
+        const areaKey = ind.area || '';
+        const indicatorKey = ind.indicator || ind.id?.split('-').slice(0, 2).join('-') || '';
+        const areaId = FRONTEND_AREA_TO_DB[areaKey];
+        const indicatorId = FRONTEND_INDICATOR_TO_DB[indicatorKey];
+        const optionsId = RATING_TO_OPTIONS_ID[rating];
+        if (!areaId || !indicatorId || !optionsId) return null;
+        const rationaleId = RATIONALE_LOOKUP[`${indicatorId}-${optionsId}`] || null;
+        return {
+          observationId: visitId,
+          areaId,
+          indicatorId,
+          optionsId,
+          rationaleId,
+        };
+      })
+      .filter(Boolean);
+  }
+
   // Mentoring Visit endpoints
   app.post("/api/activities/mentoring", async (req, res) => {
     try {
@@ -2587,14 +2644,19 @@ export async function registerRoutes(
       };
       const visit = await storage.createMentoringVisit(visitData);
 
+      let obsRows: any[] = [];
       if (observations && Array.isArray(observations) && observations.length > 0) {
-        const obsRows = observations.map((obs: any) => ({
+        obsRows = observations.map((obs: any) => ({
           observationId: visit.id,
           areaId: obs.areaId,
           indicatorId: obs.indicatorId,
           optionsId: obs.optionsId,
           rationaleId: obs.rationaleId || null,
         }));
+      } else if (indicators && Array.isArray(indicators) && indicators.length > 0) {
+        obsRows = convertIndicatorsToObservations(indicators, visit.id);
+      }
+      if (obsRows.length > 0) {
         await storage.createMentoringObservations(obsRows);
       }
 
@@ -2653,16 +2715,21 @@ export async function registerRoutes(
       if (rest.observerName || aeoName) visitData.observerName = rest.observerName || aeoName;
       const updatedVisit = await storage.updateMentoringVisit(id, visitData);
 
-      if (observations && Array.isArray(observations)) {
+      let obsRows: any[] = [];
+      if (observations && Array.isArray(observations) && observations.length > 0) {
+        obsRows = observations.map((obs: any) => ({
+          observationId: id,
+          areaId: obs.areaId,
+          indicatorId: obs.indicatorId,
+          optionsId: obs.optionsId,
+          rationaleId: obs.rationaleId || null,
+        }));
+      } else if (indicators && Array.isArray(indicators) && indicators.length > 0) {
+        obsRows = convertIndicatorsToObservations(indicators, id);
+      }
+      if (obsRows.length > 0 || observations) {
         await storage.deleteMentoringObservationsByVisitId(id);
-        if (observations.length > 0) {
-          const obsRows = observations.map((obs: any) => ({
-            observationId: id,
-            areaId: obs.areaId,
-            indicatorId: obs.indicatorId,
-            optionsId: obs.optionsId,
-            rationaleId: obs.rationaleId || null,
-          }));
+        if (obsRows.length > 0) {
           await storage.createMentoringObservations(obsRows);
         }
       }
