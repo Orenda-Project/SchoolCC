@@ -3,6 +3,8 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { db } from "./db";
+import { sql } from "drizzle-orm";
 
 const app = express();
 const httpServer = createServer(app);
@@ -62,6 +64,31 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  try {
+    await db.execute(sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS role_id integer`);
+    await db.execute(sql`
+      UPDATE users SET role_id = CASE role
+        WHEN 'AEO' THEN 601
+        WHEN 'TEACHER' THEN 602
+        WHEN 'HEAD_TEACHER' THEN 603
+        WHEN 'DEO' THEN 604
+        WHEN 'DDEO' THEN 605
+        WHEN 'CEO' THEN 606
+        WHEN 'TRAINING_MANAGER' THEN 607
+        WHEN 'COACH' THEN 608
+        ELSE NULL
+      END
+      WHERE role_id IS NULL
+    `);
+    await db.execute(sql`
+      INSERT INTO roles (id, role, is_active) VALUES (608, 'COACH', true)
+      ON CONFLICT (id) DO NOTHING
+    `);
+    log("Role IDs migration complete");
+  } catch (e: any) {
+    log("Role IDs migration skipped: " + (e?.message || e));
+  }
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
