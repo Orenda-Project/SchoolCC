@@ -81,7 +81,15 @@ app.use((req, res, next) => {
       WHERE role_id IS NULL
     `);
     await db.execute(sql`
-      INSERT INTO roles (id, role, is_active) VALUES (608, 'COACH', true)
+      INSERT INTO roles (id, role, is_active) VALUES
+        (601, 'AEO', true),
+        (602, 'TEACHER', true),
+        (603, 'HEAD_TEACHER', true),
+        (604, 'DEO', true),
+        (605, 'DDEO', true),
+        (606, 'CEO', true),
+        (607, 'TRAINING_MANAGER', true),
+        (608, 'COACH', true)
       ON CONFLICT (id) DO NOTHING
     `);
     log("Role IDs migration complete");
