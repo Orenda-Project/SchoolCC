@@ -2578,10 +2578,11 @@ export async function registerRoutes(
   // Mentoring Visit endpoints
   app.post("/api/activities/mentoring", async (req, res) => {
     try {
-      const { observations, indicators, aeoId, ...rest } = req.body;
+      const { observations, indicators, aeoId, aeoName, ...rest } = req.body;
       const visitData = {
         ...rest,
         userId: rest.userId || aeoId,
+        observerName: rest.observerName || aeoName,
         submittedAt: rest.submittedAt ? new Date(rest.submittedAt) : undefined,
       };
       const visit = await storage.createMentoringVisit(visitData);
@@ -2643,12 +2644,13 @@ export async function registerRoutes(
   app.put("/api/activities/mentoring/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const { observations, indicators, aeoId, ...rest } = req.body;
-      const visitData = {
+      const { observations, indicators, aeoId, aeoName, ...rest } = req.body;
+      const visitData: any = {
         ...rest,
-        userId: rest.userId || aeoId,
         submittedAt: rest.submittedAt ? new Date(rest.submittedAt) : undefined,
       };
+      if (rest.userId || aeoId) visitData.userId = rest.userId || aeoId;
+      if (rest.observerName || aeoName) visitData.observerName = rest.observerName || aeoName;
       const updatedVisit = await storage.updateMentoringVisit(id, visitData);
 
       if (observations && Array.isArray(observations)) {
