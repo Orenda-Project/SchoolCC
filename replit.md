@@ -96,3 +96,14 @@ Preferred communication style: Simple, everyday language.
 - **esbuild**: Server bundling for production
 - **TypeScript**: Type checking across client, server, and shared code
 - **Replit Plugins**: Dev banner, cartographer, and runtime error overlay for Replit environment
+
+## Recent Changes
+
+### Mentoring System Restructure (Feb 2026)
+- **Database-driven mentoring config**: mentoringFields (5 areas), mentoringIndicators (16 indicators), mentoringOptions (3 rating levels), mentoringRationaleOptions (48 rubric texts)
+- **mentoringObservations table**: Stores individual ratings per visit with areaId, indicatorId, optionsId, rationaleId references
+- **mentoringVisits schema change**: Replaced `aeo_id` with `user_id` and added `role_id`; removed `indicators` JSON column
+- **Backward compatibility**: Backend accepts `aeoId` from frontend and maps to `userId`; strips `indicators` JSON from POST/PUT
+- **Roles table**: 8 roles (IDs 601-608) including new COACH role; `role_id` field added to users table
+- **API endpoints**: GET /api/mentoring/config serves dynamic form structure from database
+- **Storage methods**: Renamed from `ByAeo` to `ByUser` (getMentoringVisitsByUser, getMentoringVisitsByMultipleUsers)

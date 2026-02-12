@@ -160,11 +160,11 @@ export interface IStorage {
   // Mentoring Visit operations
   createMentoringVisit(visit: InsertMentoringVisit): Promise<MentoringVisit>;
   getMentoringVisitById(id: string): Promise<MentoringVisit | undefined>;
-  getMentoringVisitsByAeo(aeoId: string): Promise<MentoringVisit[]>;
-  getMentoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MentoringVisit[]>;
+  getMentoringVisitsByUser(userId: string): Promise<MentoringVisit[]>;
+  getMentoringVisitsByMultipleUsers(userIds: string[]): Promise<MentoringVisit[]>;
   getAllMentoringVisits(): Promise<MentoringVisit[]>;
   updateMentoringVisit(id: string, visit: Partial<InsertMentoringVisit>): Promise<MentoringVisit>;
-  deleteMentoringVisit(id: string, aeoId: string): Promise<boolean>;
+  deleteMentoringVisit(id: string, userId: string): Promise<boolean>;
 
   // Mentoring Observation operations
   createMentoringObservations(observations: InsertMentoringObservation[]): Promise<MentoringObservation[]>;
@@ -996,18 +996,18 @@ export class DBStorage implements IStorage {
     return result[0];
   }
 
-  async getMentoringVisitsByAeo(aeoId: string): Promise<MentoringVisit[]> {
+  async getMentoringVisitsByUser(userId: string): Promise<MentoringVisit[]> {
     return await db.select()
       .from(mentoringVisits)
-      .where(eq(mentoringVisits.aeoId, aeoId))
+      .where(eq(mentoringVisits.userId, userId))
       .orderBy(desc(mentoringVisits.createdAt));
   }
 
-  async getMentoringVisitsByMultipleAeos(aeoIds: string[]): Promise<MentoringVisit[]> {
-    if (aeoIds.length === 0) return [];
+  async getMentoringVisitsByMultipleUsers(userIds: string[]): Promise<MentoringVisit[]> {
+    if (userIds.length === 0) return [];
     return await db.select()
       .from(mentoringVisits)
-      .where(inArray(mentoringVisits.aeoId, aeoIds))
+      .where(inArray(mentoringVisits.userId, userIds))
       .orderBy(desc(mentoringVisits.createdAt));
   }
 
@@ -1025,9 +1025,9 @@ export class DBStorage implements IStorage {
     return result[0];
   }
 
-  async deleteMentoringVisit(id: string, aeoId: string): Promise<boolean> {
+  async deleteMentoringVisit(id: string, userId: string): Promise<boolean> {
     const visit = await this.getMentoringVisitById(id);
-    if (!visit || visit.aeoId !== aeoId) {
+    if (!visit || visit.userId !== userId) {
       return false;
     }
     await db.delete(mentoringVisits).where(eq(mentoringVisits.id, id));

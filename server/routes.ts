@@ -2578,9 +2578,10 @@ export async function registerRoutes(
   // Mentoring Visit endpoints
   app.post("/api/activities/mentoring", async (req, res) => {
     try {
-      const { observations, ...rest } = req.body;
+      const { observations, indicators, aeoId, ...rest } = req.body;
       const visitData = {
         ...rest,
+        userId: rest.userId || aeoId,
         submittedAt: rest.submittedAt ? new Date(rest.submittedAt) : undefined,
       };
       const visit = await storage.createMentoringVisit(visitData);
@@ -2610,9 +2611,9 @@ export async function registerRoutes(
       let visits;
       if (aeoIds) {
         const ids = (aeoIds as string).split(',').filter(Boolean);
-        visits = await storage.getMentoringVisitsByMultipleAeos(ids);
+        visits = await storage.getMentoringVisitsByMultipleUsers(ids);
       } else if (aeoId) {
-        visits = await storage.getMentoringVisitsByAeo(aeoId as string);
+        visits = await storage.getMentoringVisitsByUser(aeoId as string);
       } else {
         visits = await storage.getAllMentoringVisits();
       }
@@ -2642,9 +2643,10 @@ export async function registerRoutes(
   app.put("/api/activities/mentoring/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const { observations, ...rest } = req.body;
+      const { observations, indicators, aeoId, ...rest } = req.body;
       const visitData = {
         ...rest,
+        userId: rest.userId || aeoId,
         submittedAt: rest.submittedAt ? new Date(rest.submittedAt) : undefined,
       };
       const updatedVisit = await storage.updateMentoringVisit(id, visitData);
@@ -2674,13 +2676,14 @@ export async function registerRoutes(
   app.delete("/api/activities/mentoring/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const { aeoId } = req.body;
+      const { aeoId, userId } = req.body;
+      const deleteUserId = userId || aeoId;
       
-      if (!aeoId) {
-        return res.status(400).json({ error: "aeoId is required" });
+      if (!deleteUserId) {
+        return res.status(400).json({ error: "userId is required" });
       }
       
-      const deleted = await storage.deleteMentoringVisit(id, aeoId);
+      const deleted = await storage.deleteMentoringVisit(id, deleteUserId);
       if (!deleted) {
         return res.status(403).json({ error: "Not authorized to delete this visit or visit not found" });
       }

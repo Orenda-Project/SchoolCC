@@ -285,7 +285,9 @@ export interface MentoringVisitIndicator {
 
 export interface MentoringVisitData {
   id: string;
-  aeoId: string;
+  userId: string;
+  roleId?: number;
+  aeoId?: string;
   schoolId: string;
   aeoName: string;
   schoolName: string;
@@ -295,7 +297,8 @@ export interface MentoringVisitData {
   classObserved: string;
   teacherName: string;
   subject: string;
-  indicators: MentoringVisitIndicator[];
+  indicators?: MentoringVisitIndicator[];
+  observations?: { areaId: number; indicatorId: number; optionsId: number; rationaleId?: number | null }[];
   generalFeedback: string;
   strengthsObserved: string;
   areasForImprovement: string;

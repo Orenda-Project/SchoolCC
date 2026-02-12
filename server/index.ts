@@ -89,6 +89,28 @@ app.use((req, res, next) => {
     log("Role IDs migration skipped: " + (e?.message || e));
   }
 
+  try {
+    const colCheck = await db.execute(sql`
+      SELECT column_name FROM information_schema.columns 
+      WHERE table_name = 'mentoring_visits' AND column_name = 'aeo_id'
+    `);
+    if (colCheck.rows && colCheck.rows.length > 0) {
+      await db.execute(sql`ALTER TABLE mentoring_visits ADD COLUMN IF NOT EXISTS user_id varchar`);
+      await db.execute(sql`ALTER TABLE mentoring_visits ADD COLUMN IF NOT EXISTS role_id integer`);
+      await db.execute(sql`UPDATE mentoring_visits SET user_id = aeo_id WHERE user_id IS NULL`);
+      await db.execute(sql`
+        UPDATE mentoring_visits mv SET role_id = u.role_id 
+        FROM users u WHERE mv.user_id = u.id AND mv.role_id IS NULL
+      `);
+      await db.execute(sql`ALTER TABLE mentoring_visits ALTER COLUMN user_id SET NOT NULL`);
+      await db.execute(sql`ALTER TABLE mentoring_visits DROP COLUMN IF EXISTS aeo_id`);
+      await db.execute(sql`ALTER TABLE mentoring_visits DROP COLUMN IF EXISTS indicators`);
+      log("Mentoring visits aeo_id -> user_id migration complete");
+    }
+  } catch (e: any) {
+    log("Mentoring visits migration note: " + (e?.message || e));
+  }
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

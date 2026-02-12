@@ -382,7 +382,8 @@ export const monitoringVisits = pgTable("monitoring_visits", {
 // Mentoring Visits table - teacher mentoring visits by AEO
 export const mentoringVisits = pgTable("mentoring_visits", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  aeoId: varchar("aeo_id").notNull(),
+  userId: varchar("user_id").notNull(),
+  roleId: integer("role_id"),
   aeoName: text("aeo_name").notNull(),
   schoolId: varchar("school_id"),
   schoolName: text("school_name").notNull(),
@@ -394,7 +395,6 @@ export const mentoringVisits = pgTable("mentoring_visits", {
   classObserved: text("class_observed"),
   teacherName: text("teacher_name"),
   subject: text("subject"),
-  indicators: json("indicators").$type<{ id: string; name: string; rating: string | null; rubricText: string; examples: string }[]>().default([]),
   generalFeedback: text("general_feedback"),
   strengthsObserved: text("strengths_observed"),
   areasForImprovement: text("areas_for_improvement"),
