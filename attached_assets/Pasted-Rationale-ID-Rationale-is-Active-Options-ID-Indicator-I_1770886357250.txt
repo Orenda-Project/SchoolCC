@@ -1,0 +1,49 @@
+Rationale ID	Rationale	is_Active	Options ID	Indicator ID	Area ID
+240	Discussions are teacher-dominated with minimal student input. Example: Students answer only factual questions without follow-up.	TRUE	253	239	329
+315	Resources and space are disorganized, limiting collaborative learning. Example: No designated group work areas or materials for problem-solving tasks.	TRUE	253	335	329
+292	Students are given basic tasks without clear expectations. Example: Instructions are vague, and students struggle to engage in complex activities.	TRUE	253	466	329
+366	Objectives are vague or focused on rote learning. Example: "Understand the topic" with no reference to critical thinking or problem-solving.	TRUE	253	313	385
+267	Strategies focus on recall and comprehension. Example: Activities ask for definitions but no analysis or synthesis.	TRUE	253	326	385
+485	Lessons are taught in isolation without real-world relevance. Example: Math concepts are taught with no application.	TRUE	253	291	385
+497	Questions are mostly close-ended, requiring one-word answers. Example: "What is the capital of France?"	TRUE	253	287	123
+344	Students passively receive information. Example: The teacher explains a text without student critique.	TRUE	253	297	123
+310	Simple tasks are demonstrated without explanation of the problem-solving process. Example: "This is the solution," without steps.	TRUE	253	460	123
+219	Minimal or no scaffolding is provided. Example: Students are asked to solve problems independently without guidance.	TRUE	253	408	123
+406	Collaboration is minimal or absent. Example: Students work individually without interaction.	TRUE	253	352	119
+276	Content is presented from a single perspective. Example: Students are taught one method without alternatives.	TRUE	253	470	119
+256	Discussions are teacher-led with limited student involvement. Example: The teacher talks, and students answer briefly.	TRUE	253	212	119
+464	Assessment is limited to teacher-led grading. Example: Students receive a grade without reflecting on their performance.	TRUE	253	234	166
+437	Feedback is generic and not actionable. Example: "Good job" or "Try again" without specifics.	TRUE	253	363	166
+262	Assessment tasks focus on recall and do not involve higher-order thinking. Example: Quizzes with factual questions only.	TRUE	253	499	166
+258	Some encouragement for discussions, but student participation is limited. Example: Students share ideas, but few questions are asked to probe deeper.	TRUE	487	400	329
+454	Some organization, but space/resources do not fully support collaboration. Example: Materials are present but not effectively used for group activities.	TRUE	487	407	329
+385	Some students engage in complex tasks, but expectations are not consistently clear. Example: Instructions lack clarity for all groups.	TRUE	487	263	329
+394	Objectives mention higher-order skills but lack detailed alignment with activities. Example: "Analyse the text" without clear support for the analysis.	TRUE	487	421	385
+364	Some activities promote analysis or synthesis but lack variety or depth. Example: Students analyse a passage but do not synthesize ideas.	TRUE	487	424	385
+473	Some connections to real-world or interdisciplinary themes, but not fully integrated. Example: Mentioning real-world examples without exploring them.	TRUE	487	287	385
+440	Some open-ended questions are asked, but they lack depth. Example: "Why is the capital important?" without encouraging further exploration.	TRUE	487	327	123
+445	Some analysis and critique are encouraged, but it is not consistent. Example: Students are asked to analyse but not interpret or critique.	TRUE	487	346	123
+344	Problem-solving is modeled, but the teacher does not explain strategies. Example: "Let me solve this quickly for you."	TRUE	487	368	123
+431	Some scaffolding is provided, but it is inconsistent. Example: The teacher provides hints but does not guide students through complex steps.	TRUE	487	458	123
+411	Some collaboration occurs, but tasks lack depth. Example: Students share ideas but do not work towards a synthesized solution.	TRUE	487	401	119
+285	Multiple perspectives are mentioned, but exploration is limited. Example: The teacher describes perspectives but doesn't encourage student evaluation.	TRUE	487	215	119
+318	Some discussions and debates occur, but only a few students participate. Example: A few students contribute to a debate while others stay silent.	TRUE	487	422	119
+444	Some self- or peer-assessment occurs, but it is inconsistent. Example: Students assess each other's work but without clear criteria.	TRUE	487	299	166
+382	Feedback is specific but does not consistently guide improvement. Example: "You missed this part; try to include it."	TRUE	487	388	166
+456	Some tasks involve analysis or evaluation but lack depth. Example: "Write a short analysis" with limited criteria for success.	TRUE	487	299	166
+213	Open discussions are encouraged, with students freely sharing and debating ideas. Example: Students discuss multiple solutions to a problem collaboratively.	TRUE	209	418	329
+397	Resources and space are well-organized for collaborative tasks. Example: Tables are arranged for group work, and materials are easily accessible.	TRUE	209	373	329
+407	Students actively participate in complex, clearly defined tasks. Example: The teacher assigns roles for group problem-solving and explains expectations.	TRUE	209	284	329
+216	Objectives are explicit and linked to HOTS. Example: "Evaluate the author's argument and create your counterpoint with supporting evidence."	TRUE	209	425	385
+388	Assessment tasks consistently require analysis, evaluation, or creation. Example: "Develop a project that evaluates and improves this system."	TRUE	209	481	385
+429	Lessons integrate real-world applications and interdisciplinary links. Example: Students use math to design a sustainable business model.	TRUE	209	320	385
+476	Open-ended, thought-provoking questions dominate the lesson. Example: "How would you redesign this city to make it more sustainable?"	TRUE	209	427	123
+240	Students actively analyse, interpret, and critique content. Example: Students critique a historical argument with supporting evidence.	TRUE	209	448	123
+260	Problem-solving and creativity are modeled with clear strategies. Example: The teacher brainstorms solutions and explains the reasoning behind choices.	TRUE	209	468	123
+237	Effective scaffolding supports student exploration. Example: The teacher provides step-by-step guidance and gradually reduces support as students improve.	TRUE	209	230	123
+356	Collaboration is structured and focused on synthesis and problem-solving. Example: Students work in teams to design a solution to a community problem.	TRUE	209	371	119
+325	Students actively explore and evaluate multiple perspectives. Example: Students debate solutions and propose creative alternatives to a problem.	TRUE	209	450	119
+443	Discussions and debates actively involve all students. Example: Students collaboratively debate and refine their arguments in a group setting.	TRUE	209	437	119
+267	Self- and peer-assessment are structured and purposeful. Example: Students use rubrics to assess their work and suggest improvements for peers.	TRUE	209	299	166
+206	Feedback is specific, actionable, and focused on improvement. Example: "Your argument is clear, but adding evidence will make it stronger."	TRUE	209	474	166
+288	Assessment tasks consistently require analysis, evaluation, or creation. Example: "Develop a project that evaluates and improves this system."	TRUE	209	243	166
