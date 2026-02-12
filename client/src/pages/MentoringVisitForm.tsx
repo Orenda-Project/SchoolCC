@@ -124,8 +124,9 @@ export default function MentoringVisitForm({ onClose }: Props) {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Partial<MentoringVisitData>>({
-    aeoId: user?.id || '',
-    aeoName: user?.name || '',
+    userId: user?.id || '',
+    observerName: user?.name || '',
+    roleId: user?.roleId,
     visitDate: new Date().toISOString().split('T')[0],
     status: 'draft',
     evidence: [],
@@ -665,9 +666,10 @@ export default function MentoringVisitForm({ onClose }: Props) {
         // CREATE new visit
         const visit: MentoringVisitData = {
           id: `ment-${Date.now()}`,
-          aeoId: formData.aeoId || user?.id || '',
+          userId: formData.userId || user?.id || '',
+          roleId: formData.roleId || user?.roleId,
           schoolId: formData.schoolId || '',
-          aeoName: formData.aeoName || user?.name || '',
+          observerName: formData.observerName || user?.name || '',
           schoolName: formData.schoolName || '',
           markaz: user?.markaz || formData.markaz || '',
           tehsil: user?.tehsilName || formData.tehsil || '',
