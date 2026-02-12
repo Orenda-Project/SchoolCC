@@ -672,7 +672,7 @@ export default function MentoringVisitForm({ onClose }: Props) {
           observerName: formData.observerName || user?.name || '',
           schoolName: formData.schoolName || '',
           markaz: user?.markaz || formData.markaz || '',
-          tehsil: user?.tehsilName || formData.tehsil || '',
+          tehsil: formData.tehsil || (user as any)?.tehsilName || '',
           visitDate: formData.visitDate || now.toISOString().split('T')[0],
           arrivalTime: formData.arrivalTime || currentTime,
           departureTime: formData.departureTime || currentTime,

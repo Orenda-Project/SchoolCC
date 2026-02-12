@@ -289,8 +289,11 @@ export interface MentoringVisitData {
   roleId?: number;
   aeoId?: string;
   schoolId: string;
-  aeoName: string;
+  observerName: string;
+  aeoName?: string;
   schoolName: string;
+  markaz?: string;
+  tehsil?: string;
   visitDate: string;
   arrivalTime: string;
   departureTime: string;

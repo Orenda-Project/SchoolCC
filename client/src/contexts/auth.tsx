@@ -10,6 +10,7 @@ export interface User {
   phoneNumber: string;
   password?: string;
   role: UserRole;
+  roleId?: number;
   name: string;
   status?: 'pending' | 'active' | 'restricted';
   schoolId?: string;
