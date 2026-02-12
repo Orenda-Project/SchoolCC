@@ -379,12 +379,12 @@ export const monitoringVisits = pgTable("monitoring_visits", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-// Mentoring Visits table - teacher mentoring visits by AEO
+// Mentoring Visits table - teacher mentoring observations by authorized users
 export const mentoringVisits = pgTable("mentoring_visits", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").notNull(),
   roleId: integer("role_id"),
-  aeoName: text("aeo_name").notNull(),
+  observerName: text("observer_name").notNull(),
   schoolId: varchar("school_id"),
   schoolName: text("school_name").notNull(),
   markaz: text("markaz"),
