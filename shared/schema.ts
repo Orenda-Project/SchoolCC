@@ -88,6 +88,7 @@ export const users = pgTable("users", {
   phoneNumber: text("phone_number").notNull().unique(),
   password: text("password").notNull(),
   role: text("role").notNull(), // CEO, DEO, DDEO, AEO, HEAD_TEACHER, TEACHER, TRAINING_MANAGER
+  roleId: integer("role_id"),
   status: text("status").notNull().default("active"), // pending, active, restricted
   schoolId: varchar("school_id"),
   schoolName: text("school_name"),
