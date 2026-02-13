@@ -75,7 +75,6 @@ app.use((req, res, next) => {
         WHEN 'DDEO' THEN 605
         WHEN 'CEO' THEN 606
         WHEN 'TRAINING_MANAGER' THEN 607
-        WHEN 'COACH' THEN 608
         ELSE NULL
       END
       WHERE role_id IS NULL
@@ -88,8 +87,7 @@ app.use((req, res, next) => {
         (604, 'DEO', true),
         (605, 'DDEO', true),
         (606, 'CEO', true),
-        (607, 'TRAINING_MANAGER', true),
-        (608, 'COACH', true)
+        (607, 'TRAINING_MANAGER', true)
       ON CONFLICT (id) DO NOTHING
     `);
     log("Role IDs migration complete");
