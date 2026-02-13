@@ -1036,15 +1036,6 @@ export async function registerRoutes(
         return res.status(401).json({ error: "Invalid credentials" });
       }
 
-      // CEO account is disabled to save costs
-      if (user.role === 'CEO') {
-        console.log("Login blocked - CEO account is disabled:", user.name);
-        return res.status(403).json({
-          error: "The CEO account is currently disabled. Please contact the system administrator.",
-          status: "disabled"
-        });
-      }
-
       // Check if user account is pending approval
       if (user.status === 'pending') {
         console.log("Login failed - account pending approval for:", user.name);
