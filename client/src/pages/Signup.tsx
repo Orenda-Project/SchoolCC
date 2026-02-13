@@ -1038,14 +1038,10 @@ export default function Signup() {
                     value={formData.cnic}
                     onChange={(e) => {
                       const digits = e.target.value.replace(/\D/g, '').slice(0, 13);
-                      let formatted = '';
-                      if (digits.length > 0) formatted = digits.slice(0, 5);
-                      if (digits.length > 5) formatted += '-' + digits.slice(5, 12);
-                      if (digits.length > 12) formatted += '-' + digits.slice(12, 13);
-                      setFormData({ ...formData, cnic: formatted });
+                      setFormData({ ...formData, cnic: digits });
                     }}
-                    placeholder="12345-1234567-1"
-                    maxLength={15}
+                    placeholder="1234512345671"
+                    maxLength={13}
                   />
                 </div>
                 <div data-guide="dob-input">

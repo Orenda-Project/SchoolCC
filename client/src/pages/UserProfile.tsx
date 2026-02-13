@@ -552,8 +552,12 @@ export default function UserProfile() {
                 {editMode ? (
                   <Input
                     value={editedProfile.cnic || ""}
-                    onChange={(e) => handleChange("cnic", e.target.value)}
-                    placeholder="XXXXX-XXXXXXX-X"
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, '').slice(0, 13);
+                      handleChange("cnic", digits);
+                    }}
+                    placeholder="1234512345671"
+                    maxLength={13}
                   />
                 ) : (
                   <p className="mt-1 text-sm">{profile.cnic || "Not provided"}</p>
