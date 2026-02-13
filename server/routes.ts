@@ -1297,14 +1297,21 @@ export async function registerRoutes(
       }
       else if (user.role === 'AEO') {
         // AEO can see pending HEAD_TEACHER and TEACHER in their cluster/schools
+        // Use EMIS-based matching: parse EMIS from assignedSchools, resolve to school IDs
+        const aeoAssignedSchools = user.assignedSchools || [];
+        const allSchools = await storage.getAllSchools();
+        const aeoSchoolIds = new Set<string>();
+        allSchools.forEach(school => {
+          if (aeoAssignedSchools.some((name: string) => name.includes(school.emisNumber))) {
+            aeoSchoolIds.add(school.id);
+          }
+        });
+
         filteredUsers = allPendingUsers.filter(u => {
           if (u.role !== 'HEAD_TEACHER' && u.role !== 'TEACHER') return false;
 
-          // Check if user is in AEO's cluster or assigned schools (case-insensitive)
           const inCluster = u.clusterId && u.clusterId === user.clusterId;
-          const userSchoolNameLower = u.schoolName?.toLowerCase() || '';
-          const inAssignedSchool = userSchoolNameLower && user.assignedSchools &&
-                                   user.assignedSchools.some((s: string) => s.toLowerCase() === userSchoolNameLower);
+          const inAssignedSchool = u.schoolId && aeoSchoolIds.has(u.schoolId);
 
           return inCluster || inAssignedSchool;
         });
